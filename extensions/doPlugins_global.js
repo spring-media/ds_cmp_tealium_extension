@@ -340,7 +340,7 @@ s._articleViewTypeObj = {
             return 'event230,event233'; // Referrer is Outbrain Recommendation
         } else if (this.isDirect(referrer)) {
             return 'event207'; // no Referrer at Session Start
-        } else if (!referringDomain) {
+        } else if (!referringDomain && this.isNavigated()) {
             return 'event26,event202'; // Dark Social
         } else {
             return 'event27,event203'; // Other External (Referrer)

@@ -511,6 +511,7 @@ describe('articleViewType()', () => {
         let isFromRecommendationMock;
         let isDirectMock;
         let isSessionStartMock;
+        let isNavigatedMock;
 
         beforeEach(() => {
             jest.spyOn(s._utils, 'getDomainFromURLString').mockReturnValue(anyReferrerDomain);
@@ -525,6 +526,7 @@ describe('articleViewType()', () => {
             isFromRecommendationMock = jest.spyOn(s._articleViewTypeObj, 'isFromRecommendation').mockReturnValue(false);
             isDirectMock = jest.spyOn(s._articleViewTypeObj, 'isDirect').mockReturnValue(false);
             isSessionStartMock = jest.spyOn(s._utils, 'isSessionStart').mockReturnValue(false);
+            isNavigatedMock = jest.spyOn(s._articleViewTypeObj, 'isNavigated').mockReturnValue(false);
         });
 
         it('should return event24 if referrer is from search engine', function () {
@@ -600,8 +602,9 @@ describe('articleViewType()', () => {
             expect(result).toBe('event207');
         });
 
-        it('should return event26 (DarkSocial) if no referrer', function () {
+        it('should return event26 (DarkSocial) if no referrer but navigated', function () {
             const noReferrerMock = jest.spyOn(s._utils, 'getDomainFromURLString').mockReturnValue('');
+            isNavigatedMock.mockReturnValue(true);
             const result = s._articleViewTypeObj.getExternalType(noReferrerMock);
             expect(result).toBe('event26,event202');
         });
