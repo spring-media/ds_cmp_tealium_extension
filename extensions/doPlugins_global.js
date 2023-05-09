@@ -304,6 +304,9 @@ s._articleViewTypeObj = {
         );
     },
     
+    isSelfRedirect: function() {
+        return (s._ppvPreviousPage || '').includes((s.pageName || 'NEVER').split(':').pop());
+    },
 
     getInternalType: function (referrer) {
         // Check if page view was caused by a viewport switch
@@ -311,7 +314,7 @@ s._articleViewTypeObj = {
             return '';
         }
 
-        if (this.isFromHome(referrer) && this.isNavigated()) {
+        if (this.isFromHome(referrer) && this.isNavigated() && !this.isSelfRedirect()) {
             return 'event22,event200'; //Home
         } else {
             return 'event23,event201'; //Other Internal

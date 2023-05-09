@@ -425,7 +425,7 @@ describe('articleViewType()', () => {
         });
     });
 
-    describe.only('isNavigated', () => {
+    describe('isNavigated', () => {
 
         beforeEach(() => {
             window.performance = {
@@ -461,21 +461,40 @@ describe('articleViewType()', () => {
         });
     });
 
+    describe('isSelfRedirect', () => {
+        const testData = [
+            [false, undefined, undefined],
+            [false, '', ''],
+            [false, '', 'article : 245145230'],
+            [false, 'home : 5', 'article : 245145230'],
+            [true, 'article : false : 245145230 : vermischtes', 'article : 245145230'],
+        ];
+        it.each(testData)('should return %s for previousPage: "%s" and pageName "%s"', function (exected, _ppvPreviousPage, pageName) {
+            Object.assign(sObject, { _ppvPreviousPage, pageName });
+
+            const result = s._articleViewTypeObj.isSelfRedirect();
+            expect(result).toBe(exected);
+        });
+    });
+
     describe('getInternalType()', () => {
         let isFromHomeMock;
         let isSamePageRedirectMock;
         let isNavigatedMock;
+        let isSelfRedirectMock;
 
         beforeEach(() => {
             isFromHomeMock = jest.spyOn(s._articleViewTypeObj, 'isFromHome').mockReturnValue(false);
             isSamePageRedirectMock = jest.spyOn(s._articleViewTypeObj, 'isSamePageRedirect').mockReturnValue(false);
             isNavigatedMock = jest.spyOn(s._articleViewTypeObj, 'isNavigated').mockReturnValue(false);
+            isSelfRedirectMock = jest.spyOn(s._articleViewTypeObj, 'isSelfRedirect').mockReturnValue(false);
         });
 
-        it('should return event22 if referrer is a home page and page was navigated', function () {
+        it('should return event22 if referrer is a home page and page was navigated and it was no selfRedirect', function () {
             const anyReferrer = 'http://www.any-domain.de';
             isFromHomeMock.mockReturnValue(true);
             isNavigatedMock.mockReturnValue(true);
+            isSelfRedirectMock.mockReturnValue(false);
             const result = s._articleViewTypeObj.getInternalType('http://www.any-domain.de');
             expect(isFromHomeMock).toHaveBeenCalledWith(anyReferrer);
             expect(result).toBe('event22,event200');
