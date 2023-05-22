@@ -228,5 +228,20 @@ describe('s_utils', () => {
         });
     });
 
+    describe('getPageReloadStatus()', () => {
+        let getPageReloadStatusMock;
+
+        beforeEach(() => {
+            getPageReloadStatusMock = jest.spyOn(s._utils, 'getPageReloadStatus').mockImplementation();
+        });
+
+        it('should be any-PageReloadStatus', () => {
+            getPageReloadStatusMock.mockReturnValue('any-PageReloadStatus');
+            const result = s._utils.getPageReloadStatus();
+            expect(result).toBe('any-PageReloadStatus');
+        });
+
+    });
+
 });
 
