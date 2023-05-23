@@ -229,16 +229,18 @@ describe('s_utils', () => {
     });
 
     describe('getPageReloadStatus()', () => {
-        let getPageReloadStatusMock;
 
         beforeEach(() => {
-            getPageReloadStatusMock = jest.spyOn(s._utils, 'getPageReloadStatus').mockImplementation();
+            window.performance = {
+                getEntriesByType: jest.fn().mockReturnValue([])
+            };
         });
 
-        it('should be any-PageReloadStatus', () => {
-            getPageReloadStatusMock.mockReturnValue('any-PageReloadStatus');
+        it('should return TRUE if window.performance is navigate', function () {
+            window.performance.getEntriesByType.mockReturnValue([{ type: 'any-type' }]);
+
             const result = s._utils.getPageReloadStatus();
-            expect(result).toBe('any-PageReloadStatus');
+            expect(result).toBe('any-type');
         });
 
     });
