@@ -236,7 +236,7 @@ describe('s_utils', () => {
             };
         });
 
-        it('should return TRUE if window.performance is navigate', function () {
+        it('should return any-type if window.performance is navigate', function () {
             window.performance.getEntriesByType.mockReturnValue([{ type: 'any-type' }]);
 
             const result = s._utils.getPageReloadStatus();
