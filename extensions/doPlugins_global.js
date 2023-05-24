@@ -133,6 +133,12 @@ s._utils = {
     },
     isSessionStart: function () {
         return (window.utag.data['cp.utag_main_t_ss'] === '1');
+    },
+    getPageReloadStatus: function () {
+        return window.performance && window.performance.getEntriesByType && window.performance
+            .getEntriesByType('navigation')
+            .map((nav) => nav.type).toString();
+
     }
 };
 
@@ -296,12 +302,8 @@ s._articleViewTypeObj = {
     },
 
     isNavigated: function(){
-        return window.performance && ((window.performance.navigation && window.performance.navigation.type === 0) ||
-              (window.performance.getEntriesByType && window.performance
-                  .getEntriesByType('navigation')
-                  .map((nav) => nav.type)
-                  .includes('navigate'))
-        );
+        const reloadStatus = s._utils.getPageReloadStatus();
+        return window.performance && (window.performance.navigation && window.performance.navigation.type === 0) || reloadStatus === 'navigate';
     },
     
     isSelfRedirect: function() {
@@ -982,6 +984,9 @@ s._init = function (s) {
     if (window.navigator.userAgent.indexOf('iPhone') > -1) {
         s.eVar94 = window.screen.width + 'x' + window.screen.height;
     }
+
+    //Page Reload Status
+    s.eVar32 = s._utils.getPageReloadStatus();
 
     s._articleViewTypeObj.setViewTypes(s); // Todo: rename s._pageViewTypesObj
     s._ICIDTracking.setVariables(s);

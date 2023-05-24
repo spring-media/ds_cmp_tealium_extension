@@ -228,5 +228,22 @@ describe('s_utils', () => {
         });
     });
 
+    describe('getPageReloadStatus()', () => {
+
+        beforeEach(() => {
+            window.performance = {
+                getEntriesByType: jest.fn().mockReturnValue([])
+            };
+        });
+
+        it('should return any-type if window.performance is navigate', function () {
+            window.performance.getEntriesByType.mockReturnValue([{ type: 'any-type' }]);
+
+            const result = s._utils.getPageReloadStatus();
+            expect(result).toBe('any-type');
+        });
+
+    });
+
 });
 

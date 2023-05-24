@@ -426,11 +426,14 @@ describe('articleViewType()', () => {
     });
 
     describe('isNavigated', () => {
+        let getPageReloadStatusMock;
 
         beforeEach(() => {
             window.performance = {
                 getEntriesByType: jest.fn().mockReturnValue([])
             };
+            getPageReloadStatusMock = jest.spyOn(s._utils, 'getPageReloadStatus');
+            
         });
 
         it('should return TRUE if window.performance.navigation (depricated) is zero', function () {
