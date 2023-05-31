@@ -411,8 +411,8 @@ s._articleViewTypeObj = {
     },
 
     setViewTypes: function (s) {
-        const trackingValue = this.isPaidMarketing();
-        const pageViewType = trackingValue ? this.getViewTypeByTrackingProperty() : this.getViewTypeByReferrer();
+        const trackingValuePaidMarketing = this.isPaidMarketing();
+        const pageViewType = trackingValuePaidMarketing ? this.getViewTypeByTrackingProperty() : this.getViewTypeByReferrer();
 
         if (!s._utils.isAdWall(s)) {
             if (s._utils.isArticlePage()) {
