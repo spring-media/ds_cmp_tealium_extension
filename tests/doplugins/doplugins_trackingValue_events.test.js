@@ -27,54 +27,6 @@ describe('_setTrackingValueEvents (URL Parameter like cid)', () => {
         s._setTrackingValueEvents(s);
         expect(getTrackingValueMock).not.toBeCalled();
     });
-    //Upday
-    it('should set event204 if the trackingValue equals upday', () => {
-        getTrackingValueMock.mockReturnValue('upday');
-        isSocialTrackingParameterMock.mockReturnValue(false);
-
-        s._setTrackingValueEvents(s);
-        expect(addEventMock).toHaveBeenCalledWith('event204');
-    });
-    it('should not set event204 if the trackingValue does not equals upday', () => {
-        getTrackingValueMock.mockReturnValue('any-trackingValue');
-        isSocialTrackingParameterMock.mockReturnValue(false);
-
-        s._setTrackingValueEvents(s);
-        expect(addEventMock).not.toHaveBeenCalledWith('event204');
-    });
-
-    //Outbrain Article
-    it('should set event102 if the trackingValue contains kooperation.article.outbrain.', () => {
-        getTrackingValueMock.mockReturnValue('kooperation.article.outbrain.');
-        isSocialTrackingParameterMock.mockReturnValue(false);
-
-        s._setTrackingValueEvents(s);
-        expect(addEventMock).toHaveBeenCalledWith('event102');
-
-    });
-    it('should not set event102 if the trackingValue does not contain kooperation.article.outbrain', () => {
-        getTrackingValueMock.mockReturnValue('any-trackingValue');
-        isSocialTrackingParameterMock.mockReturnValue(false);
-
-        s._setTrackingValueEvents(s);
-        expect(addEventMock).not.toHaveBeenCalledWith('event102');
-    });
-
-    //Outbrain Home
-    it('should set event231 if the trackingValue contains kooperation.home.outbrain.', () => {
-        getTrackingValueMock.mockReturnValue('kooperation.home.outbrain.');
-        isSocialTrackingParameterMock.mockReturnValue(false);
-
-        s._setTrackingValueEvents(s);
-        expect(addEventMock).toHaveBeenCalledWith('event231');
-    });
-    it('should not set event231 if the trackingValue does not contain kooperation.home.outbrain.', () => {
-        getTrackingValueMock.mockReturnValue('any-trackingValue');
-        isSocialTrackingParameterMock.mockReturnValue(false);
-
-        s._setTrackingValueEvents(s);
-        expect(addEventMock).not.toHaveBeenCalledWith('event231');
-    });
     
     //Telegram
     it('should set event225 if the trackingValue contains telegram', () => {

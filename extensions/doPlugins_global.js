@@ -132,7 +132,10 @@ s._utils = {
         return this.getDomainFromURLString(this.getReferrer());
     },
     isSessionStart: function () {
-        return (window.utag.data['cp.utag_main_t_ss'] === '1');
+        return (window.utag.data['cp.utag_main_ss'] === '1');
+    },
+    isPageOneInSession: function () {
+        return (window.utag.data['cp.utag_main_pn'] === '1');
     },
     getPageReloadStatus: function () {
         return window.performance && window.performance.getEntriesByType && window.performance
@@ -371,6 +374,7 @@ s._articleViewTypeObj = {
         const trackingValue = this.getTrackingValue();
         let articleViewType;
         const isMarketing = this.isPaidMarketing(); 
+        const pageNumberOne = s._utils.isPageOneInSession();
 
         if (trackingValue.startsWith('sea.')) {
             articleViewType = 'event24,event206,event242'; // Search
@@ -380,12 +384,14 @@ s._articleViewTypeObj = {
             articleViewType = 'event25,event206,event241'; //Social Paid Marketing
         } else if (trackingValue.startsWith('social')) {
             articleViewType = 'event25,event220'; //Social
-        } else if (trackingValue.startsWith('kooperation.article.outbrain.')) {
+        } else if (trackingValue.startsWith('kooperation.article.outbrain.') && pageNumberOne) {
             articleViewType = 'event102,event230,event232'; //Outbrain Reco at Articles
         }  else if (trackingValue.startsWith('kooperation.home.outbrain.desktop.') || trackingValue.startsWith('kooperation.home.outbrain.tablet.')) {
             articleViewType = 'event76,event230,event231'; //Outbrain Reco at Desktop HOME
         } else if (trackingValue.startsWith('kooperation.home.outbrain.mobile.')) {
             articleViewType = 'event77,event230,event231'; //Outbrain Reco at Mobile HOME
+        } else if (trackingValue.startsWith('upday')) {
+            articleViewType = 'event204'; //Outbrain Reco at Mobile HOME
         } else if (trackingValue && isMarketing) {
             articleViewType = 'event206';
         }
@@ -533,7 +539,6 @@ s._setTrackingValueEvents = function (s) {
         if (trackingValuesFromQueryParameter) {
             const socialTrackingParameter = s._articleViewTypeObj.isTrackingValueOrganicSocial();
             const socialTrackingValue = socialTrackingParameter ? trackingValuesFromQueryParameter : '';
-            const otherTrackingValue = socialTrackingParameter ? '' : trackingValuesFromQueryParameter;
             
             if (socialTrackingParameter) {
                 let event;
@@ -562,24 +567,6 @@ s._setTrackingValueEvents = function (s) {
                 s._eventsObj.addEvent(event);
                 s._articleViewType = s.eVar44 += ',' + event;
             } 
-            
-            if (otherTrackingValue && otherTrackingValue.length > 0) {
-                let event;
-                switch (true) {
-                case otherTrackingValue.startsWith('upday'):
-                    event = 'event204';
-                    break;
-                case otherTrackingValue.startsWith('kooperation.article.outbrain.'):
-                    event = 'event102';
-                    break;
-                case otherTrackingValue.startsWith('kooperation.home.outbrain.'):
-                    event = 'event231';
-                    break;
-                }
-                s._eventsObj.addEvent(event);
-                s.eVar44 = s.evar44 ? s.eVar44 + ',' + event : s.eVar44 = event;
-                s._articleViewType = s.eVar44;
-            }
         }
     }
 };

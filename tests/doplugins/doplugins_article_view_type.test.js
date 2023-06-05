@@ -737,10 +737,12 @@ describe('articleViewType()', () => {
     describe('getViewTypeByTrackingProperty()', () => {
         let getTrackingValueMock;
         let isMarketingMock;
+        let isPageOneInSessionMock;
 
         beforeEach(() => {
             getTrackingValueMock = jest.spyOn(s._articleViewTypeObj, 'getTrackingValue').mockReturnValue('');
             isMarketingMock = jest.spyOn(s._articleViewTypeObj, 'isPaidMarketing').mockReturnValue(true);
+            isPageOneInSessionMock = jest.spyOn(s._utils, 'isPageOneInSession').mockImplementation();
         });
 
         afterEach(() => {
@@ -773,6 +775,7 @@ describe('articleViewType()', () => {
 
         it('it should return the right event name if tracking value is of type: Outbrain Article Recommendation', () => {
             getTrackingValueMock.mockReturnValue('kooperation.article.outbrain.');
+            isPageOneInSessionMock.mockReturnValue(true);
             let result = s._articleViewTypeObj.getViewTypeByTrackingProperty();
             expect(result).toBe('event102,event230,event232');
 
@@ -794,6 +797,16 @@ describe('articleViewType()', () => {
             let result = s._articleViewTypeObj.getViewTypeByTrackingProperty();
             expect(result).toBe('event206');
 
+        });
+        it('it should return event204 if the trackingValue equals upday', () => {
+            getTrackingValueMock.mockReturnValue('upday');
+            let result = s._articleViewTypeObj.getViewTypeByTrackingProperty();
+            expect(result).toBe('event204');
+        });
+        it('it should not return event204 if the trackingValue is not equals upday', () => {
+            getTrackingValueMock.mockReturnValue('any_cid');
+            let result = s._articleViewTypeObj.getViewTypeByTrackingProperty();
+            expect(result).not.toBe('event204');
         });
     });
 
