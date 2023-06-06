@@ -263,8 +263,7 @@ s._articleViewTypeObj = {
         return referringDomain === 'paypal.com';
     },
 
-    isFromRecommendation: function (referrer) {
-        const referringDomain = s._utils.getDomainFromURLString(referrer);
+    isFromRecommendation: function (referringDomain) {
         return referringDomain === 'traffic.outbrain.com';
     },
 

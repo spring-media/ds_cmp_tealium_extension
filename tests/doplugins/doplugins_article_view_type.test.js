@@ -283,26 +283,16 @@ describe('articleViewType()', () => {
         });
     });
 
-    describe('isFromRecommendation', () => {
-        const anyReferrer = 'https://any-referrer-domain.com/any-path';
-        const recommendationDomain = 'traffic.outbrain.com';
-        let getDomainFromURLStringMock;
-
-        beforeEach(() => {
-            getDomainFromURLStringMock = jest.spyOn(s._utils, 'getDomainFromURLString').mockReturnValue('');
-        });
-
-        it('should return TRUE if referrer is from recommendation service', function () {
-            getDomainFromURLStringMock.mockReturnValue(recommendationDomain);
-            const result = s._articleViewTypeObj.isFromRecommendation(anyReferrer);
-            expect(getDomainFromURLStringMock).toHaveBeenLastCalledWith(anyReferrer);
+    describe('isFromRecommendation()', () => {
+        it('should return TRUE if referrer is traffic.outbrain.com', () => {
+            const referringDomain = 'traffic.outbrain.com';
+            const result = s._articleViewTypeObj.isFromRecommendation(referringDomain);
             expect(result).toBe(true);
         });
 
-        it('should return FALSE if referrer is NOT from recommendation service', function () {
-            getDomainFromURLStringMock.mockReturnValue('any-other-domain.com');
-            const result = s._articleViewTypeObj.isFromRecommendation(anyReferrer);
-            expect(getDomainFromURLStringMock).toHaveBeenLastCalledWith(anyReferrer);
+        it('should return FALSE if referrer is NOT traffic.outbrain.com', () => {
+            const referringDomain = 'www.any-domain.de';
+            const result = s._articleViewTypeObj.isFromRecommendation(referringDomain);
             expect(result).toBe(false);
         });
     });
