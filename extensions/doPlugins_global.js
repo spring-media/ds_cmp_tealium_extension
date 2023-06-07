@@ -444,6 +444,7 @@ s._setExternalReferringDomainEvents = function (s) {
             domains: ['www.google.com', 'www.google.de'],
             event: 'event49,event212',
             matchExact: 'true',
+            matchRegex: /www\.google\.[a-z]+$/i,
         },
         {
             domains: ['googlequicksearchbox/'],
@@ -457,6 +458,7 @@ s._setExternalReferringDomainEvents = function (s) {
         {
             domains: ['www.google.com/', 'www.google.de/'],
             event: 'event213',
+            matchRegex: /www\.google\.[a-z]+\/$/i,
         },
         {
             domains: ['bing.com', 'ecosia.org', 'duckduckgo.com', 'amp-welt-de.cdn.ampproject.org', 'qwant.com', 'suche.t-online.de', '.yandex.', 'yahoo.com', 'googleapis.com', 'nortonsafe.search.ask.com', 'wikipedia.org', 'googleadservices.com', 'search.myway.com', 'lycos.de'],
