@@ -443,7 +443,7 @@ s._setExternalReferringDomainEvents = function (s) {
         {
             domains: ['www.google.com', 'www.google.de'],
             event: 'event49,event212',
-            matchRegex:  /^(https?:\/\/)?([a-z]+\.)?google\.[a-z]+(?![\/.])/i,
+            matchRegex:  /^(https?:\/\/)?([a-z]+\.)?google\.[a-z]+(?![/.])/i,
 
         },
         {
@@ -454,7 +454,7 @@ s._setExternalReferringDomainEvents = function (s) {
         {
             domains: ['googlequicksearchbox'],
             event: 'event213',
-            matchRegex: /googlequicksearchbox(?![\/])/i,
+            matchRegex: /googlequicksearchbox(?![/])/i,
         },
         {
             domains: ['www.google.com/', 'www.google.de/'],
