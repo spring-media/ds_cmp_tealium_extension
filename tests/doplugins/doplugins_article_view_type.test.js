@@ -454,6 +454,21 @@ describe('articleViewType()', () => {
         });
     });
 
+    describe('isFromOnsiteSearch', () => {
+        const testData = [
+            [false, undefined],
+            [false, ''],
+            [true, 'search : 245145230'],
+            [false, 'article : 245145230'],
+        ];
+        it.each(testData)('should return true for previousPage: "search : 245145230" ', function (exected, _ppvPreviousPage) {
+            Object.assign(sObject, { _ppvPreviousPage });
+
+            const result = s._articleViewTypeObj.isFromOnsiteSearch();
+            expect(result).toBe(exected);
+        });
+    });
+
     describe('isSelfRedirect', () => {
         const testData = [
             [false, undefined, undefined],
@@ -475,19 +490,22 @@ describe('articleViewType()', () => {
         let isSamePageRedirectMock;
         let isNavigatedMock;
         let isSelfRedirectMock;
+        let isFromOnsiteSearchMock;
 
         beforeEach(() => {
             isFromHomeMock = jest.spyOn(s._articleViewTypeObj, 'isFromHome').mockReturnValue(false);
             isSamePageRedirectMock = jest.spyOn(s._articleViewTypeObj, 'isSamePageRedirect').mockReturnValue(false);
             isNavigatedMock = jest.spyOn(s._articleViewTypeObj, 'isNavigated').mockReturnValue(false);
             isSelfRedirectMock = jest.spyOn(s._articleViewTypeObj, 'isSelfRedirect').mockReturnValue(false);
+            isFromOnsiteSearchMock = jest.spyOn(s._articleViewTypeObj, 'isFromOnsiteSearch').mockReturnValue(false);
         });
 
-        it('should return event22 if referrer is a home page and page was navigated and it was no selfRedirect', function () {
+        it('should return event22 if referrer is a home page and page was navigated and it was no selfRedirect and not via OnsiteSearch', function () {
             const anyReferrer = 'http://www.any-domain.de';
             isFromHomeMock.mockReturnValue(true);
             isNavigatedMock.mockReturnValue(true);
             isSelfRedirectMock.mockReturnValue(false);
+            isFromOnsiteSearchMock.mockReturnValue(false);
             const result = s._articleViewTypeObj.getInternalType('http://www.any-domain.de');
             expect(isFromHomeMock).toHaveBeenCalledWith(anyReferrer);
             expect(result).toBe('event22,event200');

@@ -312,13 +312,17 @@ s._articleViewTypeObj = {
         return (s._ppvPreviousPage || '').includes((s.pageName || 'NEVER').split(':').pop());
     },
 
+    isFromOnsiteSearch: function() {
+        return (s._ppvPreviousPage || '').includes('search :');
+    },
+
     getInternalType: function (referrer) {
         // Check if page view was caused by a viewport switch
         if (this.isSamePageRedirect(referrer)) {
             return '';
         }
 
-        if (this.isFromHome(referrer) && this.isNavigated() && !this.isSelfRedirect()) {
+        if (this.isFromHome(referrer) && this.isNavigated() && !this.isSelfRedirect() && !this.isFromOnsiteSearch()) {
             return 'event22,event200'; //Home
         } else {
             return 'event23,event201'; //Other Internal
