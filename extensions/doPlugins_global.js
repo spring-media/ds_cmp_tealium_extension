@@ -448,6 +448,7 @@ s._setExternalReferringDomainEvents = function (s) {
         {
             domains: ['googlequicksearchbox/'],
             event: 'event49,event212',
+            matchRegex: /googlequicksearchbox\/$/i,
         },
         {
             domains: ['googlequicksearchbox'],
@@ -504,7 +505,7 @@ s._setExternalReferringDomainEvents = function (s) {
         domainsToEventMapping.forEach(domainEventMap => {
             const { domains, event, matchRegex } = domainEventMap;
             const domainMatches = domains.some(domain => {
-                if (matchRegex) {
+                if (matchRegex && referringURL.match(matchRegex)) {
                     // Exclude URLs with domains which have trailing slashes.
                     // This is needed to distinguish Google Discover from Google Search referrer.
                     return referringURL && referringURL.includes(domain) && !referringURL.includes(domain + '/');
