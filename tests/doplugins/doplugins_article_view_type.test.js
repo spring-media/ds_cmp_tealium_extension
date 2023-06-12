@@ -67,19 +67,19 @@ describe('articleViewType()', () => {
         });
     });
 
-    describe('isTrackingValue()', () => {
-        it('should return TRUE if trackingChannel is paid', function () {
-            const trackingChannel = ['email.', 'onsite.', 'inapp.', 'push.', 'sea.', 'affiliate.', 'social_paid.', 'app.', 'display.', 'career.', 'print.','social.','upday','outbrain'];
+    describe('isOtherTrackingValue()', () => {
+        it('should return TRUE if trackingChannel is from the list of other', function () {
+            const trackingChannel = ['social.','upday','outbrain'];
             trackingChannel.forEach((item) => {
                 const trackingValue = jest.spyOn(s._articleViewTypeObj, 'getTrackingValue').mockReturnValue(item);
-                const result = s._articleViewTypeObj.isTrackingValue(trackingValue);
+                const result = s._articleViewTypeObj.isOtherTrackingValue(trackingValue);
                 expect(result).toBe(true);
             });
         });
 
-        it('should return FALSE if trackingChannel is NOT paid', function () {
+        it('should return FALSE if trackingChannel is NOT from the list of other', function () {
             const trackingValue = 'any-trackingChannel.';
-            const result = s._articleViewTypeObj.isTrackingValue(trackingValue);
+            const result = s._articleViewTypeObj.isOtherTrackingValue(trackingValue);
             expect(result).toBe(false);
         });
     });
@@ -890,7 +890,7 @@ describe('articleViewType()', () => {
         let isPageViewFromHomeMock;
         let setHomeTeaserPropertiesMock;
         let isAdWallMock;
-        let isTrackingValueMock;
+        let isOtherTrackingValueMock;
 
         beforeEach(() => {
             isArticlePageMock = jest.spyOn(s._utils, 'isArticlePage');
@@ -901,7 +901,7 @@ describe('articleViewType()', () => {
             isPageViewFromHomeMock = jest.spyOn(s._articleViewTypeObj, 'isPageViewFromHome').mockImplementation();
             setHomeTeaserPropertiesMock = jest.spyOn(s._homeTeaserTrackingObj, 'setHomeTeaserProperties').mockImplementation();
             isAdWallMock = jest.spyOn(s._utils, 'isAdWall').mockImplementation();
-            isTrackingValueMock = jest.spyOn(s._articleViewTypeObj, 'isTrackingValue').mockReturnValue(true);
+            isOtherTrackingValueMock = jest.spyOn(s._articleViewTypeObj, 'isOtherTrackingValue').mockReturnValue(true);
         });
 
         afterEach(() => {
@@ -911,7 +911,7 @@ describe('articleViewType()', () => {
         it('should evaluate referrer URL when available to determine article-view-type', function () {
             isArticlePageMock.mockReturnValue(true);
             isAdWallMock.mockReturnValue(false);
-            isTrackingValueMock.mockReturnValue(false);
+            isOtherTrackingValueMock.mockReturnValue(false);
             window.document.referrer = 'any-referrer-url';
             s._articleViewTypeObj.setViewTypes(s);
             expect(getViewTypeByReferrerMock).toHaveBeenCalled();

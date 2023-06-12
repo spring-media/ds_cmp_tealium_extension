@@ -240,8 +240,8 @@ s._articleViewTypeObj = {
         return trackingValue;
     },
     
-    isTrackingValue: function () {
-        const trackingChannel = ['email.','onsite.','inapp.','push.','sea.','affiliate.','socialmediapaid','social_paid.','app.','display.','career.','print.','social.','upday','outbrain'];
+    isOtherTrackingValue: function () {
+        const trackingChannel = ['social.','upday','outbrain'];
         const trackingValue = this.getTrackingValue();
         return trackingChannel.some(item => {
             return trackingValue.indexOf(item) === 0;
@@ -423,7 +423,7 @@ s._articleViewTypeObj = {
     },
 
     setViewTypes: function (s) {
-        const trackingChannel= this.isTrackingValue();
+        const trackingChannel= this.isOtherTrackingValue();
         const pageViewType = trackingChannel ? this.getViewTypeByTrackingProperty() : this.getViewTypeByReferrer();
 
         if (!s._utils.isAdWall(s)) {
