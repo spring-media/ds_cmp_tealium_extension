@@ -257,7 +257,7 @@ s._articleViewTypeObj = {
 
     isTrackingValueOrganicSocial: function () {
         const trackingValue = this.getTrackingValue();
-        return trackingValue.startsWith('social') && !(trackingValue.startsWith('socialmediapaid') || trackingValue.startsWith('social_paid'))  ;
+        return trackingValue.startsWith('social.') && !(trackingValue.startsWith('socialmediapaid') || trackingValue.startsWith('social_paid'))  ;
     },
 
     isFromSecureMypass: function (referrer) {
@@ -544,7 +544,7 @@ s._setTrackingValueEvents = function (s) {
 
         if (trackingValuesFromQueryParameter) {
             const socialTrackingParameter = s._articleViewTypeObj.isTrackingValueOrganicSocial();
-            const socialTrackingValue = socialTrackingParameter ? trackingValuesFromQueryParameter : '';
+            const socialTrackingValue = trackingValuesFromQueryParameter;
             
             if (socialTrackingParameter) {
                 let event;
