@@ -210,8 +210,7 @@ s._articleViewTypeObj = {
     },
 
     isFromAsDomain: function (referrer) {
-        //for bild domains see isFromBild & isFromBildMobile
-        const asDomains = ['welt.de','fitbook.de','stylebook.de','techbook.de','travelbook.de','myhomebook.de','bz-berlin.de','rollingstone.de','metal-hammer.de','musikexpress.de','petbook.de'];
+        const asDomains = ['bild.de','welt.de','fitbook.de','stylebook.de','techbook.de','travelbook.de','myhomebook.de','bz-berlin.de','rollingstone.de','metal-hammer.de','musikexpress.de','petbook.de'];
         const referringDomain = s._utils.getDomainFromURLString(referrer);
         const isInternal = this.isFromInternal(referrer);
         if (!isInternal){
@@ -349,7 +348,7 @@ s._articleViewTypeObj = {
         } else if (this.isFromBildMobile(referringDomain) && this.isFromHome(referrer)) {
             return 'event77,event205'; // Bild mobile home
         } else if (this.isFromAsDomain(referrer)) {
-            return 'event205'; // Axel Springer Domains except bild.de
+            return 'event205'; // Axel Springer Domains
         } else if ((this.isFromSecureMypass(referrer)||this.isFromPaypal(referrer)) && isSessionStart) {
             return 'event208'; // Session start via secure.mypass or paypal
         } else if (this.isFromSecureMypass(referrer)||this.isFromPaypal(referrer)) {
