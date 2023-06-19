@@ -34,29 +34,29 @@ describe('External referring domains', () => {
         expect(addEventMock).not.toHaveBeenCalledWith('event213');
     });
 
-    it('should set event213 and should not set event49 if the referring domain is www.google.com/', () => {
+    it('should set event213 and should not set event49,event212 if the referring domain is www.google.com/', () => {
         getReferrerMock.mockReturnValue('www.google.com/');
-
+      
         s._setExternalReferringDomainEvents(s);
-
+      
         expect(addEventMock).not.toHaveBeenCalledWith('event49,event212');
         expect(addEventMock).toHaveBeenCalledWith('event213');
     });
-
-    it('should set event49 and it should not set event213 if the referring domain includes googlequicksearch/', () => {
+      
+    it('should set event49,event212 and it should not set event213 if the referring domain includes googlequicksearch/', () => {
         getReferrerMock.mockReturnValue('googlequicksearchbox/test');
-
+      
         s._setExternalReferringDomainEvents(s);
         expect(addEventMock).toHaveBeenCalledWith('event49,event212');
         expect(addEventMock).not.toHaveBeenCalledWith('event213');
     });
-
-    it('should set event213 and it should not set event49 if the referring domain ends googlequicksearch', () => {
+      
+    it('should set event213 and it should not set event49,event212 if the referring domain ends googlequicksearch', () => {
         getReferrerMock.mockReturnValue('googlequicksearchbox');
 
         s._setExternalReferringDomainEvents(s);
         expect(addEventMock).toHaveBeenCalledWith('event213');
-        expect(addEventMock).not.toHaveBeenCalledWith('event49');
+        expect(addEventMock).not.toHaveBeenCalledWith('event49,event212');
     });
 
     it('should set event213 if the referring domain is from search engine bing.com', () => {

@@ -453,27 +453,35 @@ s._setExternalReferringDomainEvents = function (s) {
             event: 'event48,event211',
         },
         {
-            domains: ['www.google.com', 'www.google.de'],
-            event: 'event49,event212',
-            matchExact: 'true',
-        },
-        {
-            domains: ['googlequicksearchbox/'],
-            event: 'event49,event212',
-        },
-        {
-            domains: ['googlequicksearchbox'],
-            event: 'event213',
-            matchExact: 'true',
-        },
-        {
-            domains: ['www.google.com/', 'www.google.de/'],
-            event: 'event213',
-        },
-        {
             domains: ['bing.com', 'ecosia.org', 'duckduckgo.com', 'amp-welt-de.cdn.ampproject.org', 'qwant.com', 'suche.t-online.de', '.yandex.', 'yahoo.com', 'googleapis.com', 'nortonsafe.search.ask.com', 'wikipedia.org', 'googleadservices.com', 'search.myway.com', 'lycos.de'],
             event: 'event213',
         },
+        {
+            // domains: ['www.google.com', 'www.google.de', 'www.google.otherTopLevelDomains not followed by slash'],
+            event: 'event49,event212',
+            matchRegex:  /\.google\.[a-z]+($|[^/.a-z].*)/,
+
+        },
+
+        {
+            // domains: ['googlequicksearchbox/','googlequicksearchbox/*']],
+            event: 'event49,event212',
+            matchRegex:  /.*googlequicksearchbox\/.*/i,
+            
+        },
+        {
+            // domains: ['www.google.com/', 'www.google.de/', 'www.google.otherTopLevelDomains followed by slash'],
+            event: 'event213',
+            // matchRegex: /\.google\.[a-z]+\/?$/,
+            matchRegex:  /.*google\.[^/.]*\/.*/i,
+        },
+        
+        {
+            // domains: ['googlequicksearchbox','googlequicksearchbox not followed by slash'],
+            event: 'event213',
+            matchRegex: /.*googlequicksearchbox($|[^/].*)/i,
+        },
+
         {
             domains: ['instagram.com'],
             event: 'event53,event224',
@@ -499,10 +507,6 @@ s._setExternalReferringDomainEvents = function (s) {
             event: 'event227',
         },
         {
-            domains: ['.upday.com'],
-            event: 'event204',
-        },
-        {
             domains: ['xing.com', 'away.vk.com', 'www.pinterest.de', 'linkedin.android', 'ok.ru', 'mobile.ok.ru', 'www.yammer.com', 'www.netvibes.com', 'pinterest.com', 'wordpress.com', 'blogspot.com', 'lnkd.in', 'xing.android', 'vk.com', 'com.twitter.android', 'm.ok.ru', 'welt.de/instagram', 'linkin.bio'],
             event: 'event226',
         },
@@ -511,20 +515,16 @@ s._setExternalReferringDomainEvents = function (s) {
 
     if (s._utils.isArticlePage()) {
         const referringURL = s._utils.getReferrer();
-
+        if (!referringURL) {
+            return;
+        }
         domainsToEventMapping.forEach(domainEventMap => {
-            const { domains, event, matchExact } = domainEventMap;
-            const domainMatches = domains.some(domain => {
-                if (matchExact) {
-                    // Exclude URLs with domains which have trailing slashes.
-                    // This is needed to distinguish Google Discover from Google Search referrer.
-                    return referringURL && referringURL.includes(domain) && !referringURL.includes(domain + '/');
-                } else {
-                    return referringURL && referringURL.includes(domain);
-                }
-
+            const { domains, event, matchRegex } = domainEventMap;
+            const isRegexMatch = matchRegex && referringURL.match(matchRegex);
+            const isDomainMatch = domains && domains.some(domain => {
+                return referringURL && referringURL.includes(domain);
             });
-            if (domainMatches) {
+            if (isRegexMatch || isDomainMatch) {
                 s._eventsObj.addEvent(event); 
                 s.eVar44 = s.evar44 ? s.eVar44 + ',' + event : s.eVar44 = event;
                 s._articleViewType = s.eVar44;
