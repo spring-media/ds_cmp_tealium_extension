@@ -445,27 +445,27 @@ s._setExternalReferringDomainEvents = function (s) {
             event: 'event213',
         },
         {
-            // domains: ['www.google.com', 'www.google.de'],
+            // domains: ['www.google.com', 'www.google.de', 'www.google.otherTopLevelDomains not followed by slash'],
             event: 'event49,event212',
             matchRegex:  /\.google\.[a-z]+($|[^/.a-z].*)/,
 
         },
 
         {
-            // domains: ['googlequicksearchbox/'],
+            // domains: ['googlequicksearchbox/','googlequicksearchbox/*']],
             event: 'event49,event212',
             matchRegex:  /.*googlequicksearchbox\/.*/i,
             
         },
         {
-            // domains: ['www.google.com/', 'www.google.de/'],
+            // domains: ['www.google.com/', 'www.google.de/', 'www.google.otherTopLevelDomains followed by slash'],
             event: 'event213',
             // matchRegex: /\.google\.[a-z]+\/?$/,
             matchRegex:  /.*google\.[^/.]*\/.*/i,
         },
         
         {
-            // domains: ['googlequicksearchbox'],
+            // domains: ['googlequicksearchbox','googlequicksearchbox not followed by slash'],
             event: 'event213',
             matchRegex: /.*googlequicksearchbox($|[^/].*)/i,
         },
@@ -503,7 +503,9 @@ s._setExternalReferringDomainEvents = function (s) {
 
     if (s._utils.isArticlePage()) {
         const referringURL = s._utils.getReferrer();
-
+        if (!referringURL) {
+            return;
+        }
         domainsToEventMapping.forEach(domainEventMap => {
             const { domains, event, matchRegex } = domainEventMap;
             const isRegexMatch = matchRegex && referringURL.match(matchRegex);
