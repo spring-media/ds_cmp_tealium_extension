@@ -445,29 +445,29 @@ s._setExternalReferringDomainEvents = function (s) {
             event: 'event213',
         },
         {
-            domains: ['www.google.com', 'www.google.de'],
+            // domains: ['www.google.com', 'www.google.de'],
             event: 'event49,event212',
-            matchRegex:  /\.google\.[a-z]+(?!(?:\/|$))/,
+            matchRegex:  /\.google\.[a-z]+($|[^/.a-z].*)/,
 
         },
 
         {
-            domains: ['googlequicksearchbox/'],
+            // domains: ['googlequicksearchbox/'],
             event: 'event49,event212',
-            matchRegex:  /.*googlequicksearchbox[^/]*.*/i,
+            matchRegex:  /.*googlequicksearchbox\/.*/i,
             
         },
         {
-            domains: ['www.google.com/', 'www.google.de/'],
+            // domains: ['www.google.com/', 'www.google.de/'],
             event: 'event213',
-            //matchRegex: /\.google\.[a-z]+\/?$/,
-            matchRegex:  /.*google\.[^/]*.*/i,
+            // matchRegex: /\.google\.[a-z]+\/?$/,
+            matchRegex:  /.*google\.[^/.]*\/.*/i,
         },
         
         {
-            domains: ['googlequicksearchbox'],
+            // domains: ['googlequicksearchbox'],
             event: 'event213',
-            matchRegex: /\.googlequicksearchbox\.[a-z]+(?!(?:\/|$))/i,
+            matchRegex: /.*googlequicksearchbox($|[^/].*)/i,
         },
 
         {
@@ -506,16 +506,11 @@ s._setExternalReferringDomainEvents = function (s) {
 
         domainsToEventMapping.forEach(domainEventMap => {
             const { domains, event, matchRegex } = domainEventMap;
-            const domainMatches = domains.some(domain => {
-                if (matchRegex && referringURL.match(matchRegex)) {
-
-                    return referringURL && referringURL.match(matchRegex);
-                } else {
-                    return referringURL && referringURL.includes(domain);
-                }
-
+            const isRegexMatch = matchRegex && referringURL.match(matchRegex);
+            const isDomainMatch = domains && domains.some(domain => {
+                return referringURL && referringURL.includes(domain);
             });
-            if (domainMatches) {
+            if (isRegexMatch || isDomainMatch) {
                 s._eventsObj.addEvent(event); 
                 s.eVar44 = s.evar44 ? s.eVar44 + ',' + event : s.eVar44 = event;
                 s._articleViewType = s.eVar44;
