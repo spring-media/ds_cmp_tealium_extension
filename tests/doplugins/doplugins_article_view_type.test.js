@@ -505,7 +505,6 @@ describe('articleViewType()', () => {
             isFromHomeMock.mockReturnValue(true);
             isNavigatedMock.mockReturnValue(true);
             isSelfRedirectMock.mockReturnValue(false);
-            isFromOnsiteSearchMock.mockReturnValue(false);
             const result = s._articleViewTypeObj.getInternalType('http://www.any-domain.de');
             expect(isFromHomeMock).toHaveBeenCalledWith(anyReferrer);
             expect(result).toBe('event22,event200');
