@@ -281,15 +281,7 @@ s._articleViewTypeObj = {
         let recoType;
 
         if (isReco){
-            if (trackingValue.includes('.desktop.')){
-                recoType = 'desktop';
-            } else if (trackingValue.includes('tablet')){
-                recoType = 'desktop';
-            } else if (trackingValue.includes('.AR_')){
-                recoType = 'desktop';
-            } else if (trackingValue.includes('.CR_')){
-                recoType = 'desktop';
-            } else if (trackingValue.includes('.CRMB_')){
+            if (trackingValue.includes('.desktop.') || trackingValue.includes('.tablet.') || trackingValue.includes('.AR_') || trackingValue.includes('.CR_') || trackingValue.includes('.CRMB_')){
                 recoType = 'desktop';
             } else
                 recoType = 'mobile';
