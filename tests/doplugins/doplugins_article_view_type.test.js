@@ -300,20 +300,6 @@ describe('articleViewType()', () => {
         });
     });
 
-    describe('isFromRecommendation()', () => {
-        it('should return TRUE if referrer is traffic.outbrain.com', () => {
-            const referringDomain = 'traffic.outbrain.com';
-            const result = s._articleViewTypeObj.isFromRecommendation(referringDomain);
-            expect(result).toBe(true);
-        });
-
-        it('should return FALSE if referrer is NOT traffic.outbrain.com', () => {
-            const referringDomain = 'www.any-domain.de';
-            const result = s._articleViewTypeObj.isFromRecommendation(referringDomain);
-            expect(result).toBe(false);
-        });
-    });
-
     describe('isFromArticleWithReco()', () => {
         let getTrackingValueMock;
         beforeEach(() => {
@@ -554,7 +540,6 @@ describe('articleViewType()', () => {
         let isFromSecureMypassMock;
         let isFromAsDomainMock;
         let isFromPaypalMock;
-        let isFromRecommendationMock;
         let isDirectMock;
         let isSessionStartMock;
         let isNavigatedMock;
@@ -569,7 +554,6 @@ describe('articleViewType()', () => {
             isFromSecureMypassMock = jest.spyOn(s._articleViewTypeObj, 'isFromSecureMypass').mockReturnValue(false);
             isFromAsDomainMock = jest.spyOn(s._articleViewTypeObj, 'isFromAsDomain').mockReturnValue(false);
             isFromPaypalMock = jest.spyOn(s._articleViewTypeObj, 'isFromPaypal').mockReturnValue(false);
-            isFromRecommendationMock = jest.spyOn(s._articleViewTypeObj, 'isFromRecommendation').mockReturnValue(false);
             isDirectMock = jest.spyOn(s._articleViewTypeObj, 'isDirect').mockReturnValue(false);
             isSessionStartMock = jest.spyOn(s._utils, 'isSessionStart').mockReturnValue(false);
             isNavigatedMock = jest.spyOn(s._articleViewTypeObj, 'isNavigated').mockReturnValue(false);
@@ -633,13 +617,6 @@ describe('articleViewType()', () => {
             const result = s._articleViewTypeObj.getExternalType(anyReferrer);
             expect(isFromPaypalMock).toHaveBeenCalledWith(anyReferrer);
             expect(result).toBe('event23,event201');
-        });
-
-        it('should return event230,event233 if referrer is from Recommendation', function () {
-            isFromRecommendationMock.mockReturnValue(true);
-            const result = s._articleViewTypeObj.getExternalType(anyReferrerDomain);
-            expect(isFromRecommendationMock).toHaveBeenCalledWith(anyReferrerDomain);
-            expect(result).toBe('event230,event233');
         });
 
         it('should return event207 (Direct) if no referrer at session start', function () {

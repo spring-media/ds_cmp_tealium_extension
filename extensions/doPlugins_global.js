@@ -269,14 +269,25 @@ s._articleViewTypeObj = {
         return referringDomain === 'paypal.com';
     },
 
-    isFromRecommendation: function (referringDomain) {
-        return referringDomain === 'traffic.outbrain.com';
-    },
-
     isFromArticleWithReco: function () {
         const trackingValue = this.getTrackingValue();
 
         return trackingValue.includes('kooperation.article.outbrain.');
+    },
+
+    isFromHomeReco: function () {
+        const trackingValue = this.getTrackingValue();
+        const isReco = trackingValue.includes('kooperation.home.outbrain.');
+        let recoType;
+
+        if (isReco){
+            if (trackingValue.includes('.desktop.') || trackingValue.includes('.tablet.') || trackingValue.includes('.AR_') || trackingValue.includes('.CR_') || trackingValue.includes('.CRMB_')){
+                recoType = 'desktop';
+            } else
+                recoType = 'mobile';
+        }
+        return recoType;
+    
     },
 
     isWithoutReferrer: function (referrer) {
@@ -353,8 +364,6 @@ s._articleViewTypeObj = {
             return 'event208'; // Session start via secure.mypass or paypal
         } else if (this.isFromSecureMypass(referrer)||this.isFromPaypal(referrer)) {
             return 'event23,event201'; // Login via secure.mypass during session
-        } else if (this.isFromRecommendation(referringDomain)) {
-            return 'event230,event233'; // Referrer is Outbrain Recommendation
         } else if (this.isDirect(referrer)) {
             return 'event207'; // no Referrer at Session Start
         } else if (!referringDomain && this.isNavigated()) {
@@ -383,7 +392,10 @@ s._articleViewTypeObj = {
         const trackingValue = this.getTrackingValue();
         let articleViewType;
         const isMarketing = this.isPaidMarketing(); 
+        const isFromArticleWithReco = this.isFromArticleWithReco();
         const pageNumberOne = s._utils.isPageOneInSession();
+        const isFromHomeReco = this.isFromHomeReco();
+
 
         if (trackingValue.startsWith('sea.')) {
             articleViewType = 'event24,event206,event242'; // Search
@@ -393,11 +405,11 @@ s._articleViewTypeObj = {
             articleViewType = 'event25,event206,event241'; //Social Paid Marketing
         } else if (trackingValue.startsWith('social')) {
             articleViewType = 'event25,event220'; //Social
-        } else if (trackingValue.startsWith('kooperation.article.outbrain.') && pageNumberOne) {
+        } else if (isFromArticleWithReco && pageNumberOne) {
             articleViewType = 'event102,event230,event232'; //Outbrain Reco at Articles
-        }  else if (trackingValue.startsWith('kooperation.home.outbrain.desktop.') || trackingValue.startsWith('kooperation.home.outbrain.tablet.')) {
+        }  else if (isFromHomeReco === 'desktop') {
             articleViewType = 'event76,event230,event231'; //Outbrain Reco at Desktop HOME
-        } else if (trackingValue.startsWith('kooperation.home.outbrain.mobile.')) {
+        } else if (isFromHomeReco === 'mobile') {
             articleViewType = 'event77,event230,event231'; //Outbrain Reco at Mobile HOME
         } else if (trackingValue.startsWith('upday')) {
             articleViewType = 'event204'; //Outbrain Reco at Mobile HOME
