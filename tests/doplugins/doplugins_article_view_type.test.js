@@ -757,19 +757,19 @@ describe('articleViewType()', () => {
         });
 
         it('it should return the right event name if tracking value is of type: Social', () => {
-            getTrackingValueMock.mockReturnValue('social_paid');
+            getTrackingValueMock.mockReturnValue('social_paid.');
             const result = s._articleViewTypeObj.getViewTypeByTrackingProperty();
             expect(result).toBe('event25,event206,event241');
         });
 
         it('it should return the right event name if tracking value is of type: Social', () => {
-            getTrackingValueMock.mockReturnValue('socialmediapaid');
+            getTrackingValueMock.mockReturnValue('socialmediapaid.');
             const result = s._articleViewTypeObj.getViewTypeByTrackingProperty();
             expect(result).toBe('event25,event206,event241');
         });
 
         it('it should return the right event name if tracking value is of type: Social', () => {
-            getTrackingValueMock.mockReturnValue('social');
+            getTrackingValueMock.mockReturnValue('social.');
             const result = s._articleViewTypeObj.getViewTypeByTrackingProperty();
             expect(result).toBe('event25,event220');
         });
