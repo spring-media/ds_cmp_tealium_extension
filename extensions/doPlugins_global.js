@@ -240,14 +240,14 @@ s._articleViewTypeObj = {
     },
     
     isOtherTrackingValue: function () {
-        const trackingChannel = ['email.','onsite.','inapp.','push.','sea.','affiliate.','socialmediapaid','social_paid.','app.','display.','career.','print.','social.','upday','outbrain'];
+        const trackingChannel = ['email.','onsite.','inapp.','push.','sea.','affiliate.','socialmediapaid.','social_paid.','app.','display.','career.','print.','social.','upday','outbrain'];
         const trackingValue = this.getTrackingValue();
         return trackingChannel.some(item => {
             return trackingValue.indexOf(item) === 0;
         });
     },
     isPaidMarketing: function () {
-        const trackingChannel = ['email.','onsite.','inapp.','push.','sea.','affiliate.','socialmediapaid','social_paid.','app.','display.','career.','print.'];
+        const trackingChannel = ['email.','onsite.','inapp.','push.','sea.','affiliate.','socialmediapaid.','social_paid.','app.','display.','career.','print.'];
         const trackingValue = this.getTrackingValue();
         return trackingChannel.some(item => {
             return trackingValue.indexOf(item) === 0;
@@ -256,7 +256,7 @@ s._articleViewTypeObj = {
 
     isTrackingValueOrganicSocial: function () {
         const trackingValue = this.getTrackingValue();
-        return trackingValue.startsWith('social.') && !(trackingValue.startsWith('socialmediapaid') || trackingValue.startsWith('social_paid'))  ;
+        return trackingValue.startsWith('social.') && !(trackingValue.startsWith('socialmediapaid.') || trackingValue.startsWith('social_paid.'))  ;
     },
 
     isFromSecureMypass: function (referrer) {
@@ -399,11 +399,11 @@ s._articleViewTypeObj = {
 
         if (trackingValue.startsWith('sea.')) {
             articleViewType = 'event24,event206,event242'; // Search
-        } else if (trackingValue.startsWith('social_paid')) {
+        } else if (trackingValue.startsWith('social_paid.')) {
             articleViewType = 'event25,event206,event241'; //Social Paid Marketing
-        } else if (trackingValue.startsWith('socialmediapaid')) {
+        } else if (trackingValue.startsWith('socialmediapaid.')) {
             articleViewType = 'event25,event206,event241'; //Social Paid Marketing
-        } else if (trackingValue.startsWith('social')) {
+        } else if (trackingValue.startsWith('social.')) {
             articleViewType = 'event25,event220'; //Social
         } else if (isFromArticleWithReco && pageNumberOne) {
             articleViewType = 'event102,event230,event232'; //Outbrain Reco at Articles
