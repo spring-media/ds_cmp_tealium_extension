@@ -240,14 +240,14 @@ s._articleViewTypeObj = {
     },
     
     isOtherTrackingValue: function () {
-        const trackingChannel = ['email.','onsite.','inapp.','push.','sea.','affiliate.','socialmediapaid','social_paid.','app.','display.','career.','print.','social.','upday','outbrain'];
+        const trackingChannel = ['email.','onsite.','inapp.','push.','sea.','affiliate.','socialmediapaid.','social_paid.','app.','display.','career.','print.','social.','upday','outbrain'];
         const trackingValue = this.getTrackingValue();
         return trackingChannel.some(item => {
             return trackingValue.indexOf(item) === 0;
         });
     },
     isPaidMarketing: function () {
-        const trackingChannel = ['email.','onsite.','inapp.','push.','sea.','affiliate.','socialmediapaid','social_paid.','app.','display.','career.','print.'];
+        const trackingChannel = ['email.','onsite.','inapp.','push.','sea.','affiliate.','socialmediapaid.','social_paid.','app.','display.','career.','print.'];
         const trackingValue = this.getTrackingValue();
         return trackingChannel.some(item => {
             return trackingValue.indexOf(item) === 0;
@@ -256,7 +256,7 @@ s._articleViewTypeObj = {
 
     isTrackingValueOrganicSocial: function () {
         const trackingValue = this.getTrackingValue();
-        return trackingValue.startsWith('social.') && !(trackingValue.startsWith('socialmediapaid') || trackingValue.startsWith('social_paid'))  ;
+        return trackingValue.startsWith('social.') && !(trackingValue.startsWith('socialmediapaid.') || trackingValue.startsWith('social_paid.'))  ;
     },
 
     isFromSecureMypass: function (referrer) {
@@ -334,43 +334,60 @@ s._articleViewTypeObj = {
     },
 
     getInternalType: function (referrer) {
+        let pageViewEvent;
+        let channel;
         // Check if page view was caused by a viewport switch
         if (this.isSamePageRedirect(referrer)) {
             return '';
         }
 
         if (this.isFromHome(referrer) && this.isNavigated() && !this.isSelfRedirect() && !this.isFromOnsiteSearch()) {
-            return 'event22,event200'; //Home
+            pageViewEvent = 'event22,event200'; //Home
         } else {
-            return 'event23,event201'; //Other Internal
+            pageViewEvent = 'event23,event201'; //Other Internal
+            channel = 'Other Internal';
         }
+        return {pageViewEvent, channel};
     },
 
     getExternalType: function (referrer) {
         const referringDomain = s._utils.getDomainFromURLString(referrer);
         const isSessionStart = s._utils.isSessionStart();
+        let pageViewEvent;
+        let channnel;
 
         if (this.isFromSearch(referringDomain)) {
-            return 'event24,event210'; //Search
+            pageViewEvent = 'event24,event210'; 
+            channnel = 'organic Search Non-Brand';           
         } else if (this.isFromSocial(referrer)) {
-            return 'event25,event220'; //Social
+            pageViewEvent = 'event25,event220'; 
+            channnel = 'Social';
         } else if (this.isFromBild(referringDomain) && this.isFromHome(referrer)) {
-            return 'event76,event205'; // Bild home
+            pageViewEvent = 'event76,event205';
+            channnel = 'AS News';
         } else if (this.isFromBildMobile(referringDomain) && this.isFromHome(referrer)) {
-            return 'event77,event205'; // Bild mobile home
+            pageViewEvent = 'event77,event205'; 
+            channnel = 'AS News';
         } else if (this.isFromAsDomain(referrer)) {
-            return 'event205'; // Axel Springer Domains
+            pageViewEvent = 'event205'; 
+            channnel = 'AS News';
         } else if ((this.isFromSecureMypass(referrer)||this.isFromPaypal(referrer)) && isSessionStart) {
-            return 'event208'; // Session start via secure.mypass or paypal
+            pageViewEvent = 'event208'; 
+            channnel = 'Register & Payment';
         } else if (this.isFromSecureMypass(referrer)||this.isFromPaypal(referrer)) {
-            return 'event23,event201'; // Login via secure.mypass during session
+            pageViewEvent = 'event23,event201'; // Login via secure.mypass during session
+            channnel = 'Other Internal';
         } else if (this.isDirect(referrer)) {
-            return 'event207'; // no Referrer at Session Start
+            pageViewEvent = 'event207'; // no Referrer at Session Start
+            channnel = 'Direct';
         } else if (!referringDomain && this.isNavigated()) {
-            return 'event26,event202'; // Dark Social
+            pageViewEvent = 'event26,event202'; // Dark Social
+            channnel = 'Dark Social';
         } else {
-            return 'event27,event203'; // Other External (Referrer)
+            pageViewEvent = 'event27,event203';  // Other External (Referrer)
+            channnel = 'Other External';
         }
+        return {pageViewEvent, channnel};
     },
 
     getViewTypeByReferrer: function () {
@@ -390,7 +407,9 @@ s._articleViewTypeObj = {
 
     getViewTypeByTrackingProperty: function () {
         const trackingValue = this.getTrackingValue();
-        let articleViewType;
+        let pageViewEvent;
+        let channnel;
+        let channelCategory;
         const isMarketing = this.isPaidMarketing(); 
         const isFromArticleWithReco = this.isFromArticleWithReco();
         const pageNumberOne = s._utils.isPageOneInSession();
@@ -398,25 +417,40 @@ s._articleViewTypeObj = {
 
 
         if (trackingValue.startsWith('sea.')) {
-            articleViewType = 'event24,event206,event242'; // Search
-        } else if (trackingValue.startsWith('social_paid')) {
-            articleViewType = 'event25,event206,event241'; //Social Paid Marketing
-        } else if (trackingValue.startsWith('socialmediapaid')) {
-            articleViewType = 'event25,event206,event241'; //Social Paid Marketing
-        } else if (trackingValue.startsWith('social')) {
-            articleViewType = 'event25,event220'; //Social
+            pageViewEvent = 'event24,event206,event242'; // Search
+            channnel = 'Paid Marketing';
+            channelCategory = 'Sea';
+        } else if (trackingValue.startsWith('social_paid.')) {
+            pageViewEvent = 'event25,event206,event241'; //Social Paid Marketing
+            channnel = 'Paid Marketing';
+            channelCategory = 'Social Paid';
+        } else if (trackingValue.startsWith('socialmediapaid.')) {
+            pageViewEvent = 'event25,event206,event241'; //Social Paid Marketing
+            channnel = 'Paid Marketing';
+            channelCategory = 'Social Paid';
+        } else if (trackingValue.startsWith('social.')) {
+            pageViewEvent = 'event25,event220'; //Social
+            channnel = 'Social';
         } else if (isFromArticleWithReco && pageNumberOne) {
-            articleViewType = 'event102,event230,event232'; //Outbrain Reco at Articles
+            pageViewEvent = 'event102,event230,event232'; //Outbrain Reco at Articles
+            channnel = 'Recommendation';
+            channelCategory = 'Recommendation from Article';
         }  else if (isFromHomeReco === 'desktop') {
-            articleViewType = 'event76,event230,event231'; //Outbrain Reco at Desktop HOME
+            pageViewEvent = 'event76,event230,event231'; //Outbrain Reco at Desktop HOME
+            channnel = 'Recommendation';
+            channelCategory = 'Recommendation from Home';
         } else if (isFromHomeReco === 'mobile') {
-            articleViewType = 'event77,event230,event231'; //Outbrain Reco at Mobile HOME
+            pageViewEvent = 'event77,event230,event231'; //Outbrain Reco at Mobile HOME
+            channnel = 'Recommendation';
+            channelCategory = 'Recommendation from Home';
         } else if (trackingValue.startsWith('upday')) {
-            articleViewType = 'event204'; //Outbrain Reco at Mobile HOME
+            pageViewEvent = 'event204'; //Outbrain Reco at Mobile HOME
+            channnel = 'Upday';
         } else if (trackingValue && isMarketing) {
-            articleViewType = 'event206';
+            pageViewEvent = 'event206';
+            channnel = 'Paid Marketing';
         }
-        return articleViewType;
+        return {pageViewEvent, channnel, channelCategory};
     },
 
     setPageSourceAndAgeForCheckout: function (s) {
@@ -432,23 +466,25 @@ s._articleViewTypeObj = {
         window.utag.data['cp.utag_main_pa'] = pageAge;
     },
 
-    isPageViewFromHome: function (pageViewType) {
+    isPageViewFromHome: function (pageViewEvent) {
         const viewTypesFromHome = ['event22,event200', 'event76', 'event77', 'event76,event205','event77,event205'];
-        return viewTypesFromHome.includes(pageViewType);
+        return viewTypesFromHome.includes(pageViewEvent);
     },
 
     setViewTypes: function (s) {
         const trackingChannel= this.isOtherTrackingValue();
-        const pageViewType = trackingChannel ? this.getViewTypeByTrackingProperty() : this.getViewTypeByReferrer();
+        const viewTypesResults = trackingChannel ? this.getViewTypeByTrackingProperty() : this.getViewTypeByReferrer();
 
         if (!s._utils.isAdWall(s)) {
             if (s._utils.isArticlePage()) {
-                s._articleViewType = s.eVar44 = pageViewType;
-                s._eventsObj.addEvent(pageViewType);
+                s._articleViewType = s.eVar44 = viewTypesResults.pageViewEvent;
+                s.eVar38 = s.prop59 = viewTypesResults.channel || '';
+                s.eVar39 = s.prop60 = viewTypesResults.channelCategory || '';
+                s._eventsObj.addEvent(viewTypesResults.pageViewEvent);
                 this.setPageSourceAndAgeForCheckout(s);
             }
 
-            if (this.isPageViewFromHome(pageViewType)) {
+            if (this.isPageViewFromHome(viewTypesResults.pageViewEvent)) {
                 s._eventsObj.addEvent('event20');
                 s._homeTeaserTrackingObj.setHomeTeaserProperties(s);
             }
@@ -466,15 +502,18 @@ s._setExternalReferringDomainEvents = function (s) {
         {
             domains: ['news.google'],
             event: 'event48,event211',
+            channelCategory: 'Google News',
         },
         {
             domains: ['bing.com', 'ecosia.org', 'duckduckgo.com', 'amp-welt-de.cdn.ampproject.org', 'qwant.com', 'suche.t-online.de', '.yandex.', 'yahoo.com', 'googleapis.com', 'nortonsafe.search.ask.com', 'wikipedia.org', 'googleadservices.com', 'search.myway.com', 'lycos.de'],
             event: 'event213',
+            channelCategory: 'other organic Search',
         },
         {
             // domains: ['www.google.com', 'www.google.de', 'www.google.otherTopLevelDomains not followed by slash'],
             event: 'event49,event212',
             matchRegex:  /\.google\.[a-z]+($|[^/.a-z].*)/,
+            channelCategory: 'Google Discover',
 
         },
 
@@ -482,6 +521,7 @@ s._setExternalReferringDomainEvents = function (s) {
             // domains: ['googlequicksearchbox/','googlequicksearchbox/*']],
             event: 'event49,event212',
             matchRegex:  /.*googlequicksearchbox\/.*/i,
+            channelCategory: 'Google Discover',
             
         },
         {
@@ -489,41 +529,50 @@ s._setExternalReferringDomainEvents = function (s) {
             event: 'event213',
             // matchRegex: /\.google\.[a-z]+\/?$/,
             matchRegex:  /.*google\.[^/.]*\/.*/i,
+            channelCategory: 'other organic Search',
         },
         
         {
             // domains: ['googlequicksearchbox','googlequicksearchbox not followed by slash'],
             event: 'event213',
             matchRegex: /.*googlequicksearchbox($|[^/].*)/i,
+            channelCategory: '',
         },
 
         {
             domains: ['instagram.com'],
             event: 'event53,event224',
+            channelCategory: 'Instagram',
         },
         {
             domains: ['youtube.com'],
             event: 'event50,event223',
+            channelCategory: 'Youtube',
         },
         {
             domains: ['t.co', 'twitter.com', 'android-app://com.twitter.android'],
             event: 'event51,event222',
+            channelCategory: 'Twitter',
         },
         {
             domains: ['facebook.com'],
             event: 'event52,event221',
+            channelCategory: 'Facebook',
         },
         {
             domains: ['telegram.org', 'org.telegram'],
             event: 'event225',
+            channelCategory: 'Telegram',
         },
         {
             domains: ['linkedin.com', 'org.linkedin'],
             event: 'event227',
+            channelCategory: 'LinkedIn',
         },
         {
             domains: ['xing.com', 'away.vk.com', 'www.pinterest.de', 'linkedin.android', 'ok.ru', 'mobile.ok.ru', 'www.yammer.com', 'www.netvibes.com', 'pinterest.com', 'wordpress.com', 'blogspot.com', 'lnkd.in', 'xing.android', 'vk.com', 'com.twitter.android', 'm.ok.ru', 'welt.de/instagram', 'linkin.bio'],
             event: 'event226',
+            channelCategory: 'other organic Search',
         },
     ];
 
@@ -534,7 +583,7 @@ s._setExternalReferringDomainEvents = function (s) {
             return;
         }
         domainsToEventMapping.forEach(domainEventMap => {
-            const { domains, event, matchRegex } = domainEventMap;
+            const { domains, event, matchRegex, channelCategory} = domainEventMap;
             const isRegexMatch = matchRegex && referringURL.match(matchRegex);
             const isDomainMatch = domains && domains.some(domain => {
                 return referringURL && referringURL.includes(domain);
@@ -542,6 +591,7 @@ s._setExternalReferringDomainEvents = function (s) {
             if (isRegexMatch || isDomainMatch) {
                 s._eventsObj.addEvent(event); 
                 s.eVar44 = s.evar44 ? s.eVar44 + ',' + event : s.eVar44 = event;
+                s.eVar39 = s.prop60 = channelCategory;
                 s._articleViewType = s.eVar44;
             } 
         });
@@ -563,30 +613,39 @@ s._setTrackingValueEvents = function (s) {
             
             if (socialTrackingParameter) {
                 let event;
+                let channelCategory;
                 switch (true) {
                 case socialTrackingValue.includes('telegram'):
                     event = 'event225';
+                    channelCategory = 'Telegram';
                     break;
                 case socialTrackingValue.includes('instagram'):
                     event = 'event53,event224';
+                    channelCategory = 'Instagram';
                     break;
                 case socialTrackingValue.includes('youtube'):
                     event = 'event50,event223';
+                    channelCategory = 'Youtube';
                     break;
                 case socialTrackingValue.includes('twitter'):
                     event = 'event51,event222';
+                    channelCategory = 'Twitter';
                     break;
                 case socialTrackingValue.includes('facebook'):
                     event = 'event52,event221';
+                    channelCategory = 'Facebook';
                     break;
                 case socialTrackingValue.includes('linkedin'):
                     event = 'event227';
+                    channelCategory = 'LinkedIn';
                     break;
                 default:
                     event = 'event226';
+                    channelCategory = 'other organic Social';
                 }
                 s._eventsObj.addEvent(event);
                 s._articleViewType = s.eVar44 += ',' + event;
+                s.eVar39 = s.prop60 = channelCategory;
             } 
         }
     }
