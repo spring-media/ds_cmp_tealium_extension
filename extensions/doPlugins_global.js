@@ -272,7 +272,7 @@ s._articleViewTypeObj = {
     isFromArticleWithReco: function () {
         const trackingValue = this.getTrackingValue();
 
-        return (trackingValue.includes('kooperation.article.outbrain.') && !trackingValue.includes('.outbrain.ff.'));
+        return ((trackingValue.includes('kooperation.article.outbrain.') || trackingValue.includes('kooperation.videoarticle.outbrain.') ) && !trackingValue.includes('.outbrain.ff.'));
     },
 
     isFromFfReco: function () {

@@ -781,6 +781,15 @@ describe('articleViewType()', () => {
             expect(result).toBe('event102,event230,event232');
 
         });
+
+        it('it should return the right event name if tracking value is of type: Outbrain Article Recommendation', () => {
+            getTrackingValueMock.mockReturnValue('kooperation.videoarticle.outbrain.');
+            isPageOneInSessionMock.mockReturnValue(true);
+            let result = s._articleViewTypeObj.getViewTypeByTrackingProperty();
+            expect(result).toBe('event102,event230,event232');
+
+        });
+
         it('it should return the right event name if tracking value is of type: Outbrain Article Recommendation Family and Friends', () => {
             getTrackingValueMock.mockReturnValue('kooperation.article.outbrain.ff.');
             isPageOneInSessionMock.mockReturnValue(false);
