@@ -272,7 +272,13 @@ s._articleViewTypeObj = {
     isFromArticleWithReco: function () {
         const trackingValue = this.getTrackingValue();
 
-        return trackingValue.includes('kooperation.article.outbrain.');
+        return (trackingValue.includes('kooperation.article.outbrain.') && !trackingValue.includes('.outbrain.ff.'));
+    },
+
+    isFromFfReco: function () {
+        const trackingValue = this.getTrackingValue();
+
+        return trackingValue.includes('.outbrain.ff.');
     },
 
     isFromHomeReco: function () {
@@ -395,6 +401,7 @@ s._articleViewTypeObj = {
         const isFromArticleWithReco = this.isFromArticleWithReco();
         const pageNumberOne = s._utils.isPageOneInSession();
         const isFromHomeReco = this.isFromHomeReco();
+        const isFromFfReco = this.isFromFfReco();
 
 
         if (trackingValue.startsWith('sea.')) {
@@ -407,7 +414,9 @@ s._articleViewTypeObj = {
             articleViewType = 'event25,event220'; //Social
         } else if (isFromArticleWithReco && pageNumberOne) {
             articleViewType = 'event102,event230,event232'; //Outbrain Reco at Articles
-        }  else if (isFromHomeReco === 'desktop') {
+        } else if (isFromFfReco) {
+            articleViewType = 'event102,event230,event232'; //Outbrain Reco Family and Friends
+        } else if (isFromHomeReco === 'desktop') {
             articleViewType = 'event76,event230,event231'; //Outbrain Reco at Desktop HOME
         } else if (isFromHomeReco === 'mobile') {
             articleViewType = 'event77,event230,event231'; //Outbrain Reco at Mobile HOME
