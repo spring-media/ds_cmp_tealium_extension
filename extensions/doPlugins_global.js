@@ -338,11 +338,13 @@ s._articleViewTypeObj = {
         let channel;
         // Check if page view was caused by a viewport switch
         if (this.isSamePageRedirect(referrer)) {
-            return '';
+            pageViewEvent = '';
+            return {pageViewEvent};
         }
 
         if (this.isFromHome(referrer) && this.isNavigated() && !this.isSelfRedirect() && !this.isFromOnsiteSearch()) {
             pageViewEvent = 'event22,event200'; //Home
+            channel = 'Home';
         } else {
             pageViewEvent = 'event23,event201'; //Other Internal
             channel = 'Other Internal';
@@ -392,17 +394,24 @@ s._articleViewTypeObj = {
 
     getViewTypeByReferrer: function () {
         const referrer = s._utils.getReferrer(); 
-        let articleViewType;
+        let pageViewEvent;
+        let channel;
 
         if (this.isFromInternal(referrer)) {
             // Referrer is of same domain
-            articleViewType = this.getInternalType(referrer);
+            const internalType = this.getInternalType(referrer);
+            pageViewEvent = internalType.pageViewEvent;
+            channel = internalType.channel;
+            
         } else {
             // Referrer is of any other domain
-            articleViewType = this.getExternalType(referrer);
+            const externalType = this.getExternalType(referrer);
+            pageViewEvent = externalType.pageViewEvent;
+            channel = externalType.channel;
+
         }
 
-        return articleViewType;
+        return {pageViewEvent, channel};
     },
 
     getViewTypeByTrackingProperty: function () {
@@ -467,9 +476,11 @@ s._articleViewTypeObj = {
     },
 
     isPageViewFromHome: function (pageViewEvent) {
-        const viewTypesFromHome = ['event22,event200', 'event76', 'event77', 'event76,event205','event77,event205'];
-        return viewTypesFromHome.includes(pageViewEvent);
+        const homeViewEvents = ['event22,event200', 'event76', 'event77', 'event76,event205','event77,event205'];
+    
+        return homeViewEvents.includes(pageViewEvent);
     },
+    
 
     setViewTypes: function (s) {
         const trackingChannel= this.isOtherTrackingValue();
