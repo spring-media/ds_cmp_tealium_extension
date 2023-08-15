@@ -968,7 +968,8 @@ describe('articleViewType()', () => {
         });
 
         it('should call s._eventsObj.addEvent() with pag-view-type as the argument if page is of type article', function () {
-            const anyViewType = 'any-view-type';
+            //const anyViewType = 'any-view-type';
+            const anyViewType = ['any-view-type'];
             isAdWallMock.mockReturnValue(false);
             isArticlePageMock.mockReturnValue(true);
             window.location.search = 'cid=any-cid';

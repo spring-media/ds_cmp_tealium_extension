@@ -356,40 +356,40 @@ s._articleViewTypeObj = {
         const referringDomain = s._utils.getDomainFromURLString(referrer);
         const isSessionStart = s._utils.isSessionStart();
         let pageViewEvent;
-        let channnel;
+        let channel;
 
         if (this.isFromSearch(referringDomain)) {
             pageViewEvent = 'event24,event210'; 
-            channnel = 'organic Search Non-Brand';           
+            channel = 'organic Search Non-Brand';           
         } else if (this.isFromSocial(referrer)) {
             pageViewEvent = 'event25,event220'; 
-            channnel = 'Social';
+            channel = 'Social';
         } else if (this.isFromBild(referringDomain) && this.isFromHome(referrer)) {
             pageViewEvent = 'event76,event205';
-            channnel = 'AS News';
+            channel = 'AS News';
         } else if (this.isFromBildMobile(referringDomain) && this.isFromHome(referrer)) {
             pageViewEvent = 'event77,event205'; 
-            channnel = 'AS News';
+            channel = 'AS News';
         } else if (this.isFromAsDomain(referrer)) {
             pageViewEvent = 'event205'; 
-            channnel = 'AS News';
+            channel = 'AS News';
         } else if ((this.isFromSecureMypass(referrer)||this.isFromPaypal(referrer)) && isSessionStart) {
             pageViewEvent = 'event208'; 
-            channnel = 'Register & Payment';
+            channel = 'Register & Payment';
         } else if (this.isFromSecureMypass(referrer)||this.isFromPaypal(referrer)) {
             pageViewEvent = 'event23,event201'; // Login via secure.mypass during session
-            channnel = 'Other Internal';
+            channel = 'Other Internal';
         } else if (this.isDirect(referrer)) {
             pageViewEvent = 'event207'; // no Referrer at Session Start
-            channnel = 'Direct';
+            channel = 'Direct';
         } else if (!referringDomain && this.isNavigated()) {
             pageViewEvent = 'event26,event202'; // Dark Social
-            channnel = 'Dark Social';
+            channel = 'Dark Social';
         } else {
             pageViewEvent = 'event27,event203';  // Other External (Referrer)
-            channnel = 'Other External';
+            channel = 'Other External';
         }
-        return {pageViewEvent, channnel};
+        return {pageViewEvent, channel};
     },
 
     getViewTypeByReferrer: function () {
