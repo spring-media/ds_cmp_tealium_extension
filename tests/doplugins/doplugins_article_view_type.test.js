@@ -692,10 +692,13 @@ describe('articleViewType()', () => {
         });
 
         it('should call getExternalType(referrer) and return its result if referrer is from an external domain', () => {
-            const anyExternalType = 'any-external-type';
+            const anyExternalType = {
+                pageViewEvent: 'any-external-type',
+                channel: 'any-channel'
+            };
             getExternalTypeMock.mockReturnValue(anyExternalType);
             let result = s._articleViewTypeObj.getViewTypeByReferrer();
-            expect(result).toBe(anyExternalType);
+            expect(result).toStrictEqual(anyExternalType);
         });
 
     });
