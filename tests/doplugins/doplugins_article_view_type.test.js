@@ -979,7 +979,11 @@ describe('articleViewType()', () => {
 
         it('should call s._eventsObj.addEvent() with pag-view-type as the argument if page is of type article', function () {
             //const anyViewType = 'any-view-type';
-            const anyViewType = ['any-view-type'];
+            const anyViewType = {
+                pageViewEvent: 'any-view-type',
+                channel: 'any-channel',
+                channelCategory: 'any-channel-catgory'
+            };
             isAdWallMock.mockReturnValue(false);
             isArticlePageMock.mockReturnValue(true);
             window.location.search = 'cid=any-cid';
@@ -987,7 +991,7 @@ describe('articleViewType()', () => {
 
             s._articleViewTypeObj.setViewTypes(s);
 
-            expect(addEventMock).toHaveBeenCalledWith(anyViewType);
+            expect(addEventMock).toHaveBeenCalledWith(anyViewType.pageViewEvent);
         });
 
         it('should NOT call s._eventsObj.addEvent() with pag-view-type as the argument if page is NOT of type article', function () {
