@@ -920,7 +920,11 @@ describe('articleViewType()', () => {
         });
 
         it('should assign the page-view-type to s._articleViewType and s.eVar44 if page is of type article', function () {
-            const anyViewType = 'any-view-type';
+            const anyViewType = {
+                pageViewEvent: 'any-view-type',
+                channel: 'any-channel',
+                channelCategory: 'any-channel-category'
+            };
             isAdWallMock.mockReturnValue(false);
             isArticlePageMock.mockReturnValue(true);
             window.location.search = 'cid=any-cid';
@@ -931,8 +935,8 @@ describe('articleViewType()', () => {
 
             s._articleViewTypeObj.setViewTypes(s);
 
-            expect(s._articleViewType).toBe(anyViewType);
-            expect(s.eVar44).toBe(anyViewType);
+            expect(s._articleViewType).toBe(anyViewType.pageViewEvent);
+            expect(s.eVar44).toBe(anyViewType.pageViewEvent);
         });
 
         it('should NOT evaluate the article-view-type when ad blocker is on', function () {
