@@ -675,11 +675,14 @@ describe('articleViewType()', () => {
         });
 
         it('should call getInternalType(referrer) and return its result if referrer is from internal (same domain)', () => {
-            const anyInternalType = 'any-internal-type';
+            const anyInternalType = {
+                pageViewEvent: 'any-internal-type',
+                channel: 'any-channel'
+            };
             isFromInternalMock.mockReturnValue(true);
             getInternalTypeMock.mockReturnValue(anyInternalType);
             let result = s._articleViewTypeObj.getViewTypeByReferrer();
-            expect(result.pageViewEvent).toBe(anyInternalType);
+            expect(result.pageViewEvent).toBe(anyInternalType.pageViewEvent);
         });
 
         it('should return event26 (dark social) if there is no referrer', function () {
