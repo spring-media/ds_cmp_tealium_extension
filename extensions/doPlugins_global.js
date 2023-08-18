@@ -485,17 +485,20 @@ s._articleViewTypeObj = {
     setViewTypes: function (s) {
         const trackingChannel= this.isOtherTrackingValue();
         const viewTypesResults = trackingChannel ? this.getViewTypeByTrackingProperty() : this.getViewTypeByReferrer();
+        const pageViewEvent = viewTypesResults ? viewTypesResults.pageViewEvent : '';
+        const channel = viewTypesResults ? viewTypesResults.channel : '';
+        const channelCategory = viewTypesResults ? viewTypesResults.channelCategory : '';
 
         if (!s._utils.isAdWall(s)) {
             if (s._utils.isArticlePage()) {
-                s._articleViewType = s.eVar44 = viewTypesResults.pageViewEvent;
-                s.eVar38 = s.prop59 = viewTypesResults.channel || '';
-                s.eVar39 = s.prop60 = viewTypesResults.channelCategory || '';
-                s._eventsObj.addEvent(viewTypesResults.pageViewEvent);
+                s._articleViewType = s.eVar44 = pageViewEvent;
+                s.eVar38 = s.prop59 = channel;
+                s.eVar39 = s.prop60 = channelCategory;
+                s._eventsObj.addEvent(pageViewEvent);
                 this.setPageSourceAndAgeForCheckout(s);
             }
 
-            if (this.isPageViewFromHome(viewTypesResults.pageViewEvent)) {
+            if (this.isPageViewFromHome(pageViewEvent)) {
                 s._eventsObj.addEvent('event20');
                 s._homeTeaserTrackingObj.setHomeTeaserProperties(s);
             }
