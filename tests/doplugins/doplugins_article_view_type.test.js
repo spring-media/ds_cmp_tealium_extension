@@ -510,7 +510,7 @@ describe('articleViewType()', () => {
             isSelfRedirectMock.mockReturnValue(false);
             const result = s._articleViewTypeObj.getInternalType('http://www.any-domain.de');
             expect(isFromHomeMock).toHaveBeenCalledWith(anyReferrer);
-            expect(result).toBe('event22,event200');
+            expect(result.pageViewEvent).toBe('event22,event200','Home');
         });
 
         it('should return event23 if referrer is NOT a home page', function () {
@@ -518,14 +518,14 @@ describe('articleViewType()', () => {
             isFromHomeMock.mockReturnValue(false);
             const result = s._articleViewTypeObj.getInternalType(anyReferrer);
             expect(isFromHomeMock).toHaveBeenCalledWith(anyReferrer);
-            expect(result).toBe('event23,event201');
+            expect(result.pageViewEvent).toBe('event23,event201');
         });
 
         it('should return an empty string in case of same page redirects', function () {
             const anyReferrer = 'http://www.any-domain.de';
             isSamePageRedirectMock.mockReturnValue(true);
             const result = s._articleViewTypeObj.getInternalType(anyReferrer);
-            expect(result).toBe('');
+            expect(result.pageViewEvent).toBe('');
         });
     });
 
@@ -563,14 +563,14 @@ describe('articleViewType()', () => {
             isFromSearchMock.mockReturnValue(true);
             const result = s._articleViewTypeObj.getExternalType(anyReferrer);
             expect(isFromSearchMock).toHaveBeenCalledWith(anyReferrerDomain);
-            expect(result).toBe('event24,event210');
+            expect(result.pageViewEvent).toBe('event24,event210');
         });
 
         it('should return event25 if referrer is from social media', function () {
             isFromSocialMock.mockReturnValue(true);
             const result = s._articleViewTypeObj.getExternalType(anyReferrer);
             expect(isFromSocialMock).toHaveBeenCalledWith(anyReferrer);
-            expect(result).toBe('event25,event220');
+            expect(result.pageViewEvent).toBe('event25,event220');
         });
 
         it('should return event76,event205 if referrer is Bild desktop homepage', function () {
@@ -579,7 +579,7 @@ describe('articleViewType()', () => {
             const result = s._articleViewTypeObj.getExternalType(anyReferrer);
             expect(isFromBildMock).toHaveBeenCalledWith(anyReferrerDomain);
             expect(isFromHomeMock).toHaveBeenCalledWith(anyReferrer);
-            expect(result).toBe('event76,event205');
+            expect(result.pageViewEvent).toBe('event76,event205');
         });
 
         it('should return event77,event205 if referrer is Bild mobile homepage', function () {
@@ -588,13 +588,13 @@ describe('articleViewType()', () => {
             const result = s._articleViewTypeObj.getExternalType(anyReferrer);
             expect(isFromBildMobileMock).toHaveBeenCalledWith(anyReferrerDomain);
             expect(isFromHomeMock).toHaveBeenCalledWith(anyReferrer);
-            expect(result).toBe('event77,event205');
+            expect(result.pageViewEvent).toBe('event77,event205');
         });
 
         it('should return event205 if referrer is from AS Domain ', function () {
             isFromAsDomainMock.mockReturnValue(true);
             const result = s._articleViewTypeObj.getExternalType(anyReferrer);
-            expect(result).toBe('event205');
+            expect(result.pageViewEvent).toBe('event205');
         });
 
         it('should return event208 if referrer is from Paypal and is session start ', function () {
@@ -602,39 +602,39 @@ describe('articleViewType()', () => {
             isSessionStartMock.mockReturnValue(true);
             const result = s._articleViewTypeObj.getExternalType(anyReferrer);
             expect(isFromPaypalMock).toHaveBeenCalledWith(anyReferrer);
-            expect(result).toBe('event208');
+            expect(result.pageViewEvent).toBe('event208');
         });
 
         it('should return event23 if referrer is from secure mypass (login/register)', function () {
             isFromSecureMypassMock.mockReturnValue(true);
             const result = s._articleViewTypeObj.getExternalType(anyReferrer);
             expect(isFromSecureMypassMock).toHaveBeenCalledWith(anyReferrer);
-            expect(result).toBe('event23,event201');
+            expect(result.pageViewEvent).toBe('event23,event201');
         });
 
         it('should return event23 if referrer is from Paypal', function () {
             isFromPaypalMock.mockReturnValue(true);
             const result = s._articleViewTypeObj.getExternalType(anyReferrer);
             expect(isFromPaypalMock).toHaveBeenCalledWith(anyReferrer);
-            expect(result).toBe('event23,event201');
+            expect(result.pageViewEvent).toBe('event23,event201');
         });
 
         it('should return event207 (Direct) if no referrer at session start', function () {
             isDirectMock.mockReturnValue(true);
             const result = s._articleViewTypeObj.getExternalType('');
-            expect(result).toBe('event207');
+            expect(result.pageViewEvent).toBe('event207');
         });
 
         it('should return event26 (DarkSocial) if no referrer but navigated', function () {
             const noReferrerMock = jest.spyOn(s._utils, 'getDomainFromURLString').mockReturnValue('');
             isNavigatedMock.mockReturnValue(true);
             const result = s._articleViewTypeObj.getExternalType(noReferrerMock);
-            expect(result).toBe('event26,event202');
+            expect(result.pageViewEvent).toBe('event26,event202');
         });
 
         it('should return event27 (other external) in any other cases', function () {
             const result = s._articleViewTypeObj.getExternalType(anyReferrer);
-            expect(result).toBe('event27,event203');
+            expect(result.pageViewEvent).toBe('event27,event203');
         });
     });
 
@@ -675,11 +675,14 @@ describe('articleViewType()', () => {
         });
 
         it('should call getInternalType(referrer) and return its result if referrer is from internal (same domain)', () => {
-            const anyInternalType = 'any-internal-type';
+            const anyInternalType = {
+                pageViewEvent: 'any-internal-type',
+                channel: 'any-channel'
+            };
             isFromInternalMock.mockReturnValue(true);
             getInternalTypeMock.mockReturnValue(anyInternalType);
             let result = s._articleViewTypeObj.getViewTypeByReferrer();
-            expect(result).toBe(anyInternalType);
+            expect(result.pageViewEvent).toBe(anyInternalType.pageViewEvent);
         });
 
         it('should return event26 (dark social) if there is no referrer', function () {
@@ -689,18 +692,15 @@ describe('articleViewType()', () => {
         });
 
         it('should call getExternalType(referrer) and return its result if referrer is from an external domain', () => {
-            const anyExternalType = 'any-external-type';
+            const anyExternalType = {
+                pageViewEvent: 'any-external-type',
+                channel: 'any-channel'
+            };
             getExternalTypeMock.mockReturnValue(anyExternalType);
             let result = s._articleViewTypeObj.getViewTypeByReferrer();
-            expect(result).toBe(anyExternalType);
+            expect(result).toStrictEqual(anyExternalType);
         });
 
-        it('should call getExternalType(referrer) and return its result if referrer is from an outbrain domain', () => {
-            const anyRecoType = 'traffic.outbrain.com';
-            getExternalTypeMock.mockReturnValue(anyRecoType);
-            let result = s._articleViewTypeObj.getViewTypeByReferrer();
-            expect(result).toBe(anyRecoType);
-        });
     });
 
     describe('getTrackingValue', () => {
@@ -753,61 +753,61 @@ describe('articleViewType()', () => {
         it('it should return the right event name if tracking value is of type: Search', () => {
             getTrackingValueMock.mockReturnValue('sea.');
             const result = s._articleViewTypeObj.getViewTypeByTrackingProperty();
-            expect(result).toBe('event24,event206,event242');
+            expect(result.pageViewEvent).toBe('event24,event206,event242');
         });
 
         it('it should return the right event name if tracking value is of type: Social', () => {
             getTrackingValueMock.mockReturnValue('social_paid.');
             const result = s._articleViewTypeObj.getViewTypeByTrackingProperty();
-            expect(result).toBe('event25,event206,event241');
+            expect(result.pageViewEvent).toBe('event25,event206,event241');
         });
 
         it('it should return the right event name if tracking value is of type: Social', () => {
             getTrackingValueMock.mockReturnValue('socialmediapaid.');
             const result = s._articleViewTypeObj.getViewTypeByTrackingProperty();
-            expect(result).toBe('event25,event206,event241');
+            expect(result.pageViewEvent).toBe('event25,event206,event241');
         });
 
         it('it should return the right event name if tracking value is of type: Social', () => {
             getTrackingValueMock.mockReturnValue('social.');
             const result = s._articleViewTypeObj.getViewTypeByTrackingProperty();
-            expect(result).toBe('event25,event220');
+            expect(result.pageViewEvent).toBe('event25,event220');
         });
 
         it('it should return the right event name if tracking value is of type: Outbrain Article Recommendation', () => {
             getTrackingValueMock.mockReturnValue('kooperation.article.outbrain.');
             isPageOneInSessionMock.mockReturnValue(true);
             let result = s._articleViewTypeObj.getViewTypeByTrackingProperty();
-            expect(result).toBe('event102,event230,event232');
+            expect(result.pageViewEvent).toBe('event102,event230,event232');
 
         });
         it('it should return the right event name if tracking value is of type: Outbrain Desktop Home Recommendation', () => {
             getTrackingValueMock.mockReturnValue('kooperation.home.outbrain.desktop.');
             let result = s._articleViewTypeObj.getViewTypeByTrackingProperty();
-            expect(result).toBe('event76,event230,event231');
+            expect(result.pageViewEvent).toBe('event76,event230,event231');
 
         });
         it('it should return the right event name if tracking value is of type: Outbrain Mobile Home Recommendation', () => {
             getTrackingValueMock.mockReturnValue('kooperation.home.outbrain.mobile.');
             let result = s._articleViewTypeObj.getViewTypeByTrackingProperty();
-            expect(result).toBe('event77,event230,event231');
+            expect(result.pageViewEvent).toBe('event77,event230,event231');
 
         });
         it('it should return the right event name if tracking value is Paid Marketing like email. as one example', () => {
             getTrackingValueMock.mockReturnValue('email.');
             let result = s._articleViewTypeObj.getViewTypeByTrackingProperty();
-            expect(result).toBe('event206');
+            expect(result.pageViewEvent).toBe('event206');
 
         });
         it('it should return event204 if the trackingValue equals upday', () => {
             getTrackingValueMock.mockReturnValue('upday');
             let result = s._articleViewTypeObj.getViewTypeByTrackingProperty();
-            expect(result).toBe('event204');
+            expect(result.pageViewEvent).toBe('event204');
         });
         it('it should not return event204 if the trackingValue is not equals upday', () => {
             getTrackingValueMock.mockReturnValue('any_cid');
             let result = s._articleViewTypeObj.getViewTypeByTrackingProperty();
-            expect(result).not.toBe('event204');
+            expect(result.pageViewEvent).not.toBe('event204');
         });
     });
 
@@ -920,7 +920,11 @@ describe('articleViewType()', () => {
         });
 
         it('should assign the page-view-type to s._articleViewType and s.eVar44 if page is of type article', function () {
-            const anyViewType = 'any-view-type';
+            const anyViewType = {
+                pageViewEvent: 'any-view-type',
+                channel: 'any-channel',
+                channelCategory: 'any-channel-category'
+            };
             isAdWallMock.mockReturnValue(false);
             isArticlePageMock.mockReturnValue(true);
             window.location.search = 'cid=any-cid';
@@ -931,8 +935,8 @@ describe('articleViewType()', () => {
 
             s._articleViewTypeObj.setViewTypes(s);
 
-            expect(s._articleViewType).toBe(anyViewType);
-            expect(s.eVar44).toBe(anyViewType);
+            expect(s._articleViewType).toBe(anyViewType.pageViewEvent);
+            expect(s.eVar44).toBe(anyViewType.pageViewEvent);
         });
 
         it('should NOT evaluate the article-view-type when ad blocker is on', function () {
@@ -974,7 +978,12 @@ describe('articleViewType()', () => {
         });
 
         it('should call s._eventsObj.addEvent() with pag-view-type as the argument if page is of type article', function () {
-            const anyViewType = 'any-view-type';
+            //const anyViewType = 'any-view-type';
+            const anyViewType = {
+                pageViewEvent: 'any-view-type',
+                channel: 'any-channel',
+                channelCategory: 'any-channel-catgory'
+            };
             isAdWallMock.mockReturnValue(false);
             isArticlePageMock.mockReturnValue(true);
             window.location.search = 'cid=any-cid';
@@ -982,7 +991,7 @@ describe('articleViewType()', () => {
 
             s._articleViewTypeObj.setViewTypes(s);
 
-            expect(addEventMock).toHaveBeenCalledWith(anyViewType);
+            expect(addEventMock).toHaveBeenCalledWith(anyViewType.pageViewEvent);
         });
 
         it('should NOT call s._eventsObj.addEvent() with pag-view-type as the argument if page is NOT of type article', function () {
