@@ -516,17 +516,20 @@ s._setExternalReferringDomainEvents = function (s) {
         {
             domains: ['news.google'],
             event: 'event48,event211',
+            channel: 'organic Search Non-Brand',
             channelCategory: 'Google News',
         },
         {
             domains: ['bing.com', 'ecosia.org', 'duckduckgo.com', 'amp-welt-de.cdn.ampproject.org', 'qwant.com', 'suche.t-online.de', '.yandex.', 'yahoo.com', 'googleapis.com', 'nortonsafe.search.ask.com', 'wikipedia.org', 'googleadservices.com', 'search.myway.com', 'lycos.de'],
             event: 'event213',
+            channel: 'organic Search Non-Brand',
             channelCategory: 'other organic Search',
         },
         {
             // domains: ['www.google.com', 'www.google.de', 'www.google.otherTopLevelDomains not followed by slash'],
             event: 'event49,event212',
             matchRegex:  /\.google\.[a-z]+($|[^/.a-z].*)/,
+            channel: 'organic Search Non-Brand',
             channelCategory: 'Google Discover',
 
         },
@@ -535,6 +538,7 @@ s._setExternalReferringDomainEvents = function (s) {
             // domains: ['googlequicksearchbox/','googlequicksearchbox/*']],
             event: 'event49,event212',
             matchRegex:  /.*googlequicksearchbox\/.*/i,
+            channel: 'organic Search Non-Brand',
             channelCategory: 'Google Discover',
             
         },
@@ -543,6 +547,7 @@ s._setExternalReferringDomainEvents = function (s) {
             event: 'event213',
             // matchRegex: /\.google\.[a-z]+\/?$/,
             matchRegex:  /.*google\.[^/.]*\/.*/i,
+            channel: 'organic Search Non-Brand',
             channelCategory: 'other organic Search',
         },
         
@@ -550,42 +555,50 @@ s._setExternalReferringDomainEvents = function (s) {
             // domains: ['googlequicksearchbox','googlequicksearchbox not followed by slash'],
             event: 'event213',
             matchRegex: /.*googlequicksearchbox($|[^/].*)/i,
+            channel: 'organic Search Non-Brand',
             channelCategory: '',
         },
 
         {
             domains: ['instagram.com'],
             event: 'event53,event224',
+            channel: 'Social',
             channelCategory: 'Instagram',
         },
         {
             domains: ['youtube.com'],
             event: 'event50,event223',
+            channel: 'Social',
             channelCategory: 'Youtube',
         },
         {
             domains: ['t.co', 'twitter.com', 'android-app://com.twitter.android'],
             event: 'event51,event222',
+            channel: 'Social',
             channelCategory: 'Twitter',
         },
         {
             domains: ['facebook.com'],
             event: 'event52,event221',
+            channel: 'Social',
             channelCategory: 'Facebook',
         },
         {
             domains: ['telegram.org', 'org.telegram'],
             event: 'event225',
+            channel: 'Social',
             channelCategory: 'Telegram',
         },
         {
             domains: ['linkedin.com', 'org.linkedin'],
             event: 'event227',
+            channel: 'Social',
             channelCategory: 'LinkedIn',
         },
         {
             domains: ['xing.com', 'away.vk.com', 'www.pinterest.de', 'linkedin.android', 'ok.ru', 'mobile.ok.ru', 'www.yammer.com', 'www.netvibes.com', 'pinterest.com', 'wordpress.com', 'blogspot.com', 'lnkd.in', 'xing.android', 'vk.com', 'com.twitter.android', 'm.ok.ru', 'welt.de/instagram', 'linkin.bio'],
             event: 'event226',
+            channel: 'organic Search Non-Brand',
             channelCategory: 'other organic Search',
         },
     ];
@@ -597,7 +610,7 @@ s._setExternalReferringDomainEvents = function (s) {
             return;
         }
         domainsToEventMapping.forEach(domainEventMap => {
-            const { domains, event, matchRegex, channelCategory} = domainEventMap;
+            const { domains, event, matchRegex, channel, channelCategory} = domainEventMap;
             const isRegexMatch = matchRegex && referringURL.match(matchRegex);
             const isDomainMatch = domains && domains.some(domain => {
                 return referringURL && referringURL.includes(domain);
@@ -605,6 +618,7 @@ s._setExternalReferringDomainEvents = function (s) {
             if (isRegexMatch || isDomainMatch) {
                 s._eventsObj.addEvent(event); 
                 s.eVar44 = s.evar44 ? s.eVar44 + ',' + event : s.eVar44 = event;
+                s.eVar38 = s.prop59 = channel;
                 s.eVar39 = s.prop60 = channelCategory;
                 s._articleViewType = s.eVar44;
             } 
@@ -627,6 +641,7 @@ s._setTrackingValueEvents = function (s) {
             
             if (socialTrackingParameter) {
                 let event;
+                let channel = 'Social';
                 let channelCategory;
                 switch (true) {
                 case socialTrackingValue.includes('telegram'):
@@ -659,6 +674,7 @@ s._setTrackingValueEvents = function (s) {
                 }
                 s._eventsObj.addEvent(event);
                 s._articleViewType = s.eVar44 += ',' + event;
+                s.eVar38 = s.prop59 = channel; 
                 s.eVar39 = s.prop60 = channelCategory;
             } 
         }
