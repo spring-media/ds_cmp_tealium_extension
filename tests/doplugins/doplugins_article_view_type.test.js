@@ -782,13 +782,13 @@ describe('articleViewType()', () => {
 
         });
         it('it should return the right event name if tracking value is of type: Outbrain Desktop Home Recommendation', () => {
-            getTrackingValueMock.mockReturnValue('kooperation.home.outbrain.desktop.');
+            getTrackingValueMock.mockReturnValue('kooperation.home.outbrain.ff.desktop.');
             let result = s._articleViewTypeObj.getViewTypeByTrackingProperty();
             expect(result.pageViewEvent).toBe('event76,event230,event231');
 
         });
         it('it should return the right event name if tracking value is of type: Outbrain Mobile Home Recommendation', () => {
-            getTrackingValueMock.mockReturnValue('kooperation.home.outbrain.mobile.');
+            getTrackingValueMock.mockReturnValue('kooperation.home.outbrain.ff.mobile.');
             let result = s._articleViewTypeObj.getViewTypeByTrackingProperty();
             expect(result.pageViewEvent).toBe('event77,event230,event231');
 

@@ -275,9 +275,15 @@ s._articleViewTypeObj = {
         return trackingValue.includes('kooperation.article.outbrain.');
     },
 
-    isFromHomeReco: function () {
+    isFromReco: function () {
         const trackingValue = this.getTrackingValue();
-        const isReco = trackingValue.includes('kooperation.home.outbrain.');
+
+        return trackingValue.includes('.outbrain.');
+    },
+
+    isFromRecoFf: function () {
+        const trackingValue = this.getTrackingValue();
+        const isReco = trackingValue.includes('.outbrain.ff');
         let recoType;
 
         if (isReco){
@@ -420,9 +426,9 @@ s._articleViewTypeObj = {
         let channnel;
         let channelCategory;
         const isMarketing = this.isPaidMarketing(); 
-        const isFromArticleWithReco = this.isFromArticleWithReco();
+        const isFromReco = this.isFromReco();
         const pageNumberOne = s._utils.isPageOneInSession();
-        const isFromHomeReco = this.isFromHomeReco();
+        const isFromRecoFf = this.isFromRecoFf();
 
 
         if (trackingValue.startsWith('sea.')) {
@@ -440,15 +446,15 @@ s._articleViewTypeObj = {
         } else if (trackingValue.startsWith('social.')) {
             pageViewEvent = 'event25,event220'; //Social
             channnel = 'Social';
-        } else if (isFromArticleWithReco && pageNumberOne) {
+        } else if (isFromReco && pageNumberOne) {
             pageViewEvent = 'event102,event230,event232'; //Outbrain Reco at Articles
             channnel = 'Recommendation';
             channelCategory = 'Recommendation from Article';
-        }  else if (isFromHomeReco === 'desktop') {
+        }  else if (isFromRecoFf === 'desktop') {
             pageViewEvent = 'event76,event230,event231'; //Outbrain Reco at Desktop HOME
             channnel = 'Recommendation';
             channelCategory = 'Recommendation from Home';
-        } else if (isFromHomeReco === 'mobile') {
+        } else if (isFromRecoFf === 'mobile') {
             pageViewEvent = 'event77,event230,event231'; //Outbrain Reco at Mobile HOME
             channnel = 'Recommendation';
             channelCategory = 'Recommendation from Home';
