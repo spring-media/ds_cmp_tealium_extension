@@ -446,11 +446,7 @@ s._articleViewTypeObj = {
         } else if (trackingValue.startsWith('social.')) {
             pageViewEvent = 'event25,event220'; //Social
             channnel = 'Social';
-        } else if (isFromReco && pageNumberOne) {
-            pageViewEvent = 'event102,event230,event232'; //Outbrain Reco at Articles
-            channnel = 'Recommendation';
-            channelCategory = 'Recommendation from Article';
-        }  else if (isFromRecoFf === 'desktop') {
+        } else if (isFromRecoFf === 'desktop') {
             pageViewEvent = 'event76,event230,event231'; //Outbrain Reco at Desktop HOME
             channnel = 'Recommendation';
             channelCategory = 'Recommendation from Home';
@@ -458,7 +454,11 @@ s._articleViewTypeObj = {
             pageViewEvent = 'event77,event230,event231'; //Outbrain Reco at Mobile HOME
             channnel = 'Recommendation';
             channelCategory = 'Recommendation from Home';
-        } else if (trackingValue.startsWith('upday')) {
+        } else if (isFromReco && pageNumberOne) {
+            pageViewEvent = 'event102,event230,event232'; //Outbrain Reco at Articles
+            channnel = 'Recommendation';
+            channelCategory = 'Recommendation from Article';
+        }else if (trackingValue.startsWith('upday')) {
             pageViewEvent = 'event204'; //Outbrain Reco at Mobile HOME
             channnel = 'Upday';
         } else if (trackingValue && isMarketing) {
