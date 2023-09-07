@@ -132,10 +132,10 @@ s._utils = {
         return this.getDomainFromURLString(this.getReferrer());
     },
     isSessionStart: function () {
-        return (window.utag.data['cp.utag_main_ss'] === '1');
+        return (window.utag.data['cp.utag_main__ss'] === '1');
     },
     isPageOneInSession: function () {
-        return (window.utag.data['cp.utag_main_pn'] === '1');
+        return (window.utag.data['cp.utag_main__pn'] === '1');
     },
     getPageReloadStatus: function () {
         return window.performance && window.performance.getEntriesByType && window.performance
