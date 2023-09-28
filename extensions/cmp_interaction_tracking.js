@@ -184,11 +184,11 @@
             exportedFunctions.sendLinkEvent(window.utag.data['cmp_events']);
             // Set cookie for first page view tracking.
             if (window.utag.data['dom.domain'] && window.utag.data['dom.domain'].includes('sportbild.bild.de')){
-            window.utag.loader.SC('utag_main', {'cmp_after_sub': 'true'});
-            window.utag.data['cp.utag_main_cmp_after_sub'] = 'true';    
+                window.utag.loader.SC('utag_main', {'cmp_after_sub': 'true'});
+                window.utag.data['cp.utag_main_cmp_after_sub'] = 'true';    
             }else{
-            window.utag.loader.SC('utag_main', {'cmp_after': 'true'});
-            window.utag.data['cp.utag_main_cmp_after'] = 'true';
+                window.utag.loader.SC('utag_main', {'cmp_after': 'true'});
+                window.utag.data['cp.utag_main_cmp_after'] = 'true';
             }
         }
     }
