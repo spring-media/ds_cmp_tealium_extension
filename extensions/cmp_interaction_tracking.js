@@ -116,7 +116,7 @@
         // sportbild.bild.de, shop.bild.de, offerpages needs special treatment because of sub-domain issues.
         if ((window.utag.data['dom.domain']) && subdomains.indexOf(window.utag.data['dom.domain']) !== -1){
             // hasCMPAfterCookie cannot be used here because it shares cookie with base domain
-                return hasCMPAfterCookie_subdomain || hasVendors_subdomain;
+            return hasCMPAfterCookie_subdomain || hasVendors_subdomain;
         } else {
             return hasCMPAfterCookie || hasVendors;
         }
@@ -146,7 +146,7 @@
             window.cmp._scrollDepthObj.setScrollDepthProperties(window.cmp);
         }
         if (window.cmp && window.cmp._campaignObj) {
-        window.cmp._campaignObj.setCampaignVariables(window.cmp, true);
+            window.cmp._campaignObj.setCampaignVariables(window.cmp, true);
         }
     }
 
@@ -163,7 +163,7 @@
             window.utag.data['cmp_events'] = CONSENT_MESSAGE_EVENTS[eventType];
             exportedFunctions.sendLinkEvent(CONSENT_MESSAGE_EVENTS[eventType]);
 
-            if ((eventType === 11 && (utag.data['dom.domain'] && utag.data['dom.domain'].includes("sportbild.bild.de"))) || (eventType === 13 && (utag.data['dom.domain'] && utag.data['dom.domain'].includes("sportbild.bild.de"))))
+            if ((eventType === 11 && (window.utag.data['dom.domain'] && window.utag.data['dom.domain'].includes('sportbild.bild.de'))) || (eventType === 13 && (window.utag.data['dom.domain'] && window.utag.data['dom.domain'].includes('sportbild.bild.de'))))
             {
                 window.utag.loader.SC('utag_main', {'cmp_after_sub': 'true'});
                 window.utag.data['cp.utag_main_cmp_after_sub'] = 'true';
@@ -183,7 +183,7 @@
             window.utag.data['cmp_events'] = eventType.purposeConsent ? (eventType.purposeConsent === 'all' ? PRIVACY_MANAGER_EVENTS.ACCEPT_ALL : PRIVACY_MANAGER_EVENTS.SAVE_AND_EXIT) : PRIVACY_MANAGER_EVENTS[eventType];
             exportedFunctions.sendLinkEvent(window.utag.data['cmp_events']);
             // Set cookie for first page view tracking.
-            if (utag.data['dom.domain'] && utag.data['dom.domain'].includes("sportbild.bild.de")){
+            if (window.utag.data['dom.domain'] && window.utag.data['dom.domain'].includes('sportbild.bild.de')){
             window.utag.loader.SC('utag_main', {'cmp_after_sub': 'true'});
             window.utag.data['cp.utag_main_cmp_after_sub'] = 'true';    
             }else{
