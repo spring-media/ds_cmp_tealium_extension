@@ -322,14 +322,14 @@ describe('CMP Interaction Tracking', () => {
         });
     });
 
-    describe('onMessageChoiceSelect(id, eventType)', () => {
+    describe('onMessageChoiceSelect(messageType, id, eventType)', () => {
         beforeEach(() => {
             jest.spyOn(cmpInteractionTracking, 'sendLinkEvent').mockImplementation();
             jest.spyOn(cmpInteractionTracking, 'onUserConsent').mockImplementation();
         });
 
         it('should set correct utag.data properties when user gives consent', () => {
-            cmpInteractionTracking.onMessageChoiceSelect('any-id', 11);
+            cmpInteractionTracking.onMessageChoiceSelect('any', 'any-id', 11);
             expect(window.utag.data).toEqual({
                 'cmp_events': 'cm_accept_all',
                 'cp.utag_main_cmp_after': 'true'
@@ -337,24 +337,24 @@ describe('CMP Interaction Tracking', () => {
         });
 
         it('should call sendLinkEvent with correct argument when user gives consent', () => {
-            cmpInteractionTracking.onMessageChoiceSelect('test', 11);
+            cmpInteractionTracking.onMessageChoiceSelect('any', 'test', 11);
             expect(cmpInteractionTracking.sendLinkEvent).toHaveBeenLastCalledWith('cm_accept_all');
         });
 
         it('should set correct utag.data properties when user opens privacy manager', () => {
-            cmpInteractionTracking.onMessageChoiceSelect('any-id', 12);
+            cmpInteractionTracking.onMessageChoiceSelect('any', 'any-id', 12);
             expect(window.utag.data).toEqual({
                 'cmp_events': 'cm_show_privacy_manager'
             });
         });
 
         it('should call sendLinkEvent with correct argument when user opens privacy manager', () => {
-            cmpInteractionTracking.onMessageChoiceSelect('test', 12);
+            cmpInteractionTracking.onMessageChoiceSelect('any', 'test', 12);
             expect(cmpInteractionTracking.sendLinkEvent).toHaveBeenLastCalledWith('cm_show_privacy_manager');
         });
 
         it('should set correct utag.data properties when user declines consent', () => {
-            cmpInteractionTracking.onMessageChoiceSelect('any-id', 13);
+            cmpInteractionTracking.onMessageChoiceSelect('any', 'any-id', 13);
             expect(window.utag.data).toEqual({
                 'cmp_events': 'cm_reject_all',
                 'cp.utag_main_cmp_after': 'true'
@@ -362,40 +362,40 @@ describe('CMP Interaction Tracking', () => {
         });
 
         it('should call sendLinkEvent with correct argument when user declines consent', () => {
-            cmpInteractionTracking.onMessageChoiceSelect('test', 13);
+            cmpInteractionTracking.onMessageChoiceSelect('any', 'test', 13);
             expect(cmpInteractionTracking.sendLinkEvent).toHaveBeenLastCalledWith('cm_reject_all');
         });
 
         it('should NOT call sendLinkEvent when called with wrong event type', () => {
-            cmpInteractionTracking.onMessageChoiceSelect('test', 999);
+            cmpInteractionTracking.onMessageChoiceSelect('any', 'test', 999);
             expect(cmpInteractionTracking.sendLinkEvent).not.toHaveBeenCalled();
         });
 
         it('should set utag_main_cmp_after cookie to true when user gives consent', () => {
-            cmpInteractionTracking.onMessageChoiceSelect('test', 11);
+            cmpInteractionTracking.onMessageChoiceSelect('any', 'test', 11);
             expect(window.utag.loader.SC).toHaveBeenCalledWith('utag_main', {'cmp_after': 'true'});
             expect(window.utag.data['cp.utag_main_cmp_after']).toBe('true');
         });
 
         it('should set utag_main_cmp_after cookie to true when user declines consent', () => {
-            cmpInteractionTracking.onMessageChoiceSelect('test', 13);
+            cmpInteractionTracking.onMessageChoiceSelect('any', 'test', 13);
             expect(window.utag.loader.SC).toHaveBeenCalledWith('utag_main', {'cmp_after': 'true'});
             expect(window.utag.data['cp.utag_main_cmp_after']).toBe('true');
         });
 
         it('should NOT set utag_main_cmp_after cookie when user opens privacy manager', () => {
-            cmpInteractionTracking.onMessageChoiceSelect('test', 12);
+            cmpInteractionTracking.onMessageChoiceSelect('any', 'test', 12);
             expect(window.utag.loader.SC).not.toHaveBeenCalledWith('utag_main', {'cmp_after': 'true'});
             expect(window.utag.data['cp.utag_main_cmp_after']).toBeUndefined();
         });
 
         it('should call onUserConsent() when user has given consent', function () {
-            cmpInteractionTracking.onMessageChoiceSelect('any-id', 11);
+            cmpInteractionTracking.onMessageChoiceSelect('any', 'any-id', 11);
             expect(cmpInteractionTracking.onUserConsent).toHaveBeenCalled();
         });
 
         it('should not call onUserConsent() when user has NOT given consent', function () {
-            cmpInteractionTracking.onMessageChoiceSelect('any-id', 12);
+            cmpInteractionTracking.onMessageChoiceSelect('any', 'any-id', 12);
             expect(cmpInteractionTracking.onUserConsent).not.toHaveBeenCalled();
         });
     });
