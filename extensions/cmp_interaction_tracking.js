@@ -163,7 +163,7 @@
             window.utag.data['cmp_events'] = CONSENT_MESSAGE_EVENTS[eventType];
             exportedFunctions.sendLinkEvent(CONSENT_MESSAGE_EVENTS[eventType]);
 
-            if ((eventType === 11 && (window.utag.data['dom.domain'] && window.utag.data['dom.domain'].includes('sportbild.bild.de'))) || (eventType === 13 && (window.utag.data['dom.domain'] && window.utag.data['dom.domain'].includes('sportbild.bild.de'))))
+            if ((eventType === 11 || eventType === 13) && window.utag.data['dom.domain'] && window.utag.data['dom.domain'].includes('sportbild.bild.de'))
             {
                 window.utag.loader.SC('utag_main', {'cmp_after_sub': 'true'});
                 window.utag.data['cp.utag_main_cmp_after_sub'] = 'true';
