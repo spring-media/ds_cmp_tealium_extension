@@ -111,6 +111,7 @@
             'angebot.bild.de',
             'shopping.welt.de',
             'shop.welt.de',
+            'bildplusshop.bild.de',
             'digital.welt.de'
         ];
         // sportbild.bild.de, shop.bild.de, offerpages needs special treatment because of sub-domain issues.
