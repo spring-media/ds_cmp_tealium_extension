@@ -240,7 +240,7 @@ s._articleViewTypeObj = {
     },
     
     isOtherTrackingValue: function () {
-        const trackingChannel = ['email.','onsite.','inapp.','push.','sea.','affiliate.','socialmediapaid.','social_paid.','app.','display.','career.','print.','social.','upday','outbrain'];
+        const trackingChannel = ['email.','onsite.','inapp.','push.','sea.','affiliate.','socialmediapaid.','social_paid.','app.','display.','career.','print.','social.','upday','kooperation'];
         const trackingValue = this.getTrackingValue();
         return trackingChannel.some(item => {
             return trackingValue.indexOf(item) === 0;
@@ -278,7 +278,7 @@ s._articleViewTypeObj = {
     isFromReco: function () {
         const trackingValue = this.getTrackingValue();
 
-        return trackingValue.includes('.outbrain.');
+        return (trackingValue.includes('.outbrain.') && trackingValue.includes('kooperation.'));
     },
 
     isFromRecoFf: function () {
@@ -459,7 +459,7 @@ s._articleViewTypeObj = {
             channnel = 'Recommendation';
             channelCategory = 'Recommendation from Article';
         }else if (trackingValue.startsWith('upday')) {
-            pageViewEvent = 'event204'; //Outbrain Reco at Mobile HOME
+            pageViewEvent = 'event204'; 
             channnel = 'Upday';
         } else if (trackingValue && isMarketing) {
             pageViewEvent = 'event206';
