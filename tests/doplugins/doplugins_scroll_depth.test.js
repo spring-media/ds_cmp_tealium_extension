@@ -242,9 +242,9 @@ describe('_scrollDepthObj', () => {
         it('should set scroll depth data in s object when called', () => {
             const addEventMock = jest.spyOn(s._eventsObj, 'addEvent').mockImplementation();
             s._ppvPreviousPage = 'test_ppvPreviousPage';
-            s._ppvInitialPercentViewed = 'test_ppvInitialPercentViewed';
-            s._ppvHighestPixelsSeen = 'test_ppvHighestPixelsSeen';
-            s._ppvHighestPercentViewed = 'test_ppvHighestPercentViewed';
+            s._ppvInitialPercentViewed = '1';
+            s._ppvHighestPixelsSeen = '100';
+            s._ppvHighestPercentViewed = '12';
 
             s._scrollDepthObj.setData(s);
 

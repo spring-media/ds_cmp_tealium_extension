@@ -178,6 +178,7 @@ s.doPlugins = function (s) {
     s.eVar181 = new Date().getMinutes().toString();
     s.eVar185 = window.utag.data.myCW || '';
     s.eVar33 = s.prop61 = s.getPreviousValue(s.pageName);
+    s.prop65 = Math.round(s._ppvHighestPercentViewed / 10) * 10;
 
     s._bildAppsPageNameObj.setAppsPageName(s);
     s._orderViaArticle(s);
