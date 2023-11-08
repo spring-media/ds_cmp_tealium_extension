@@ -167,7 +167,7 @@
             {
                 window.utag.loader.SC('utag_main', {'cmp_after_sub': 'true'});
                 window.utag.data['cp.utag_main_cmp_after_sub'] = 'true';
-            } else{
+            } else if (eventType !== 12 ) {
                 window.utag.loader.SC('utag_main', {'cmp_after': 'true'});
                 window.utag.data['cp.utag_main_cmp_after'] = 'true';
             }
