@@ -69,7 +69,7 @@ describe('articleViewType()', () => {
 
     describe('isOtherTrackingValue()', () => {
         it('should return TRUE if trackingChannel is from the list of other', function () {
-            const trackingChannel = ['social.','upday','outbrain'];
+            const trackingChannel = ['social.','upday','kooperation'];
             trackingChannel.forEach((item) => {
                 const trackingValue = jest.spyOn(s._articleViewTypeObj, 'getTrackingValue').mockReturnValue(item);
                 const result = s._articleViewTypeObj.isOtherTrackingValue(trackingValue);

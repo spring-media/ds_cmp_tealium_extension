@@ -38,6 +38,7 @@ describe('s.doPlugins()', () => {
         expect(s.eVar185).toBe(window.utag.data.myCW);
         expect(s.prop61).toBe('test_value');
         expect(s.eVar33).toBe('test_value');
+        expect(typeof s.prop65).toBe('number');
 
     });
 
