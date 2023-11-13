@@ -421,7 +421,7 @@ s._articleViewTypeObj = {
     getViewTypeByTrackingProperty: function () {
         const trackingValue = this.getTrackingValue();
         let pageViewEvent;
-        let channnel;
+        let channel;
         let channelCategory;
         const isMarketing = this.isPaidMarketing(); 
         const isFromReco = this.isFromReco();
@@ -431,39 +431,39 @@ s._articleViewTypeObj = {
 
         if (trackingValue.startsWith('sea.')) {
             pageViewEvent = 'event24,event206,event242'; // Search
-            channnel = 'Paid Marketing';
+            channel = 'Paid Marketing';
             channelCategory = 'Sea';
         } else if (trackingValue.startsWith('social_paid.')) {
             pageViewEvent = 'event25,event206,event241'; //Social Paid Marketing
-            channnel = 'Paid Marketing';
+            channel = 'Paid Marketing';
             channelCategory = 'Social Paid';
         } else if (trackingValue.startsWith('socialmediapaid.')) {
             pageViewEvent = 'event25,event206,event241'; //Social Paid Marketing
-            channnel = 'Paid Marketing';
+            channel = 'Paid Marketing';
             channelCategory = 'Social Paid';
         } else if (trackingValue.startsWith('social.')) {
             pageViewEvent = 'event25,event220'; //Social
-            channnel = 'Organic Social';
+            channel = 'Organic Social';
         } else if (isFromRecoFf === 'desktop') {
             pageViewEvent = 'event76,event230,event231'; //Outbrain Reco at Desktop HOME
-            channnel = 'Recommendation';
+            channel = 'Recommendation';
             channelCategory = 'Recommendation from Home';
         } else if (isFromRecoFf === 'mobile') {
             pageViewEvent = 'event77,event230,event231'; //Outbrain Reco at Mobile HOME
-            channnel = 'Recommendation';
+            channel = 'Recommendation';
             channelCategory = 'Recommendation from Home';
         } else if (isFromReco && pageNumberOne) {
             pageViewEvent = 'event102,event230,event232'; //Outbrain Reco at Articles
-            channnel = 'Recommendation';
+            channel = 'Recommendation';
             channelCategory = 'Recommendation from Article';
         }else if (trackingValue.startsWith('upday')) {
             pageViewEvent = 'event204'; 
-            channnel = 'Upday';
+            channel = 'Upday';
         } else if (trackingValue && isMarketing) {
             pageViewEvent = 'event206';
-            channnel = 'Paid Marketing';
+            channel = 'Paid Marketing';
         }
-        return {pageViewEvent, channnel, channelCategory};
+        return {pageViewEvent, channel, channelCategory};
     },
 
     setPageSourceAndAgeForCheckout: function (s) {
