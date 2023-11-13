@@ -350,10 +350,8 @@ s._articleViewTypeObj = {
 
         if (this.isFromHome(referrer) && this.isNavigated() && !this.isSelfRedirect() && !this.isFromOnsiteSearch()) {
             pageViewEvent = 'event22,event200'; //Home
-            channel = 'Home';
         } else {
             pageViewEvent = 'event23,event201'; //Other Internal
-            channel = 'Other Internal';
         }
         return {pageViewEvent, channel};
     },
@@ -384,7 +382,7 @@ s._articleViewTypeObj = {
             channel = 'Register & Payment';
         } else if (this.isFromSecureMypass(referrer)||this.isFromPaypal(referrer)) {
             pageViewEvent = 'event23,event201'; // Login via secure.mypass during session
-            channel = 'Other Internal';
+            //channel = '';
         } else if (this.isDirect(referrer)) {
             pageViewEvent = 'event207'; // no Referrer at Session Start
             channel = 'Direct';
@@ -445,7 +443,7 @@ s._articleViewTypeObj = {
             channelCategory = 'Social Paid';
         } else if (trackingValue.startsWith('social.')) {
             pageViewEvent = 'event25,event220'; //Social
-            channnel = 'Social';
+            channnel = 'Organic Social';
         } else if (isFromRecoFf === 'desktop') {
             pageViewEvent = 'event76,event230,event231'; //Outbrain Reco at Desktop HOME
             channnel = 'Recommendation';
@@ -498,8 +496,8 @@ s._articleViewTypeObj = {
         if (!s._utils.isAdWall(s)) {
             if (s._utils.isArticlePage()) {
                 s._articleViewType = s.eVar44 = pageViewEvent;
-                s.eVar38 = s.prop59 = channel;
-                s.eVar39 = s.prop60 = channelCategory;
+                s.eVar37 = s.prop59 = channel;
+                s.eVar38 = s.prop60 = channelCategory;
                 s._eventsObj.addEvent(pageViewEvent);
                 this.setPageSourceAndAgeForCheckout(s);
             }
@@ -568,41 +566,53 @@ s._setExternalReferringDomainEvents = function (s) {
         {
             domains: ['instagram.com'],
             event: 'event53,event224',
-            channel: 'Social',
+            channel: 'Organic Social',
             channelCategory: 'Instagram',
         },
         {
             domains: ['youtube.com'],
             event: 'event50,event223',
-            channel: 'Social',
+            channel: 'Organic Social',
             channelCategory: 'Youtube',
         },
         {
             domains: ['t.co', 'twitter.com', 'android-app://com.twitter.android'],
             event: 'event51,event222',
-            channel: 'Social',
+            channel: 'Organic Social',
             channelCategory: 'Twitter',
         },
         {
             domains: ['facebook.com'],
             event: 'event52,event221',
-            channel: 'Social',
+            channel: 'Organic Social',
             channelCategory: 'Facebook',
         },
         {
             domains: ['telegram.org', 'org.telegram'],
             event: 'event225',
-            channel: 'Social',
+            channel: 'Organic Social',
             channelCategory: 'Telegram',
         },
         {
-            domains: ['linkedin.com', 'org.linkedin'],
+            domains: ['linkedin.com', 'org.linkedin','linkedin.android', 'lnkd.in', 'linkin.bio'],
             event: 'event227',
-            channel: 'Social',
+            channel: 'Organic Social',
             channelCategory: 'LinkedIn',
         },
         {
-            domains: ['xing.com', 'away.vk.com', 'www.pinterest.de', 'linkedin.android', 'ok.ru', 'mobile.ok.ru', 'www.yammer.com', 'www.netvibes.com', 'pinterest.com', 'wordpress.com', 'blogspot.com', 'lnkd.in', 'xing.android', 'vk.com', 'com.twitter.android', 'm.ok.ru', 'welt.de/instagram', 'linkin.bio'],
+            domains: ['www.pinterest.de', 'pinterest.com',],
+            event: 'event227',
+            channel: 'Organic Social',
+            channelCategory: 'Pinterest',
+        },
+        {
+            domains: ['xing.com', 'xing.android'],
+            event: 'event227',
+            channel: 'Organic Social',
+            channelCategory: 'Xing',
+        },
+        {
+            domains: ['away.vk.com', 'ok.ru', 'mobile.ok.ru', 'www.yammer.com', 'www.netvibes.com', 'wordpress.com', 'blogspot.com', 'vk.com', 'com.twitter.android', 'm.ok.ru', 'welt.de/instagram'],
             event: 'event226',
             channel: 'organic Search Non-Brand',
             channelCategory: 'other organic Search',
@@ -624,8 +634,8 @@ s._setExternalReferringDomainEvents = function (s) {
             if (isRegexMatch || isDomainMatch) {
                 s._eventsObj.addEvent(event); 
                 s.eVar44 = s.evar44 ? s.eVar44 + ',' + event : s.eVar44 = event;
-                s.eVar38 = s.prop59 = channel;
-                s.eVar39 = s.prop60 = channelCategory;
+                s.eVar37 = s.prop59 = channel;
+                s.eVar38 = s.prop60 = channelCategory;
                 s._articleViewType = s.eVar44;
             } 
         });
@@ -647,7 +657,7 @@ s._setTrackingValueEvents = function (s) {
             
             if (socialTrackingParameter) {
                 let event;
-                let channel = 'Social';
+                let channel = 'Organic Social';
                 let channelCategory;
                 switch (true) {
                 case socialTrackingValue.includes('telegram'):
@@ -680,8 +690,8 @@ s._setTrackingValueEvents = function (s) {
                 }
                 s._eventsObj.addEvent(event);
                 s._articleViewType = s.eVar44 += ',' + event;
-                s.eVar38 = s.prop59 = channel; 
-                s.eVar39 = s.prop60 = channelCategory;
+                s.eVar37 = s.prop59 = channel; 
+                s.eVar38 = s.prop60 = channelCategory;
             } 
         }
     }
