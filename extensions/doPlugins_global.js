@@ -382,7 +382,7 @@ s._articleViewTypeObj = {
             channel = 'Register & Payment';
         } else if (this.isFromSecureMypass(referrer)||this.isFromPaypal(referrer)) {
             pageViewEvent = 'event23,event201'; // Login via secure.mypass during session
-            channel = 'Other Internal';
+            //channel = '';
         } else if (this.isDirect(referrer)) {
             pageViewEvent = 'event207'; // no Referrer at Session Start
             channel = 'Direct';
@@ -578,7 +578,7 @@ s._setExternalReferringDomainEvents = function (s) {
         {
             domains: ['t.co', 'twitter.com', 'android-app://com.twitter.android'],
             event: 'event51,event222',
-            channel: 'Organic ocial',
+            channel: 'Organic Social',
             channelCategory: 'Twitter',
         },
         {
@@ -657,7 +657,7 @@ s._setTrackingValueEvents = function (s) {
             
             if (socialTrackingParameter) {
                 let event;
-                let channel = 'Social';
+                let channel = 'Organic Social';
                 let channelCategory;
                 switch (true) {
                 case socialTrackingValue.includes('telegram'):
