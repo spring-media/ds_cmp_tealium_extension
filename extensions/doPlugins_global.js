@@ -601,13 +601,13 @@ s._setExternalReferringDomainEvents = function (s) {
         },
         {
             domains: ['www.pinterest.de', 'pinterest.com',],
-            event: 'event227',
+            event: 'event229',
             channel: 'Organic Social',
             channelCategory: 'Pinterest',
         },
         {
             domains: ['xing.com', 'xing.android'],
-            event: 'event227',
+            event: 'event228',
             channel: 'Organic Social',
             channelCategory: 'Xing',
         },
@@ -684,6 +684,14 @@ s._setTrackingValueEvents = function (s) {
                     event = 'event227';
                     channelCategory = 'LinkedIn';
                     break;
+                case socialTrackingValue.includes('xing'):
+                    event = 'event228';
+                    channelCategory = 'Xing';
+                    break;     
+                case socialTrackingValue.includes('pinterest'):
+                    event = 'event229';
+                    channelCategory = 'Pinterest';
+                    break;                                                     
                 default:
                     event = 'event226';
                     channelCategory = 'other organic Social';

@@ -150,6 +150,20 @@ describe('External referring domains', () => {
         expect(addEventMock).toHaveBeenCalledWith('event227');
     });
 
+    it('should set event227 if the referring domain includes xing.com', () => {
+        getReferrerMock.mockReturnValue('xing.com');
+
+        s._setExternalReferringDomainEvents(s);
+        expect(addEventMock).toHaveBeenCalledWith('event228');
+    });
+
+    it('should set event227 if the referring domain includes pinterest.com', () => {
+        getReferrerMock.mockReturnValue('pinterest.com');
+
+        s._setExternalReferringDomainEvents(s);
+        expect(addEventMock).toHaveBeenCalledWith('event229');
+    });
+
     it('should set event226 if the referring domain includes a social referrer like wordpress.com', () => {
         getReferrerMock.mockReturnValue('wordpress.com');
 
