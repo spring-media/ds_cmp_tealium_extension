@@ -339,6 +339,10 @@ s._articleViewTypeObj = {
         return (s._ppvPreviousPage || '').includes('search :');
     },
 
+    isFromLesenSieAuch: function() {
+        return (window.utag.data['cp.utag_main_lsa'].includes('1'));
+    },
+
     getInternalType: function (referrer) {
         let pageViewEvent;
         let channel;
@@ -348,7 +352,7 @@ s._articleViewTypeObj = {
             return {pageViewEvent};
         }
 
-        if (this.isFromHome(referrer) && this.isNavigated() && !this.isSelfRedirect() && !this.isFromOnsiteSearch()) {
+        if (this.isFromHome(referrer) && this.isNavigated() && !this.isSelfRedirect() && !this.isFromOnsiteSearch() && !this.isFromLesenSieAuch()) {
             pageViewEvent = 'event22,event200'; //Home
         } else {
             pageViewEvent = 'event23,event201'; //Other Internal
