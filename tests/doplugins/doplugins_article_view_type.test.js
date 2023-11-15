@@ -488,12 +488,33 @@ describe('articleViewType()', () => {
         });
     });
 
+    describe('isFromLesenSieAuch', () => {
+        
+        it('should return TRUE if page was loaded via "LESEN SIE AUCH" that is shown in cookie utag_main_lsa)', function () {
+            
+            window.utag.data['cp.utag_main_lsa'] = '1';
+            
+            const result = s._articleViewTypeObj.isFromLesenSieAuch();
+            expect(result).toBe(true);
+        });
+
+        it('should return FALSE if page was NOT loaded via "LESEN SIE AUCH" that is shown in cookie utag_main_lsa)', function () {
+            
+            window.utag.data['cp.utag_main_lsa'] = 'any_value';
+            
+            const result = s._articleViewTypeObj.isFromLesenSieAuch();
+            expect(result).toBe(false);
+        });
+
+    });
+
     describe('getInternalType()', () => {
         let isFromHomeMock;
         let isSamePageRedirectMock;
         let isNavigatedMock;
         let isSelfRedirectMock;
         let isFromOnsiteSearchMock;
+        let isFromLesenSieAuchMock;
 
         beforeEach(() => {
             isFromHomeMock = jest.spyOn(s._articleViewTypeObj, 'isFromHome').mockReturnValue(false);
@@ -501,6 +522,7 @@ describe('articleViewType()', () => {
             isNavigatedMock = jest.spyOn(s._articleViewTypeObj, 'isNavigated').mockReturnValue(false);
             isSelfRedirectMock = jest.spyOn(s._articleViewTypeObj, 'isSelfRedirect').mockReturnValue(false);
             isFromOnsiteSearchMock = jest.spyOn(s._articleViewTypeObj, 'isFromOnsiteSearch').mockReturnValue(false);
+            isFromLesenSieAuchMock = jest.spyOn(s._articleViewTypeObj, 'isFromLesenSieAuch').mockReturnValue(false);
         });
 
         it('should return event22 if referrer is a home page and page was navigated and it was no selfRedirect and not via OnsiteSearch', function () {
@@ -508,6 +530,8 @@ describe('articleViewType()', () => {
             isFromHomeMock.mockReturnValue(true);
             isNavigatedMock.mockReturnValue(true);
             isSelfRedirectMock.mockReturnValue(false);
+            isFromOnsiteSearchMock.mockReturnValue(false);
+            isFromLesenSieAuchMock.mockReturnValue(false);
             const result = s._articleViewTypeObj.getInternalType('http://www.any-domain.de');
             expect(isFromHomeMock).toHaveBeenCalledWith(anyReferrer);
             expect(result.pageViewEvent).toBe('event22,event200','Home');
