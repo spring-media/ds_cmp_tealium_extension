@@ -87,6 +87,13 @@ describe('External referring domains', () => {
         expect(addEventMock).toHaveBeenCalledWith('event53,event224');
     });
 
+    it('should set event53 if the referring domain includes linkin.bio', () => {
+        getReferrerMock.mockReturnValue('linkin.bio');
+
+        s._setExternalReferringDomainEvents(s);
+        expect(addEventMock).toHaveBeenCalledWith('event53,event224');
+    });
+
     it('should set event50 if the referring domain includes youtube.com', () => {
         getReferrerMock.mockReturnValue('youtube.com/');
 

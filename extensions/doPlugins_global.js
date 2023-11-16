@@ -368,7 +368,7 @@ s._articleViewTypeObj = {
 
         if (this.isFromSearch(referringDomain)) {
             pageViewEvent = 'event24,event210'; 
-            channel = 'organic Search Non-Brand';           
+            channel = 'Organic Search Non-Brand';           
         } else if (this.isFromSocial(referrer)) {
             pageViewEvent = 'event25,event220'; 
             channel = 'Social';
@@ -524,20 +524,20 @@ s._setExternalReferringDomainEvents = function (s) {
         {
             domains: ['news.google'],
             event: 'event48,event211',
-            channel: 'organic Search Non-Brand',
+            channel: 'Organic Search Non-Brand',
             channelCategory: 'Google News',
         },
         {
             domains: ['bing.com', 'ecosia.org', 'duckduckgo.com', 'amp-welt-de.cdn.ampproject.org', 'qwant.com', 'suche.t-online.de', '.yandex.', 'yahoo.com', 'googleapis.com', 'nortonsafe.search.ask.com', 'wikipedia.org', 'googleadservices.com', 'search.myway.com', 'lycos.de'],
             event: 'event213',
-            channel: 'organic Search Non-Brand',
-            channelCategory: 'other organic Search',
+            channel: 'Organic Search Non-Brand',
+            channelCategory: 'Other organic Search',
         },
         {
             // domains: ['www.google.com', 'www.google.de', 'www.google.otherTopLevelDomains not followed by slash'],
             event: 'event49,event212',
             matchRegex:  /\.google\.[a-z]+($|[^/.a-z].*)/,
-            channel: 'organic Search Non-Brand',
+            channel: 'Organic Search Non-Brand',
             channelCategory: 'Google Discover',
 
         },
@@ -546,29 +546,29 @@ s._setExternalReferringDomainEvents = function (s) {
             // domains: ['googlequicksearchbox/','googlequicksearchbox/*']],
             event: 'event49,event212',
             matchRegex:  /.*googlequicksearchbox\/.*/i,
-            channel: 'organic Search Non-Brand',
+            channel: 'Organic Search Non-Brand',
             channelCategory: 'Google Discover',
             
         },
         {
             // domains: ['www.google.com/', 'www.google.de/', 'www.google.otherTopLevelDomains followed by slash'],
             event: 'event213',
-            // matchRegex: /\.google\.[a-z]+\/?$/,
-            matchRegex:  /.*google\.[^/.]*\/.*/i,
-            channel: 'organic Search Non-Brand',
-            channelCategory: 'other organic Search',
+            //matchRegex:  /.*google\.[^/.]*\/.*/i,
+            matchRegex:  /^(?!.*news\.google\.[^/.]*\/).*google\.[^/.]*\/.*/,
+            channel: 'Organic Search Non-Brand',
+            channelCategory: 'Other organic Search',
         },
         
         {
             // domains: ['googlequicksearchbox','googlequicksearchbox not followed by slash'],
             event: 'event213',
             matchRegex: /.*googlequicksearchbox($|[^/].*)/i,
-            channel: 'organic Search Non-Brand',
+            channel: 'Organic Search Non-Brand',
             channelCategory: '',
         },
 
         {
-            domains: ['instagram.com'],
+            domains: ['instagram.com', ['linkin.bio']],
             event: 'event53,event224',
             channel: 'Organic Social',
             channelCategory: 'Instagram',
@@ -598,7 +598,7 @@ s._setExternalReferringDomainEvents = function (s) {
             channelCategory: 'Telegram',
         },
         {
-            domains: ['linkedin.com', 'org.linkedin','linkedin.android', 'lnkd.in', 'linkin.bio'],
+            domains: ['linkedin.com', 'org.linkedin','linkedin.android', 'lnkd.in'], //linkin.bio removed as it never happens
             event: 'event227',
             channel: 'Organic Social',
             channelCategory: 'LinkedIn',
@@ -618,8 +618,8 @@ s._setExternalReferringDomainEvents = function (s) {
         {
             domains: ['away.vk.com', 'ok.ru', 'mobile.ok.ru', 'www.yammer.com', 'www.netvibes.com', 'wordpress.com', 'blogspot.com', 'vk.com', 'com.twitter.android', 'm.ok.ru', 'welt.de/instagram'],
             event: 'event226',
-            channel: 'organic Search Non-Brand',
-            channelCategory: 'other organic Search',
+            channel: 'Organic Search Non-Brand',
+            channelCategory: 'Other organic Search',
         },
     ];
 
@@ -698,7 +698,7 @@ s._setTrackingValueEvents = function (s) {
                     break;                                                     
                 default:
                     event = 'event226';
-                    channelCategory = 'other organic Social';
+                    channelCategory = 'Other organic Social';
                 }
                 s._eventsObj.addEvent(event);
                 s._articleViewType = s.eVar44 += ',' + event;
