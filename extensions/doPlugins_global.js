@@ -554,7 +554,7 @@ s._setExternalReferringDomainEvents = function (s) {
             // domains: ['www.google.com/', 'www.google.de/', 'www.google.otherTopLevelDomains followed by slash'],
             event: 'event213',
             //matchRegex:  /.*google\.[^/.]*\/.*/i,
-            matchRegex:  /^(?!.*news\.google\.[^/.]*\/).*google\.[^\/.]*\/.*/,
+            matchRegex:  /^(?!.*news\.google\.[^/.]*\/).*google\.[^/.]*\/.*/,
             channel: 'Organic Search Non-Brand',
             channelCategory: 'Other organic Search',
         },
