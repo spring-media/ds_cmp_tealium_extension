@@ -340,7 +340,7 @@ s._articleViewTypeObj = {
     },
 
     isFromLesenSieAuch: function() {
-        return (window.utag.data['cp.utag_main_lsa'].includes('1'));
+        return ((window.utag.data['cp.utag_main_lsa'] || '').includes('1'));
     },
 
     getInternalType: function (referrer) {
