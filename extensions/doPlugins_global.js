@@ -346,6 +346,7 @@ s._articleViewTypeObj = {
     getInternalType: function (referrer) {
         let pageViewEvent;
         let channel;
+        const pageNumberOne = s._utils.isPageOneInSession();
         // Check if page view was caused by a viewport switch
         if (this.isSamePageRedirect(referrer)) {
             pageViewEvent = '';
@@ -354,8 +355,10 @@ s._articleViewTypeObj = {
 
         if (this.isFromHome(referrer) && this.isNavigated() && !this.isSelfRedirect() && !this.isFromOnsiteSearch() && !this.isFromLesenSieAuch()) {
             pageViewEvent = 'event22,event200'; //Home
+            channel = pageNumberOne ? 'Home' : '';
         } else {
             pageViewEvent = 'event23,event201'; //Other Internal
+            channel = pageNumberOne ? 'Other Internal' : '';
         }
         return {pageViewEvent, channel};
     },
@@ -460,7 +463,11 @@ s._articleViewTypeObj = {
             pageViewEvent = 'event102,event230,event232'; //Outbrain Reco at Articles
             channel = 'Recommendation';
             channelCategory = 'Recommendation from Article';
-        }else if (trackingValue.startsWith('upday')) {
+        } else if (isFromReco) {
+            pageViewEvent = 'event23,event201'; //Outbrain Reco Fallbackevent
+            channel = '';
+            channelCategory = '';
+        } else if (trackingValue.startsWith('upday')) {
             pageViewEvent = 'event204'; 
             channel = 'Upday';
         } else if (trackingValue && isMarketing) {
@@ -500,7 +507,7 @@ s._articleViewTypeObj = {
         if (!s._utils.isAdWall(s)) {
             if (s._utils.isArticlePage()) {
                 s._articleViewType = s.eVar44 = pageViewEvent;
-                s.eVar37 = s.prop59 = channel;
+                s.eVar37 = s.prop59 = channel || 'no-entry';
                 s.eVar38 = s.prop60 = channelCategory;
                 s._eventsObj.addEvent(pageViewEvent);
                 this.setPageSourceAndAgeForCheckout(s);
@@ -638,7 +645,7 @@ s._setExternalReferringDomainEvents = function (s) {
             if (isRegexMatch || isDomainMatch) {
                 s._eventsObj.addEvent(event); 
                 s.eVar44 = s.evar44 ? s.eVar44 + ',' + event : s.eVar44 = event;
-                s.eVar37 = s.prop59 = channel;
+                s.eVar37 = s.prop59 = channel || 'no-entry';
                 s.eVar38 = s.prop60 = channelCategory;
                 s._articleViewType = s.eVar44;
             } 
@@ -702,7 +709,7 @@ s._setTrackingValueEvents = function (s) {
                 }
                 s._eventsObj.addEvent(event);
                 s._articleViewType = s.eVar44 += ',' + event;
-                s.eVar37 = s.prop59 = channel; 
+                s.eVar37 = s.prop59 = channel || 'no-entry'; 
                 s.eVar38 = s.prop60 = channelCategory;
             } 
         }

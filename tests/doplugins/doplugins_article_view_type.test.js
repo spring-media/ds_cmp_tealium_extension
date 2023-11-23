@@ -817,6 +817,12 @@ describe('articleViewType()', () => {
             expect(result.pageViewEvent).toBe('event77,event230,event231');
 
         });
+        it('it should return the right event name if tracking value is of type: Outbrain ', () => {
+            getTrackingValueMock.mockReturnValue('kooperation.any-value.outbrain.');
+            let result = s._articleViewTypeObj.getViewTypeByTrackingProperty();
+            expect(result.pageViewEvent).toBe('event23,event201');
+
+        });
         it('it should return the right event name if tracking value is Paid Marketing like email. as one example', () => {
             getTrackingValueMock.mockReturnValue('email.');
             let result = s._articleViewTypeObj.getViewTypeByTrackingProperty();
