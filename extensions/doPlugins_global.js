@@ -454,15 +454,15 @@ s._articleViewTypeObj = {
         } else if (isFromRecoFf === 'desktop') {
             pageViewEvent = 'event76,event230,event231'; //Outbrain Reco at Desktop HOME
             channel = 'Recommendation';
-            channelCategory = 'Recommendation from Home';
+            channelCategory = 'External F&F Content Recommendation';
         } else if (isFromRecoFf === 'mobile') {
             pageViewEvent = 'event77,event230,event231'; //Outbrain Reco at Mobile HOME
             channel = 'Recommendation';
-            channelCategory = 'Recommendation from Home';
+            channelCategory = 'External F&F Content Recommendation';
         } else if (isFromReco && pageNumberOne) {
             pageViewEvent = 'event102,event230,event232'; //Outbrain Reco at Articles
             channel = 'Recommendation';
-            channelCategory = 'Recommendation from Article';
+            channelCategory = 'Internal Content Recommendation';
         } else if (isFromReco) {
             pageViewEvent = 'event23,event201'; //Outbrain Reco Fallbackevent
             channel = '';
@@ -482,9 +482,12 @@ s._articleViewTypeObj = {
             || window.utag.data.page_datePublication_age
             || window.utag.data.screen_agePublication
             || '';
-
-        //Adding article view type and page age to cookies for checkout
+        const channel = s.eVar37 || '';
+        const channelCat = s.eVar38 || '';
+        //Adding article view type, channel, channelCategory and page age to cookies for checkout
         window.utag.loader.SC('utag_main', { 'articleview': s._articleViewType + ';exp-session' });
+        window.utag.loader.SC('utag_main', { 'channel':  channel + ';exp-session' });
+        window.utag.loader.SC('utag_main', { 'channelCat': channelCat + ';exp-session' });
         window.utag.data['cp.utag_main_articleview'] = s._articleViewType;
         window.utag.loader.SC('utag_main', { 'pa': pageAge + ';exp-session' });
         window.utag.data['cp.utag_main_pa'] = pageAge;
