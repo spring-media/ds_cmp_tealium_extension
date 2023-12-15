@@ -163,7 +163,7 @@ s._articleViewTypeObj = {
     },
 
     isFromSocial: function (referrer) {
-        const socialDomains = ['facebook.com', 'xing.com', 'instagram.com', 'youtube.com', 't.co', 'linkedin.com', 'away.vk.com', 'www.pinterest.de', 'linkedin.android', 'ok.ru', 'mobile.ok.ru', 'www.yammer.com', 'twitter.com', 'www.netvibes.com', 'pinterest.com', 'wordpress.com', 'blogspot.com', 'lnkd.in', 'xing.android', 'vk.com', 'com.twitter.android', 'm.ok.ru', 'welt.de/instagram', 'linkin.bio', 'telegram.org', 'org.telegram'];
+        const socialDomains = ['facebook.com', 'xing.com', 'instagram.com', 'youtube.com', 't.co', 'linkedin.com', 'away.vk.com', 'www.pinterest.de', 'linkedin.android', 'ok.ru', 'mobile.ok.ru', 'www.yammer.com', 'twitter.com', 'www.netvibes.com', 'pinterest.com', 'wordpress.com', 'blogspot.com', 'lnkd.in', 'xing.android', 'vk.com', 'com.twitter.android', 'm.ok.ru', 'welt.de/instagram', 'linkin.bio', 'telegram.org', 'org.telegram', '.threads.net'];
 
         return socialDomains.some(item => {
             return referrer.indexOf(item) !== -1;
@@ -626,10 +626,10 @@ s._setExternalReferringDomainEvents = function (s) {
             channelCategory: 'Xing',
         },
         {
-            domains: ['away.vk.com', 'ok.ru', 'mobile.ok.ru', 'www.yammer.com', 'www.netvibes.com', 'wordpress.com', 'blogspot.com', 'vk.com', 'com.twitter.android', 'm.ok.ru', 'welt.de/instagram'],
+            domains: ['away.vk.com', 'ok.ru', 'mobile.ok.ru', 'www.yammer.com', 'www.netvibes.com', 'wordpress.com', 'blogspot.com', 'vk.com', 'com.twitter.android', 'm.ok.ru', 'welt.de/instagram', '.threads.net'],
             event: 'event226',
-            channel: 'Organic Search Non-Brand',
-            channelCategory: 'Other organic Search',
+            channel: 'Organic Search Social',
+            channelCategory: 'Other organic Social',
         },
     ];
 
