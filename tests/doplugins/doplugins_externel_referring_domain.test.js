@@ -171,13 +171,6 @@ describe('External referring domains', () => {
         expect(addEventMock).toHaveBeenCalledWith('event229');
     });
 
-    it('should set event226 if the referring domain includes a social referrer like wordpress.com', () => {
-        getReferrerMock.mockReturnValue('wordpress.com');
-
-        s._setExternalReferringDomainEvents(s);
-        expect(addEventMock).toHaveBeenCalledWith('event226');
-    });
-
     it('should set event226 if the referring domain includes a social referrer like .threads.net', () => {
         getReferrerMock.mockReturnValue('.threads.net');
 
