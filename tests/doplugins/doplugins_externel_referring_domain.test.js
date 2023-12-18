@@ -177,4 +177,11 @@ describe('External referring domains', () => {
         s._setExternalReferringDomainEvents(s);
         expect(addEventMock).toHaveBeenCalledWith('event226');
     });
+
+    it('should set event226 if the referring domain includes a social referrer like .threads.net', () => {
+        getReferrerMock.mockReturnValue('.threads.net');
+
+        s._setExternalReferringDomainEvents(s);
+        expect(addEventMock).toHaveBeenCalledWith('event226');
+    });
 });
