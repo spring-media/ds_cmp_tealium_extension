@@ -626,16 +626,10 @@ s._setExternalReferringDomainEvents = function (s) {
             channelCategory: 'Xing',
         },
         {
-            domains: ['welt.de/instagram', '.threads.net'],
+            domains: ['away.vk.com', 'ok.ru', 'mobile.ok.ru', 'www.yammer.com', 'www.netvibes.com', 'wordpress.com', 'blogspot.com', 'vk.com', 'com.twitter.android', 'm.ok.ru', 'welt.de/instagram', '.threads.net'],
             event: 'event226',
             channel: 'Organic Search Social',
             channelCategory: 'Other organic Social',
-        },
-        {
-            domains: ['away.vk.com', 'ok.ru', 'mobile.ok.ru', 'www.yammer.com', 'www.netvibes.com', 'wordpress.com', 'blogspot.com', 'vk.com', 'com.twitter.android', 'm.ok.ru'],
-            event: 'event213',
-            channel: 'Organic Search Non-Brand',
-            channelCategory: 'Other organic Search',
         },
 
     ];
