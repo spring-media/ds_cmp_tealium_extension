@@ -355,10 +355,10 @@ s._articleViewTypeObj = {
 
         if (this.isFromHome(referrer) && this.isNavigated() && !this.isSelfRedirect() && !this.isFromOnsiteSearch() && !this.isFromLesenSieAuch()) {
             pageViewEvent = 'event22,event200'; //Home
-            channel = pageNumberOne ? 'Home' : '';
+            channel = pageNumberOne ? 'Direct' : '';
         } else {
             pageViewEvent = 'event23,event201'; //Other Internal
-            channel = pageNumberOne ? 'Other Internal' : '';
+            channel = pageNumberOne ? 'Direct' : '';
         }
         return {pageViewEvent, channel};
     },
