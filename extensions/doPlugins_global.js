@@ -79,7 +79,7 @@ s._utils = {
             || (!!window.utag.data.page_document_type && window.utag.data.page_document_type.indexOf('adwall') !== -1));
     },
 
-    isHomepage: function (s) {
+    isHomepage: function () {
         return (!!window.utag.data['page_id']&& (window.utag.data['page_id'] === '22P2NufXQ03Ny17A6vwi'|| window.utag.data['page_id'] === 'wDmWJyqHFeqhJHmeuqfN')
                 || (this.getDocType === 'home'));
     },
