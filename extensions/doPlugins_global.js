@@ -79,6 +79,11 @@ s._utils = {
             || (!!window.utag.data.page_document_type && window.utag.data.page_document_type.indexOf('adwall') !== -1));
     },
 
+    isHomepage: function () {
+        return (!!window.utag.data['page_id']&& (window.utag.data['page_id'] === '22P2NufXQ03Ny17A6vwi'|| window.utag.data['page_id'] === 'wDmWJyqHFeqhJHmeuqfN')
+                || (this.getDocType === 'home'));
+    },
+
     isArticlePage: function () {
         const ARTICLE_TYPES = [
             'article',
@@ -366,13 +371,17 @@ s._articleViewTypeObj = {
     getExternalType: function (referrer) {
         const referringDomain = s._utils.getDomainFromURLString(referrer);
         const isSessionStart = s._utils.isSessionStart();
+        const isHomepage = s._utils.isHomepage();
         let pageViewEvent;
         let channel;
 
-        if (this.isFromSearch(referringDomain)) {
+        if (this.isFromSearch(referringDomain) && isHomepage) {
+            pageViewEvent = 'event24,event209'; 
+            channel = 'Organic Search Brand';           
+        } else if (this.isFromSearch(referringDomain)) {
             pageViewEvent = 'event24,event210'; 
-            channel = 'Organic Search Non-Brand';           
-        } else if (this.isFromSocial(referrer)) {
+            channel = 'Organic Search Non-Brand'; 
+        }else if (this.isFromSocial(referrer)) {
             pageViewEvent = 'event25,event220'; 
             channel = 'Social';
         } else if (this.isFromBild(referringDomain) && this.isFromHome(referrer)) {

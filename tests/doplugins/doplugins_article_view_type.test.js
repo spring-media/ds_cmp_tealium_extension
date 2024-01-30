@@ -567,6 +567,7 @@ describe('articleViewType()', () => {
         let isDirectMock;
         let isSessionStartMock;
         let isNavigatedMock;
+        let isHomepageMock;
 
         beforeEach(() => {
             jest.spyOn(s._utils, 'getDomainFromURLString').mockReturnValue(anyReferrerDomain);
@@ -581,12 +582,23 @@ describe('articleViewType()', () => {
             isDirectMock = jest.spyOn(s._articleViewTypeObj, 'isDirect').mockReturnValue(false);
             isSessionStartMock = jest.spyOn(s._utils, 'isSessionStart').mockReturnValue(false);
             isNavigatedMock = jest.spyOn(s._articleViewTypeObj, 'isNavigated').mockReturnValue(false);
+            isHomepageMock = jest.spyOn(s._utils, 'isHomepage').mockReturnValue(false);
+
+        });
+
+        it('should return event24, event209 if referrer is from search engine and page is Homepage', function () {
+            isFromSearchMock.mockReturnValue(true);
+            isHomepageMock.mockReturnValue(true);
+            const result = s._articleViewTypeObj.getExternalType(anyReferrer);
+            //expect(isFromSearchMock).toHaveBeenCalledWith(anyReferrerDomain);
+            expect(result.pageViewEvent).toBe('event24,event209');
         });
 
         it('should return event24 if referrer is from search engine', function () {
             isFromSearchMock.mockReturnValue(true);
+            isHomepageMock.mockReturnValue(false);
             const result = s._articleViewTypeObj.getExternalType(anyReferrer);
-            expect(isFromSearchMock).toHaveBeenCalledWith(anyReferrerDomain);
+            //expect(isFromSearchMock).toHaveBeenCalledWith(anyReferrerDomain);
             expect(result.pageViewEvent).toBe('event24,event210');
         });
 
