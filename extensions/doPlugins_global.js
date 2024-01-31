@@ -599,7 +599,7 @@ s._setExternalReferringDomainEvents = function (s) {
             channelCategory: 'Youtube',
         },
         {
-            domains: ['t.co', 'twitter.com', 'android-app://com.twitter.android'],
+            matchRegex:  /^t.co|twitter.com|android-app:\/\/com.twitter.android/,
             event: 'event51,event222',
             channel: 'Organic Social',
             channelCategory: 'Twitter',
