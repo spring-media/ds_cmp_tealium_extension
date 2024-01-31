@@ -122,6 +122,13 @@ describe('External referring domains', () => {
         expect(addEventMock).toHaveBeenCalledWith('event51,event222');
     });
 
+    it('should NOT set event51 if the referring domain includes getpocket.com (that could match t.co)', () => {
+        getReferrerMock.mockReturnValue('getpocket.com/');
+
+        s._setExternalReferringDomainEvents(s);
+        expect(addEventMock).not.toHaveBeenCalledWith('event51,event222');
+    });
+
     it('should set event52 if the referring domain includes facebook.com', () => {
         getReferrerMock.mockReturnValue('facebook.com/');
 
