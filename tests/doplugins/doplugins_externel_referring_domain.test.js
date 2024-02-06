@@ -115,7 +115,7 @@ describe('External referring domains', () => {
         expect(addEventMock).toHaveBeenCalledWith('event51,event222');
     });
 
-    it('should set event51 if the referring domain includes t.co', () => {
+    it('should set event51 if the referring domain includes t.co/', () => {
         getReferrerMock.mockReturnValue('t.co/');
 
         s._setExternalReferringDomainEvents(s);
