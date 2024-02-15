@@ -107,19 +107,19 @@ describe('_bildPageNameObj', () => {
 
     describe('isSportDatencenterTyp', () => {
         it('should be false if Domain is not sport', () => {
-            window.document.domain = 'any-sport.domain.de';
+            window.location.hostname = 'any-sport.domain.de';
             const returnValue = s._bildPageNameObj.isSportDatencenterTyp(s);
             expect(returnValue).toBe(false);
         });
 
         it('should be sportdaten if Domain is sport.bild.de', () => {
-            window.document.domain = 'sport.bild.de';
+            window.location.hostname = 'sport.bild.de';
             const returnValue = s._bildPageNameObj.isSportDatencenterTyp(s);
             expect(returnValue).toBe('sportdaten');
         });
 
         it('should be sportdaten if Domain is sportdaten.sportbild.bild.de', () => {
-            window.document.domain = 'sportdaten.sportbild.bild.de';
+            window.location.hostname = 'sportdaten.sportbild.bild.de';
             const returnValue = s._bildPageNameObj.isSportDatencenterTyp(s);
             expect(returnValue).toBe('sportdaten');
         });
@@ -246,7 +246,7 @@ describe('_bildPageNameObj', () => {
 
         it('should set relevant data if isSportdatencentertyp live-sport is true', () => {
             window.utag.data.page_id = '12345678';
-            window.document.domain = 'www.sport.bild.de';
+            window.location.hostname = 'www.sport.bild.de';
             window.location.pathname = 'any/path/liveticker/';
 
             s._bildPageNameObj.setPageName(s);
@@ -258,7 +258,7 @@ describe('_bildPageNameObj', () => {
 
         it('should set relevant data if isSportdatencentertyp sportdaten is true', () => {
             window.utag.data.page_id = '12345678';
-            window.document.domain = 'www.sport.bild.de';
+            window.location.hostname = 'www.sport.bild.de';
             window.location.pathname = 'any/path/';
             
             s._bildPageNameObj.setPageName(s);
