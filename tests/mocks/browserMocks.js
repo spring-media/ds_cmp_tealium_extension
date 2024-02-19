@@ -21,7 +21,8 @@ function createWindowMock() {
             referrer: '',
             domain: '',
             location: {
-                pathname: ''
+                pathname: '',
+                hostname: ''
             }
         },
         navigator: {
@@ -39,6 +40,7 @@ function createWindowMock() {
             hash: '',
             search: '',
             pathname: '',
+            hostname: ''
         }
     };
 }

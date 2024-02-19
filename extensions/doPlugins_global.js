@@ -52,7 +52,7 @@ s._utils = {
     },
 
     setSportDatencenter: function () {
-        if (window.document.domain.includes('sport.bild.de') || window.document.domain.includes('sportdaten.sportbild.bild.de')){
+        if (window.location.hostname.includes('sport.bild.de') || window.location.hostname.includes('sportdaten.sportbild.bild.de')){
             window.utag.data.page_document_type = window.location.pathname.includes('/liveticker/') ? 'live-sport' : 'sportdaten';
             return window.utag.data.page_document_type;
         }
@@ -178,7 +178,7 @@ s._articleViewTypeObj = {
     // Same domain check including subdomains.
     isFromInternal: function (referrer) {
         const referringDomain = s._utils.getDomainFromURLString(referrer);
-        const domain = window.document.domain;
+        const domain = window.location.hostname;
         const referringDomainSegments = referringDomain.split('.');
         const documentDomainSegments = domain.split('.');
 

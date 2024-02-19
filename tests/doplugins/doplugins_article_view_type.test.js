@@ -116,14 +116,14 @@ describe('articleViewType()', () => {
 
         it('should return TRUE if referring domain is from the same domain', function () {
             const anyDomain = 'any-domain.com';
-            window.document.domain = anyDomain;
+            window.location.hostname = anyDomain;
             getDomainFromURLStringMock.mockReturnValue(anyDomain);
             const result = s._articleViewTypeObj.isFromInternal(anyReferrer);
             expect(result).toBe(true);
         });
 
         it('should return FALSE if referring domain is NOT from the same domain', function () {
-            window.document.domain = 'any-domain.com';
+            window.location.hostname = 'any-domain.com';
             getDomainFromURLStringMock.mockReturnValue('any-other-domain.com');
             const result = s._articleViewTypeObj.isFromInternal(anyReferrer);
             expect(result).toBe(false);
@@ -131,7 +131,7 @@ describe('articleViewType()', () => {
 
         it('should return TRUE if referring domain is from sub domain', function () {
             const anyDomain = 'any-domain.com';
-            window.document.domain = anyDomain;
+            window.location.hostname = anyDomain;
             getDomainFromURLStringMock.mockReturnValue(`any-sub-domain.${anyDomain}`);
             const result = s._articleViewTypeObj.isFromInternal(anyReferrer);
             expect(result).toBe(true);
@@ -139,7 +139,7 @@ describe('articleViewType()', () => {
 
         it('should return TRUE if referring domain is from sub domain sportbild', function () {
             const anyDomain = 'sportbild.bild.de';
-            window.document.domain = anyDomain;
+            window.location.hostname = anyDomain;
             getDomainFromURLStringMock.mockReturnValue(anyDomain);
             const result = s._articleViewTypeObj.isFromInternal(anyReferrer);
             expect(result).toBe(true);
@@ -285,7 +285,7 @@ describe('articleViewType()', () => {
             const anyDomain = 'www.any-domain.de';
             const referrer = `https://${anyDomain}`;
             cleanUpReferrerMock.mockReturnValue(referrer);
-            window.document.domain = anyDomain;
+            window.location.hostname = anyDomain;
             const result = s._articleViewTypeObj.isFromHome(referrer);
             expect(result).toBe(true);
         });
@@ -294,7 +294,7 @@ describe('articleViewType()', () => {
             const anyDomain = 'www.any-domain.de';
             const referrer = `https://${anyDomain}/any-path`;
             cleanUpReferrerMock.mockReturnValue(referrer);
-            window.document.domain = anyDomain;
+            window.location.hostname = anyDomain;
             const result = s._articleViewTypeObj.isFromHome(referrer);
             expect(result).toBe(false);
         });
