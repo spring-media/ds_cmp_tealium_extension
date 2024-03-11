@@ -657,7 +657,7 @@ s._setExternalReferringDomainEvents = function (s) {
             });
             if (isRegexMatch || isDomainMatch) {
                 s._eventsObj.addEvent(event); 
-                s.eVar44 = window.sp_events = s.eVar44 ? s.eVar44 + ',' + event : s.eVar44 = event;
+                s.eVar44 = window.sp_events = s.eVar44 ? s.eVar44 + ',' + event : event;
                 s.eVar37 = s.prop59 = window.sp_m_channel = channel || 'no-entry';
                 s.eVar38 = s.prop60 = window.sp_m_channel_category = channelCategory;
                 s._articleViewType = s.eVar44;
@@ -723,7 +723,7 @@ s._setTrackingValueEvents = function (s) {
                 s._eventsObj.addEvent(event);
                 s._articleViewType = s.eVar44 = window.sp_events += ',' + event;
                 s.eVar37 = s.prop59 = window.sp_m_channel = channel || 'no-entry'; 
-                s.eVar38 = s.prop60 = window.sp_m_channel_category = channelCategory;
+                s.eVar38 = s.prop60 = window.sp_m_channel_category = channelCategory || '';
             } 
         }
     }
