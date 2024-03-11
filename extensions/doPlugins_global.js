@@ -518,12 +518,12 @@ s._articleViewTypeObj = {
 
         if (!s._utils.isAdWall(s)) {
             if (s._utils.isArticlePage()) {
-                s._articleViewType = s.eVar44 = pageViewEvent;
-                s.eVar37 = s.prop59 = channel || 'no-entry';
-                s.eVar38 = s.prop60 = channelCategory;
+                s._articleViewType = s.eVar44 = window.sp_events = pageViewEvent;
+                s.eVar37 = s.prop59 = window.sp_m_channel = channel || 'no-entry';
+                s.eVar38 = s.prop60 = window.sp_m_channel_category = channelCategory;
                 s._eventsObj.addEvent(pageViewEvent);
                 this.setPageSourceAndAgeForCheckout(s);
-            }
+            }  
 
             if (this.isPageViewFromHome(pageViewEvent)) {
                 s._eventsObj.addEvent('event20');
@@ -657,11 +657,11 @@ s._setExternalReferringDomainEvents = function (s) {
             });
             if (isRegexMatch || isDomainMatch) {
                 s._eventsObj.addEvent(event); 
-                s.eVar44 = s.eVar44 ? s.eVar44 + ',' + event : s.eVar44 = event;
-                s.eVar37 = s.prop59 = channel || 'no-entry';
-                s.eVar38 = s.prop60 = channelCategory;
+                s.eVar44 = window.sp_events = s.eVar44 ? s.eVar44 + ',' + event : event;
+                s.eVar37 = s.prop59 = window.sp_m_channel = channel || 'no-entry';
+                s.eVar38 = s.prop60 = window.sp_m_channel_category = channelCategory;
                 s._articleViewType = s.eVar44;
-            } 
+            }   
         });
     }
 };
@@ -721,9 +721,9 @@ s._setTrackingValueEvents = function (s) {
                     channelCategory = 'Other organic Social';
                 }
                 s._eventsObj.addEvent(event);
-                s._articleViewType = s.eVar44 += ',' + event;
-                s.eVar37 = s.prop59 = channel || 'no-entry'; 
-                s.eVar38 = s.prop60 = channelCategory;
+                s._articleViewType = s.eVar44 = window.sp_events += ',' + event;
+                s.eVar37 = s.prop59 = window.sp_m_channel = channel || 'no-entry'; 
+                s.eVar38 = s.prop60 = window.sp_m_channel_category = channelCategory || '';
             } 
         }
     }
@@ -790,9 +790,9 @@ s._homeTeaserTrackingObj = {
         const blockValue = this.getBlockValue();
         const pageId = this.getPageId();
         if (trackingValue) {
-            s.eVar66 = trackingValue;
-            s.eVar92 = trackingValue + '|' + pageId;
-            s.eVar97 = blockValue;
+            s.eVar66 = window.sp_teaser_position = trackingValue;
+            s.eVar92 = window.sp_teaser_position_page = trackingValue + '|' + pageId;
+            s.eVar97 = window.sp_teaser_block = blockValue;
         }
     },
 
