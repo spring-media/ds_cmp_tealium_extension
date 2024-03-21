@@ -1,4 +1,5 @@
 const sObject = require('../../extensions/doPlugins_global');
+const {createWindowMock} = require('../mocks/browserMocks');
 
 describe('_setTrackingValueEvents (URL Parameter like cid)', () => {
     let s;
@@ -8,6 +9,10 @@ describe('_setTrackingValueEvents (URL Parameter like cid)', () => {
     let isSocialTrackingParameterMock;
 
     beforeEach(() => {
+        // Create a fresh window mock for each test.
+        const windowMock = createWindowMock();
+        jest.spyOn(global, 'window', 'get')
+            .mockImplementation(() => (windowMock));        
         // Provide a fresh copy of the s-object for each test.
         s = {...sObject};
         addEventMock = jest.spyOn(s._eventsObj, 'addEvent').mockImplementation();
