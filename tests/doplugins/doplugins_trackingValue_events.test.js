@@ -25,13 +25,6 @@ describe('_setTrackingValueEvents (URL Parameter like cid)', () => {
     afterEach(() => {
         jest.restoreAllMocks();
     });
-
-    it('should run only on article pages', function () {
-        isArticlePageMock.mockReturnValue(false);
-
-        s._setTrackingValueEvents(s);
-        expect(getTrackingValueMock).not.toBeCalled();
-    });
     
     //Telegram
     it('should set event225 if the trackingValue contains telegram', () => {

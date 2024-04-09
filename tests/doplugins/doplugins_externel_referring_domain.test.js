@@ -24,13 +24,6 @@ describe('External referring domains', () => {
         jest.restoreAllMocks();
     });
 
-    it('should run only on article pages', function () {
-        isArticlePageMock.mockReturnValue(false);
-
-        s._setExternalReferringDomainEvents(s);
-        expect(getReferrerMock).not.toBeCalled();
-    });
-
     it('should set event49 and it should not set event213 if the referring domain is www.google.de', () => {
         getReferrerMock.mockReturnValue('www.google.com');
 

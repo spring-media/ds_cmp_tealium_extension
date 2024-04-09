@@ -372,6 +372,7 @@ s._articleViewTypeObj = {
         const referringDomain = s._utils.getDomainFromURLString(referrer);
         const isSessionStart = s._utils.isSessionStart();
         const isHomepage = s._utils.isHomepage();
+        const isArticle = s._utils.isArticlePage(); 
         let pageViewEvent;
         let channel;
 
@@ -399,7 +400,7 @@ s._articleViewTypeObj = {
         } else if (this.isFromSecureMypass(referrer)||this.isFromPaypal(referrer)) {
             pageViewEvent = 'event23,event201'; // Login via secure.mypass during session
             //channel = '';
-        } else if (this.isWithoutReferrer() && this.isNavigated()) {
+        } else if (this.isWithoutReferrer() && this.isNavigated() && isArticle) {
             pageViewEvent = 'event26,event202'; // Dark Social
             channel = 'Dark Social';
         } else if (this.isDirect(referrer)) {
@@ -517,9 +518,9 @@ s._articleViewTypeObj = {
         const channelCategory = viewTypesResults ? viewTypesResults.channelCategory : '';
 
         if (!s._utils.isAdWall(s)) {
-            if (s._utils.isArticlePage()) {
+            if (pageViewEvent) {
                 s._articleViewType = s.eVar44 = window.utag.data.sp_events = pageViewEvent;
-                s.eVar37 = s.prop59 = window.utag.data.sp_m_channel = channel || 'no-entry';
+                s.eVar37 = s.prop59 = window.utag.data.sp_m_channel = channel;
                 s.eVar38 = s.prop60 = window.utag.data.sp_m_channel_category = channelCategory;
                 s._eventsObj.addEvent(pageViewEvent);
                 this.setPageSourceAndAgeForCheckout(s);
@@ -643,27 +644,24 @@ s._setExternalReferringDomainEvents = function (s) {
 
     ];
 
-
-    if (s._utils.isArticlePage()) {
-        const referringURL = s._utils.getReferrer();
-        if (!referringURL) {
-            return;
-        }
-        domainsToEventMapping.forEach(domainEventMap => {
-            const { domains, event, matchRegex, channel, channelCategory} = domainEventMap;
-            const isRegexMatch = matchRegex && referringURL.match(matchRegex);
-            const isDomainMatch = domains && domains.some(domain => {
-                return referringURL && referringURL.includes(domain);
-            });
-            if (isRegexMatch || isDomainMatch) {
-                s._eventsObj.addEvent(event); 
-                s.eVar44 = window.utag.data.sp_events = s.eVar44 ? s.eVar44 + ',' + event : event;
-                s.eVar37 = s.prop59 = window.utag.data.sp_m_channel = channel || 'no-entry';
-                s.eVar38 = s.prop60 = window.utag.data.sp_m_channel_category = channelCategory;
-                s._articleViewType = s.eVar44;
-            }   
-        });
+    const referringURL = s._utils.getReferrer();
+    if (!referringURL) {
+        return;
     }
+    domainsToEventMapping.forEach(domainEventMap => {
+        const { domains, event, matchRegex, channel, channelCategory} = domainEventMap;
+        const isRegexMatch = matchRegex && referringURL.match(matchRegex);
+        const isDomainMatch = domains && domains.some(domain => {
+            return referringURL && referringURL.includes(domain);
+        });
+        if (isRegexMatch || isDomainMatch) {
+            s._eventsObj.addEvent(event); 
+            s.eVar44 = window.utag.data.sp_events = s.eVar44 ? s.eVar44 + ',' + event : event;
+            s.eVar37 = s.prop59 = window.utag.data.sp_m_channel = channel || 'no-entry';
+            s.eVar38 = s.prop60 = window.utag.data.sp_m_channel_category = channelCategory;
+            s._articleViewType = s.eVar44;
+        }   
+    });
 };
 
 /**
@@ -672,60 +670,58 @@ s._setExternalReferringDomainEvents = function (s) {
   
 s._setTrackingValueEvents = function (s) {
 
-    if (s._utils.isArticlePage()) {
-        const trackingValuesFromQueryParameter = s._articleViewTypeObj.getTrackingValue();
+    const trackingValuesFromQueryParameter = s._articleViewTypeObj.getTrackingValue();
 
-        if (trackingValuesFromQueryParameter) {
-            const socialTrackingParameter = s._articleViewTypeObj.isTrackingValueOrganicSocial();
-            const socialTrackingValue = trackingValuesFromQueryParameter;
+    if (trackingValuesFromQueryParameter) {
+        const socialTrackingParameter = s._articleViewTypeObj.isTrackingValueOrganicSocial();
+        const socialTrackingValue = trackingValuesFromQueryParameter;
             
-            if (socialTrackingParameter) {
-                let event;
-                let channel = 'Organic Social';
-                let channelCategory;
-                switch (true) {
-                case socialTrackingValue.includes('telegram'):
-                    event = 'event225';
-                    channelCategory = 'Telegram';
-                    break;
-                case socialTrackingValue.includes('instagram'):
-                    event = 'event53,event224';
-                    channelCategory = 'Instagram';
-                    break;
-                case socialTrackingValue.includes('youtube'):
-                    event = 'event50,event223';
-                    channelCategory = 'Youtube';
-                    break;
-                case socialTrackingValue.includes('twitter'):
-                    event = 'event51,event222';
-                    channelCategory = 'Twitter';
-                    break;
-                case socialTrackingValue.includes('facebook'):
-                    event = 'event52,event221';
-                    channelCategory = 'Facebook';
-                    break;
-                case socialTrackingValue.includes('linkedin'):
-                    event = 'event227';
-                    channelCategory = 'LinkedIn';
-                    break;
-                case socialTrackingValue.includes('xing'):
-                    event = 'event228';
-                    channelCategory = 'Xing';
-                    break;     
-                case socialTrackingValue.includes('pinterest'):
-                    event = 'event229';
-                    channelCategory = 'Pinterest';
-                    break;                                                     
-                default:
-                    event = 'event226';
-                    channelCategory = 'Other organic Social';
-                }
-                s._eventsObj.addEvent(event);
-                s._articleViewType = s.eVar44 = window.utag.data.sp_events += ',' + event;
-                s.eVar37 = s.prop59 = window.utag.data.sp_m_channel = channel || 'no-entry'; 
-                s.eVar38 = s.prop60 = window.utag.data.sp_m_channel_category = channelCategory || '';
-            } 
-        }
+        if (socialTrackingParameter) {
+            let event;
+            let channel = 'Organic Social';
+            let channelCategory;
+            switch (true) {
+            case socialTrackingValue.includes('telegram'):
+                event = 'event225';
+                channelCategory = 'Telegram';
+                break;
+            case socialTrackingValue.includes('instagram'):
+                event = 'event53,event224';
+                channelCategory = 'Instagram';
+                break;
+            case socialTrackingValue.includes('youtube'):
+                event = 'event50,event223';
+                channelCategory = 'Youtube';
+                break;
+            case socialTrackingValue.includes('twitter'):
+                event = 'event51,event222';
+                channelCategory = 'Twitter';
+                break;
+            case socialTrackingValue.includes('facebook'):
+                event = 'event52,event221';
+                channelCategory = 'Facebook';
+                break;
+            case socialTrackingValue.includes('linkedin'):
+                event = 'event227';
+                channelCategory = 'LinkedIn';
+                break;
+            case socialTrackingValue.includes('xing'):
+                event = 'event228';
+                channelCategory = 'Xing';
+                break;     
+            case socialTrackingValue.includes('pinterest'):
+                event = 'event229';
+                channelCategory = 'Pinterest';
+                break;                                                     
+            default:
+                event = 'event226';
+                channelCategory = 'Other organic Social';
+            }
+            s._eventsObj.addEvent(event);
+            s._articleViewType = s.eVar44 = window.utag.data.sp_events += ',' + event;
+            s.eVar37 = s.prop59 = window.utag.data.sp_m_channel = channel; 
+            s.eVar38 = s.prop60 = window.utag.data.sp_m_channel_category = channelCategory || '';
+        } 
     }
 };
 
