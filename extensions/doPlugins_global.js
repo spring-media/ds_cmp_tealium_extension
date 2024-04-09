@@ -518,7 +518,6 @@ s._articleViewTypeObj = {
         const channelCategory = viewTypesResults ? viewTypesResults.channelCategory : '';
 
         if (!s._utils.isAdWall(s)) {
-            //if (s._utils.isArticlePage()) {
             if (pageViewEvent) {
                 s._articleViewType = s.eVar44 = window.utag.data.sp_events = pageViewEvent;
                 s.eVar37 = s.prop59 = window.utag.data.sp_m_channel = channel;
