@@ -645,8 +645,6 @@ s._setExternalReferringDomainEvents = function (s) {
 
     ];
 
-
-    //if (s._utils.isArticlePage()) {
     const referringURL = s._utils.getReferrer();
     if (!referringURL) {
         return;
@@ -665,7 +663,6 @@ s._setExternalReferringDomainEvents = function (s) {
             s._articleViewType = s.eVar44;
         }   
     });
-    //}
 };
 
 /**
@@ -674,7 +671,6 @@ s._setExternalReferringDomainEvents = function (s) {
   
 s._setTrackingValueEvents = function (s) {
 
-    //if (s._utils.isArticlePage()) {
     const trackingValuesFromQueryParameter = s._articleViewTypeObj.getTrackingValue();
 
     if (trackingValuesFromQueryParameter) {
@@ -728,7 +724,6 @@ s._setTrackingValueEvents = function (s) {
             s.eVar38 = s.prop60 = window.utag.data.sp_m_channel_category = channelCategory || '';
         } 
     }
-    // }
 };
 
 /**
