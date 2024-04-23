@@ -1,4 +1,4 @@
-const sObject = require('../../extensions/doPlugins_welt_apps_ios');
+const sObject = require('../../extensions/doPlugins/doPlugins_welt_apps_ios');
 const { createWindowMock } = require('../mocks/browserMocks');
 
 describe('s.doPlugins()', () => {

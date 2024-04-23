@@ -1,5 +1,5 @@
 const {createWindowMock} = require('../mocks/browserMocks');
-const sObject = require('../../extensions/doPlugins_global');
+const sObject = require('../../extensions/doPlugins/doPlugins_global');
 
 describe('_homeTeaserTrackingObj', () => {
     let s;
