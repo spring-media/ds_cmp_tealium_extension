@@ -47,11 +47,11 @@ window.addEventListener('scroll', function () {
         if (scrollDepth === 50 || scrollDepth === 75 || scrollDepth === 100) {
             scrollArray.push(scrollDepth);
             // Send data to utag
-            utag.link({
+            window.utag.link({
                 'event_name': 'scroll depth',
                 'event_action': 'view' + scrollDepth,
-                'page_platform': utag.data.page_platform,
-                'adobe_pageName': utag.data.adobe_pageName,
+                'page_platform': window.utag.data.page_platform,
+                'adobe_pageName': window.utag.data.adobe_pageName,
             }, null, extensionNumber);
         }
     }

@@ -29,7 +29,7 @@ if (isAdobeConsentGiven) {
 
         milestones.forEach(milestone => {
             setTimeout(() => {
-                utag.link({ event_name: 'article_milestone', event_label: milestone.label }, null, extensionNumber);
+                window.utag.link({ event_name: 'article_milestone', event_label: milestone.label }, null, extensionNumber);
             }, milestone.time);
         });
     };
