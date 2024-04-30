@@ -21,15 +21,15 @@ const extensionNumber = getDomainExtensionValue(window.location.hostname);
 if (isAdobeConsentGiven) {
     window.onload = function setMilestones() {
         const milestones = [
-            { label: "5", time: 5000 },
-            { label: "30", time: 30000 },
-            { label: "60", time: 60000 },
-            { label: "180", time: 180000 }
+            { label: '5', time: 5000 },
+            { label: '30', time: 30000 },
+            { label: '60', time: 60000 },
+            { label: '180', time: 180000 }
         ];
 
         milestones.forEach(milestone => {
             setTimeout(() => {
-                utag.link({ event_name: "article_milestone", event_label: milestone.label }, null, extensionNumber);
+                utag.link({ event_name: 'article_milestone', event_label: milestone.label }, null, extensionNumber);
             }, milestone.time);
         });
     };

@@ -1,16 +1,16 @@
 // Function to get value from cookie
 function getCookie(cookieName) {
-    const name = cookieName + "=";
+    const name = cookieName + '=';
     const decodedCookie = decodeURIComponent(document.cookie);
     const cookieArray = decodedCookie.split(';');
 
     for (let i = 0; i < cookieArray.length; i++) {
         let cookie = cookieArray[i].trim();
         if (cookie.indexOf(name) === 0) {
-            return cookie.substring(name.length).split(",")[1];
+            return cookie.substring(name.length).split(',')[1];
         }
     }
-    return "";
+    return '';
 }
 
 // Function to get extension number from domains
@@ -29,9 +29,9 @@ function getDomainExtensionValue(domain) {
 const scrollArray = [];
 
 // Scroll event listener
-window.addEventListener("scroll", function () {
+window.addEventListener('scroll', function () {
     // Get scroll depth from cookie
-    const s_ppv = getCookie("s_ppv");
+    const s_ppv = getCookie('s_ppv');
     let scrollDepth = parseInt(s_ppv);
 
     // Check if consent for Adobe is given
@@ -48,10 +48,10 @@ window.addEventListener("scroll", function () {
             scrollArray.push(scrollDepth);
             // Send data to utag
             utag.link({
-                "event_name": "scroll depth",
-                "event_action": "view" + scrollDepth,
-                "page_platform": utag.data.page_platform,
-                "adobe_pageName": utag.data.adobe_pageName,
+                'event_name': 'scroll depth',
+                'event_action': 'view' + scrollDepth,
+                'page_platform': utag.data.page_platform,
+                'adobe_pageName': utag.data.adobe_pageName,
             }, null, extensionNumber);
         }
     }
