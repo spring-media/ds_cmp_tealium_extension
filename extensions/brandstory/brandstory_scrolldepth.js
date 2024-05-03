@@ -13,8 +13,8 @@ function getCookie(cookieName) {
     return '';
 }
 
-// Function to get extension number from domains
-function getDomainExtensionValue(domain) {
+// Function to get tag number from domains
+function getDomainTagValue(domain) {
     if (domain.includes('welt.de')) {
         return [206];
     } else if (domain.includes('bild.de')) {
@@ -34,15 +34,11 @@ window.addEventListener('scroll', function () {
     const s_ppv = getCookie('s_ppv');
     let scrollDepth = parseInt(s_ppv);
 
-    // Check if consent for Adobe is given
-    const existingCookie = document.cookie.match(/cmp_cv_list=([a-zA-Z0-9_,-]*)/)?.pop() || '';
-    const isAdobeConsentGiven = existingCookie.includes('adobe_analytics');
+    // Get domain-specific tag number
+    const tagNumber = getDomainTagValue(window.location.hostname);
 
-    // Get domain-specific exntension number
-    const extensionNumber = getDomainExtensionValue(window.location.hostname);
-
-    // Check scroll depth and consent for Adobe
-    if (scrollDepth <= 100 && isAdobeConsentGiven) {
+    // Check scroll depth
+    if (scrollDepth <= 100) {
         // Check if scroll depth is 50, 75 or 100
         if (scrollDepth === 50 || scrollDepth === 75 || scrollDepth === 100) {
             scrollArray.push(scrollDepth);
@@ -52,7 +48,7 @@ window.addEventListener('scroll', function () {
                 'event_action': 'view' + scrollDepth,
                 'page_platform': window.utag.data.page_platform,
                 'adobe_pageName': window.utag.data.adobe_pageName,
-            }, null, extensionNumber);
+            }, null, tagNumber);
         }
     }
 });
