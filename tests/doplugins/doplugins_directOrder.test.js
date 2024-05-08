@@ -1,4 +1,4 @@
-const sObject = require('../../extensions/doPlugins_global');
+const sObject = require('../../extensions/doPlugins/doPlugins_global');
 const {createWindowMock} = require('../mocks/browserMocks');
 
 describe('directOrderObj', () => {

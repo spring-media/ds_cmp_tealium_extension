@@ -1,4 +1,4 @@
-const s = require('../../extensions/doPlugins_global');
+const s = require('../../extensions/doPlugins/doPlugins_global');
 
 describe('Adobe Plugins', () => {
     it('should check if the getPercentagePageViewed function is defined in s object', () => {

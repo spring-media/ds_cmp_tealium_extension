@@ -1,4 +1,4 @@
-const sObject = require('../../extensions/doPlugins_bild_apps');
+const sObject = require('../../extensions/doPlugins/doPlugins_bild_apps');
 const { createWindowMock } = require('../mocks/browserMocks');
 
 describe('s._bildAppsInit()', () => {
