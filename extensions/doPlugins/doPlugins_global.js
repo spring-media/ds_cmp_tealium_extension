@@ -537,7 +537,7 @@ s._articleViewTypeObj = {
 };
 
 /**
- * Set additional events with referrer context.
+ * Set additional events with referrer context only (not for trackingValues or internal events). 
  */
 s._setExternalReferringDomainEvents = function (s) {
     const domainsToEventMapping = [
@@ -654,7 +654,11 @@ s._setExternalReferringDomainEvents = function (s) {
         const isDomainMatch = domains && domains.some(domain => {
             return referringURL && referringURL.includes(domain);
         });
-        if (isRegexMatch || isDomainMatch) {
+        
+        const isNotTrackingvalue = s._articleViewTypeObj.isOtherTrackingValue() ? false : true;
+        const isNotPageViewFromHome = s._articleViewTypeObj.isFromInternal(referringURL) ? false : true;
+
+        if (isNotTrackingvalue && isNotPageViewFromHome && (isRegexMatch || isDomainMatch)) {
             s._eventsObj.addEvent(event); 
             s.eVar44 = window.utag.data.sp_events = s.eVar44 ? s.eVar44 + ',' + event : event;
             s.eVar37 = s.prop59 = window.utag.data.sp_m_channel = channel || 'no-entry';
