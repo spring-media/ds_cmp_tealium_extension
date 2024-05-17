@@ -24,7 +24,15 @@ window.onload = function setMilestones() {
 
     milestones.forEach(milestone => {
         setTimeout(() => {
-            window.utag.link({ event_name: 'article_milestone', event_label: milestone.label }, null, tagNumber);
+            window.utag.link({ 
+                event_name: 'article_milestone', 
+                event_label: milestone.label,
+                adobe_pageName: window.utag.data.adobe_pageName,
+                page_escenicId: window.utag.data.page_escenicId,
+                page_platform: window.utag.data.page_platform,
+                page_type: window.utag.data.page_type,
+                page_sectionPath: window.utag.data.page_sectionPath
+            }, null, tagNumber);
         }, milestone.time);
     });
 };
