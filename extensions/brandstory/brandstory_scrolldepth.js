@@ -38,6 +38,10 @@ function sendLinkEvent(scrollDepth, platform, pageName, tagNumber) {
 // Array to store scroll depths
 const scrollArray = [];
 
+/* If scroll depth is 50, 75 or 100 the request should be triggered once
+for each number. To prevent multiple requests for each, we set trigger flags */
+var triggered50, triggered75, triggered100 = false;
+
 // Scroll event listener
 window.addEventListener('scroll', function () {
     // Get scroll depth from cookie
@@ -47,10 +51,7 @@ window.addEventListener('scroll', function () {
     // Get domain-specific tag number
     const tagNumber = getDomainTagValue(window.location.hostname);
 
-    /* If scroll depth is 50, 75 or 100 the request should be triggered once
-    for each number. To prevent multiple requests for each, we set trigger flags */
-    var triggered50, triggered75, triggered100 = false;
-
+    // Trigger scrolldepth request only if it has not been triggered before
     if (!triggered50 && scrollDepth === 50) {
         triggered50 = true;
         scrollArray.push(scrollDepth);
