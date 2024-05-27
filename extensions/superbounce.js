@@ -4,8 +4,8 @@ const isAdobeConsentGiven = existingCookie.includes('adobe_analytics');
 
 if (
     isAdobeConsentGiven &&
-    utag.data.pur_subscription?.includes('false') &&
-    utag.data['cp.hasPurSubscription'] === 'false'
+    window.utag.data.pur_subscription?.includes('false') &&
+    window.utag.data['cp.hasPurSubscription'] === 'false'
 ) {
     window.addEventListener('load', () => {
         sessionStorage.removeItem('bounce_over_5_sec');
@@ -19,13 +19,13 @@ if (
 
     window.addEventListener('unload', () => {
         const bounceOver5Sec = sessionStorage.getItem('bounce_over_5_sec') === 'true';
-        const isArticle = utag.data.page_type?.includes('article') || utag.data.page_document_type?.includes('article');
-        const isMedia = utag.data.page_type?.includes('media') || utag.data.page_document_type?.includes('video');
+        const isArticle = window.utag.data.page_type?.includes('article') || window.utag.data.page_document_type?.includes('article');
+        const isMedia = window.utag.data.page_type?.includes('media') || window.utag.data.page_document_type?.includes('video');
 
         if (bounceOver5Sec) {
             if (isArticle || isMedia) {
                 sessionStorage.setItem('super_bounce', '5+');
-                utag.data['super_bounce'] = 'true';
+                window.utag.data['super_bounce'] = 'true';
             }
         }
     });
