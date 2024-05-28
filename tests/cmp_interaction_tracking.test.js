@@ -1,4 +1,4 @@
-const cmpInteractionTracking = require('../extensions/cmp_interaction_tracking');
+const cmpInteractionTracking = require('../extensions/cmp/cmp_interaction_tracking');
 const browserMocks = require('../tests/mocks/browserMocks');
 
 const TEALIUM_PROFILES = [
