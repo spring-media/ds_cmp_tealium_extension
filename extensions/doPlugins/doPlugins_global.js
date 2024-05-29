@@ -1143,16 +1143,9 @@ s._init = function (s) {
     s.eVar32 = s._utils.getPageReloadStatus();
 
     s._articleViewTypeObj.setViewTypes(s); // Todo: rename s._pageViewTypesObj
-    const trackingChannel= s._articleViewTypeObj.isOtherTrackingValue();
-    if (trackingChannel) {
-        s._setTrackingValueEvents(s);
-    } else {
-        s._setExternalReferringDomainEvents(s);
-    }
+    s._articleViewTypeObj.setExtraViewTypes(s);
     s._ICIDTracking.setVariables(s);
     s._campaignObj.setCampaignVariables(s);
-    //s._setExternalReferringDomainEvents(s);
-    //s._setTrackingValueEvents(s);
     s._directOrderObj.setDirectOrderValues(s);
     s._T_REFTracking.setVariables(s);
 };
