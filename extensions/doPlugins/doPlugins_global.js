@@ -508,7 +508,6 @@ s._articleViewTypeObj = {
     
         return homeViewEvents.includes(pageViewEvent);
     },
-    
 
     setViewTypes: function (s) {
         const trackingChannel= this.isOtherTrackingValue();
@@ -533,6 +532,17 @@ s._articleViewTypeObj = {
         }
 
 
+    },
+
+    setExtraViewTypes: function(s) {
+        const trackingChannel= this.isOtherTrackingValue();
+        if (trackingChannel) {
+            s._setTrackingValueEvents();
+        } else {
+            s._setExternalReferringDomainEvents();
+        }
+        
+        
     }
 };
 
@@ -655,10 +665,9 @@ s._setExternalReferringDomainEvents = function (s) {
             return referringURL && referringURL.includes(domain);
         });
         
-        const isNotTrackingvalue = s._articleViewTypeObj.isOtherTrackingValue() ? false : true;
-        const isNotPageViewFromHome = s._articleViewTypeObj.isFromInternal(referringURL) ? false : true;
+        const isNotPageViewFromInternal = s._articleViewTypeObj.isFromInternal(referringURL) ? false : true;
 
-        if (isNotTrackingvalue && isNotPageViewFromHome && (isRegexMatch || isDomainMatch)) {
+        if (isNotPageViewFromInternal && (isRegexMatch || isDomainMatch)) {
             s._eventsObj.addEvent(event); 
             s.eVar44 = window.utag.data.sp_events = s.eVar44 ? s.eVar44 + ',' + event : event;
             s.eVar37 = s.prop59 = window.utag.data.sp_m_channel = channel || 'no-entry';
@@ -1134,10 +1143,16 @@ s._init = function (s) {
     s.eVar32 = s._utils.getPageReloadStatus();
 
     s._articleViewTypeObj.setViewTypes(s); // Todo: rename s._pageViewTypesObj
+    const trackingChannel= s._articleViewTypeObj.isOtherTrackingValue();
+    if (trackingChannel) {
+        s._setTrackingValueEvents(s);
+    } else {
+        s._setExternalReferringDomainEvents(s);
+    }
     s._ICIDTracking.setVariables(s);
     s._campaignObj.setCampaignVariables(s);
-    s._setExternalReferringDomainEvents(s);
-    s._setTrackingValueEvents(s);
+    //s._setExternalReferringDomainEvents(s);
+    //s._setTrackingValueEvents(s);
     s._directOrderObj.setDirectOrderValues(s);
     s._T_REFTracking.setVariables(s);
 };

@@ -6,8 +6,6 @@ describe('init()', () => {
     let setCampaignVariablesMock;
     let setViewTypesMock;
     let setICIDTrackingVariablesMock;
-    let setExternalReferringDomainEventsMock;
-    let setTrackingValueEventsMock;
     let setDirectOrderValuesMock;
 
     beforeEach(() => {
@@ -22,8 +20,6 @@ describe('init()', () => {
         setCampaignVariablesMock = jest.spyOn(s._campaignObj, 'setCampaignVariables').mockImplementation();
         setViewTypesMock = jest.spyOn(s._articleViewTypeObj, 'setViewTypes').mockImplementation();
         setICIDTrackingVariablesMock = jest.spyOn(s._ICIDTracking, 'setVariables').mockImplementation();
-        setExternalReferringDomainEventsMock = jest.spyOn(s, '_setExternalReferringDomainEvents').mockImplementation();
-        setTrackingValueEventsMock = jest.spyOn(s, '_setTrackingValueEvents').mockImplementation();
         setDirectOrderValuesMock = jest.spyOn(s._directOrderObj, 'setDirectOrderValues').mockImplementation();
     });
 
@@ -81,18 +77,6 @@ describe('init()', () => {
 
         s._init(s);
         expect(setICIDTrackingVariablesMock).toHaveBeenCalledWith(s);
-    });
-
-    it('should call s._setExternalReferringDomainEvents(s)', () => {
-
-        s._init(s);
-        expect(setExternalReferringDomainEventsMock).toHaveBeenCalledWith(s);
-    });
-
-    it('should call s.setTrackingValueEvents(s)', () => {
-
-        s._init(s);
-        expect(setTrackingValueEventsMock).toHaveBeenCalledWith(s);
     });
 
     it('should call s.s._directOrderObj.setDirectOrderValues(s)', () => {
