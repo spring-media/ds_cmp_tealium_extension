@@ -30,7 +30,6 @@ if (window.cX?.getUserSegmentIds) {
         }, {});
 
         window.utag.data.piano_short = segments.short;
-        console.log('Debug Segments:', window.utag.data.piano_short);
 
         /* Below request is triggered only for welt as for unknown tealium 
         setup reasons the segmentIDs are not set up in welt pageview requests. 
