@@ -17,27 +17,27 @@ function getShortSegmentID(domain) {
 if (window.cX?.getUserSegmentIds) {
     const shortSegmentID = getShortSegmentID(window.location.hostname);
     const segmentPqs = {
-        [shortSegmentID]: "short",
-        "9a4060edca15bc6ed4a5f88cf474f3116f3ddb07": "long"
+        [shortSegmentID]: 'short',
+        '9a4060edca15bc6ed4a5f88cf474f3116f3ddb07': 'long'
     };
 
-    const segmentInfo = localStorage.getItem("_cX_segmentInfo");
+    const segmentInfo = localStorage.getItem('_cX_segmentInfo');
     if (segmentInfo) {
         const segments = segmentInfo.split('/').reduce((acc, curr) => {
-            const [key, , value] = curr.split("_");
+            const [key, , value] = curr.split('_');
             acc[segmentPqs[key]] = `.${value}.`;
             return acc;
         }, {});
 
-        utag.data.piano_short = segments.short;
-        console.log('Debug Segments:', utag.data.piano_short);
+        window.utag.data.piano_short = segments.short;
+        console.log('Debug Segments:', window.utag.data.piano_short);
 
         /* Below request is triggered only for welt as for unknown tealium 
         setup reasons the segmentIDs are not set up in welt pageview requests. 
         Hence a pageview request is triggered to set this explicitly */
 
         if (window.location.hostname.includes('welt.de')) {
-            utag.view({ "piano_short": utag.data.piano_short, "cxense_segments": "true" }, null, [147]);
+            window.utag.view({ 'piano_short': window.utag.data.piano_short, 'cxense_segments': 'true' }, null, [147]);
         }
     }
 }
