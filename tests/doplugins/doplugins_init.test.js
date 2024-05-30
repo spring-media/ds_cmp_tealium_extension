@@ -7,6 +7,7 @@ describe('init()', () => {
     let setViewTypesMock;
     let setICIDTrackingVariablesMock;
     let setDirectOrderValuesMock;
+    let setExtraViewTypesMock;
 
     beforeEach(() => {
         // Create a fresh window mock for each test.
@@ -19,6 +20,7 @@ describe('init()', () => {
 
         setCampaignVariablesMock = jest.spyOn(s._campaignObj, 'setCampaignVariables').mockImplementation();
         setViewTypesMock = jest.spyOn(s._articleViewTypeObj, 'setViewTypes').mockImplementation();
+        setExtraViewTypesMock = jest.spyOn(s._articleViewTypeObj, 'setExtraViewTypes').mockImplementation();
         setICIDTrackingVariablesMock = jest.spyOn(s._ICIDTracking, 'setVariables').mockImplementation();
         setDirectOrderValuesMock = jest.spyOn(s._directOrderObj, 'setDirectOrderValues').mockImplementation();
     });
@@ -72,6 +74,12 @@ describe('init()', () => {
         s._init(s);
         expect(setViewTypesMock).toHaveBeenCalledWith(s);
     });
+
+    it('should call s._articleViewTypeObj.setExtraViewTypes(s)', () => {
+
+        s._init(s);
+        expect(setExtraViewTypesMock).toHaveBeenCalledWith(s);
+    });    
 
     it('should call s._ICIDTracking.setVariables(s)', () => {
 
