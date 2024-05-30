@@ -183,7 +183,7 @@
     }
 
     function processKameleoonCookies(existingCookie, existingFallbackCookie) {
-        if ((existingCookie?.includes('kameleoon') || existingFallbackCookie?.includes('kameleoon')) && window.utag.data['cp.hasPurSubscription'] === 'false' && window.utag.data.user_hasPurSubscription === 'false') {
+        if ((existingCookie?.includes('kameleoon') || existingFallbackCookie?.includes('kameleoon')) && (window.utag.data['cp.hasPurSubscription'] === 'false' || window.utag.data.user_hasPurSubscription === 'false')) {
             window.utag.view(window.utag.data, null, getDomainTagValue(window.location.hostname, 'kameleoon'));
         }
     }
