@@ -6,9 +6,8 @@ describe('init()', () => {
     let setCampaignVariablesMock;
     let setViewTypesMock;
     let setICIDTrackingVariablesMock;
-    let setExternalReferringDomainEventsMock;
-    let setTrackingValueEventsMock;
     let setDirectOrderValuesMock;
+    let setExtraViewTypesMock;
 
     beforeEach(() => {
         // Create a fresh window mock for each test.
@@ -21,9 +20,8 @@ describe('init()', () => {
 
         setCampaignVariablesMock = jest.spyOn(s._campaignObj, 'setCampaignVariables').mockImplementation();
         setViewTypesMock = jest.spyOn(s._articleViewTypeObj, 'setViewTypes').mockImplementation();
+        setExtraViewTypesMock = jest.spyOn(s._articleViewTypeObj, 'setExtraViewTypes').mockImplementation();
         setICIDTrackingVariablesMock = jest.spyOn(s._ICIDTracking, 'setVariables').mockImplementation();
-        setExternalReferringDomainEventsMock = jest.spyOn(s, '_setExternalReferringDomainEvents').mockImplementation();
-        setTrackingValueEventsMock = jest.spyOn(s, '_setTrackingValueEvents').mockImplementation();
         setDirectOrderValuesMock = jest.spyOn(s._directOrderObj, 'setDirectOrderValues').mockImplementation();
     });
 
@@ -77,22 +75,16 @@ describe('init()', () => {
         expect(setViewTypesMock).toHaveBeenCalledWith(s);
     });
 
+    it('should call s._articleViewTypeObj.setExtraViewTypes(s)', () => {
+
+        s._init(s);
+        expect(setExtraViewTypesMock).toHaveBeenCalledWith(s);
+    });    
+
     it('should call s._ICIDTracking.setVariables(s)', () => {
 
         s._init(s);
         expect(setICIDTrackingVariablesMock).toHaveBeenCalledWith(s);
-    });
-
-    it('should call s._setExternalReferringDomainEvents(s)', () => {
-
-        s._init(s);
-        expect(setExternalReferringDomainEventsMock).toHaveBeenCalledWith(s);
-    });
-
-    it('should call s.setTrackingValueEvents(s)', () => {
-
-        s._init(s);
-        expect(setTrackingValueEventsMock).toHaveBeenCalledWith(s);
     });
 
     it('should call s.s._directOrderObj.setDirectOrderValues(s)', () => {

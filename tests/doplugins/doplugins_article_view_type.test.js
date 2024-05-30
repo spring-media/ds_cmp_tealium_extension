@@ -1073,4 +1073,35 @@ describe('articleViewType()', () => {
 
     });
 
+    describe('setExtraViewTypes()', () => {
+        let isOtherTrackingValueMock;
+        let setExternalReferringDomainEventsMock;
+        let setTrackingValueEventsMock;
+
+        beforeEach(() => {
+            isOtherTrackingValueMock = jest.spyOn(s._articleViewTypeObj, 'isOtherTrackingValue').mockReturnValue('email.cid-test');
+            setExternalReferringDomainEventsMock = jest.spyOn(s, '_setExternalReferringDomainEvents').mockImplementation();
+            setTrackingValueEventsMock = jest.spyOn(s, '_setTrackingValueEvents').mockImplementation();
+        });
+
+        afterEach(() => {
+            jest.restoreAllMocks();
+        });
+
+        it('should call s._setTrackingValueEvents(s)', function () {
+            s._articleViewTypeObj.setExtraViewTypes(s);
+
+            expect(setTrackingValueEventsMock).toHaveBeenCalledWith();
+      
+        });
+
+        it('should call s._setExternalReferringDomainEvents(s)', function () {
+            isOtherTrackingValueMock.mockReturnValue(false);
+            window.document.referrer = 'any-referrer-url';
+            
+            s._articleViewTypeObj.setExtraViewTypes(s);
+            expect(setExternalReferringDomainEventsMock).toHaveBeenCalledWith();
+        });
+    });
+
 });

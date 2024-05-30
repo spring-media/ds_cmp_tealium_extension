@@ -184,11 +184,13 @@
             }
 
             //kameleoon
-            if (((existingCookie && existingCookie[0].indexOf('kameleoon') >= 0) ||
-                (existingFallbackCookie && existingFallbackCookie[0].indexOf('kameleoon') >= 0)) &&
-                window.utag.data['cp.hasPurSubscription'] && window.utag.data['cp.hasPurSubscription'] === 'false' &&
-                window.utag.data.user_hasPurSubscription && window.utag.data.user_hasPurSubscription == 'false') {
-                window.utag.view(window.utag.data, null, getDomainTagValue(window.location.hostname, 'kameleoon'));
+            if ((existingCookie?.includes('kameleoon')
+                    || existingFallbackCookie?.includes('kameleoon'))
+                && (window.utag.data.user_hasPurSubscription === 'false'
+                    || (!window.utag.data['cp._cpauthhint']
+                    || !(window.utag.data['cp._cpauthhint']?.includes('1'))))) {
+                        
+                        window.utag.view(window.utag.data, null, getDomainTagValue(window.location.hostname, 'kameleoon'));
             }
         }
     };
