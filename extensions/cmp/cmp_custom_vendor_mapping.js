@@ -103,13 +103,12 @@
             date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
             expires = '; expires=' + date.toUTCString();
         }
-        const domain = '.' + window.location.hostname.split('.').slice(-2).join('.');
-        document.cookie = `${name}=${value || ''}${expires}; path=/; secure; domain=${domain}`;
+        document.cookie = name + '=' + (value || '') + expires + '; path=/; secure; domain=.' + window.location.hostname.split('.').reverse().splice(0, 2).reverse().join('.');
         deleteCookie(OLD_STORAGE_KEY);
     }
 
     function deleteCookie(name) {
-        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+        document.cookie = name + '=; expires=' + new Date(0).toUTCString();
     }
 
     async function fetchConsentData() {
