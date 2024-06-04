@@ -5,7 +5,8 @@ const isAdobeConsentGiven = existingCookie.includes('adobe_analytics');
 if (
     isAdobeConsentGiven &&
     (window.utag.data.user_hasPurSubscription?.includes('false')
-        || window.utag.data['cp._cpauthhint']?.includes('false'))
+        || !window.utag.data['cp._cpauthhint']
+        || !(window.utag.data['cp._cpauthhint']?.includes('1')))
 ) {
     window.addEventListener('load', () => {
         sessionStorage.removeItem('bounce_over_5_sec');
