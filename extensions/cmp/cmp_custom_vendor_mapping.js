@@ -184,8 +184,8 @@
             }
 
             //kameleoon
-            if ((existingCookie?.includes('kameleoon')
-                || existingFallbackCookie?.includes('kameleoon'))
+            if ((existingCookie && existingCookie.includes('kameleoon')
+                || existingFallbackCookie && existingFallbackCookie.includes('kameleoon'))
                 && (window.utag.data.user_hasPurSubscription === 'false'
                 || (!window.utag.data['cp._cpauthhint']
                 || !(window.utag.data['cp._cpauthhint']?.includes('1'))))) {
