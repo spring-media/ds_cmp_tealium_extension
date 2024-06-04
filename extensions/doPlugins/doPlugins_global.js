@@ -537,9 +537,9 @@ s._articleViewTypeObj = {
     setExtraViewTypes: function(s) {
         const trackingChannel= this.isOtherTrackingValue();
         if (trackingChannel) {
-            s._setTrackingValueEvents();
+            s._setTrackingValueEvents(s);
         } else {
-            s._setExternalReferringDomainEvents();
+            s._setExternalReferringDomainEvents(s);
         }
         
         
