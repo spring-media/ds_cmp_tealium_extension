@@ -1091,7 +1091,7 @@ describe('articleViewType()', () => {
         it('should call s._setTrackingValueEvents(s)', function () {
             s._articleViewTypeObj.setExtraViewTypes(s);
 
-            expect(setTrackingValueEventsMock).toHaveBeenCalledWith();
+            expect(setTrackingValueEventsMock).toHaveBeenCalledWith(s);
       
         });
 
@@ -1100,7 +1100,7 @@ describe('articleViewType()', () => {
             window.document.referrer = 'any-referrer-url';
             
             s._articleViewTypeObj.setExtraViewTypes(s);
-            expect(setExternalReferringDomainEventsMock).toHaveBeenCalledWith();
+            expect(setExternalReferringDomainEventsMock).toHaveBeenCalledWith(s);
         });
     });
 
