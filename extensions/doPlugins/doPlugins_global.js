@@ -400,10 +400,13 @@ s._articleViewTypeObj = {
         } else if (this.isFromSecureMypass(referrer)||this.isFromPaypal(referrer)) {
             pageViewEvent = 'event23,event201'; // Login via secure.mypass during session
             //channel = '';
-        } else if (this.isWithoutReferrer() && this.isNavigated() && isArticle) {
-            pageViewEvent = 'event26,event202'; // Dark Social
+        } else if (this.isWithoutReferrer() && this.isNavigated() && isArticle && isSessionStart) {
+            pageViewEvent = 'event26,event202'; // Dark Social 
             channel = 'Dark Social';
-        } else if (this.isDirect(referrer)) {
+        } else if (this.isWithoutReferrer() && this.isNavigated() && isArticle) {
+            pageViewEvent = 'event26,event202'; // Dark Social Marketing Channel only with session start
+            channel = '';
+        }else if (this.isDirect(referrer)) {
             pageViewEvent = 'event207'; // no Referrer at Session Start
             channel = 'Direct';
         }  else {
