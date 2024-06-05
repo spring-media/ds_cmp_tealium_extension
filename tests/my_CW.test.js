@@ -114,7 +114,7 @@ describe('CW time format: CW {week} {year} {first DOW} - {last DOW}', () => {
             getMonthDayMock = jest.spyOn(cw, 'getMonthDay');
 
     
-            expect(cw.getCW(mockDate)).toBe('CW 01 2021.12.27. - 01.02.');
+            expect(cw.getCW(mockDate)).toBe('CW 01 2021.12.27 - 01.02.');
 
             expect(getWeekMock).toHaveBeenCalledWith(mockDate);
             expect(getMonthDayMock).toHaveBeenNthCalledWith(1, mockDate1);
