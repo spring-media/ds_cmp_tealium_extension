@@ -1,15 +1,15 @@
 var isLoggingEnabled = true;
-var whoamiCookieName = "asinfo";
+var whoamiCookieName = 'asinfo';
 
 
 // remove logs if no issues , messages not needed
 function _whoamiSnipped_log(message) {
-    if (isLoggingEnabled && console !== undefined && console.log !== undefined) {
-        console.log(message);
+    if (isLoggingEnabled && console !== undefined && console.log !== undefined) { // eslint-disable-line
+        console.log(message); // eslint-disable-line
     }
 }
 
-_whoamiSnipped_log("whoami : start  ");
+_whoamiSnipped_log('whoami : start  ');
 
 ! function () {
     function _whoamiSnipped_getAsInfo() {
@@ -24,10 +24,10 @@ _whoamiSnipped_log("whoami : start  ");
             if (!asInfoCookie) {
                 return null;
             }
-            return JSON.parse(atob(asInfoCookie.replaceAll('"', '')));;
+            return JSON.parse(atob(asInfoCookie.replaceAll('"', '')));
         } catch (e) {
-            _whoamiSnipped_log("whoami : cannot parse asinfo");
-            utag.data.errors = "whoami-cookie-parsing";
+            _whoamiSnipped_log('whoami : cannot parse asinfo');
+            window.utag.data.errors = 'whoami-cookie-parsing';
             return null;
         }
     }
@@ -50,41 +50,40 @@ _whoamiSnipped_log("whoami : start  ");
         if (matchingDomain) {
             const config = subscriptionsConfig[matchingDomain];
 
-            const isPur = config.pur.some(element => utag.data.user_entitlements2.includes(element));
-            utag.data.user_hasPurSubscription2 = utag.data.user_entitlements2 && isPur ? 'true' : 'false';
+            const isPur = config.pur.some(element => window.utag.data.user_entitlements2.includes(element));
+            window.utag.data.user_hasPurSubscription2 = window.utag.data.user_entitlements2 && isPur ? 'true' : 'false';
 
-            const isSubscriber = config.subscriptions.some(element => utag.data.user_entitlements2.includes(element));
-            utag.data.user_hasPlusSubscription2 = utag.data.user_entitlements2 && isSubscriber ? 'true' : 'false';
+            const isSubscriber = config.subscriptions.some(element => window.utag.data.user_entitlements2.includes(element));
+            window.utag.data.user_hasPlusSubscription2 = window.utag.data.user_entitlements2 && isSubscriber ? 'true' : 'false';
         }
     }
 
     var asinfo = _whoamiSnipped_getAsInfo();
-    var isLoggedIn = asinfo !== null && asinfo.subOrigin === "as";
-    utag.data.user_isLoggedIn2 = isLoggedIn === true ? 'true' : 'false';
-    if (utag.data.user_isLoggedIn2 === 'false') {
-        utag.data.user_hasPurSubscription2 = 'false';
-        utag.data.user_hasPlusSubscription2 = 'false';
-        utag.data.user_jaId2 = 'false';
-        utag.data.user_entitlements2 = 'false';
+    var isLoggedIn = asinfo !== null && asinfo.subOrigin === 'as';
+    window.utag.data.user_isLoggedIn2 = isLoggedIn === true ? 'true' : 'false';
+    if (window.utag.data.user_isLoggedIn2 === 'false') {
+        window.utag.data.user_hasPurSubscription2 = 'false';
+        window.utag.data.user_hasPlusSubscription2 = 'false';
+        window.utag.data.user_jaId2 = 'false';
+        window.utag.data.user_entitlements2 = 'false';
 
     }
-    utag.data.user_hasPlusSubscription2 = 'false';
-    _whoamiSnipped_log("whoami : user_isLoggedIn:  " + utag.data.user_isLoggedIn2);
+    window.utag.data.user_hasPlusSubscription2 = 'false';
+    _whoamiSnipped_log('whoami : user_isLoggedIn:  ' + window.utag.data.user_isLoggedIn2);
 
-    var isSubscriber = false;
     if (isLoggedIn) {
-        var getJaId = asinfo.jaId || "";
-        utag.data.user_jaId2 = getJaId;
+        var getJaId = asinfo.jaId || '';
+        window.utag.data.user_jaId2 = getJaId;
         var unsafePurchaseData = asinfo.purchaseData || {};
 
-        utag.data.user_entitlements2 = unsafePurchaseData.entitlements || [];
+        window.utag.data.user_entitlements2 = unsafePurchaseData.entitlements || [];
 
         updateUserSubscriptionsStatus(window.location.host);
        
         //remove debug console logs after everything is working
-        _whoamiSnipped_log("whoami : user_jaId2:  " + utag.data.user_jaId2);
-        _whoamiSnipped_log("whoami : user_entitlements2:  " + utag.data.user_entitlements2);
-        _whoamiSnipped_log("whoami : user_hasPurSubscription2:  " + utag.data.user_hasPurSubscription2);
-        _whoamiSnipped_log("whoami : user_hasPlusSubscription2:  " + utag.data.user_hasPlusSubscription2);
+        _whoamiSnipped_log('whoami : user_jaId2:  ' + window.utag.data.user_jaId2);
+        _whoamiSnipped_log('whoami : user_entitlements2:  ' + window.utag.data.user_entitlements2);
+        _whoamiSnipped_log('whoami : user_hasPurSubscription2:  ' + window.utag.data.user_hasPurSubscription2);
+        _whoamiSnipped_log('whoami : user_hasPlusSubscription2:  ' + window.utag.data.user_hasPlusSubscription2);
     }
 }();
