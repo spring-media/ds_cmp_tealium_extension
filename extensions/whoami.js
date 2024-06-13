@@ -68,7 +68,6 @@ _whoamiSnipped_log('whoami : start  ');
         window.utag.data.user_entitlements2 = 'false';
 
     }
-    window.utag.data.user_hasPlusSubscription2 = 'false';
     _whoamiSnipped_log('whoami : user_isLoggedIn:  ' + window.utag.data.user_isLoggedIn2);
 
     if (isLoggedIn) {
