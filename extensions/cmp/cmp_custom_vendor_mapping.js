@@ -40,7 +40,7 @@
         { 'name': 'taboola', 'id': '5e37fc3e56a5e6615502f9c4' },
         { 'name': 'tealium_collect', 'id': '5ef5f18f50fefa143f611d21' },
         { 'name': 'xandr', 'id': '5e7ced57b8e05c4854221bba' },
-        { 'name': 'snowplow', 'id': '633afad71ee5e604de2aafe2' }
+        { 'name': 'snowplow', 'id': '5eaaa739a55a2d743f32f7c3' }
     ];
 
     // Tealium tag values for different vendors for bild and welt
