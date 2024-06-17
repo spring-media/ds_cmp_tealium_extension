@@ -60,7 +60,8 @@
             bild: [5]
         },
         googleAds: {
-            bild: [21]
+            bild: [21],
+            welt: [147]
         },
         nielsenAgf: {
             welt: [251]
