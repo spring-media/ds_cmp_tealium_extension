@@ -174,9 +174,9 @@ describe('articleViewType()', () => {
         });
     });
 
-    describe('isFromSecureMypass', () => {
+    describe('isFromPremiumService', () => {
         const anyReferrer = 'https://any-referrer-domain.com/any-path';
-        const secureMypassDomains = 'secure.mypass.de';
+        const loginDomain = 'signin.auth.bild.de';
         let getDomainFromURLStringMock;
 
         beforeEach(() => {
@@ -184,15 +184,15 @@ describe('articleViewType()', () => {
         });
 
         it('should return TRUE if referrer is from secure mypass (login/register)', function () {
-            getDomainFromURLStringMock.mockReturnValue(secureMypassDomains);
-            const result = s._articleViewTypeObj.isFromSecureMypass(anyReferrer);
+            getDomainFromURLStringMock.mockReturnValue(loginDomain);
+            const result = s._articleViewTypeObj.isFromPremiumService(anyReferrer);
             expect(getDomainFromURLStringMock).toHaveBeenLastCalledWith(anyReferrer);
             expect(result).toBe(true);
         });
 
         it('should return FALSE if referrer is NOT from secure mypass (login/register)', function () {
             getDomainFromURLStringMock.mockReturnValue('any-other-domain.com');
-            const result = s._articleViewTypeObj.isFromSecureMypass(anyReferrer);
+            const result = s._articleViewTypeObj.isFromPremiumService(anyReferrer);
             expect(getDomainFromURLStringMock).toHaveBeenLastCalledWith(anyReferrer);
             expect(result).toBe(false);
         });
@@ -561,7 +561,7 @@ describe('articleViewType()', () => {
         let isFromBildMock;
         let isFromBildMobileMock;
         let isFromHomeMock;
-        let isFromSecureMypassMock;
+        let isFromPremiumServiceMock;
         let isFromAsDomainMock;
         let isFromPaypalMock;
         let isDirectMock;
@@ -577,7 +577,7 @@ describe('articleViewType()', () => {
             isFromBildMock = jest.spyOn(s._articleViewTypeObj, 'isFromBild').mockReturnValue(false);
             isFromBildMobileMock = jest.spyOn(s._articleViewTypeObj, 'isFromBildMobile').mockReturnValue(false);
             isFromHomeMock = jest.spyOn(s._articleViewTypeObj, 'isFromHome').mockReturnValue(false);
-            isFromSecureMypassMock = jest.spyOn(s._articleViewTypeObj, 'isFromSecureMypass').mockReturnValue(false);
+            isFromPremiumServiceMock = jest.spyOn(s._articleViewTypeObj, 'isFromPremiumService').mockReturnValue(false);
             isFromAsDomainMock = jest.spyOn(s._articleViewTypeObj, 'isFromAsDomain').mockReturnValue(false);
             isFromPaypalMock = jest.spyOn(s._articleViewTypeObj, 'isFromPaypal').mockReturnValue(false);
             isDirectMock = jest.spyOn(s._articleViewTypeObj, 'isDirect').mockReturnValue(false);
@@ -644,9 +644,9 @@ describe('articleViewType()', () => {
         });
 
         it('should return event23 if referrer is from secure mypass (login/register)', function () {
-            isFromSecureMypassMock.mockReturnValue(true);
+            isFromPremiumServiceMock.mockReturnValue(true);
             const result = s._articleViewTypeObj.getExternalType(anyReferrer);
-            expect(isFromSecureMypassMock).toHaveBeenCalledWith(anyReferrer);
+            expect(isFromPremiumServiceMock).toHaveBeenCalledWith(anyReferrer);
             expect(result.pageViewEvent).toBe('event23,event201');
         });
 

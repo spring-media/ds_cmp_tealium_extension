@@ -264,9 +264,9 @@ s._articleViewTypeObj = {
         return trackingValue.startsWith('social.') && !(trackingValue.startsWith('socialmediapaid.') || trackingValue.startsWith('social_paid.'))  ;
     },
 
-    isFromSecureMypass: function (referrer) {
+    isFromPremiumService: function (referrer) {
         const referringDomain = s._utils.getDomainFromURLString(referrer);
-        return referringDomain === 'secure.mypass.de';
+        return (referringDomain === 'secure.mypass.de' || referringDomain.includes('signin.auth.'));
     },
 
     isFromPaypal: function (referrer) {
@@ -394,10 +394,10 @@ s._articleViewTypeObj = {
         } else if (this.isFromAsDomain(referrer)) {
             pageViewEvent = 'event205'; 
             channel = 'AS News';
-        } else if ((this.isFromSecureMypass(referrer)||this.isFromPaypal(referrer)) && isSessionStart) {
+        } else if ((this.isFromPremiumService(referrer)||this.isFromPaypal(referrer)) && isSessionStart) {
             pageViewEvent = 'event208'; 
             channel = 'Register & Payment';
-        } else if (this.isFromSecureMypass(referrer)||this.isFromPaypal(referrer)) {
+        } else if (this.isFromPremiumService(referrer)||this.isFromPaypal(referrer)) {
             pageViewEvent = 'event23,event201'; // Login via secure.mypass during session
             //channel = '';
         } else if (this.isWithoutReferrer() && this.isNavigated() && isArticle && isSessionStart) {
