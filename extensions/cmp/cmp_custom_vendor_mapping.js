@@ -61,6 +61,9 @@
         },
         googleAds: {
             bild: [21]
+        },
+        nielsenAgf: {
+            welt: [251]
         }
     };
 
@@ -144,7 +147,7 @@
             var existingCookie = document.cookie.match(/cmp_cv_list=([a-zA-z0-9_,-]*)/);
             var existingFallbackCookie = document.cookie.match(/__utag_cmp_vendor_list=([a-zA-z0-9_,-]*)/);
 
-            // Adobe deals, adobe club and google ads run only for Bild
+            // Adobe deals, adobe club run only for Bild
             if (window.location.hostname.includes('bild.de')) {
                 if ((existingCookie && existingCookie[0].indexOf('adobe_analytics') >= 0)
                     || (existingFallbackCookie && existingFallbackCookie[0].indexOf('adobe_analytics') >= 0)
@@ -157,13 +160,6 @@
                             , null, domainTagValues.adobeDeals.bild);
                     }
 
-                    //google ads
-                    if ((existingCookie && existingCookie[0].indexOf('google_fallback') >= 0)
-                        || (existingFallbackCookie && existingFallbackCookie[0].indexOf('google_fallback') >= 0)) {
-
-                        window.utag.view(window.utag.data
-                            , null, domainTagValues.googleAds.bild);
-                    }
                     //adobe club
                     if (((existingCookie && existingCookie[0].indexOf('adobe') >= 0)
                         || (existingFallbackCookie && existingFallbackCookie[0].indexOf('adobe') >= 0))
@@ -183,6 +179,21 @@
                     , null, getDomainTagValue(window.location.hostname, 'piano'));
             }
 
+            //google ads
+            if ((existingCookie && existingCookie[0].indexOf('google_fallback') >= 0)
+                        || (existingFallbackCookie && existingFallbackCookie[0].indexOf('google_fallback') >= 0)) {
+
+                window.utag.view(window.utag.data
+                    , null, domainTagValues.window.location.hostname, 'google_fallback');
+            }            
+
+            //nielsenAgf
+            if ((existingCookie && existingCookie[0].indexOf('agf') >= 0)
+                || (existingFallbackCookie && existingFallbackCookie[0].indexOf('agf') >= 0)) {
+
+                window.utag.view(window.utag.data
+                    , null, getDomainTagValue(window.location.hostname, 'agf'));
+            }
             //kameleoon
             if ((existingCookie && existingCookie.includes('kameleoon')
                 || existingFallbackCookie && existingFallbackCookie.includes('kameleoon'))
