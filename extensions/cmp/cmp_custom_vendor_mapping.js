@@ -48,6 +48,15 @@
         piano: {
             bild: [16],
             welt: [230],
+            fitbook: [43],
+            myhomebook: [46],
+            petbook: [83],
+            stylebook: [32],
+            techbook: [87],
+            travelbook: [48],
+            bz: [],
+            autobild: [],
+            computerbild: []
         },
         kameleoon: {
             bild: [24],
@@ -64,7 +73,14 @@
             welt: [147]
         },
         nielsenAgf: {
-            welt: [251]
+            welt: [251],
+            fitbook: [],
+            myhomebook: [],
+            petbook: [],
+            stylebook: [],
+            techbook: [],
+            travelbook: []
+
         }
     };
 
