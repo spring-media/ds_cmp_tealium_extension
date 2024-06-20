@@ -124,7 +124,7 @@ s._prevPageObj = {
     },
    
     isFromHomePageId: function (s) {
-        return s._prevPage.includes('20595788') || s._prevPage.includes('52081556') ||s._prevPage.includes('26324062') || s._prevPage.includes('52081598');
+        return s._prevPage.includes('20595788') || s._prevPage.includes('52081556') ||s._prevPage.includes('26324062') || s._prevPage.includes('52081598' || s.pageName.includes('jJt31TLVzDZzInKWHyk1'));
     },
 
     isArticlePage: function (s) {
@@ -132,9 +132,9 @@ s._prevPageObj = {
     },
 
     isHomePage: function (s) {
-        return (s.pageName.includes('20595788') || s.pageName.includes('52081556') ||s.pageName.includes('26324062') || s.pageName.includes('52081598'));
+        return (s.pageName.includes('20595788') || s.pageName.includes('52081556') ||s.pageName.includes('26324062') || s.pageName.includes('52081598') || s.pageName.includes('jJt31TLVzDZzInKWHyk1'));
     },
-
+    
     setPrevPageData: function (s) {
         if (this.isFirstRun && s.pageName) {
             this.getPreviousPageValue(s);
