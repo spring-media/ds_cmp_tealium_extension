@@ -280,6 +280,12 @@ s._articleViewTypeObj = {
         return trackingValue.includes('kooperation.article.outbrain.');
     },
 
+    isFromHomeWithReco: function () {
+        const trackingValue = this.getTrackingValue();
+
+        return trackingValue.includes('kooperation.home.outbrain.');
+    },
+
     isFromReco: function () {
         const trackingValue = this.getTrackingValue();
 
@@ -288,7 +294,7 @@ s._articleViewTypeObj = {
 
     isFromRecoFf: function () {
         const trackingValue = this.getTrackingValue();
-        const isReco = trackingValue.includes('.outbrain.ff');
+        const isReco = trackingValue.includes('.ff.');
         let recoType;
 
         if (isReco){
@@ -358,7 +364,7 @@ s._articleViewTypeObj = {
             return {pageViewEvent};
         }
 
-        if (this.isFromHome(referrer) && this.isNavigated() && !this.isSelfRedirect() && !this.isFromOnsiteSearch() && !this.isFromLesenSieAuch()) {
+        if ((this.isFromHome(referrer) && this.isNavigated() && !this.isSelfRedirect() && !this.isFromOnsiteSearch() && !this.isFromLesenSieAuch()) || this.isFromHomeWithReco()) {
             pageViewEvent = 'event22,event200'; //Home
             channel = pageNumberOne ? 'Direct' : '';
         } else {
