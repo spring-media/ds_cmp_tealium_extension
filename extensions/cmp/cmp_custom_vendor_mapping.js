@@ -48,6 +48,15 @@
         piano: {
             bild: [16],
             welt: [230],
+            fitbook: [43],
+            myhomebook: [46],
+            petbook: [83],
+            stylebook: [32],
+            techbook: [87],
+            travelbook: [48],
+            bz: [11],
+            autobild: [11],
+            computerbild: [11]
         },
         kameleoon: {
             bild: [24],
@@ -60,7 +69,18 @@
             bild: [5]
         },
         googleAds: {
-            bild: [21]
+            bild: [21],
+            welt: [147]
+        },
+        nielsenAgf: {
+            welt: [251],
+            fitbook: [15],
+            myhomebook: [12],
+            petbook: [91],
+            stylebook: [53],
+            techbook: [105],
+            travelbook: [72]
+
         }
     };
 
@@ -69,7 +89,19 @@
             return domainTagValues[vendor].welt;
         } else if (domain.includes('bild.de')) {
             return domainTagValues[vendor].bild;
-        } else {
+        } else if (domain.includes('fitbook.de') || domain.includes('magazine-fitbook.com')) {
+            return domainTagValues[vendor].fitbook;
+        }else if (domain.includes('myhomebook.de') || domain.includes('magazine-myhomebook.com')) {
+            return domainTagValues[vendor].myhomebook;
+        }else if (domain.includes('petbook.de') || domain.includes('magazine-petbook.com')) {
+            return domainTagValues[vendor].petbook;
+        }else if (domain.includes('stylebook.de') || domain.includes('magazine-stylebook.com')) {
+            return domainTagValues[vendor].stylebook;
+        }else if (domain.includes('techbook.de') || domain.includes('magazine-techbook.com')) {
+            return domainTagValues[vendor].techbook;
+        }else if (domain.includes('travelbook.de') || domain.includes('magazine-travelbook.com')) {
+            return domainTagValues[vendor].travelbook;
+        }else {
             // Default values if domain doesn't match
             return [];
         }
@@ -144,7 +176,7 @@
             var existingCookie = document.cookie.match(/cmp_cv_list=([a-zA-z0-9_,-]*)/);
             var existingFallbackCookie = document.cookie.match(/__utag_cmp_vendor_list=([a-zA-z0-9_,-]*)/);
 
-            // Adobe deals, adobe club and google ads run only for Bild
+            // Adobe deals, adobe club run only for Bild
             if (window.location.hostname.includes('bild.de')) {
                 if ((existingCookie && existingCookie[0].indexOf('adobe_analytics') >= 0)
                     || (existingFallbackCookie && existingFallbackCookie[0].indexOf('adobe_analytics') >= 0)
@@ -157,13 +189,6 @@
                             , null, domainTagValues.adobeDeals.bild);
                     }
 
-                    //google ads
-                    if ((existingCookie && existingCookie[0].indexOf('google_fallback') >= 0)
-                        || (existingFallbackCookie && existingFallbackCookie[0].indexOf('google_fallback') >= 0)) {
-
-                        window.utag.view(window.utag.data
-                            , null, domainTagValues.googleAds.bild);
-                    }
                     //adobe club
                     if (((existingCookie && existingCookie[0].indexOf('adobe') >= 0)
                         || (existingFallbackCookie && existingFallbackCookie[0].indexOf('adobe') >= 0))
@@ -183,6 +208,21 @@
                     , null, getDomainTagValue(window.location.hostname, 'piano'));
             }
 
+            //google ads
+            if ((existingCookie && existingCookie[0].indexOf('google_fallback') >= 0)
+                        || (existingFallbackCookie && existingFallbackCookie[0].indexOf('google_fallback') >= 0)) {
+
+                window.utag.view(window.utag.data
+                    , null, domainTagValues.window.location.hostname, 'google_fallback');
+            }            
+
+            //nielsenAgf
+            if ((existingCookie && existingCookie[0].indexOf('agf') >= 0)
+                || (existingFallbackCookie && existingFallbackCookie[0].indexOf('agf') >= 0)) {
+
+                window.utag.view(window.utag.data
+                    , null, getDomainTagValue(window.location.hostname, 'agf'));
+            }
             //kameleoon
             if ((existingCookie && existingCookie.includes('kameleoon')
                 || existingFallbackCookie && existingFallbackCookie.includes('kameleoon'))
