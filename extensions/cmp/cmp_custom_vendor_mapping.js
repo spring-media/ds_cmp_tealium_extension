@@ -54,9 +54,9 @@
             stylebook: [32],
             techbook: [87],
             travelbook: [48],
-            bz: [],
-            autobild: [],
-            computerbild: []
+            bz: [11],
+            autobild: [11],
+            computerbild: [11]
         },
         kameleoon: {
             bild: [24],
@@ -74,12 +74,12 @@
         },
         nielsenAgf: {
             welt: [251],
-            fitbook: [],
-            myhomebook: [],
-            petbook: [],
-            stylebook: [],
-            techbook: [],
-            travelbook: []
+            fitbook: [15],
+            myhomebook: [12],
+            petbook: [91],
+            stylebook: [53],
+            techbook: [105],
+            travelbook: [72]
 
         }
     };
@@ -89,7 +89,19 @@
             return domainTagValues[vendor].welt;
         } else if (domain.includes('bild.de')) {
             return domainTagValues[vendor].bild;
-        } else {
+        } else if (domain.includes('fitbook.de') || domain.includes('magazine-fitbook.com')) {
+            return domainTagValues[vendor].fitbook;
+        }else if (domain.includes('myhomebook.de') || domain.includes('magazine-myhomebook.com')) {
+            return domainTagValues[vendor].myhomebook;
+        }else if (domain.includes('petbook.de') || domain.includes('magazine-petbook.com')) {
+            return domainTagValues[vendor].petbook;
+        }else if (domain.includes('stylebook.de') || domain.includes('magazine-stylebook.com')) {
+            return domainTagValues[vendor].stylebook;
+        }else if (domain.includes('techbook.de') || domain.includes('magazine-techbook.com')) {
+            return domainTagValues[vendor].techbook;
+        }else if (domain.includes('travelbook.de') || domain.includes('magazine-travelbook.com')) {
+            return domainTagValues[vendor].travelbook;
+        }else {
             // Default values if domain doesn't match
             return [];
         }
