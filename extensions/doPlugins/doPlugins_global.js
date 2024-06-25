@@ -364,7 +364,7 @@ s._articleViewTypeObj = {
             return {pageViewEvent};
         }
 
-        if ((this.isFromHome(referrer) && this.isNavigated() && !this.isSelfRedirect() && !this.isFromOnsiteSearch() && !this.isFromLesenSieAuch()) || this.isFromHomeWithReco()) {
+        if ((this.isFromHome(referrer) && this.isNavigated() && !this.isSelfRedirect() && !this.isFromOnsiteSearch() && !this.isFromLesenSieAuch())) {
             pageViewEvent = 'event22,event200'; //Home
             channel = pageNumberOne ? 'Direct' : '';
         } else {
@@ -534,7 +534,7 @@ s._articleViewTypeObj = {
                 this.setPageSourceAndAgeForCheckout(s);
             }  
 
-            if (this.isPageViewFromHome(pageViewEvent)) {
+            if (this.isPageViewFromHome(pageViewEvent) || this.isFromHomeWithReco(s)) {
                 s._eventsObj.addEvent('event20');
                 s._homeTeaserTrackingObj.setHomeTeaserProperties(s);
             }
