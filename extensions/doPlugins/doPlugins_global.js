@@ -364,7 +364,7 @@ s._articleViewTypeObj = {
             return {pageViewEvent};
         }
 
-        if ((this.isFromHome(referrer) && this.isNavigated() && !this.isSelfRedirect() && !this.isFromOnsiteSearch() && !this.isFromLesenSieAuch())) {
+        if (this.isFromHome(referrer) && this.isNavigated() && !this.isSelfRedirect() && !this.isFromOnsiteSearch() && !this.isFromLesenSieAuch()) {
             pageViewEvent = 'event22,event200'; //Home
             channel = pageNumberOne ? 'Direct' : '';
         } else {
