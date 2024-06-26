@@ -534,7 +534,7 @@ s._articleViewTypeObj = {
                 this.setPageSourceAndAgeForCheckout(s);
             }  
 
-            if (this.isPageViewFromHome(pageViewEvent) || this.isFromHomeWithReco(s)) {
+            if (this.isPageViewFromHome(pageViewEvent) || this.isFromHomeWithReco()) {
                 s._eventsObj.addEvent('event20');
                 s._homeTeaserTrackingObj.setHomeTeaserProperties(s);
             }
