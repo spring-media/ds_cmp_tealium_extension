@@ -553,6 +553,27 @@ describe('articleViewType()', () => {
         });
     });
 
+    describe('should return event22 if trackingValue isFromHomeWithReco', () => {
+        let getTrackingValueMock;
+        beforeEach(() => {
+            getTrackingValueMock = jest.spyOn(s._articleViewTypeObj, 'getTrackingValue');
+        });
+
+        it('should return TRUE if article URL contains recommendation parameter', function () {
+            const outbrainTrackingValue = 'kooperation.home.outbrain.anything';
+            getTrackingValueMock.mockReturnValue(outbrainTrackingValue);
+            const result = s._articleViewTypeObj.isFromHomeWithReco();
+            expect(result).toBe(true);
+        });
+
+        it('should return FALSE if article URL NOT contains recommendation parameter', function () {
+            const anyTrackingValue = 'any-tracking-value';
+            getTrackingValueMock.mockReturnValue(anyTrackingValue);
+            const result = s._articleViewTypeObj.isFromHomeWithReco();
+            expect(result).toBe(false);
+        });
+    });
+
     describe('getExternalType()', () => {
         const anyReferrerDomain = 'www.any-domain.com';
         const anyReferrer = 'https://www.any-domain.com';

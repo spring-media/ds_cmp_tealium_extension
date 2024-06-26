@@ -280,6 +280,12 @@ s._articleViewTypeObj = {
         return trackingValue.includes('kooperation.article.outbrain.');
     },
 
+    isFromHomeWithReco: function () {
+        const trackingValue = this.getTrackingValue();
+
+        return trackingValue.includes('kooperation.home.outbrain.');
+    },
+
     isFromReco: function () {
         const trackingValue = this.getTrackingValue();
 
@@ -288,7 +294,7 @@ s._articleViewTypeObj = {
 
     isFromRecoFf: function () {
         const trackingValue = this.getTrackingValue();
-        const isReco = trackingValue.includes('.outbrain.ff');
+        const isReco = trackingValue.includes('.ff.');
         let recoType;
 
         if (isReco){
@@ -528,7 +534,7 @@ s._articleViewTypeObj = {
                 this.setPageSourceAndAgeForCheckout(s);
             }  
 
-            if (this.isPageViewFromHome(pageViewEvent)) {
+            if (this.isPageViewFromHome(pageViewEvent) || this.isFromHomeWithReco()) {
                 s._eventsObj.addEvent('event20');
                 s._homeTeaserTrackingObj.setHomeTeaserProperties(s);
             }
