@@ -1,5 +1,5 @@
-const cmpInteractionTracking = require('../extensions/cmp/cmp_interaction_tracking');
-const browserMocks = require('../tests/mocks/browserMocks');
+const cmpInteractionTracking = require('../../extensions/cmp/cmp_interaction_tracking');
+const browserMocks = require('../mocks/browserMocks');
 
 const TEALIUM_PROFILES = [
     {profileName: 'abo-autobild.de', tagId: 23},
