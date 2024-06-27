@@ -183,18 +183,15 @@
                 ) {
 
                     //adobe deals
-                    if ((existingCookie && existingCookie[0].indexOf('adobe_analytics') >= 0) && document.URL.includes('bild.de/deals')) {
+                    if (document.URL.includes('bild.de/deals')) {
 
-                        window.utag.view(window.utag.data
-                            , null, domainTagValues.adobeDeals.bild);
+                        window.utag.view(window.utag.data, null, domainTagValues.adobeDeals.bild);
                     }
 
                     //adobe club
-                    if (((existingCookie && existingCookie[0].indexOf('adobe') >= 0)
-                        || (existingFallbackCookie && existingFallbackCookie[0].indexOf('adobe') >= 0))
-                        && (window.location.hostname && window.location.hostname.includes('club')) && window.utag.data['cp.utag_main_cmp_after'] == 'true') {
-                        window.utag.view(window.utag.data
-                            , null, domainTagValues.adobeClub.bild);
+                    if ((window.location.hostname && window.location.hostname.includes('club')) && window.utag.data['cp.utag_main_cmp_after'] == 'true') {
+                        
+                        window.utag.view(window.utag.data, null, domainTagValues.adobeClub.bild);
                     }
 
                 }
@@ -204,24 +201,21 @@
             if ((existingCookie && existingCookie[0].indexOf('piano') >= 0)
                 || (existingFallbackCookie && existingFallbackCookie[0].indexOf('piano') >= 0)) {
 
-                window.utag.view(window.utag.data
-                    , null, getDomainTagValue(window.location.hostname, 'piano'));
+                window.utag.view(window.utag.data, null, getDomainTagValue(window.location.hostname, 'piano'));
             }
 
             //google ads
             if ((existingCookie && existingCookie[0].indexOf('google_fallback') >= 0)
                         || (existingFallbackCookie && existingFallbackCookie[0].indexOf('google_fallback') >= 0)) {
 
-                window.utag.view(window.utag.data
-                    , null, domainTagValues.window.location.hostname, 'google_fallback');
+                window.utag.view(window.utag.data, null, getDomainTagValue(window.location.hostname, 'googleAds'));
             }            
 
             //nielsenAgf
             if ((existingCookie && existingCookie[0].indexOf('agf') >= 0)
                 || (existingFallbackCookie && existingFallbackCookie[0].indexOf('agf') >= 0)) {
 
-                window.utag.view(window.utag.data
-                    , null, getDomainTagValue(window.location.hostname, 'agf'));
+                window.utag.view(window.utag.data, null, getDomainTagValue(window.location.hostname, 'nielsenAgf'));
             }
             //kameleoon
             if ((existingCookie && existingCookie.includes('kameleoon')
@@ -235,15 +229,40 @@
         }
     };
 
-    if (spCMPisEnabled()) {
-        if (!window.__utag_layer_tracking_init) {
-            window.__utag_layer_tracking_init = true;
-            getGrantedVendors();
-            window.__tcfapi('addEventListener', 2, function (tcData) {
-                if (tcData && tcData.eventStatus === 'useractioncomplete') {
-                    getGrantedVendors(processUtag);
-                }
-            });
+    const init = function () {
+        if (spCMPisEnabled()) {
+            if (!window.__utag_layer_tracking_init) {
+                window.__utag_layer_tracking_init = true;
+                getGrantedVendors();
+                window.__tcfapi('addEventListener', 2, function (tcData) {
+                    if (tcData && tcData.eventStatus === 'useractioncomplete') {
+                        getGrantedVendors(processUtag);
+                    }
+                });
+            }
         }
+    };
+
+    // Create a centralized reference to all members of this unit which needs be exposed for unit testing.
+    const exportedFunctions = {
+        getDomainTagValue,
+        getCookie,
+        setCookie,
+        deleteCookie,
+        fetchConsentData,
+        spCMPisEnabled,
+        getGrantedVendors,
+        processUtag,
+        init,
+    };
+
+    // Evaluate runtime environment (Browser or Node.js)
+    if (typeof exports === 'object') {
+        // Expose reference to members for unit testing.
+        module.exports = exportedFunctions;
+    } else {
+        // Call entry point in browser context.
+        init();
     }
+    
 })();
