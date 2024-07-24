@@ -17,38 +17,38 @@ describe('_scrollDepthObj', () => {
         jest.restoreAllMocks();
     });
 
-    describe('isValidDocType', () => {
+    describe('isArticlePage', () => {
 
         it('should return false if doc_type is not defined', () => {
-            const result = s._scrollDepthObj.isValidDocType(s);
+            const result = s._utils.isArticlePage(s);
 
             expect(result).toBe(false);
         });
 
         it('should return true if doc_type is article', () => {
             window.utag.data.page_mapped_doctype_for_pagename = 'article';
-            const result = s._scrollDepthObj.isValidDocType(s);
+            const result = s._utils.isArticlePage(s);
 
             expect(result).toBe(true);
         });
 
         it('should return true if doc_type is video', () => {
             window.utag.data.page_mapped_doctype_for_pagename = 'video';
-            const result = s._scrollDepthObj.isValidDocType(s);
+            const result = s._utils.isArticlePage(s);
 
             expect(result).toBe(true);
         });
 
         it('should return true if doc_type is single', () => {
             window.utag.data.page_mapped_doctype_for_pagename = 'single';
-            const result = s._scrollDepthObj.isValidDocType(s);
+            const result = s._utils.isArticlePage(s);
 
             expect(result).toBe(true);
         });
 
         it('should return true if doc_type is post', () => {
             window.utag.data.page_mapped_doctype_for_pagename = 'post';
-            const result = s._scrollDepthObj.isValidDocType(s);
+            const result = s._utils.isArticlePage(s);
 
             expect(result).toBe(true);
         });
@@ -173,7 +173,7 @@ describe('_scrollDepthObj', () => {
 
         it('should set the right _prevPage if docType is not article or video', () => {
             s.pageName = 'test_pageName';
-            jest.spyOn(s._scrollDepthObj, 'isValidDocType').mockReturnValue(false);
+            jest.spyOn(s._utils, 'isArticlePage').mockReturnValue(false);
 
             s._scrollDepthObj.setPreviousPage(s);
 
@@ -181,7 +181,7 @@ describe('_scrollDepthObj', () => {
         });
 
         it('should set the right _prevPage if docType is article or video', () => {
-            jest.spyOn(s._scrollDepthObj, 'isValidDocType').mockReturnValue(true);
+            jest.spyOn(s._utils, 'isArticlePage').mockReturnValue(true);
             jest.spyOn(s._utils, 'getDocType').mockReturnValue('test_docType');
             jest.spyOn(s._scrollDepthObj, 'getPageId').mockReturnValue('test_pageId');
             jest.spyOn(s._scrollDepthObj, 'getPageChannel').mockReturnValue('test_pageChannel');

@@ -211,13 +211,15 @@ describe('_bildPageNameObj', () => {
             jest.restoreAllMocks();
         });
 
-        it('should not set any data if isHome, isLive, isLiveSport are all false', () => {
-            s._bildPageNameObj.setPageName(s);
+        it('should set relevant data ', () => {
+            window.utag.data.page_document_type = 'any-doctype';
+            window.utag.data.page_id = '12345678';
 
-            expect(window.utag.data.page_mapped_doctype_for_pagename).toBeUndefined();
-            expect(s.pageName).toBeUndefined();
-            expect(s.eVar3).toBeUndefined();
-            expect(s.prop3).toBeUndefined();
+            s._bildPageNameObj.setPageName(s);
+            
+            expect(window.utag.data.page_document_type).toBe('any-doctype');
+            expect(s.pageName).toBe('any-doctype : ' + '12345678');            
+
         });
 
         it('should set relevant data if isHome is true', () => {
