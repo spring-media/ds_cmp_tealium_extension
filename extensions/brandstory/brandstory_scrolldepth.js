@@ -37,13 +37,6 @@ function getDomainTagValue(domain) {
     }
 }
 
-// Function to send link event
-function sendLinkEvent(scrollDepth, platform, pageName, tagNumber) {
-    window.utag.link({
-        
-    }, null, tagNumber);
-}
-
 // Array to store scroll depths
 const scrollArray = [];
 
