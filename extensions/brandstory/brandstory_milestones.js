@@ -4,6 +4,18 @@ function getDomainTagValue(domain) {
         return [206];
     } else if (domain.includes('bild.de')) {
         return [10];
+    } else if (domain.includes('fitbook.de') || domain.includes('magazine-fitbook.com')) {
+        return [31];
+    } else if (domain.includes('myhomebook.de') || domain.includes('magazine-myhomebook.com')) {
+        return [31];
+    } else if (domain.includes('petbook.de') || domain.includes('magazine-petbook.com')) {
+        return [79];
+    } else if (domain.includes('stylebook.de') || domain.includes('magazine-stylebook.com')) {
+        return [20];
+    } else if (domain.includes('techbook.de') || domain.includes('magazine-techbook.com')) {
+        return [82];
+    } else if (domain.includes('travelbook.de') || domain.includes('magazine-travelbook.com')) {
+        return [69];
     } else {
         // Default values if domain doesn't match
         return [];
@@ -24,15 +36,17 @@ window.onload = function setMilestones() {
 
     milestones.forEach(milestone => {
         setTimeout(() => {
-            window.utag.link({ 
-                event_name: 'article_milestone', 
-                event_label: milestone.label,
-                adobe_pageName: window.utag.data.adobe_pageName,
-                page_escenicId: window.utag.data.page_escenicId,
-                page_platform: window.utag.data.page_platform,
-                page_type: window.utag.data.page_type,
-                page_sectionPath: window.utag.data.page_sectionPath
-            }, null, tagNumber);
+
+            // full utag.data
+            var eventData = {...window.utag.data};
+
+            // Add custom event data
+            eventData.event_name = 'article_milestone';
+            eventData.event_label = milestone.label;
+
+            // Send utag.link event with data and tag number
+            window.utag.link(eventData, null, tagNumber);
+
         }, milestone.time);
     });
 };

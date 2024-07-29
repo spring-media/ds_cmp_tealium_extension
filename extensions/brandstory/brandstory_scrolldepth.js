@@ -19,20 +19,22 @@ function getDomainTagValue(domain) {
         return [206];
     } else if (domain.includes('bild.de')) {
         return [10];
+    } else if (domain.includes('fitbook.de') || domain.includes('magazine-fitbook.com')) {
+        return [31];
+    } else if (domain.includes('myhomebook.de') || domain.includes('magazine-myhomebook.com')) {
+        return [31];
+    } else if (domain.includes('petbook.de') || domain.includes('magazine-petbook.com')) {
+        return [79];
+    } else if (domain.includes('stylebook.de') || domain.includes('magazine-stylebook.com')) {
+        return [20];
+    } else if (domain.includes('techbook.de') || domain.includes('magazine-techbook.com')) {
+        return [82];
+    } else if (domain.includes('travelbook.de') || domain.includes('magazine-travelbook.com')) {
+        return [69];
     } else {
         // Default values if domain doesn't match
         return [];
     }
-}
-
-// Function to send link event
-function sendLinkEvent(scrollDepth, platform, pageName, tagNumber) {
-    window.utag.link({
-        'event_name': 'scroll depth',
-        'event_action': 'view' + scrollDepth,
-        'page_platform': platform,
-        'adobe_pageName': pageName,
-    }, null, tagNumber);
 }
 
 // Array to store scroll depths
@@ -50,24 +52,33 @@ window.addEventListener('scroll', function () {
 
     // Get domain-specific tag number
     const tagNumber = getDomainTagValue(window.location.hostname);
+    // full utag.data
+    var eventData = {...window.utag.data};
 
     // Trigger scrolldepth request only if it has not been triggered before
     if (!triggered50 && scrollDepth === 50) {
         triggered50 = true;
         scrollArray.push(scrollDepth);
+        eventData.event_name = 'scroll depth',
+        eventData.event_action = 'view' + scrollDepth,
         // Send data to utag
-        sendLinkEvent(scrollDepth, window.utag.data.page_platform, window.utag.data.adobe_pageName, tagNumber);
+        window.utag.link(eventData, null, tagNumber);
     } 
     else if (!triggered75 && scrollDepth === 75) {
         triggered75 = true;
         scrollArray.push(scrollDepth);
+        eventData.event_name = 'scroll depth',
+        eventData.event_action = 'view' + scrollDepth,
         // Send data to utag
-        sendLinkEvent(scrollDepth, window.utag.data.page_platform, window.utag.data.adobe_pageName, tagNumber);
+        window.utag.link(eventData, null, tagNumber);
     } 
     else if (!triggered100 && scrollDepth === 100) {
         triggered100 = true;
         scrollArray.push(scrollDepth);
+        eventData.event_name = 'scroll depth',
+        eventData.event_action = 'view' + scrollDepth,
         // Send data to utag
-        sendLinkEvent(scrollDepth, window.utag.data.page_platform, window.utag.data.adobe_pageName, tagNumber);
+        window.utag.link(eventData, null, tagNumber);
+        //sendLinkEvent(scrollDepth, window.utag.data.page_platform, window.utag.data.adobe_pageName, tagNumber);
     }
 });

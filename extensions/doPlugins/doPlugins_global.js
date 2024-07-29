@@ -885,6 +885,8 @@ s._bildPageNameObj = {
             s.pageName = window.utag.data.page_document_type + ' : ' + pageIdSubstitute;
         } else if (this.isSearchPage()) {
             s.pageName = window.utag.data.page_document_type + ' : ' + window.utag.data.page_document_type;
+        } else {
+            s.pageName = window.utag.data.page_document_type + ' : ' + window.utag.data['page_id'];
         }
 
     },
@@ -949,15 +951,10 @@ s._scrollDepthObj = {
         return status ? status + ' : ' : '';
     },
 
-    isValidDocType: function (s) {
-        const doc_type = s._utils.getDocType();
-        return doc_type === 'article' || doc_type === 'video' || doc_type === 'single' || doc_type === 'post';
-    },
-
     setPreviousPage: function (s) {
         // Previous Page für article und video ==> document type : page_is_premium : page_id : page_channel
-        if (this.isValidDocType(s)) {
-            const doc_type = s._utils.getDocType(); // Fixme: getDocType is called a second time here (already called in isValidDocType).
+        if (s._utils.isArticlePage()) {
+            const doc_type = s._utils.getDocType(); 
             const page_id = this.getPageId();
             const page_channel = this.getPageChannel();
             const page_is_premium = this.getPagePremiumStatus();
