@@ -1,8 +1,12 @@
 (function () {
     const OLD_STORAGE_KEY = '__utag_cmp_vendor_list';
-    const NEW_STORAGE_KEY = (window.location.hostname && window.location.hostname.includes('club')) ?
+
+    const SUB_DOMAINS = ['sportbild', 'shop.welt.de', 'bildplusshop.bild.de'];
+    const CLUB_DOMAIN = ['club'];
+    
+    const NEW_STORAGE_KEY = (CLUB_DOMAIN.indexOf(window.location.hostname) >-1) ?
         'cmp_cv_list_club' :
-        (window.location.hostname && window.location.hostname.includes('sportbild') ?
+        (SUB_DOMAINS.indexOf(window.location.hostname) >-1 ?
             'cm_cv_list' :
             'cmp_cv_list'
         );
