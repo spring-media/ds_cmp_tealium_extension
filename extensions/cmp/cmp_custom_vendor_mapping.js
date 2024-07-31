@@ -21,7 +21,8 @@
         { 'name': 'agf2', 'id': '5f9be0a9a228636148510755' },
         { 'name': 'appnexus', 'id': '5e542b3a4cd8884eb41b5a6c' },
         { 'name': 'awin', 'id': '5e7f6927b8e05c48537f6074' },
-        { 'name': 'bingads', 'id': '5e7786abf443bb795772efee' },
+        { 'name': 'bingads', 'id': '5e7786abf443bb795772efee' }, //old 20240731
+        { 'name': 'bingads', 'id': '62a312aa293cdf1b5e6a2509' },
         { 'name': 'chartbeat', 'id': '5ea172e36ede87504f7b4590' },
         { 'name': 'exactag', 'id': '5ebee9f5b8e05c43d547d7d1' },
         { 'name': 'fb_ca', 'id': '5ee91b9593fc094b59242e26' },
