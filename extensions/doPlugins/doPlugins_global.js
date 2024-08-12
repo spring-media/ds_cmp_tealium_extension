@@ -432,12 +432,14 @@ s._articleViewTypeObj = {
             const internalType = this.getInternalType(referrer);
             pageViewEvent = internalType.pageViewEvent;
             channel = internalType.channel;
+            mkt_ref = '';
             
         } else {
             // Referrer is of any other domain
             const externalType = this.getExternalType(referrer);
             pageViewEvent = externalType.pageViewEvent;
             channel = externalType.channel;
+            mkt_ref = referrer;
 
         }
 
@@ -524,12 +526,15 @@ s._articleViewTypeObj = {
         const pageViewEvent = viewTypesResults ? viewTypesResults.pageViewEvent : '';
         const channel = viewTypesResults ? viewTypesResults.channel : '';
         const channelCategory = viewTypesResults ? viewTypesResults.channelCategory : '';
+        const channelReferrer = viewTypesResults ? viewTypesResults.referrer : '';
 
         if (!s._utils.isAdWall(s)) {
             if (pageViewEvent) {
                 s._articleViewType = s.eVar44 = window.utag.data.sp_events = pageViewEvent;
-                s.eVar37 = s.prop59 = window.utag.data.sp_m_channel = channel;
-                s.eVar38 = s.prop60 = window.utag.data.sp_m_channel_category = channelCategory;
+                s.eVar37 = s.prop59 = window.utag.data.mkt_channel = channel;
+                s.eVar38 = s.prop60 = window.utag.data.mkt_channel_category = channelCategory;
+                window.utag.data.mkt_referrer = channelReferrer;
+
                 s._eventsObj.addEvent(pageViewEvent);
                 this.setPageSourceAndAgeForCheckout(s);
             }  
@@ -679,8 +684,10 @@ s._setExternalReferringDomainEvents = function (s) {
         if (isNotPageViewFromInternal && (isRegexMatch || isDomainMatch)) {
             s._eventsObj.addEvent(event); 
             s.eVar44 = window.utag.data.sp_events = s.eVar44 ? s.eVar44 + ',' + event : event;
-            s.eVar37 = s.prop59 = window.utag.data.sp_m_channel = channel || 'no-entry';
-            s.eVar38 = s.prop60 = window.utag.data.sp_m_channel_category = channelCategory;
+            s.eVar37 = s.prop59 = window.utag.data.mkt_channel = channel || 'no-entry';
+            s.eVar38 = s.prop60 = window.utag.data.mkt_channel_category = channelCategory;
+            window.utag.data.mkt_referrer = referringURL;
+            ;
             s._articleViewType = s.eVar44;
         }   
     });
@@ -741,8 +748,8 @@ s._setTrackingValueEvents = function (s) {
             }
             s._eventsObj.addEvent(event);
             s._articleViewType = s.eVar44 = window.utag.data.sp_events += ',' + event;
-            s.eVar37 = s.prop59 = window.utag.data.sp_m_channel = channel; 
-            s.eVar38 = s.prop60 = window.utag.data.sp_m_channel_category = channelCategory || '';
+            s.eVar37 = s.prop59 = window.utag.data.mkt_channel = channel; 
+            s.eVar38 = s.prop60 = window.utag.data.mkt_channel_category = channelCategory || '';
         } 
     }
 };
