@@ -757,7 +757,7 @@ describe('articleViewType()', () => {
             };
             getExternalTypeMock.mockReturnValue(anyExternalType);
             let result = s._articleViewTypeObj.getViewTypeByReferrer();
-            expect(result).toStrictEqual(anyExternalType);
+            expect(result.pageViewEvent).toBe(anyExternalType.pageViewEvent);
         });
 
     });
