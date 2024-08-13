@@ -426,6 +426,7 @@ s._articleViewTypeObj = {
         const referrer = s._utils.getReferrer(); 
         let pageViewEvent;
         let channel;
+        let mkt_ref;
 
         if (this.isFromInternal(referrer)) {
             // Referrer is of same domain
@@ -687,7 +688,6 @@ s._setExternalReferringDomainEvents = function (s) {
             s.eVar37 = s.prop59 = window.utag.data.mkt_channel = channel || 'no-entry';
             s.eVar38 = s.prop60 = window.utag.data.mkt_channel_category = channelCategory;
             window.utag.data.mkt_referrer = referringURL;
-            ;
             s._articleViewType = s.eVar44;
         }   
     });
