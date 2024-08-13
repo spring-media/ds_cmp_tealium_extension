@@ -533,7 +533,7 @@ s._articleViewTypeObj = {
                 s._articleViewType = s.eVar44 = window.utag.data.sp_events = pageViewEvent;
                 s.eVar37 = s.prop59 = window.utag.data.mkt_channel = channel;
                 s.eVar38 = s.prop60 = window.utag.data.mkt_channel_category = channelCategory;
-                window.utag.data.mkt_referrer = channelReferrer;
+                s.eVar39 = window.utag.data.mkt_referrer = channelReferrer;
 
                 s._eventsObj.addEvent(pageViewEvent);
                 this.setPageSourceAndAgeForCheckout(s);
