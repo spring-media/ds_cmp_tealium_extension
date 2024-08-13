@@ -381,28 +381,36 @@ s._articleViewTypeObj = {
         const isArticle = s._utils.isArticlePage(); 
         let pageViewEvent;
         let channel;
+        let mkt_referrer;
 
         if (this.isFromSearch(referringDomain) && isHomepage) {
             pageViewEvent = 'event24,event209'; 
-            channel = 'Organic Search Brand';           
+            channel = 'Organic Search Brand';  
+            mkt_referrer = referringDomain;       
         } else if (this.isFromSearch(referringDomain)) {
             pageViewEvent = 'event24,event210'; 
             channel = 'Organic Search Non-Brand'; 
+            mkt_referrer = referringDomain;
         }else if (this.isFromSocial(referrer)) {
             pageViewEvent = 'event25,event220'; 
             channel = 'Social';
+            mkt_referrer = referringDomain;
         } else if (this.isFromBild(referringDomain) && this.isFromHome(referrer)) {
             pageViewEvent = 'event76,event205';
             channel = 'AS News';
+            mkt_referrer = referringDomain;
         } else if (this.isFromBildMobile(referringDomain) && this.isFromHome(referrer)) {
             pageViewEvent = 'event77,event205'; 
             channel = 'AS News';
+            mkt_referrer = referringDomain;
         } else if (this.isFromAsDomain(referrer)) {
             pageViewEvent = 'event205'; 
             channel = 'AS News';
+            mkt_referrer = referringDomain;
         } else if ((this.isFromPremiumService(referrer)||this.isFromPaypal(referrer)) && isSessionStart) {
             pageViewEvent = 'event208'; 
             channel = 'Register & Payment';
+            mkt_referrer = referringDomain;
         } else if (this.isFromPremiumService(referrer)||this.isFromPaypal(referrer)) {
             pageViewEvent = 'event23,event201'; // Login via secure.mypass during session
             //channel = '';
@@ -419,29 +427,32 @@ s._articleViewTypeObj = {
             pageViewEvent = 'event27,event203';  // Other External (Referrer)
             channel = 'Other External';
         }
-        return {pageViewEvent, channel};
+        return {pageViewEvent, channel, mkt_referrer};
     },
 
     getViewTypeByReferrer: function () {
         const referrer = s._utils.getReferrer(); 
         let pageViewEvent;
         let channel;
+        let mkt_referrer;
 
         if (this.isFromInternal(referrer)) {
             // Referrer is of same domain
             const internalType = this.getInternalType(referrer);
             pageViewEvent = internalType.pageViewEvent;
             channel = internalType.channel;
+            mkt_referrer = '';
             
         } else {
             // Referrer is of any other domain
             const externalType = this.getExternalType(referrer);
             pageViewEvent = externalType.pageViewEvent;
             channel = externalType.channel;
+            mkt_referrer = referrer;
 
         }
 
-        return {pageViewEvent, channel};
+        return {pageViewEvent, channel, mkt_referrer};
     },
 
     getViewTypeByTrackingProperty: function () {
@@ -524,12 +535,15 @@ s._articleViewTypeObj = {
         const pageViewEvent = viewTypesResults ? viewTypesResults.pageViewEvent : '';
         const channel = viewTypesResults ? viewTypesResults.channel : '';
         const channelCategory = viewTypesResults ? viewTypesResults.channelCategory : '';
+        const channelReferrer = viewTypesResults ? viewTypesResults.mkt_referrer : '';
 
         if (!s._utils.isAdWall(s)) {
             if (pageViewEvent) {
                 s._articleViewType = s.eVar44 = window.utag.data.sp_events = pageViewEvent;
-                s.eVar37 = s.prop59 = window.utag.data.sp_m_channel = channel;
-                s.eVar38 = s.prop60 = window.utag.data.sp_m_channel_category = channelCategory;
+                s.eVar37 = s.prop59 = window.utag.data.mkt_channel = channel;
+                s.eVar38 = s.prop60 = window.utag.data.mkt_channel_category = channelCategory;
+                s.eVar39 = window.utag.data.mkt_referrer = channelReferrer;
+
                 s._eventsObj.addEvent(pageViewEvent);
                 this.setPageSourceAndAgeForCheckout(s);
             }  
@@ -679,8 +693,9 @@ s._setExternalReferringDomainEvents = function (s) {
         if (isNotPageViewFromInternal && (isRegexMatch || isDomainMatch)) {
             s._eventsObj.addEvent(event); 
             s.eVar44 = window.utag.data.sp_events = s.eVar44 ? s.eVar44 + ',' + event : event;
-            s.eVar37 = s.prop59 = window.utag.data.sp_m_channel = channel || 'no-entry';
-            s.eVar38 = s.prop60 = window.utag.data.sp_m_channel_category = channelCategory;
+            s.eVar37 = s.prop59 = window.utag.data.mkt_channel = channel || 'no-entry';
+            s.eVar38 = s.prop60 = window.utag.data.mkt_channel_category = channelCategory;
+            s.eVar39 = window.utag.data.mkt_referrer = referringURL;
             s._articleViewType = s.eVar44;
         }   
     });
@@ -741,8 +756,8 @@ s._setTrackingValueEvents = function (s) {
             }
             s._eventsObj.addEvent(event);
             s._articleViewType = s.eVar44 = window.utag.data.sp_events += ',' + event;
-            s.eVar37 = s.prop59 = window.utag.data.sp_m_channel = channel; 
-            s.eVar38 = s.prop60 = window.utag.data.sp_m_channel_category = channelCategory || '';
+            s.eVar37 = s.prop59 = window.utag.data.mkt_channel = channel; 
+            s.eVar38 = s.prop60 = window.utag.data.mkt_channel_category = channelCategory || '';
         } 
     }
 };
