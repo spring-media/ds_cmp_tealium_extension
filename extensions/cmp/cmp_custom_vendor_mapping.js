@@ -48,7 +48,9 @@
         { 'name': 'snowplow', 'id': '5eaaa739a55a2d743f32f7c3' }
     ];
 
-    // Tealium tag values for different vendors for bild and welt
+    /* Tealium tag values for different vendors for bild and welt.
+    If the tag is deactivated or the tag number is changed in Tealium,
+    the tag numbers will need to be updated below. */ 
     const domainTagValues = {
         piano: {
             bild: [16],
@@ -85,7 +87,6 @@
             stylebook: [53],
             techbook: [105],
             travelbook: [72]
-
         }
     };
 
@@ -107,8 +108,8 @@
         }else if (domain.includes('travelbook.de') || domain.includes('magazine-travelbook.com')) {
             return domainTagValues[vendor].travelbook;
         }else {
-            // Default values if domain doesn't match
-            return [];
+            // Return nothing if domain doesn't match
+            return null;
         }
     }
 
@@ -202,31 +203,35 @@
             }
 
             //cxense/piano 
-            if ((existingCookie && existingCookie[0].indexOf('piano') >= 0)
-                || (existingFallbackCookie && existingFallbackCookie[0].indexOf('piano') >= 0)) {
+            if (((existingCookie && existingCookie[0].indexOf('piano') >= 0)
+                || (existingFallbackCookie && existingFallbackCookie[0].indexOf('piano') >= 0))
+                && !!getDomainTagValue(window.location.hostname, 'piano')) {
 
                 window.utag.view(window.utag.data, null, getDomainTagValue(window.location.hostname, 'piano'));
             }
 
             //google ads
-            if ((existingCookie && existingCookie[0].indexOf('google_fallback') >= 0)
-                        || (existingFallbackCookie && existingFallbackCookie[0].indexOf('google_fallback') >= 0)) {
+            if (((existingCookie && existingCookie[0].indexOf('google_fallback') >= 0)
+                || (existingFallbackCookie && existingFallbackCookie[0].indexOf('google_fallback') >= 0))
+                && !!getDomainTagValue(window.location.hostname, 'googleAds')) {
 
                 window.utag.view(window.utag.data, null, getDomainTagValue(window.location.hostname, 'googleAds'));
             }            
 
             //nielsenAgf
-            if ((existingCookie && existingCookie[0].indexOf('agf') >= 0)
-                || (existingFallbackCookie && existingFallbackCookie[0].indexOf('agf') >= 0)) {
+            if (((existingCookie && existingCookie[0].indexOf('agf') >= 0)
+                || (existingFallbackCookie && existingFallbackCookie[0].indexOf('agf') >= 0))
+                && !!getDomainTagValue(window.location.hostname, 'nielsenAgf')) {
 
                 window.utag.view(window.utag.data, null, getDomainTagValue(window.location.hostname, 'nielsenAgf'));
             }
             //kameleoon
-            if ((existingCookie && existingCookie.includes('kameleoon')
+            if (((existingCookie && existingCookie.includes('kameleoon')
                 || existingFallbackCookie && existingFallbackCookie.includes('kameleoon'))
                 && (window.utag.data.user_hasPurSubscription === 'false'
                 || (!window.utag.data['cp._cpauthhint']
-                || !(window.utag.data['cp._cpauthhint']?.includes('1'))))) {
+                || !(window.utag.data['cp._cpauthhint']?.includes('1')))))
+                && !!getDomainTagValue(window.location.hostname, 'kameleoon')) {
                         
                 window.utag.view(window.utag.data, null, getDomainTagValue(window.location.hostname, 'kameleoon'));
             }
