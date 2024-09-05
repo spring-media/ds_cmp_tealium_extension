@@ -190,13 +190,11 @@
 
                     //adobe deals
                     if (document.URL.includes('bild.de/deals')) {
-
                         window.utag.view(window.utag.data, null, domainTagValues.adobeDeals.bild);
                     }
 
                     //adobe club
                     if ((window.location.hostname && window.location.hostname.includes('club')) && window.utag.data['cp.utag_main_cmp_after'] == 'true') {
-
                         window.utag.view(window.utag.data, null, domainTagValues.adobeClub.bild);
                     }
                 }
