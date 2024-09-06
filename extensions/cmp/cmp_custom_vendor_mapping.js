@@ -81,8 +81,8 @@
         },
         nielsenAgf: {
             welt: [251],
-            fitbook: [15],
-            myhomebook: [12],
+            fitbook: [64],
+            myhomebook: [76],
             petbook: [91],
             stylebook: [53],
             techbook: [105],
