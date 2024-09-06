@@ -5,11 +5,11 @@
     const CLUB_DOMAIN = ['club'];
     
     const NEW_STORAGE_KEY = (CLUB_DOMAIN.some(domain => window.location.hostname.includes(domain))) ?
-    'cmp_cv_list_club' :
-    (SUB_DOMAINS.some(domain => window.location.hostname.includes(domain)) ?
-        'cm_cv_list' :
-        'cmp_cv_list'
-    );
+        'cmp_cv_list_club' :
+        (SUB_DOMAINS.some(domain => window.location.hostname.includes(domain)) ?
+            'cm_cv_list' :
+            'cmp_cv_list'
+        );
 
     // Vendor Array for Bild and Welt
     const vendorArray = [
