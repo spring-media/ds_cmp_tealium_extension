@@ -1,7 +1,7 @@
 (function () {
     const OLD_STORAGE_KEY = '__utag_cmp_vendor_list';
 
-    const SUB_DOMAINS = ['sportbild', 'shop.welt.de', 'bildplusshop.bild.de'];
+    const SUB_DOMAINS = ['sportbild.bild.de', 'shop.welt.de', 'bildplusshop.bild.de'];
     const CLUB_DOMAIN = ['club'];
     
     const NEW_STORAGE_KEY = (CLUB_DOMAIN.some(domain => window.location.hostname.includes(domain))) ?
@@ -178,8 +178,9 @@
     const processUtag = function () {
         if (!window.__utag_view_fired) {
             window.__utag_view_fired = true;
-
-            var existingCookie = document.cookie.match(/cmp_cv_list=([a-zA-z0-9_,-]*)/);
+            var cmp_cv_listCookie = document.cookie.match(/cmp_cv_list=([a-zA-z0-9_,-]*)/);
+            var cm_cv_listCookie = document.cookie.match(/cm_cv_list=([a-zA-z0-9_,-]*)/);
+            var existingCookie = NEW_STORAGE_KEY === 'cm_cv_list' ? cm_cv_listCookie : cmp_cv_listCookie;
             var existingFallbackCookie = document.cookie.match(/__utag_cmp_vendor_list=([a-zA-z0-9_,-]*)/);
 
             // Adobe deals, adobe club run only for Bild
