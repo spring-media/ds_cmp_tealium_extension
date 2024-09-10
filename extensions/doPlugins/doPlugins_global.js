@@ -688,9 +688,10 @@ s._setExternalReferringDomainEvents = function (s) {
             return referringURL && referringURL.includes(domain);
         });
         
-        const isNotPageViewFromInternal = s._articleViewTypeObj.isFromInternal(referringURL) ? false : true;
+        const isNotPageViewFromInternal = !s._articleViewTypeObj.isFromInternal(referringURL);
+        const isNotHomepage = !s._utils.isHomepage();
 
-        if (isNotPageViewFromInternal && (isRegexMatch || isDomainMatch)) {
+        if (isNotPageViewFromInternal && isNotHomepage && (isRegexMatch || isDomainMatch)) {
             s._eventsObj.addEvent(event); 
             s.eVar44 = window.utag.data.sp_events = s.eVar44 ? s.eVar44 + ',' + event : event;
             s.eVar37 = s.prop59 = window.utag.data.mkt_channel = channel || 'no-entry';
