@@ -688,8 +688,8 @@ s._setExternalReferringDomainEvents = function (s) {
             return referringURL && referringURL.includes(domain);
         });
         
-        const isNotPageViewFromInternal = s._articleViewTypeObj.isFromInternal(referringURL) ? false : true;
-        const isNotHomepage = s._utils.isHomepage() ? false : true;
+        const isNotPageViewFromInternal = !s._articleViewTypeObj.isFromInternal(referringURL);
+        const isNotHomepage = !s._utils.isHomepage();
 
         if (isNotPageViewFromInternal && isNotHomepage && (isRegexMatch || isDomainMatch)) {
             s._eventsObj.addEvent(event); 
