@@ -842,9 +842,6 @@ s._homeTeaserTrackingObj = {
  * setPageName(s) needs to get explicitly called from inside the s.doPlugins() callback function of the Bild profile.
  */
 s._bildPageNameObj = {
-    isDocTypeArticle: function () {
-        return s._utils.getDocType() === 'article';
-    },
 
     isHome: function () {
         return !!window.utag.data['page_id']
@@ -853,9 +850,7 @@ s._bildPageNameObj = {
     },
 
     isLive: function () {
-        return !!this.isDocTypeArticle()
-            && (!!window.utag.data.is_page_live_article && window.utag.data.is_page_live_article === '1'
-                || !!window.utag.data.page_sub_type && window.utag.data.page_sub_type === 'LIVETICKER');
+        return (!!window.utag.data.page_sub_type && window.utag.data.page_sub_type === 'LIVETICKER');
     },
 
     isSportDatencenterTyp: function () {

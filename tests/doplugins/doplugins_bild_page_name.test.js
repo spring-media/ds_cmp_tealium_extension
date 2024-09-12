@@ -17,28 +17,6 @@ describe('_bildPageNameObj', () => {
         jest.restoreAllMocks();
     });
 
-    describe('isDocTypeArticle', () => {
-        let getDocTypeMock;
-
-        beforeEach(() => {
-            getDocTypeMock = jest.spyOn(s._utils, 'getDocType').mockImplementation();
-        });
-
-        it('should be false if page_mapped_doctype_for_pagename is not article', () => {
-            getDocTypeMock.mockReturnValue('any-non-article-type');
-
-            const returnValue = s._bildPageNameObj.isDocTypeArticle();
-            expect(returnValue).toBe(false);
-        });
-
-        it('should be true if page_mapped_doctype_for_pagename is article', () => {
-            getDocTypeMock.mockReturnValue('article');
-
-            const returnValue = s._bildPageNameObj.isDocTypeArticle();
-            expect(returnValue).toBe(true);
-        });
-    });
-
     describe('isHome', () => {
         it('should be false if page_id is incorrect', () => {
             window.utag.data.page_id = 12345678;
@@ -64,36 +42,12 @@ describe('_bildPageNameObj', () => {
     });
 
     describe('isLive', () => {
-        it('should be false if page_mapped_doctype_for_pagename is not article', () => {
-            window.utag.data.is_page_live_article = '1';
-            window.utag.data.page_mapped_doctype_for_pagename = 'home';
-
-            const returnValue = s._bildPageNameObj.isLive();
-            expect(returnValue).toBe(false);
-        });
-
-        it('should be false if is_page_live_article is not correct', () => {
-            window.utag.data.is_page_live_article = '0';
-            window.utag.data.page_mapped_doctype_for_pagename = 'article';
-
-            const returnValue = s._bildPageNameObj.isLive();
-            expect(returnValue).toBe(false);
-        });
-
         it('should be false if page_sub_type is not correct', () => {
             window.utag.data.page_sub_type = 'any-non-Liveticker';
             window.utag.data.page_mapped_doctype_for_pagename = 'article';
 
             const returnValue = s._bildPageNameObj.isLive();
             expect(returnValue).toBe(false);
-        });
-
-        it('should be true if page_mapped_doctype_for_pagename is article and is_page_live_article is 1', () => {
-            window.utag.data.is_page_live_article = '1';
-            window.utag.data.page_mapped_doctype_for_pagename = 'article';
-
-            const returnValue = s._bildPageNameObj.isLive();
-            expect(returnValue).toBe(true);
         });
 
         it('should be true if page_mapped_doctype_for_pagename is article and page_sub_type is LIVETICKER', () => {
