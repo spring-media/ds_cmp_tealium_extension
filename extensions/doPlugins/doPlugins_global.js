@@ -320,6 +320,14 @@ s._articleViewTypeObj = {
 
     },
 
+    isDirectBildMobileSwitcher: function (referrer) {
+        const wwwhReferrer = s._utils.getReferrer(referrer);
+        const sessionStart = s._utils.isSessionStart();
+        
+        return ((wwwhReferrer.includes("www.bild.de") || wwwhReferrer.includes("www.sportbild.bild.de")) && sessionStart);
+
+    },  
+
     isValidURL: function (urlString) {
         try {
             new URL(urlString);
@@ -420,7 +428,7 @@ s._articleViewTypeObj = {
         } else if (this.isWithoutReferrer() && this.isNavigated() && isArticle) {
             pageViewEvent = 'event26,event202'; // Dark Social Marketing Channel only with session start
             channel = '';
-        }else if (this.isDirect(referrer)) {
+        }else if (this.isDirect(referrer) || this.isDirectBildMobileSwitcher(referrer)) {
             pageViewEvent = 'event207'; // no Referrer at Session Start
             channel = 'Direct';
         }  else {
