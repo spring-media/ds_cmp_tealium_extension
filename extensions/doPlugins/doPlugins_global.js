@@ -324,7 +324,7 @@ s._articleViewTypeObj = {
         const wwwhReferrer = s._utils.getReferrer(referrer);
         const sessionStart = s._utils.isSessionStart();
         
-        return ((wwwhReferrer.includes("www.bild.de") || wwwhReferrer.includes("www.sportbild.bild.de")) && sessionStart);
+        return ((wwwhReferrer.includes('www.bild.de') || wwwhReferrer.includes('www.sportbild.bild.de')) && sessionStart);
 
     },  
 
