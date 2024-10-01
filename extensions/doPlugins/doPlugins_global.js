@@ -321,10 +321,10 @@ s._articleViewTypeObj = {
     },
 
     isDirectBildMobileSwitcher: function (referrer) {
-        const wwwhReferrer = s._utils.getReferrer(referrer);
+        const wwwReferrer = s._utils.getReferrer(referrer);
         const sessionStart = s._utils.isSessionStart();
         
-        return ((wwwhReferrer.includes('www.bild.de') || wwwhReferrer.includes('www.sportbild.bild.de')) && sessionStart);
+        return ((wwwReferrer.includes('www.bild.de') || wwwReferrer.includes('www.sportbild.bild.de')) && sessionStart);
 
     },  
 
