@@ -41,6 +41,7 @@
         { 'name': 'piano_alt', 'id': '5f7701fb3d44b8023188fba6' },
         { 'name': 'piano_n', 'id': '5eec8924b8e05c699567f398' },
         { 'name': 'piano_o', 'id': '5ea797944e5aa15059ff5a28' },
+        { 'name': 'rasp', 'id': '670675dca377c206052d456b' },
         { 'name': 'sociomantic', 'id': '5ebcb4a92fcde131e4d1a92a' },
         { 'name': 'taboola', 'id': '5e37fc3e56a5e6615502f9c4' },
         { 'name': 'tealium_collect', 'id': '5ef5f18f50fefa143f611d21' },
