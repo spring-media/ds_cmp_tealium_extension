@@ -1,0 +1,17 @@
+name: Trigger Cerberus Tests
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Tests in Other Repo
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          repository: spring-media/ds_cerberus_playwright
+          token: ${{ secrets.GITHUB_TOKEN }}
+          event-type: run-tests
