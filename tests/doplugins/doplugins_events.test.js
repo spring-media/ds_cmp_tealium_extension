@@ -11,6 +11,15 @@ describe('_eventsObj', () => {
         jest.restoreAllMocks();
     });
 
+    describe('TEST CI TEST TRIGGER', () => {
+        it('should push passed in event string to internal events array', () => {
+            const event = 'event-203';
+
+            s._eventsObj.addEvent(event);
+            expect(s._eventsObj.events).toEqual([event1, event203]);
+        });
+    });
+
     describe('addEvent(event)', () => {
         it('should push passed in event string to internal events array', () => {
             const event1 = 'event-1';
