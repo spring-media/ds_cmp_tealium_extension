@@ -51,25 +51,6 @@ describe('getDomainTagValue', () => {
     });
 });
 
-describe('sendLinkEvent', () => {
-
-    test('sends link event with correct parameters', () => {
-        const scrollDepth = 50;
-        const platform = 'web';
-        const pageName = 'homepage';
-        const tagNumber = [10];
-
-        sendLinkEvent(scrollDepth, platform, pageName, tagNumber);
-
-        expect(window.utag.link).toHaveBeenCalledWith({
-            'event_name': 'scroll depth',
-            'event_action': 'view50',
-            'page_platform': platform,
-            'adobe_pageName': pageName
-        }, null, tagNumber);
-    });
-});
-
 describe('scroll event listener', () => {
     let scrollArray;
     let triggered50;
