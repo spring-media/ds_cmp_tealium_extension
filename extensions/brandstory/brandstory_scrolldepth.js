@@ -82,3 +82,15 @@ window.addEventListener('scroll', function () {
         //sendLinkEvent(scrollDepth, window.utag.data.page_platform, window.utag.data.adobe_pageName, tagNumber);
     }
 });
+
+// Create a reference to members of this unit which need to be exposed for unit testing.
+const exportedFunctions = {
+    getCookie,
+    getDomainTagValue,
+};
+
+// Evaluate runtime environment (Browser or Node.js)
+if (typeof exports === 'object') {
+    // Expose reference to members for unit testing.
+    module.exports = exportedFunctions;
+}
