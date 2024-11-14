@@ -17,5 +17,5 @@ jobs:
         uses: peter-evans/repository-dispatch@v3
         with:
           repository: spring-media/ds_cerberus_playwright
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.CERBERUS_ACCESS_TOKEN }}
           event-type: run-tests

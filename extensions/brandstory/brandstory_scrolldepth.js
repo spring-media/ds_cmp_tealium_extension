@@ -89,7 +89,6 @@ window.addEventListener('scroll', function () {
 const exportedFunctions = {
     getCookie,
     getDomainTagValue,
-    sendLinkEvent
 };
 
 // Evaluate runtime environment (Browser or Node.js)
