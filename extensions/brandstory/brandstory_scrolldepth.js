@@ -42,7 +42,9 @@ const scrollArray = [];
 
 /* If scroll depth is 50, 75 or 100 the request should be triggered once
 for each number. To prevent multiple requests for each, we set trigger flags */
-var triggered50, triggered75, triggered100 = false;
+var triggered50  = false; 
+var triggered75  = false; 
+var triggered100 = false;
 
 // Scroll event listener
 window.addEventListener('scroll', function () {
