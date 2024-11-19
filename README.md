@@ -7,7 +7,11 @@ Repository for Javascript Tealium extensions
 The goal of this project is to generalize Tealium extensions for the usage on different profiles and to centralize
 development.
 
-The project is hosted on GitHub. Changes will automatically be synced by Tealium.
+The project is hosted on GitHub. 
+
+Changes in code will trigger the Cerberus tests to check e2e flow
+
+Changes will automatically be synced by Tealium.
 
 <!-- GETTING STARTED -->
 
