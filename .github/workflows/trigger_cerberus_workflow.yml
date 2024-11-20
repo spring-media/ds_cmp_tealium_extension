@@ -18,4 +18,4 @@ jobs:
         with:
           repository: spring-media/ds_cerberus_playwright
           token: ${{ secrets.CERBERUS_ACCESS_TOKEN }}
-          event-type: run-tests
+          event-type: Run Tealium CI Tests
