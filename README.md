@@ -9,9 +9,9 @@ development.
 
 The project is hosted on GitHub. 
 
-Code changes pushed to any branch will trigger the Cerberus tests to check e2e flow
+Code changes pushed to any branch will trigger the Cerberus tests to verify e2e flow
 
-The person responsible for changes should check the Cerberus repo to find out if the e2e tests are working fine after their changes
+The person responsible for changes has to check the Cerberus repo actions (Run E2E Tests Tealium CI) to make sure the tests are working fine after their changes
 
 Changes will automatically be synced by Tealium.
 
