@@ -185,16 +185,11 @@
             var existingCookie = NEW_STORAGE_KEY === 'cm_cv_list' ? cm_cv_listCookie : cmp_cv_listCookie;
             var existingFallbackCookie = document.cookie.match(/__utag_cmp_vendor_list=([a-zA-z0-9_,-]*)/);
 
-            // Adobe deals, adobe club run only for Bild
+            // Adobe adobe club run only for Bild
             if (window.location.hostname.includes('bild.de')) {
                 if ((existingCookie && existingCookie[0].indexOf('adobe_analytics') >= 0)
                     || (existingFallbackCookie && existingFallbackCookie[0].indexOf('adobe_analytics') >= 0)
                 ) {
-
-                    //adobe deals
-                    if (document.URL.includes('bild.de/deals')) {
-                        window.utag.view(window.utag.data, null, domainTagValues.adobeDeals.bild);
-                    }
 
                     //adobe club
                     if ((window.location.hostname && window.location.hostname.includes('club')) && window.utag.data['cp.utag_main_cmp_after'] == 'true') {
