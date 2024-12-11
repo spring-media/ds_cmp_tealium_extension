@@ -512,8 +512,8 @@ s._articleViewTypeObj = {
         const channelCat = s.eVar38 || '';
         //Adding article view type, channel, channelCategory and page age to cookies for checkout
         window.utag.loader.SC('utag_main', { 'articleview': s._articleViewType + ';exp-session' });
-        window.utag.loader.SC("utag_main", {channel: channel + ";exp-session",});
-        window.utag.loader.SC("utag_main", {channelCat: channelCat + ";exp-session",});
+        window.utag.loader.SC('utag_main', {channel: channel + ';exp-session',});
+        window.utag.loader.SC('utag_main', {channelCat: channelCat + ';exp-session',});
         window.utag.data['cp.utag_main_articleview'] = s._articleViewType;
         window.utag.loader.SC('utag_main', { 'pa': pageAge + ';exp-session' });
         window.utag.data['cp.utag_main_pa'] = pageAge;
