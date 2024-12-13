@@ -366,10 +366,10 @@ s._articleViewTypeObj = {
 
         if (this.isFromHome(referrer) && this.isNavigated() && !this.isSelfRedirect() && !this.isFromOnsiteSearch() && !this.isFromLesenSieAuch()) {
             pageViewEvent = 'event22,event200'; //Home
-            channel = pageNumberOne ? 'Direct' : '';
+            channel = pageNumberOne ? 'Direct' : channel || '';
         } else {
             pageViewEvent = 'event23,event201'; //Other Internal
-            channel = pageNumberOne ? 'Direct' : '';
+            channel = pageNumberOne ? 'Direct' : channel || '';
         }
         return {pageViewEvent, channel};
     },
@@ -413,13 +413,11 @@ s._articleViewTypeObj = {
             mkt_referrer = referringDomain;
         } else if (this.isFromPremiumService(referrer)||this.isFromPaypal(referrer)) {
             pageViewEvent = 'event23,event201'; // Login via secure.mypass during session
-            //channel = '';
         } else if (this.isWithoutReferrer() && this.isNavigated() && isArticle && isSessionStart) {
             pageViewEvent = 'event26,event202'; // Dark Social 
             channel = 'Dark Social';
         } else if (this.isWithoutReferrer() && this.isNavigated() && isArticle) {
             pageViewEvent = 'event26,event202'; // Dark Social Marketing Channel only with session start
-            channel = '';
         }else if (this.isDirect(referrer)) {
             pageViewEvent = 'event207'; // no Referrer at Session Start
             channel = 'Direct';
@@ -495,8 +493,6 @@ s._articleViewTypeObj = {
             channelCategory = 'External F&F Content Recommendation';
         }  else if (isFromReco) {
             pageViewEvent = 'event23,event201'; //Outbrain Reco Fallbackevent
-            channel = '';
-            channelCategory = '';
         } else if (trackingValue.startsWith('upday')) {
             pageViewEvent = 'event204'; 
             channel = 'Upday';
@@ -516,8 +512,8 @@ s._articleViewTypeObj = {
         const channelCat = s.eVar38 || '';
         //Adding article view type, channel, channelCategory and page age to cookies for checkout
         window.utag.loader.SC('utag_main', { 'articleview': s._articleViewType + ';exp-session' });
-        window.utag.loader.SC('utag_main', { 'channel':  channel + ';exp-session' });
-        window.utag.loader.SC('utag_main', { 'channelCat': channelCat + ';exp-session' });
+        window.utag.loader.SC('utag_main', {channel: channel + ';exp-session',});
+        window.utag.loader.SC('utag_main', {channelCat: channelCat + ';exp-session',});
         window.utag.data['cp.utag_main_articleview'] = s._articleViewType;
         window.utag.loader.SC('utag_main', { 'pa': pageAge + ';exp-session' });
         window.utag.data['cp.utag_main_pa'] = pageAge;
