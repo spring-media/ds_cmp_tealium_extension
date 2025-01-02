@@ -245,7 +245,7 @@ s._articleViewTypeObj = {
     },
     
     isOtherTrackingValue: function () {
-        const trackingChannel = ['email.','onsite.','inapp.','push.','sea.','affiliate.','socialmediapaid.','social_paid.','app.','display.','career.','print.','social.','upday','kooperation'];
+        const trackingChannel = ['email.','onsite.','inapp.','push.','sea.','affiliate.','socialmediapaid.','social_paid.','app.','display.','career.','print.','social.','upday','kooperation','socialmedia.'];
         const trackingValue = this.getTrackingValue();
         return trackingChannel.some(item => {
             return trackingValue.indexOf(item) === 0;
@@ -261,7 +261,7 @@ s._articleViewTypeObj = {
 
     isTrackingValueOrganicSocial: function () {
         const trackingValue = this.getTrackingValue();
-        return trackingValue.startsWith('social.') && !(trackingValue.startsWith('socialmediapaid.') || trackingValue.startsWith('social_paid.'))  ;
+        return trackingValue.startsWith('social.') && !(trackingValue.startsWith('socialmediapaid.') || trackingValue.startsWith('social_paid.') || trackingValue.startsWith('socialmedia.'))  ;
     },
 
     isFromPremiumService: function (referrer) {
