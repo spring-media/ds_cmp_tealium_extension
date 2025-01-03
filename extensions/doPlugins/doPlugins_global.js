@@ -81,7 +81,7 @@ s._utils = {
 
     isHomepage: function () {
         return (!!window.utag.data['page_id']&& (window.utag.data['page_id'] === '22P2NufXQ03Ny17A6vwi'|| window.utag.data['page_id'] === 'wDmWJyqHFeqhJHmeuqfN')
-                || (this.getDocType === 'home'));
+                || (this.getDocType === 'home') || !!window.utag.data['page_pageId'] && window.utag.data['page_pageId'] === '5');
     },
 
     isArticlePage: function () {
@@ -245,7 +245,7 @@ s._articleViewTypeObj = {
     },
     
     isOtherTrackingValue: function () {
-        const trackingChannel = ['email.','onsite.','inapp.','push.','sea.','affiliate.','socialmediapaid.','social_paid.','app.','display.','career.','print.','social.','upday','kooperation'];
+        const trackingChannel = ['email.','onsite.','inapp.','push.','sea.','affiliate.','socialmediapaid.','social_paid.','app.','display.','career.','print.','social.','upday','kooperation','socialmedia.'];
         const trackingValue = this.getTrackingValue();
         return trackingChannel.some(item => {
             return trackingValue.indexOf(item) === 0;
@@ -261,7 +261,7 @@ s._articleViewTypeObj = {
 
     isTrackingValueOrganicSocial: function () {
         const trackingValue = this.getTrackingValue();
-        return trackingValue.startsWith('social.') && !(trackingValue.startsWith('socialmediapaid.') || trackingValue.startsWith('social_paid.'))  ;
+        return trackingValue.startsWith('social.') && !(trackingValue.startsWith('socialmediapaid.') || trackingValue.startsWith('social_paid.') || trackingValue.startsWith('socialmedia.'))  ;
     },
 
     isFromPremiumService: function (referrer) {
@@ -629,8 +629,14 @@ s._setExternalReferringDomainEvents = function (s) {
             channelCategory: 'Youtube',
         },
         {
-            domains:  ['t.co/', 'twitter.com', 'com.twitter.android'],
+            domains:  ['twitter.com', 'com.twitter.android'],
             event: 'event51,event222',
+            channel: 'Organic Social',
+            channelCategory: 'Twitter',
+        },
+        {
+            event: 'event51,event222',
+            matchRegex: /^t\.co(\/.*)?$/i,
             channel: 'Organic Social',
             channelCategory: 'Twitter',
         },
@@ -667,7 +673,7 @@ s._setExternalReferringDomainEvents = function (s) {
         {
             domains: ['away.vk.com', 'ok.ru', 'mobile.ok.ru', 'www.yammer.com', 'www.netvibes.com', 'wordpress.com', 'blogspot.com', 'vk.com', 'com.twitter.android', 'm.ok.ru', 'welt.de/instagram', '.threads.net'],
             event: 'event226',
-            channel: 'Organic Search Social',
+            channel: 'Organic Social',
             channelCategory: 'Other organic Social',
         },
 
