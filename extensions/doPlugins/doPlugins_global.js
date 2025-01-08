@@ -381,36 +381,36 @@ s._articleViewTypeObj = {
         const isArticle = s._utils.isArticlePage(); 
         let pageViewEvent;
         let channel;
-        let mkt_referrer;
+        let mkt_channel_detail;
 
         if (this.isFromSearch(referringDomain) && isHomepage) {
             pageViewEvent = 'event24,event209'; 
             channel = 'Organic Search Brand';  
-            mkt_referrer = referringDomain;       
+            mkt_channel_detail = referringDomain;       
         } else if (this.isFromSearch(referringDomain)) {
             pageViewEvent = 'event24,event210'; 
             channel = 'Organic Search Non-Brand'; 
-            mkt_referrer = referringDomain;
+            mkt_channel_detail = referringDomain;
         }else if (this.isFromSocial(referrer)) {
             pageViewEvent = 'event25,event220'; 
             channel = 'Social';
-            mkt_referrer = referringDomain;
+            mkt_channel_detail = referringDomain;
         } else if (this.isFromBild(referringDomain) && this.isFromHome(referrer)) {
             pageViewEvent = 'event76,event205';
             channel = 'AS News';
-            mkt_referrer = referringDomain;
+            mkt_channel_detail = referringDomain;
         } else if (this.isFromBildMobile(referringDomain) && this.isFromHome(referrer)) {
             pageViewEvent = 'event77,event205'; 
             channel = 'AS News';
-            mkt_referrer = referringDomain;
+            mkt_channel_detail = referringDomain;
         } else if (this.isFromAsDomain(referrer)) {
             pageViewEvent = 'event205'; 
             channel = 'AS News';
-            mkt_referrer = referringDomain;
+            mkt_channel_detail = referringDomain;
         } else if ((this.isFromPremiumService(referrer)||this.isFromPaypal(referrer)) && isSessionStart) {
             pageViewEvent = 'event208'; 
             channel = 'Register & Payment';
-            mkt_referrer = referringDomain;
+            mkt_channel_detail = referringDomain;
         } else if (this.isFromPremiumService(referrer)||this.isFromPaypal(referrer)) {
             pageViewEvent = 'event23,event201'; // Login via secure.mypass during session
         } else if (this.isWithoutReferrer() && this.isNavigated() && isArticle && isSessionStart) {
@@ -424,33 +424,34 @@ s._articleViewTypeObj = {
         }  else {
             pageViewEvent = 'event27,event203';  // Other External (Referrer)
             channel = 'Other External';
+            mkt_channel_detail = referringDomain;
         }
-        return {pageViewEvent, channel, mkt_referrer};
+        return {pageViewEvent, channel, mkt_channel_detail};
     },
 
     getViewTypeByReferrer: function () {
         const referrer = s._utils.getReferrer(); 
         let pageViewEvent;
         let channel;
-        let mkt_referrer;
+        let mkt_channel_detail;
 
         if (this.isFromInternal(referrer)) {
             // Referrer is of same domain
             const internalType = this.getInternalType(referrer);
             pageViewEvent = internalType.pageViewEvent;
             channel = internalType.channel;
-            mkt_referrer = '';
+            mkt_channel_detail = '';
             
         } else {
             // Referrer is of any other domain
             const externalType = this.getExternalType(referrer);
             pageViewEvent = externalType.pageViewEvent;
             channel = externalType.channel;
-            mkt_referrer = referrer;
+            mkt_channel_detail = referrer;
 
         }
 
-        return {pageViewEvent, channel, mkt_referrer};
+        return {pageViewEvent, channel, mkt_channel_detail};
     },
 
     getViewTypeByTrackingProperty: function () {
@@ -458,6 +459,7 @@ s._articleViewTypeObj = {
         let pageViewEvent;
         let channel;
         let channelCategory;
+        let mkt_channel_detail;
         const isMarketing = this.isPaidMarketing(); 
         const isFromReco = this.isFromReco();
         const pageNumberOne = s._utils.isPageOneInSession();
@@ -468,39 +470,48 @@ s._articleViewTypeObj = {
             pageViewEvent = 'event24,event206,event242'; // Search
             channel = 'Paid Marketing';
             channelCategory = 'Sea';
+            mkt_channel_detail = trackingValue;
         } else if (trackingValue.startsWith('social_paid.')) {
             pageViewEvent = 'event25,event206,event241'; //Social Paid Marketing
             channel = 'Paid Marketing';
             channelCategory = 'Social Paid';
+            mkt_channel_detail = trackingValue;
         } else if (trackingValue.startsWith('socialmediapaid.')) {
             pageViewEvent = 'event25,event206,event241'; //Social Paid Marketing
             channel = 'Paid Marketing';
             channelCategory = 'Social Paid';
+            mkt_channel_detail = trackingValue;
         } else if (trackingValue.startsWith('social.')) {
             pageViewEvent = 'event25,event220'; //Social
             channel = 'Organic Social';
+            mkt_channel_detail = trackingValue;
         } else if (isFromReco && pageNumberOne) {
             pageViewEvent = 'event102,event230,event232'; //Outbrain Reco at Articles
             channel = 'Recommendation';
             channelCategory = 'Internal Content Recommendation';
+            mkt_channel_detail = trackingValue;
         } else if (isFromRecoFf === 'desktop') {
             pageViewEvent = 'event76,event230,event231'; //Outbrain Reco at Desktop HOME
             channel = 'Recommendation';
             channelCategory = 'External F&F Content Recommendation';
+            mkt_channel_detail = trackingValue;
         } else if (isFromRecoFf === 'mobile') {
             pageViewEvent = 'event77,event230,event231'; //Outbrain Reco at Mobile HOME
             channel = 'Recommendation';
             channelCategory = 'External F&F Content Recommendation';
+            mkt_channel_detail = trackingValue;
         }  else if (isFromReco) {
             pageViewEvent = 'event23,event201'; //Outbrain Reco Fallbackevent
         } else if (trackingValue.startsWith('upday')) {
             pageViewEvent = 'event204'; 
             channel = 'Upday';
+            mkt_channel_detail = trackingValue;
         } else if (trackingValue && isMarketing) {
             pageViewEvent = 'event206';
             channel = 'Paid Marketing';
+            mkt_channel_detail = trackingValue;
         }
-        return {pageViewEvent, channel, channelCategory};
+        return {pageViewEvent, channel, channelCategory, mkt_channel_detail};
     },
 
     setPageSourceAndAgeForCheckout: function (s) {
@@ -531,14 +542,14 @@ s._articleViewTypeObj = {
         const pageViewEvent = viewTypesResults ? viewTypesResults.pageViewEvent : '';
         const channel = viewTypesResults ? viewTypesResults.channel : '';
         const channelCategory = viewTypesResults ? viewTypesResults.channelCategory : '';
-        const channelReferrer = viewTypesResults ? viewTypesResults.mkt_referrer : '';
+        const channelReferrer = viewTypesResults ? viewTypesResults.mkt_channel_detail : '';
 
         if (!s._utils.isAdWall(s)) {
             if (pageViewEvent) {
                 s._articleViewType = s.eVar44 = window.utag.data.sp_events = pageViewEvent;
                 s.eVar37 = s.prop59 = window.utag.data.mkt_channel = channel;
                 s.eVar38 = s.prop60 = window.utag.data.mkt_channel_category = channelCategory;
-                s.eVar39 = window.utag.data.mkt_referrer = channelReferrer;
+                s.eVar39 = window.utag.data.mkt_channel_detail = channelReferrer;
 
                 s._eventsObj.addEvent(pageViewEvent);
                 this.setPageSourceAndAgeForCheckout(s);
@@ -698,7 +709,7 @@ s._setExternalReferringDomainEvents = function (s) {
             s.eVar44 = window.utag.data.sp_events = s.eVar44 ? s.eVar44 + ',' + event : event;
             s.eVar37 = s.prop59 = window.utag.data.mkt_channel = channel || 'no-entry';
             s.eVar38 = s.prop60 = window.utag.data.mkt_channel_category = channelCategory;
-            s.eVar39 = window.utag.data.mkt_referrer = referringURL;
+            s.eVar39 = window.utag.data.mkt_channel_detail = referringURL;
             s._articleViewType = s.eVar44;
         }   
     });
@@ -720,47 +731,58 @@ s._setTrackingValueEvents = function (s) {
             let event;
             let channel = 'Organic Social';
             let channelCategory;
+            let channel_detail;
             switch (true) {
             case socialTrackingValue.includes('telegram'):
                 event = 'event225';
                 channelCategory = 'Telegram';
+                channel_detail = socialTrackingValue;
                 break;
             case socialTrackingValue.includes('instagram'):
                 event = 'event53,event224';
                 channelCategory = 'Instagram';
+                channel_detail = socialTrackingValue;
                 break;
             case socialTrackingValue.includes('youtube'):
                 event = 'event50,event223';
                 channelCategory = 'Youtube';
+                channel_detail = socialTrackingValue;
                 break;
             case socialTrackingValue.includes('twitter'):
                 event = 'event51,event222';
                 channelCategory = 'Twitter';
+                channel_detail = socialTrackingValue;
                 break;
             case socialTrackingValue.includes('facebook'):
                 event = 'event52,event221';
                 channelCategory = 'Facebook';
+                channel_detail = socialTrackingValue;
                 break;
             case socialTrackingValue.includes('linkedin'):
                 event = 'event227';
                 channelCategory = 'LinkedIn';
+                channel_detail = socialTrackingValue;
                 break;
             case socialTrackingValue.includes('xing'):
                 event = 'event228';
                 channelCategory = 'Xing';
+                channel_detail = socialTrackingValue;
                 break;     
             case socialTrackingValue.includes('pinterest'):
                 event = 'event229';
                 channelCategory = 'Pinterest';
+                channel_detail = socialTrackingValue;
                 break;                                                     
             default:
                 event = 'event226';
                 channelCategory = 'Other organic Social';
+                channel_detail = socialTrackingValue;
             }
             s._eventsObj.addEvent(event);
             s._articleViewType = s.eVar44 = window.utag.data.sp_events += ',' + event;
             s.eVar37 = s.prop59 = window.utag.data.mkt_channel = channel; 
             s.eVar38 = s.prop60 = window.utag.data.mkt_channel_category = channelCategory || '';
+            s.eVar39 = window.utag.data.mkt_channel_detail = channel_detail;
         } 
     }
 };
