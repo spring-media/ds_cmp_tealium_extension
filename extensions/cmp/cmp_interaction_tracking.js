@@ -4,10 +4,12 @@
         11: 'cm_accept_all',
         12: 'cm_show_privacy_manager',
         13: 'cm_reject_all',
+        5: 'cm_subscribe_pur',
     };
     const PRIVACY_MANAGER_EVENTS = {
-        SAVE_AND_EXIT: 'pm_save_and_exit',
-        ACCEPT_ALL: 'pm_accept_all',
+        1: 'pm_accept_as_selected',
+        2: 'pm_back_to_cmp_layer',
+        9: 'pm_subscribe_pur',
     };
     const TCFAPI_COMMON_EVENTS = {
         CMP_UI_SHOWN: 'cm_layer_shown',
@@ -152,11 +154,8 @@
     }
 
     function sendFirstPageViewEvent() {
-        // Check if user has already given/declined consent
-        if (!exportedFunctions.isAfterCMP()) {
-            const adobeTagId = exportedFunctions.getAdobeTagId(window.utag.data['ut.profile']);
-            window.utag.view(window.utag.data, null, [adobeTagId]);
-        }
+        const adobeTagId = exportedFunctions.getAdobeTagId(window.utag.data['ut.profile']);
+        window.utag.view(window.utag.data, null, [adobeTagId]);
     }
 
     function onMessageChoiceSelect(messageType, id, eventType) {
@@ -179,17 +178,20 @@
         }
     }
 
-    function onPrivacyManagerAction(eventType) {
-        if (PRIVACY_MANAGER_EVENTS[eventType] || eventType.purposeConsent) {
-            window.utag.data['cmp_events'] = eventType.purposeConsent ? (eventType.purposeConsent === 'all' ? PRIVACY_MANAGER_EVENTS.ACCEPT_ALL : PRIVACY_MANAGER_EVENTS.SAVE_AND_EXIT) : PRIVACY_MANAGER_EVENTS[eventType];
-            exportedFunctions.sendLinkEvent(window.utag.data['cmp_events']);
+    function onPrivacyManagerAction(messageType, id, eventType) {
+        if (PRIVACY_MANAGER_EVENTS[eventType]) {
+            window.utag.data['cmp_events'] = PRIVACY_MANAGER_EVENTS[eventType];
+            exportedFunctions.sendLinkEvent(PRIVACY_MANAGER_EVENTS[eventType]);
             // Set cookie for first page view tracking.
-            if (window.utag.data['dom.domain'] && window.utag.data['dom.domain'].includes('sportbild.bild.de')){
+            if (eventType === 1 && window.utag.data['dom.domain'] && window.utag.data['dom.domain'].includes('sportbild.bild.de')){
                 window.utag.loader.SC('utag_main', {'cmp_after_sub': 'true'});
                 window.utag.data['cp.utag_main_cmp_after_sub'] = 'true';    
             }else{
                 window.utag.loader.SC('utag_main', {'cmp_after': 'true'});
                 window.utag.data['cp.utag_main_cmp_after'] = 'true';
+            }
+            if (eventType === 1) {
+                exportedFunctions.onUserConsent();
             }
         }
     }
