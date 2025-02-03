@@ -209,8 +209,8 @@
     }
 
     function onConsentReady(messageType) {
-            window.utag.data['cmp_onConsentReady'] = messageType.eventStatus;
-            }
+        window.utag.data['cmp_onConsentReady'] = messageType.eventStatus;
+    }
 
     function onMessage(event) {
         if (event.data && event.data.cmpLayerMessage) {
