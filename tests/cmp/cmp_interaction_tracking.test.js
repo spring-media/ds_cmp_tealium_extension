@@ -148,6 +148,7 @@ describe('CMP Interaction Tracking', () => {
                 expect.any(Function),
                 expect.any(Function),
                 expect.any(Function),
+                expect.any(Function),
                 expect.any(Function)
             ]);
         });
@@ -159,12 +160,13 @@ describe('CMP Interaction Tracking', () => {
             });
 
             expect(window._sp_.addEventListener).toBeCalledTimes(3);
-            expect(window.__tcfapi).toBeCalledTimes(1);
+            expect(window.__tcfapi).toBeCalledTimes(2);
             expect(window._sp_.addEventListener).toHaveBeenCalledWith('onMessageReceiveData', cmpInteractionTracking.onMessageReceiveData);
             expect(window._sp_.addEventListener).toHaveBeenCalledWith('onMessageChoiceSelect', cmpInteractionTracking.onMessageChoiceSelect);
             expect(window._sp_.addEventListener).toHaveBeenCalledWith('onPrivacyManagerAction', cmpInteractionTracking.onPrivacyManagerAction);
             expect(window.__tcfapi).toHaveBeenCalledWith('addEventListener', 2, cmpInteractionTracking.onCmpuishown);
             expect(window.addEventListener).toHaveBeenCalledWith('message', cmpInteractionTracking.onMessage, false);
+            expect(window.__tcfapi).toHaveBeenCalledWith('addEventListener', 2, cmpInteractionTracking.onConsentReady);
         });
     });
 

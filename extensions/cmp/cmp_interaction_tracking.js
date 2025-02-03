@@ -65,7 +65,8 @@
         onUserConsent,
         sendFirstPageViewEvent,
         hasUserDeclinedConsent,
-        isAfterCMP
+        isAfterCMP,
+        onConsentReady
     };
 
     function getABTestingProperties() {
@@ -207,6 +208,10 @@
         }
     }
 
+    function onConsentReady(messageType) {
+        window.utag.data['cmp_onConsentReady'] = messageType.eventStatus;
+    }
+
     function onMessage(event) {
         if (event.data && event.data.cmpLayerMessage) {
             exportedFunctions.sendLinkEvent(event.data.payload);
@@ -235,6 +240,9 @@
         window._sp_queue.push(() => {
             window.__tcfapi('addEventListener', 2, onCmpuishown);
         });
+        window._sp_queue.push(() => {
+            window.__tcfapi('addEventListener', 2, onConsentReady);
+        });          
         window.addEventListener('message', onMessage, false);
     }
 
