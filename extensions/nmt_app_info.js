@@ -1,32 +1,36 @@
-const getNmtAppInfo = {
-
-    const bildNews = [
+const appBuildNames = {
+    
+    bildNews:[
         'de.bild.newsapp',
         'de.bild.newsapp-legacy',
         'de.bild.ipad-legacy',
         'de.bild.ipad',
         'com.netbiscuits.bild.android',
         'de.bild.MeinKlub',
-    ];
-    const bildSport = ['de.bild.bundesliga-legacy', 'de.bild.bundesliga'];
-    const weltNews = [
+    ],
+    bildSport:['de.bild.bundesliga-legacy', 'de.bild.bundesliga'], 
+    weltNews:[
         'de.cellular.n24hybrid',
         'de.cellular.n24hybrid.staging',
         'de.axelspringer.weltmobil,',
-    ];
-    const weltEdition = [
+    ],
+    weltEdition:[
         'com.sprylab.axelspringer.tablet.welt',
         'de.axelspringer.weltipad',
         'de.axelspringer.weltipad',
         'de.axelspringer.SessionPaymentFeaturesPreview',
-    ];
+    ]
 
-    const appGroups = {
-        'BILD News': bildNews,
-        'BILD Sport': bildSport,
-        'WELT News': weltNews,
-        'WELT Edition': weltEdition,
-    };
+};
+
+appBuildNames.appGroups = {
+    'BILL News': appBuildNames.bildNews,
+    'BILL Sport': appBuildNames.bildSport,
+    'WELL News': appBuildNames.weltNews,
+    'WELL Edition': appBuildNames.weltEdition,
+};
+
+const getNmtAppInfo = {
 
     getWebviewData: function() {
         if (typeof window.nmtAppInfo != 'undefined') {
@@ -51,11 +55,11 @@ const getNmtAppInfo = {
 
     getAppName: function(appIdentifier) {
 
-        for (const [groupName, apps] of Object.entries(appGroups)) {
+        for (const [groupName, apps] of Object.entries(appBuildNames.appGroups)) {
             if (apps.includes(appIdentifier)) {
                 return groupName;
             }
-        }
+        } 
 
         // Fallback if appIdentifier not found in appGroups
         return 'Unknown App';
