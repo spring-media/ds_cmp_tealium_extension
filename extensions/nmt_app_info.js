@@ -1,12 +1,41 @@
 const getNmtAppInfo = {
+
+    const bildNews = [
+        'de.bild.newsapp',
+        'de.bild.newsapp-legacy',
+        'de.bild.ipad-legacy',
+        'de.bild.ipad',
+        'com.netbiscuits.bild.android',
+        'de.bild.MeinKlub',
+    ];
+    const bildSport = ['de.bild.bundesliga-legacy', 'de.bild.bundesliga'];
+    const weltNews = [
+        'de.cellular.n24hybrid',
+        'de.cellular.n24hybrid.staging',
+        'de.axelspringer.weltmobil,',
+    ];
+    const weltEdition = [
+        'com.sprylab.axelspringer.tablet.welt',
+        'de.axelspringer.weltipad',
+        'de.axelspringer.weltipad',
+        'de.axelspringer.SessionPaymentFeaturesPreview',
+    ];
+
+    const appGroups = {
+        'BILD News': bildNews,
+        'BILD Sport': bildSport,
+        'WELT News': weltNews,
+        'WELT Edition': weltEdition,
+    };
+
     getWebviewData: function() {
         if (typeof window.nmtAppInfo != 'undefined') {
             window.utag.data.app_name = this.getAppName(
                 window.nmtAppInfo.appIdentifier
             );
             window.utag.data.page_platform = 'app';
-            window.utag.data.app_os = window.nmtAppInfo.platform;
-            window.utag.data.app_version = window.nmtAppInfo.semanticVersion;
+            window.utag.data.app_os = window.nmtAppInfo.platform || '';
+            window.utag.data.app_version = window.nmtAppInfo.semanticVersion || '';
             window.utag.data.page_sub_type = 'webview';
 
             //Typo correction ios/iOS, android/Android
@@ -21,33 +50,6 @@ const getNmtAppInfo = {
     },
 
     getAppName: function(appIdentifier) {
-        const bildNews = [
-            'de.bild.newsapp',
-            'de.bild.newsapp-legacy',
-            'de.bild.ipad-legacy',
-            'de.bild.ipad',
-            'com.netbiscuits.bild.android',
-            'de.bild.MeinKlub',
-        ];
-        const bildSport = ['de.bild.bundesliga-legacy', 'de.bild.bundesliga'];
-        const weltNews = [
-            'de.cellular.n24hybrid',
-            'de.cellular.n24hybrid.staging',
-            'de.axelspringer.weltmobil,',
-        ];
-        const weltEdition = [
-            'com.sprylab.axelspringer.tablet.welt',
-            'de.axelspringer.weltipad',
-            'de.axelspringer.weltipad',
-            'de.axelspringer.SessionPaymentFeaturesPreview',
-        ];
-
-        const appGroups = {
-            'BILD News': bildNews,
-            'BILD Sport': bildSport,
-            'WELT News': weltNews,
-            'WELT Edition': weltEdition,
-        };
 
         for (const [groupName, apps] of Object.entries(appGroups)) {
             if (apps.includes(appIdentifier)) {
