@@ -24,10 +24,10 @@ const appBuildNames = {
 };
 
 appBuildNames.appGroups = {
-    'BILL News': appBuildNames.bildNews,
-    'BILL Sport': appBuildNames.bildSport,
-    'WELL News': appBuildNames.weltNews,
-    'WELL Edition': appBuildNames.weltEdition,
+    'BILD News': appBuildNames.bildNews,
+    'BILD Sport': appBuildNames.bildSport,
+    'WELT News': appBuildNames.weltNews,
+    'WELT Edition': appBuildNames.weltEdition,
 };
 
 const getNmtAppInfo = {
