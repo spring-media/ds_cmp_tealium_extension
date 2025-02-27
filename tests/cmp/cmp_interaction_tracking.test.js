@@ -148,7 +148,6 @@ describe('CMP Interaction Tracking', () => {
                 expect.any(Function),
                 expect.any(Function),
                 expect.any(Function),
-                //expect.any(Function),
                 expect.any(Function)
             ]);
         });
@@ -166,7 +165,6 @@ describe('CMP Interaction Tracking', () => {
             expect(window._sp_.addEventListener).toHaveBeenCalledWith('onPrivacyManagerAction', cmpInteractionTracking.onPrivacyManagerAction);
             expect(window.__tcfapi).toHaveBeenCalledWith('addEventListener', 2, cmpInteractionTracking.onCmpuishown);
             expect(window.addEventListener).toHaveBeenCalledWith('message', cmpInteractionTracking.onMessage, false);
-            //expect(window.__tcfapi).toHaveBeenCalledWith('addEventListener', 2, cmpInteractionTracking.onConsentReady);
         });
     });
 
@@ -476,9 +474,7 @@ describe('CMP Interaction Tracking', () => {
         it('should set correct utag.data properties', () => {
             cmpInteractionTracking.onCmpuishown({eventStatus: 'cmpuishown'});
             expect(window.utag.data).toMatchObject({
-                'cmp_events': 'cm_layer_shown'
-            });
-            expect(window.utag.data).toMatchObject({
+                'cmp_events': 'cm_layer_shown',
                 'cmp_event_status': 'cmpuishown'
             });
         });
