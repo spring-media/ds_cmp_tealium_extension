@@ -65,8 +65,7 @@
         onUserConsent,
         sendFirstPageViewEvent,
         hasUserDeclinedConsent,
-        isAfterCMP,
-        onConsentReady
+        isAfterCMP
     };
 
     function getABTestingProperties() {
@@ -198,6 +197,7 @@
     }
 
     function onCmpuishown(tcData) {
+        window.utag.data.cmp_event_status = tcData.eventStatus;
         if (tcData && tcData.eventStatus === 'cmpuishown') {
             window.utag.data.cmp_events = TCFAPI_COMMON_EVENTS.CMP_UI_SHOWN;
             exportedFunctions.sendFirstPageViewEvent();
@@ -206,10 +206,6 @@
                 exportedFunctions.sendLinkEvent(TCFAPI_COMMON_EVENTS.CMP_UI_SHOWN);
             }, 500);
         }
-    }
-
-    function onConsentReady(messageType) {
-        window.utag.data['cmp_onConsentReady'] = messageType.eventStatus;
     }
 
     function onMessage(event) {
@@ -239,10 +235,7 @@
         });
         window._sp_queue.push(() => {
             window.__tcfapi('addEventListener', 2, onCmpuishown);
-        });
-        window._sp_queue.push(() => {
-            window.__tcfapi('addEventListener', 2, onConsentReady);
-        });          
+        });         
         window.addEventListener('message', onMessage, false);
     }
 

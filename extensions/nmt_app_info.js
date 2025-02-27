@@ -12,7 +12,7 @@ const appBuildNames = {
     weltNews:[
         'de.cellular.n24hybrid',
         'de.cellular.n24hybrid.staging',
-        'de.axelspringer.weltmobil,',
+        'de.axelspringer.weltmobil',
     ],
     weltEdition:[
         'com.sprylab.axelspringer.tablet.welt',
