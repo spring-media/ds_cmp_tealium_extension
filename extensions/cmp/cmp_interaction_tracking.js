@@ -216,7 +216,7 @@
     }
 
     function notPurUser() {
-        return typeof window.utag.data.user_hasPurSubscription2 == 'undefined' || window.utag.data.user_hasPurSubscription2 && window.utag.data.user_hasPurSubscription2 == 'false';
+        return !!window.utag.data.user_hasPurSubscription2 || window.utag.data.user_hasPurSubscription2 && window.utag.data.user_hasPurSubscription2 == 'false';
     }    
 
     function onMessage(event) {
