@@ -65,9 +65,7 @@
         onUserConsent,
         sendFirstPageViewEvent,
         hasUserDeclinedConsent,
-        isAfterCMP,
-        onConsentReady,
-        notPurUser
+        isAfterCMP
     };
 
     function getABTestingProperties() {
@@ -201,6 +199,7 @@
     }
 
     function onCmpuishown(tcData) {
+        window.utag.data.cmp_event_status = !window.utag.data.cmp_event_status ? tcData.eventStatus : window.utag.data.cmp_event_status;
         if (tcData && tcData.eventStatus === 'cmpuishown') {
             window.utag.data.cmp_events = TCFAPI_COMMON_EVENTS.CMP_UI_SHOWN;
             exportedFunctions.sendFirstPageViewEvent();
@@ -211,14 +210,10 @@
         }
     }
 
-    function onConsentReady(messageType) {
-        window.utag.data['cmp_onConsentReady'] = messageType.eventStatus;
-    }
-
     function notPurUser() {
         return !!window.utag.data.user_hasPurSubscription2 || window.utag.data.user_hasPurSubscription2 && window.utag.data.user_hasPurSubscription2 == 'false';
     }    
-
+  
     function onMessage(event) {
         if (event.data && event.data.cmpLayerMessage) {
             exportedFunctions.sendLinkEvent(event.data.payload);
@@ -246,10 +241,7 @@
         });
         window._sp_queue.push(() => {
             window.__tcfapi('addEventListener', 2, onCmpuishown);
-        });
-        window._sp_queue.push(() => {
-            window.__tcfapi('addEventListener', 2, onConsentReady);
-        });          
+        });         
         window.addEventListener('message', onMessage, false);
     }
 
