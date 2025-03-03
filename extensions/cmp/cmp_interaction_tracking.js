@@ -197,7 +197,7 @@
     }
 
     function onCmpuishown(tcData) {
-        window.utag.data.cmp_event_status = tcData.eventStatus;
+        window.utag.data.cmp_event_status = typeof window.utag.data.cmp_event_status == 'undefined' ? tcData.eventStatus : window.utag.data.cmp_event_status;
         if (tcData && tcData.eventStatus === 'cmpuishown') {
             window.utag.data.cmp_events = TCFAPI_COMMON_EVENTS.CMP_UI_SHOWN;
             exportedFunctions.sendFirstPageViewEvent();
