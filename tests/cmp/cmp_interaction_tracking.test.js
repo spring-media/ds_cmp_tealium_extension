@@ -266,9 +266,11 @@ describe('CMP Interaction Tracking', () => {
 
     describe('sendLinkEvent()', () => {
         let hasUserDeclinedConsentMock;
+        let notPurUserMock;
 
         beforeEach(() => {
             hasUserDeclinedConsentMock = jest.spyOn(cmpInteractionTracking, 'hasUserDeclinedConsent').mockImplementation();
+            notPurUserMock = jest.spyOn(cmpInteractionTracking, 'notPurUser').mockImplementation().mockReturnValue(true);
         });
 
         it('should call sendLinkEvent() function with correct arguments if user has not already declined consent', () => {
@@ -289,6 +291,14 @@ describe('CMP Interaction Tracking', () => {
         it('should NOT call sendLinkEvent() function if user has declined consent', () => {
             const anyLabel = 'any-label';
             hasUserDeclinedConsentMock.mockReturnValue(true);
+            cmpInteractionTracking.sendLinkEvent(anyLabel);
+            expect(window.utag.link).not.toHaveBeenCalled();
+        });
+
+        it('should NOT call sendLinkEvent() function if user is PUR subscriber', () => {
+            const anyLabel = 'any-label';
+            hasUserDeclinedConsentMock.mockReturnValue(true);
+            notPurUserMock.mockReturnValue(false);
             cmpInteractionTracking.sendLinkEvent(anyLabel);
             expect(window.utag.link).not.toHaveBeenCalled();
         });
@@ -437,9 +447,11 @@ describe('CMP Interaction Tracking', () => {
 
     describe('sendFirstPageViewEvent()', () => {
         const anyAdobeTagID = 'any-tag-id';
+        let notPurUserMock; 
 
         beforeEach(() => {
             jest.spyOn(cmpInteractionTracking, 'getAdobeTagId').mockImplementation().mockReturnValue(anyAdobeTagID);
+            notPurUserMock = jest.spyOn(cmpInteractionTracking, 'notPurUser').mockImplementation().mockReturnValue(true);
         });
 
         it('should get the tag ID of the first-page-view tag if user has NOT already given/declined consent', function () {
@@ -453,6 +465,18 @@ describe('CMP Interaction Tracking', () => {
             };
             cmpInteractionTracking.sendFirstPageViewEvent();
             expect(window.utag.view).toHaveBeenNthCalledWith(1,
+                window.utag.data,
+                null,
+                [anyAdobeTagID]);
+        });
+
+        it('should NOT send first-page-view tracking event if user is PUR subscriber consent', function () {
+            window.utag.data = {
+                anyDataLayerProperty: 'any-property'
+            };
+            notPurUserMock.mockReturnValue(false);
+            cmpInteractionTracking.sendFirstPageViewEvent();
+            expect(window.utag.view).not.toHaveBeenNthCalledWith(1,
                 window.utag.data,
                 null,
                 [anyAdobeTagID]);
