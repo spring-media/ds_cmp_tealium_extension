@@ -218,7 +218,7 @@
     }
 
     function notPurUser() {
-        return !!window.utag.data.user_hasPurSubscription2 || window.utag.data.user_hasPurSubscription2 && window.utag.data.user_hasPurSubscription2 == 'false';
+        return !!window.utag.data.user_hasPurSubscription2 || window.utag.data.user_hasPurSubscription2 && window.utag.data.user_hasPurSubscription2 == 'false' || !!window.utag.data['cp._cpauthhint'] || window.utag.data['cp._cpauthhint'] && window.utag.data['cp._cpauthhint'] != '1';
     }
 
     function getAdobeTagId(tealiumProfileName) {
