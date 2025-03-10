@@ -481,7 +481,7 @@ s._articleViewTypeObj = {
             channel = 'Paid Marketing';
             channelCategory = 'Social Paid';
             mkt_channel_detail = trackingValue;
-        } else if (trackingValue.startsWith('social.')) {
+        } else if (trackingValue.startsWith('social.') || trackingValue.startsWith('socialmedia.')) {
             pageViewEvent = 'event25,event220'; //Social
             channel = 'Organic Social';
             mkt_channel_detail = trackingValue;
