@@ -261,7 +261,7 @@ s._articleViewTypeObj = {
 
     isTrackingValueOrganicSocial: function () {
         const trackingValue = this.getTrackingValue();
-        return trackingValue.startsWith('social.') && !(trackingValue.startsWith('socialmediapaid.') || trackingValue.startsWith('social_paid.') || trackingValue.startsWith('socialmedia.'))  ;
+        return trackingValue.startsWith('social.') && !(trackingValue.startsWith('socialmediapaid.') || trackingValue.startsWith('social_paid.')) || trackingValue.startsWith('socialmedia.');
     },
 
     isFromPremiumService: function (referrer) {
