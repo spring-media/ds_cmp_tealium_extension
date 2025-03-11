@@ -261,7 +261,7 @@ s._articleViewTypeObj = {
 
     isTrackingValueOrganicSocial: function () {
         const trackingValue = this.getTrackingValue();
-        return trackingValue.startsWith('social.') && !(trackingValue.startsWith('socialmediapaid.') || trackingValue.startsWith('social_paid.')) || trackingValue.startsWith('socialmedia.');
+        return trackingValue.startsWith('social.') && !(trackingValue.startsWith('socialmediapaid.') || trackingValue.startsWith('social_paid.')) || trackingValue.startsWith('socialmedia.') || trackingValue.startsWith('twttr.');
     },
 
     isFromPremiumService: function (referrer) {
@@ -647,7 +647,7 @@ s._setExternalReferringDomainEvents = function (s) {
         },
         {
             event: 'event51,event222',
-            matchRegex: /^t\.co(\/.*)?$/i,
+            matchRegex: /^https?:\/\/t\.co(\/.*)?$/i,
             channel: 'Organic Social',
             channelCategory: 'Twitter',
         },
