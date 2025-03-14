@@ -65,7 +65,8 @@
         onUserConsent,
         sendFirstPageViewEvent,
         hasUserDeclinedConsent,
-        isAfterCMP
+        isAfterCMP,
+        notPurUser
     };
 
     function getABTestingProperties() {
@@ -133,7 +134,7 @@
     }
 
     function sendLinkEvent(label) {
-        if (!exportedFunctions.hasUserDeclinedConsent()) {
+        if (!exportedFunctions.hasUserDeclinedConsent() && exportedFunctions.notPurUser()) {
             window.utag.link({
                 'event_name': 'cmp_interactions',
                 'event_action': 'click',
@@ -154,8 +155,10 @@
     }
 
     function sendFirstPageViewEvent() {
-        const adobeTagId = exportedFunctions.getAdobeTagId(window.utag.data['ut.profile']);
-        window.utag.view(window.utag.data, null, [adobeTagId]);
+        if (exportedFunctions.notPurUser()) {
+            const adobeTagId = exportedFunctions.getAdobeTagId(window.utag.data['ut.profile']);
+            window.utag.view(window.utag.data, null, [adobeTagId]);
+        }
     }
 
     function onMessageChoiceSelect(messageType, id, eventType) {
@@ -212,6 +215,10 @@
         if (event.data && event.data.cmpLayerMessage) {
             exportedFunctions.sendLinkEvent(event.data.payload);
         }
+    }
+
+    function notPurUser() {
+        return !!window.utag.data.user_hasPurSubscription2 || window.utag.data.user_hasPurSubscription2 && window.utag.data.user_hasPurSubscription2 == 'false' || !!window.utag.data['cp._cpauthhint'] || window.utag.data['cp._cpauthhint'] && window.utag.data['cp._cpauthhint'] != '1';
     }
 
     function getAdobeTagId(tealiumProfileName) {
