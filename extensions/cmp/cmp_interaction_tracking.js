@@ -10,6 +10,7 @@
         1: 'pm_accept_as_selected',
         2: 'pm_back_to_cmp_layer',
         9: 'pm_subscribe_pur',
+        11: 'pm_accept_all',
     };
     const TCFAPI_COMMON_EVENTS = {
         CMP_UI_SHOWN: 'cm_layer_shown',
@@ -193,7 +194,7 @@
                 window.utag.loader.SC('utag_main', {'cmp_after': 'true'});
                 window.utag.data['cp.utag_main_cmp_after'] = 'true';
             }
-            if (eventType === 1) {
+            if (eventType === 1 || eventType === 11) {
                 exportedFunctions.onUserConsent();
             }
         }
