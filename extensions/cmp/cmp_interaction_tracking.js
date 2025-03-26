@@ -128,7 +128,8 @@
     }
 
     function hasUserDeclinedConsent() {
-        const hasUserGivenConsent = window.utag.data.consentedVendors && window.utag.data.consentedVendors != '' && window.utag.data.consentedVendors.includes('adobe_analytics');
+        const consentedVendors = window.utag.data.consentedVendors || '';
+        const hasUserGivenConsent =  consentedVendors.includes('adobe_analytics');
         const isAfterCMP = exportedFunctions.isAfterCMP();
 
         return hasUserGivenConsent ? false : isAfterCMP;
