@@ -225,7 +225,7 @@ describe('CMP Interaction Tracking', () => {
         });
 
         it('should return true if user consented any vendor', function () {
-            window.utag.data.consentedVendors = 'any-vendors';
+            window.utag.data['cp.cmp_cv_list'] = 'any-vendors';
             const result = cmpInteractionTracking.isAfterCMP();
             expect(result).toBe(true);
         });
@@ -236,7 +236,7 @@ describe('CMP Interaction Tracking', () => {
         });
 
         it('should return false if list of consented vendors equals default vendor', function () {
-            window.utag.data.consentedVendors = 'adobe_cmp,';
+            window.utag.data['cp.cmp_cv_list'] = 'adobe_cmp,';
             const result = cmpInteractionTracking.isAfterCMP();
             expect(result).toBe(false);
         });
@@ -249,34 +249,27 @@ describe('CMP Interaction Tracking', () => {
         });
     });
 
-    describe('hasUserDeclinedConsent()', () => {
-        it('should be true if user has declined Adobe tracking', function () {
-            jest.spyOn(cmpInteractionTracking, 'isAfterCMP').mockReturnValue(true);
-            window.utag.data.consentedVendors = 'any-vendor';
-            const result = cmpInteractionTracking.hasUserDeclinedConsent();
-            expect(result).toBe(true);
-        });
-
+    describe('hasUserGrantedConsent()', () => {
         it('should be false if user consented to Adobe Analytics tracking', function () {
-            window.utag.data.consentedVendors = 'any-vendor,adobe_analytics';
-            let result = cmpInteractionTracking.hasUserDeclinedConsent();
-            expect(result).toBe(false);
+            window.utag.data['cp.cmp_cv_list'] = 'any-vendor,adobe_analytics';
+            let result = cmpInteractionTracking.hasUserGrantedConsent();
+            expect(result).toBe(true);
         });
     });
 
     describe('sendLinkEvent()', () => {
-        let hasUserDeclinedConsentMock;
+        let hasUserGrantedConsentMock;
         let notPurUserMock;
 
         beforeEach(() => {
-            hasUserDeclinedConsentMock = jest.spyOn(cmpInteractionTracking, 'hasUserDeclinedConsent').mockImplementation();
+            hasUserGrantedConsentMock = jest.spyOn(cmpInteractionTracking, 'hasUserGrantedConsent').mockImplementation();
             notPurUserMock = jest.spyOn(cmpInteractionTracking, 'notPurUser').mockImplementation().mockReturnValue(true);
         });
 
         it('should call sendLinkEvent() function with correct arguments if user has not already declined consent', () => {
             const anyLabel = 'any-label';
             setABTestingProperties();
-            hasUserDeclinedConsentMock.mockReturnValue(false);
+            hasUserGrantedConsentMock.mockReturnValue(false);
             cmpInteractionTracking.sendLinkEvent(anyLabel);
             expect(window.utag.link).toHaveBeenLastCalledWith(
                 {
@@ -290,14 +283,14 @@ describe('CMP Interaction Tracking', () => {
 
         it('should NOT call sendLinkEvent() function if user has declined consent', () => {
             const anyLabel = 'any-label';
-            hasUserDeclinedConsentMock.mockReturnValue(true);
+            hasUserGrantedConsentMock.mockReturnValue(true);
             cmpInteractionTracking.sendLinkEvent(anyLabel);
             expect(window.utag.link).not.toHaveBeenCalled();
         });
 
         it('should NOT call sendLinkEvent() function if user is PUR subscriber', () => {
             const anyLabel = 'any-label';
-            hasUserDeclinedConsentMock.mockReturnValue(true);
+            hasUserGrantedConsentMock.mockReturnValue(true);
             notPurUserMock.mockReturnValue(false);
             cmpInteractionTracking.sendLinkEvent(anyLabel);
             expect(window.utag.link).not.toHaveBeenCalled();
@@ -361,19 +354,6 @@ describe('CMP Interaction Tracking', () => {
             expect(cmpInteractionTracking.sendLinkEvent).toHaveBeenLastCalledWith('cm_show_privacy_manager');
         });
 
-        it('should set correct utag.data properties when user declines consent', () => {
-            cmpInteractionTracking.onMessageChoiceSelect('any-messageType', 'any-id', 13);
-            expect(window.utag.data).toEqual({
-                'cmp_events': 'cm_reject_all',
-                'cp.utag_main_cmp_after': 'true'
-            });
-        });
-
-        it('should call sendLinkEvent with correct argument when user declines consent', () => {
-            cmpInteractionTracking.onMessageChoiceSelect('any-messageType', 'test', 13);
-            expect(cmpInteractionTracking.sendLinkEvent).toHaveBeenLastCalledWith('cm_reject_all');
-        });
-
         it('should NOT call sendLinkEvent when called with wrong event type', () => {
             cmpInteractionTracking.onMessageChoiceSelect('any-messageType', 'test', 999);
             expect(cmpInteractionTracking.sendLinkEvent).not.toHaveBeenCalled();
@@ -381,12 +361,6 @@ describe('CMP Interaction Tracking', () => {
 
         it('should set utag_main_cmp_after cookie to true when user gives consent', () => {
             cmpInteractionTracking.onMessageChoiceSelect('any-messageType', 'test', 11);
-            expect(window.utag.loader.SC).toHaveBeenCalledWith('utag_main', {'cmp_after': 'true'});
-            expect(window.utag.data['cp.utag_main_cmp_after']).toBe('true');
-        });
-
-        it('should set utag_main_cmp_after cookie to true when user declines consent', () => {
-            cmpInteractionTracking.onMessageChoiceSelect('any-messageType', 'test', 13);
             expect(window.utag.loader.SC).toHaveBeenCalledWith('utag_main', {'cmp_after': 'true'});
             expect(window.utag.data['cp.utag_main_cmp_after']).toBe('true');
         });
