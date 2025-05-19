@@ -18,8 +18,8 @@
 
     // Tealium profile to Adobe TagId mapping.
     const TEALIUM_PROFILES = {
-        'abo-autobild.de': 1,
-        'ac-autobild': 10,
+        'abo-autobild.de': 23,
+        'ac-autobild': 1,
         'ac-computerbild': 3,
         'ac-wieistmeineip': 4,
         'asmb-metal-hammer.de': 22,
