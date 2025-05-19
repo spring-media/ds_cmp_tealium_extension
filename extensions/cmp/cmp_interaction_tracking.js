@@ -3,6 +3,7 @@
     const CONSENT_MESSAGE_EVENTS = {
         11: 'cm_accept_all',
         12: 'cm_show_privacy_manager',
+        13: 'cm_reject_all',
         5: 'cm_subscribe_pur',
     };
     const PRIVACY_MANAGER_EVENTS = {
@@ -17,28 +18,27 @@
 
     // Tealium profile to Adobe TagId mapping.
     const TEALIUM_PROFILES = {
-        'abo-autobild.de': 23,
+        'abo-autobild.de': 1,
         'ac-autobild': 10,
-        'ac-computerbild': 9,
+        'ac-computerbild': 3,
         'ac-wieistmeineip': 4,
         'asmb-metal-hammer.de': 22,
         'asmb-musikexpress.de': 14,
         'asmb-rollingstone.de': 16,
-        'bild-bild.de': 12,
-        'bild-fitbook.de': 40,
-        'bild-myhomebook.de': 37,
-        'bild-petbook.de': 82,
-        'bild-sportbild.de': 16,
-        'bild-stylebook.de': 30,
-        'bild-techbook.de': 82,
-        'bild-travelbook.de': 42,
+        'bild-bild.de': 5,
+        'bild-fitbook.de': 30,
+        'bild-myhomebook.de': 30,
+        'bild-petbook.de': 78,
+        'bild-stylebook.de': 19,
+        'bild-techbook.de': 68,
+        'bild-travelbook.de': 34,
         'bild-offer': 24,
         'bild': 386,
-        'bz-bz-berlin.de': 9,
+        'bz-bz-berlin.de': 6,
         'cbo-computerbild.de': 25,
         'shop.bild': 181,
         'spring-premium' : 135,
-        'welt': 233,
+        'welt': 155,
         'welt-shop.welt.de': 28
     };
 
@@ -64,7 +64,7 @@
         getABTestingProperties,
         onUserConsent,
         sendFirstPageViewEvent,
-        hasUserGrantedConsent,
+        hasUserDeclinedConsent,
         isAfterCMP,
         notPurUser
     };
@@ -99,6 +99,8 @@
         exportedFunctions.setABTestingProperties(data);
     }
 
+    // User can jump over different subdomains with different layers 
+    // Cookie utag_main_cmp_after support to differ between them
     function isAfterCMP() {
         const hasCMPAfterCookie = window.utag.data['cp.utag_main_cmp_after'] ? (window.utag.data['cp.utag_main_cmp_after'] === 'true') : false;
         const hasCMPAfterCookie_subdomain = window.utag.data['cp.utag_main_cmp_after_sub'] ? (window.utag.data['cp.utag_main_cmp_after_sub'] === 'true') : false;
@@ -107,6 +109,7 @@
         const hasVendors_subdomain = !!window.utag.data['cp.cm_cv_list'] && window.utag.data['cp.cm_cv_list'] !== defaultVendorList;
 
         // sportbild.bild.de needs special treatment because of sub-domain issues.
+        // subdomains sometimes use different layer
         const subdomains = [
             'sportbild.bild.de',
             'm.sportbild.bild.de',
@@ -117,7 +120,7 @@
             'bildplusshop.bild.de',
             'digital.welt.de'
         ];
-        // sportbild.bild.de, shop.bild.de, offerpages needs special treatment because of sub-domain issues.
+        // sportbild.bild.de, shop.bild.de, offerpages needs special treatment because of sub-domain issues/different layers.
         if ((window.utag.data['dom.domain']) && subdomains.indexOf(window.utag.data['dom.domain']) !== -1){
             // hasCMPAfterCookie cannot be used here because it shares cookie with base domain
             return hasCMPAfterCookie_subdomain || hasVendors_subdomain;
@@ -126,7 +129,7 @@
         }
     }
 
-    function hasUserGrantedConsent() {
+    function hasUserDeclinedConsent() {
         const consentedVendors = window.utag.data['cp.cmp_cv_list'] || window.utag.data['cp.cm_cv_list'] || '';
         const hasUserGivenConsent =  consentedVendors.includes('adobe_analytics');
         const isAfterCMP = exportedFunctions.isAfterCMP();
@@ -135,7 +138,7 @@
     }
 
     function sendLinkEvent(label) {
-        if (!exportedFunctions.hasUserGrantedConsent() && exportedFunctions.notPurUser()) {
+        if (!exportedFunctions.hasUserDeclinedConsent() && exportedFunctions.notPurUser()) {
             window.utag.link({
                 'event_name': 'cmp_interactions',
                 'event_action': 'click',
@@ -218,6 +221,8 @@
         }
     }
 
+    // user is PUR subscriber, we are not allowed to track
+    // if WHOAMI then user_hasPurSubscription2, if Aubi/Cobi/BOOKs Cookie _cpauthhint
     function notPurUser() {
         if (window.utag.data.user_hasPurSubscription2 === 'true' || window.utag.data['cp._cpauthhint'] === '1') {
             return false;

@@ -102,7 +102,7 @@ s._utils = {
         return ARTICLE_TYPES.indexOf(pageType) !== -1;
     },
     isFirstPageView: function () {
-        return !!window.cmp;
+        return window.utag.data.cmp_event_status == 'cmpuishown';
     },
     isValidURL: function (urlString) {
         try {
