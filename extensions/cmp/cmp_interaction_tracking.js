@@ -64,7 +64,7 @@
         getABTestingProperties,
         onUserConsent,
         sendFirstPageViewEvent,
-        hasUserDeclinedConsent,
+        hasUserAlreadyConsentGranted,
         isAfterCMP,
         notPurUser
     };
@@ -129,7 +129,7 @@
         }
     }
 
-    function hasUserDeclinedConsent() {
+    function hasUserAlreadyConsentGranted() {
         const consentedVendors = window.utag.data['cp.cmp_cv_list'] || window.utag.data['cp.cm_cv_list'] || '';
         const hasUserGivenConsent =  consentedVendors.includes('adobe_analytics');
         const isAfterCMP = exportedFunctions.isAfterCMP();
@@ -138,7 +138,7 @@
     }
 
     function sendLinkEvent(label) {
-        if (!exportedFunctions.hasUserDeclinedConsent() && exportedFunctions.notPurUser()) {
+        if (!exportedFunctions.hasUserAlreadyConsentGranted() && exportedFunctions.notPurUser()) {
             window.utag.link({
                 'event_name': 'cmp_interactions',
                 'event_action': 'click',
