@@ -3,26 +3,25 @@ const browserMocks = require('../mocks/browserMocks');
 
 const TEALIUM_PROFILES = [
     {profileName: 'abo-autobild.de', tagId: 23},
-    {profileName: 'ac-autobild', tagId: 10},
-    {profileName: 'ac-computerbild', tagId: 9},
+    {profileName: 'ac-autobild', tagId: 1},
+    {profileName: 'ac-computerbild', tagId: 3},
     {profileName: 'asmb-metal-hammer.de', tagId: 22},
     {profileName: 'asmb-musikexpress.de', tagId: 14},
     {profileName: 'asmb-rollingstone.de', tagId: 16},
-    {profileName: 'bild-bild.de', tagId: 12},
-    {profileName: 'bild-fitbook.de', tagId: 40},
-    {profileName: 'bild-myhomebook.de', tagId: 37},
-    {profileName: 'bild-petbook.de', tagId: 82},
-    {profileName: 'bild-sportbild.de', tagId: 16},
-    {profileName: 'bild-stylebook.de', tagId: 30},
-    {profileName: 'bild-techbook.de', tagId: 82},
-    {profileName: 'bild-travelbook.de', tagId: 42},
+    {profileName: 'bild-bild.de', tagId: 5},
+    {profileName: 'bild-fitbook.de', tagId: 30},
+    {profileName: 'bild-myhomebook.de', tagId: 30},
+    {profileName: 'bild-petbook.de', tagId: 78},
+    {profileName: 'bild-stylebook.de', tagId: 19},
+    {profileName: 'bild-techbook.de', tagId: 68},
+    {profileName: 'bild-travelbook.de', tagId: 34},
     {profileName: 'bild-offer', tagId: 24},
     {profileName: 'bild', tagId: 386},
-    {profileName: 'bz-bz-berlin.de', tagId: 9},
+    {profileName: 'bz-bz-berlin.de', tagId: 6},
     {profileName: 'cbo-computerbild.de', tagId: 25},
     {profileName: 'shop.bild', tagId: 181},
     {profileName: 'spring-premium', tagId: 135},
-    {profileName: 'welt', tagId: 233},
+    {profileName: 'welt', tagId: 155},
     {profileName: 'welt-shop.welt.de', tagId: 28}
 ];
 
@@ -249,27 +248,27 @@ describe('CMP Interaction Tracking', () => {
         });
     });
 
-    describe('hasUserGrantedConsent()', () => {
+    describe('hasUserAlreadyConsentGranted()', () => {
         it('should be false if user consented to Adobe Analytics tracking', function () {
             window.utag.data['cp.cmp_cv_list'] = 'any-vendor,adobe_analytics';
-            let result = cmpInteractionTracking.hasUserGrantedConsent();
+            let result = cmpInteractionTracking.hasUserAlreadyConsentGranted();
             expect(result).toBe(true);
         });
     });
 
     describe('sendLinkEvent()', () => {
-        let hasUserGrantedConsentMock;
+        let hasUserAlreadyConsentGrantedMock;
         let notPurUserMock;
 
         beforeEach(() => {
-            hasUserGrantedConsentMock = jest.spyOn(cmpInteractionTracking, 'hasUserGrantedConsent').mockImplementation();
+            hasUserAlreadyConsentGrantedMock = jest.spyOn(cmpInteractionTracking, 'hasUserAlreadyConsentGranted').mockImplementation();
             notPurUserMock = jest.spyOn(cmpInteractionTracking, 'notPurUser').mockImplementation().mockReturnValue(true);
         });
 
         it('should call sendLinkEvent() function with correct arguments if user has not already declined consent', () => {
             const anyLabel = 'any-label';
             setABTestingProperties();
-            hasUserGrantedConsentMock.mockReturnValue(false);
+            hasUserAlreadyConsentGrantedMock.mockReturnValue(false);
             cmpInteractionTracking.sendLinkEvent(anyLabel);
             expect(window.utag.link).toHaveBeenLastCalledWith(
                 {
@@ -283,14 +282,14 @@ describe('CMP Interaction Tracking', () => {
 
         it('should NOT call sendLinkEvent() function if user has declined consent', () => {
             const anyLabel = 'any-label';
-            hasUserGrantedConsentMock.mockReturnValue(true);
+            hasUserAlreadyConsentGrantedMock.mockReturnValue(true);
             cmpInteractionTracking.sendLinkEvent(anyLabel);
             expect(window.utag.link).not.toHaveBeenCalled();
         });
 
         it('should NOT call sendLinkEvent() function if user is PUR subscriber', () => {
             const anyLabel = 'any-label';
-            hasUserGrantedConsentMock.mockReturnValue(true);
+            hasUserAlreadyConsentGrantedMock.mockReturnValue(true);
             notPurUserMock.mockReturnValue(false);
             cmpInteractionTracking.sendLinkEvent(anyLabel);
             expect(window.utag.link).not.toHaveBeenCalled();

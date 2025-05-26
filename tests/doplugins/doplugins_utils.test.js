@@ -159,14 +159,15 @@ describe('s_utils', () => {
     });
 
     describe('isFirstPageView', () => {
-        it('should return true if an global object with name cmp exists', () => {
-            window.cmp = {};
+        it('should return true if cmp_event_status cmpuishown', () => {
+            window.utag.data.cmp_event_status = 'cmpuishown';
             const result = s._utils.isFirstPageView();
 
             expect(result).toBe(true);
         });
 
-        it('should return false if there is no global object with the name cmp', () => {
+        it('should return false if cmp_event_status is not cmpuishown', () => {
+            window.utag.data.cmp_event_status = 'any-status';
             const result = s._utils.isFirstPageView();
 
             expect(result).toBe(false);
