@@ -70,6 +70,7 @@ async function handlePianoSegments() {
         const filtered = res.filter((seg) => config.candidateSegmentIds.includes(seg.id));
         window.utag.data.piano_candidates_res = filtered;
         window.utag.data.piano_candidates_short = filtered.map((item) => item.shortId).join('.');
+        window.utag.data.piano_full_res = res.map((seg) => seg.shortId).join('.');
   
         if (typeof window.gtag === 'function') {
             if (window.utag.data.piano_candidates_short) {
@@ -80,10 +81,10 @@ async function handlePianoSegments() {
         } 
   
         if (typeof window.fbq === 'function') {
-            if (window.utag.data.piano_candidates_res) {
+            if (window.utag.data.piano_full_res) {
                 //facebook
                 window.fbq('trackCustom', 'piano_short', {
-                    piano_short: window.utag.data.piano_candidates_res,
+                    piano_short: window.utag.data.piano_full_res,
                 });
             }
         } 
