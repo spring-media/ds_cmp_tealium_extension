@@ -41,10 +41,10 @@ const pianoConfig = [
         ],
     },
     {
-        domainMatch: 'B.de',
-        persistedQueryId: 'QUERY_ID_B',
+        domainMatch: 'bild.de',
+        persistedQueryId: 'a385ca0ddebeea09fe5b4dcb1fddddcbe636270d',
         candidateSegmentIds: [
-            'aa99mr2co4sj', 'a9yrhauwjh19', '8o1lpkojqk7n'
+            '8nqb8cekr0ew','8nqhah8cox2r','8n4gqc3oyv36','8nez02m7ypj5','8nez02m7ypj7','8nez02m7ypj6','8o1925xknakl','8n47tgwzyg4x','8nq5vdua026j','8nf19qkb3e8t','8nf1jr6605xr','aa9uc8kqflmr','aavbnrmg28ca','8nq5vdua026j',
         ],
     },
 ];
