@@ -51,7 +51,7 @@ const pianoConfig = [
 
 async function handlePianoSegments() {
     const hostname = window.location.hostname;
-  
+    //console.log('[TEST DEBUG js] window.location.hostname:', hostname);
     // Finde die passende Konfiguration basierend auf Teilstring (Subdomain-freundlich)
     const config = pianoConfig.find(entry => hostname.includes(entry.domainMatch));
   
@@ -95,7 +95,11 @@ async function handlePianoSegments() {
     }
 }
   
-// Start
 handlePianoSegments();
   
-  
+// Export für Tests
+module.exports = {
+    getSegmentsWithTimeout,
+    handlePianoSegments,
+    pianoConfig,
+};
