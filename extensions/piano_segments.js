@@ -1,14 +1,13 @@
-function getSegmentsWithTimeout(persistedQueryId, candidateSegmentIds, timeoutMs = 3000) {
+function getSegmentsWithTimeout(persistedQueryId, candidateSegmentIds, timeoutMs = 3000, windowLike = window) {
     return new Promise((resolve, reject) => {
         const timeout = setTimeout(() => {
             reject('Timeout: getSegments did not respond in time');
         }, timeoutMs);
   
         if (
-            typeof window.cX !== 'undefined' &&
-        typeof window.cX.getSegments === 'function'
+            typeof windowLike.cX !== 'undefined' && typeof windowLike.cX.getSegments === 'function'
         ) {
-            window.cX.getSegments(
+            windowLike.cX.getSegments(
                 {
                     persistedQueryId,
                     callback: function (res) {
@@ -49,8 +48,8 @@ const pianoConfig = [
     },
 ];
 
-async function handlePianoSegments() {
-    const hostname = window.location.hostname;
+async function handlePianoSegments(windowLike = window) {
+    const hostname = windowLike.location.hostname;
     //console.log('[TEST DEBUG js] window.location.hostname:', hostname);
     // Finde die passende Konfiguration basierend auf Teilstring (Subdomain-freundlich)
     const config = pianoConfig.find(entry => hostname.includes(entry.domainMatch));
@@ -63,35 +62,35 @@ async function handlePianoSegments() {
         const res = await getSegmentsWithTimeout(
             config.persistedQueryId,
             config.candidateSegmentIds,
-            2000 // wait for results
+            2000, windowLike // wait for results
         );
   
         // Google Ads only Candidates due to String Limitation of 100 characters in Google
         const filtered = res.filter((seg) => config.candidateSegmentIds.includes(seg.id));
-        window.utag.data.piano_candidates_res = filtered;
-        window.utag.data.piano_candidates_short = filtered.map((item) => item.shortId).join('.');
-        window.utag.data.piano_full_res = res.map((seg) => seg.shortId).join('.');
+        windowLike.utag.data.piano_candidates_res = filtered;
+        windowLike.utag.data.piano_candidates_short = filtered.map((item) => item.shortId).join('.');
+        windowLike.utag.data.piano_full_res = res.map((seg) => seg.shortId).join('.');
   
-        if (typeof window.gtag === 'function') {
-            if (window.utag.data.piano_candidates_short) {
-                window.gtag('event', 'piano_short', {
-                    piano_short: '.' + window.utag.data.piano_candidates_short + '.',
+        if (typeof windowLike.gtag === 'function') {
+            if (windowLike.utag.data.piano_candidates_short) {
+                windowLike.gtag('event', 'piano_short', {
+                    piano_short: '.' + windowLike.utag.data.piano_candidates_short + '.',
                 });
             }
         } 
   
-        if (typeof window.fbq === 'function') {
-            if (window.utag.data.piano_full_res) {
+        if (typeof windowLike.fbq === 'function') {
+            if (windowLike.utag.data.piano_full_res) {
                 //facebook
-                window.fbq('trackCustom', 'piano_short', {
-                    piano_short: window.utag.data.piano_full_res,
+                windowLike.fbq('trackCustom', 'piano_short', {
+                    piano_short: windowLike.utag.data.piano_full_res,
                 });
             }
         } 
   
   
     } catch (error) {
-        window.utag.data.piano_error = error;
+        windowLike.utag.data.piano_error = error;
     }
 }
   
