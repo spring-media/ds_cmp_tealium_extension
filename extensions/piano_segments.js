@@ -50,7 +50,6 @@ const pianoConfig = [
 
 async function handlePianoSegments(windowLike = window) {
     const hostname = windowLike.location.hostname;
-    //console.log('[TEST DEBUG js] window.location.hostname:', hostname);
     // Finde die passende Konfiguration basierend auf Teilstring (Subdomain-freundlich)
     const config = pianoConfig.find(entry => hostname.includes(entry.domainMatch));
   
