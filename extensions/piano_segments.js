@@ -92,12 +92,19 @@ async function handlePianoSegments(windowLike = window) {
         windowLike.utag.data.piano_error = error;
     }
 }
-  
-handlePianoSegments();
-  
-// Export für Tests
-module.exports = {
+
+const exportedFunctions = {
     getSegmentsWithTimeout,
     handlePianoSegments,
     pianoConfig,
 };
+  
+// Export für Tests
+// Evaluate runtime environment (Browser or Node.js)
+if (typeof exports === 'object') {
+    // Expose reference to members for unit testing.
+    module.exports = exportedFunctions;
+} else {
+    // Call entry point 
+    handlePianoSegments();
+}
