@@ -1,35 +1,51 @@
-function getSegmentsWithTimeout(persistedQueryId, candidateSegmentIds, timeoutMs = 3000, windowLike = window) {
+function waitForCX(windowLike, timeoutMs = 3000, intervalMs = 50) {
+    return new Promise((resolve, reject) => {
+        const start = Date.now();
+  
+        function check() {
+            if (
+                typeof windowLike.cX !== 'undefined' &&
+                typeof windowLike.cX.getSegments === 'function'
+            ) {
+                resolve(); 
+            } else if (Date.now() - start >= timeoutMs) {
+                reject('cX or cX.getSegments not available (after wait)');
+            } else {
+                setTimeout(check, intervalMs);
+            }
+        }
+  
+        check();
+    });
+}  
+  
+async function getSegmentsWithTimeout(persistedQueryId, candidateSegmentIds, timeoutMs = 3000, windowLike = window) {
+    await waitForCX(windowLike, timeoutMs);
+
     return new Promise((resolve, reject) => {
         const timeout = setTimeout(() => {
             reject('Timeout: getSegments did not respond in time');
         }, timeoutMs);
   
-        if (
-            typeof windowLike.cX !== 'undefined' && typeof windowLike.cX.getSegments === 'function'
-        ) {
+        try {
+  
             windowLike.cX.getSegments(
                 {
                     persistedQueryId,
                     callback: function (res) {
                         clearTimeout(timeout);
-                        if (res) {
-                            resolve(res);
-                        } else {
-                            reject('No response received');
-                        }
+                        res ? resolve(res) : reject('No response received');
                     },
                 },
-                {
-                    candidateSegmentIds,
-                }
+                { candidateSegmentIds }
             );
-        } else {
+        } catch (err) {
             clearTimeout(timeout);
-            reject('cX or cX.getSegments not available');
+            reject(err);
         }
     });
 }
-  
+
 // brand config per domain (persistedQueryId and candidates for google ads)
 const pianoConfig = [
     {
@@ -63,7 +79,7 @@ async function handlePianoSegments(windowLike = window) {
             config.candidateSegmentIds,
             2000, windowLike // wait for results
         );
-  
+
         // Google Ads only Candidates due to String Limitation of 100 characters in Google
         const filtered = res.filter((seg) => config.candidateSegmentIds.includes(seg.id));
         windowLike.utag.data.piano_candidates_res = filtered;
