@@ -98,17 +98,17 @@
             return domainTagValues[vendor].welt;
         } else if (domain.includes('bild.de')) {
             return domainTagValues[vendor].bild;
-        } else if (domain.includes('fitbook.de') || domain.includes('magazine-fitbook.com')) {
+        } else if (domain.includes('fitbook.de') || domain.includes('-fitbook-magazine.com')) {
             return domainTagValues[vendor].fitbook;
-        }else if (domain.includes('myhomebook.de') || domain.includes('magazine-myhomebook.com')) {
+        }else if (domain.includes('myhomebook.de') || domain.includes('myhomebook-magazine.com')) {
             return domainTagValues[vendor].myhomebook;
-        }else if (domain.includes('petbook.de') || domain.includes('magazine-petbook.com')) {
+        }else if (domain.includes('petbook.de') || domain.includes('petbook-magazine.com')) {
             return domainTagValues[vendor].petbook;
-        }else if (domain.includes('stylebook.de') || domain.includes('magazine-stylebook.com')) {
+        }else if (domain.includes('stylebook.de') || domain.includes('stylebook-magazine.com')) {
             return domainTagValues[vendor].stylebook;
-        }else if (domain.includes('techbook.de') || domain.includes('magazine-techbook.com')) {
+        }else if (domain.includes('techbook.de') || domain.includes('techbook-magazine.com')) {
             return domainTagValues[vendor].techbook;
-        }else if (domain.includes('travelbook.de') || domain.includes('magazine-travelbook.com')) {
+        }else if (domain.includes('travelbook.de') || domain.includes('travelbook-magazine.com')) {
             return domainTagValues[vendor].travelbook;
         }else {
             // Return nothing if domain doesn't match
