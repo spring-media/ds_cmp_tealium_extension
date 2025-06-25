@@ -223,9 +223,9 @@
                 window.utag.view(window.utag.data, null, getDomainTagValue(window.location.hostname, 'nielsenAgf'));
             }
             //kameleoon
-            if (((existingCookie && existingCookie.includes('kameleoon')
-                || existingFallbackCookie && existingFallbackCookie.includes('kameleoon'))
-                && (window.utag.data.user_hasPurSubscription === 'false'
+            if (((existingCookie && existingCookie[0].indexOf('kameleoon') >= 0)
+                || (existingFallbackCookie && existingFallbackCookie[0].indexOf('kameleoon') >= 0)
+                && (window.utag.data.user_hasPurSubscription2 === 'false'
                 || (!window.utag.data['cp._cpauthhint']
                 || !(window.utag.data['cp._cpauthhint']?.includes('1')))))
                 && !!getDomainTagValue(window.location.hostname, 'kameleoon')) {
