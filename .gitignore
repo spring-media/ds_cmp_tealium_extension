@@ -12,3 +12,4 @@ coverage
 
 # Local scripts
 format-code.sh
+remove-from-git.sh
