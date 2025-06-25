@@ -95,7 +95,9 @@ s._utils = {
             'media',
             'single',
             'sportdaten',
-            'live-sport'
+            'live-sport',
+            'channelizer-kaufberater',
+            'scrubby'
         ];
         const pageType = this.getDocType();
 
