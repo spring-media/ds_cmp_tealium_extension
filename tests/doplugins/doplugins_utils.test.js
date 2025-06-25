@@ -147,7 +147,9 @@ describe('s_utils', () => {
                 'post',
                 'media',
                 'sportdaten',
-                'live-sport'
+                'live-sport',
+                'channelizer-kaufberater',
+                'scrubby'
             ];
 
             ARTICLE_TYPES.forEach(articleType => {

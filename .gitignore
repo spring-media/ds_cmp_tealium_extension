@@ -1,3 +1,14 @@
 .idea
 node_modules
 coverage
+
+# VSCode specific files
+.vscode/*
+!.vscode/extensions.json
+
+# Editor config files
+.prettierrc
+.editorconfig
+
+# Local scripts
+format-code.sh
