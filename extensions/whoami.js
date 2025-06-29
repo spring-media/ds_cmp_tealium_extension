@@ -62,7 +62,8 @@ _whoamiSnipped_log('whoami : start  ');
     var isLoggedIn = asinfo !== null && asinfo.subOrigin === 'as';
     window.utag.data.user_isLoggedIn2 = isLoggedIn === true ? 'true' : 'false';
     if (window.utag.data.user_isLoggedIn2 === 'false') {
-        window.utag.data.user_hasPurSubscription2 = 'false';
+        window.utag.data.user_hasPurSubscription = 'false';
+        window.b.user_hasPurSubscription = window.utag.data.user_hasPurSubscription;
         window.utag.data.user_hasPlusSubscription2 = 'false';
         window.utag.data.user_jaId2 = 'false';
         window.utag.data.user_entitlements2 = 'false';
