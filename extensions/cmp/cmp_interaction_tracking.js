@@ -149,12 +149,12 @@
     }
 
     function onUserConsent() {
-        if (window.cmp && window.cmp._scrollDepthObj) {
+        if (window.s && window.s._scrollDepthObj) {
             // Calling setScrollDepthProperties() will make the current page trackable as the _ppvPreviousPage of the next page view.
-            window.cmp._scrollDepthObj.setScrollDepthProperties(window.cmp);
+            window.s._scrollDepthObj.setScrollDepthProperties(window.s);
         }
-        if (window.cmp && window.cmp._campaignObj) {
-            window.cmp._campaignObj.setCampaignVariables(window.cmp, true);
+        if (window.s && window.s._campaignObj) {
+            window.s._campaignObj.setCampaignVariables(window.s, true);
         }
     }
 
