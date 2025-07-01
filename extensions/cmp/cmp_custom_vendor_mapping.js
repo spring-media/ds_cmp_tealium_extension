@@ -98,7 +98,7 @@
             return domainTagValues[vendor].welt;
         } else if (domain.includes('bild.de')) {
             return domainTagValues[vendor].bild;
-        } else if (domain.includes('fitbook.de') || domain.includes('-fitbook-magazine.com')) {
+        } else if (domain.includes('fitbook.de') || domain.includes('fitbook-magazine.com')) {
             return domainTagValues[vendor].fitbook;
         }else if (domain.includes('myhomebook.de') || domain.includes('myhomebook-magazine.com')) {
             return domainTagValues[vendor].myhomebook;
