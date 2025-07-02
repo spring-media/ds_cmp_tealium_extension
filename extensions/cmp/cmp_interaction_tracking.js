@@ -69,6 +69,25 @@
         notPurUser
     };
 
+    function getDomainNoConsent() {
+        const domains = [
+            'fitbook-magazine.com',
+            'myhomebook-magazine.com',
+            'petbook-magazine.com',
+            'stylebook-magazine.com',
+            'techbook-magazine.com',
+            'travelbook-magazine.com',
+            'shop.welt.de',
+            'bildplusshop.bild.de',
+        ];
+        if ((window.utag.data['dom.domain']) && domains.indexOf(window.utag.data['dom.domain']) !== -1){
+            return true
+        } else {
+            // Return nothing if domain doesn't match
+            return null;
+        }
+    }
+
     function getABTestingProperties() {
         if (cmp_ab_id || cmp_ab_desc || cmp_ab_bucket) {
             return cmp_ab_id + ' '
@@ -149,11 +168,12 @@
     }
 
     function onUserConsent() {
-        if (window.s && window.s._scrollDepthObj) {
+        const consentCanNotRejected = getDomainNoConsent();
+        if (consentCanNotRejected && window.s && window.s._scrollDepthObj) {
             // Calling setScrollDepthProperties() will make the current page trackable as the _ppvPreviousPage of the next page view.
             window.s._scrollDepthObj.setScrollDepthProperties(window.s);
         }
-        if (window.s && window.s._campaignObj) {
+        if (consentCanNotRejected && window.s && window.s._campaignObj) {
             window.s._campaignObj.setCampaignVariables(window.s, true);
         }
     }
