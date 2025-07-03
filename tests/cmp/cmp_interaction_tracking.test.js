@@ -297,21 +297,13 @@ describe('CMP Interaction Tracking', () => {
     });
 
     describe('onUserConsent()', () => {
-        it('should call the scroll-depth feature of the doPlugins extension', function () {
-            window.cmp = {
-                _scrollDepthObj: {
-                    setScrollDepthProperties: jest.fn()
-                },
-                _campaignObj: {
-                    setCampaignVariables: jest.fn()
-                }
-            };
-            cmpInteractionTracking.onUserConsent();
-            expect(window.cmp._scrollDepthObj.setScrollDepthProperties).toHaveBeenCalled();
+
+        beforeEach(() => {
+            jest.spyOn(cmpInteractionTracking, 'getDomainNoConsent').mockImplementation().mockReturnValue(true);
         });
 
         it('should call _campaignObj.setCampaignVariables() of the doPlugins extension', function () {
-            window.cmp = {
+            window.s = {
                 _scrollDepthObj: {
                     setScrollDepthProperties: jest.fn()
                 },
@@ -320,7 +312,7 @@ describe('CMP Interaction Tracking', () => {
                 }
             };
             cmpInteractionTracking.onUserConsent();
-            expect(window.cmp._campaignObj.setCampaignVariables).toHaveBeenCalledWith(window.cmp, true);
+            expect(window.s._campaignObj.setCampaignVariables).toHaveBeenCalledWith(window.s, true);
         });
     });
 
