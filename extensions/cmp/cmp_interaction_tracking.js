@@ -66,10 +66,12 @@
         sendFirstPageViewEvent,
         hasUserAlreadyConsentGranted,
         isAfterCMP,
-        notPurUser
+        notPurUser,
+        getDomainNoConsent
     };
 
     function getDomainNoConsent() {
+        //domains where consent can be rejected
         const domains = [
             'fitbook-magazine.com',
             'myhomebook-magazine.com',
@@ -80,11 +82,11 @@
             'shop.welt.de',
             'bildplusshop.bild.de',
         ];
-        if ((window.utag.data['dom.domain']) && domains.indexOf(window.utag.data['dom.domain']) !== -1){
-            return true
+        if ((window.utag.data['dom.domain']) && domains.indexOf(window.utag.data['dom.domain']) === -1){
+            return false;
         } else {
-            // Return nothing if domain doesn't match
-            return null;
+            // all other domains are allowed
+            return true;
         }
     }
 

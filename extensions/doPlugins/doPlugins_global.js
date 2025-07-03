@@ -13,7 +13,7 @@ const s = _getAdobeObject();
 window.hasConsentForAdobe = function () {
     const status = window.utag && window.utag.data && window.utag.data.cmp_event_status;
     return status !== 'cmpuishown' && typeof status !== 'undefined';
-  };
+};
 
 // START: Pre-defined Adobe Plugins
 /* eslint-disable */
