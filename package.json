@@ -4,8 +4,7 @@
   "scripts": {
     "prepare": "husky install",
     "test": "jest",
-    "lint": "eslint extensions",
-    "format": "eslint --fix extensions"
+    "lint": "eslint extensions"
   },
   "dependencies": {
     "jest": "^29.0.0",
