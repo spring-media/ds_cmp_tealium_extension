@@ -317,8 +317,9 @@ s._articleViewTypeObj = {
     isDirect: function (referrer) {
         const noReferrer = this.isWithoutReferrer(referrer);
         const sessionStart = s._utils.isSessionStart();
+        const pageOneInSession = s._utils.isPageOneInSession();
         
-        return (noReferrer && sessionStart);
+        return (noReferrer && (sessionStart || pageOneInSession));
 
     },
 
@@ -415,13 +416,16 @@ s._articleViewTypeObj = {
             mkt_channel_detail = referringDomain;
         } else if (this.isFromPremiumService(referrer)||this.isFromPaypal(referrer)) {
             pageViewEvent = 'event23,event201'; // Login via secure.mypass during session
-        } else if (this.isWithoutReferrer() && this.isNavigated() && isArticle && isSessionStart) {
+        } else if (this.isDirect() && this.isNavigated() && isArticle) {
             pageViewEvent = 'event26,event202'; // Dark Social 
             channel = 'Dark Social';
-        } else if (this.isWithoutReferrer() && this.isNavigated() && isArticle) {
+        } else if (this.isDirect() && this.isNavigated()) {
+            pageViewEvent = 'event207'; // Direct 
+            channel = 'Direct';
+        }else if (this.isWithoutReferrer() && this.isNavigated() && isArticle) {
             pageViewEvent = 'event26,event202'; // Dark Social Marketing Channel only with session start
         }else if (this.isDirect(referrer)) {
-            pageViewEvent = 'event207'; // no Referrer at Session Start
+            pageViewEvent = 'event207'; // Fallback
             channel = 'Direct';
         }  else {
             pageViewEvent = 'event27,event203';  // Other External (Referrer)
