@@ -806,7 +806,16 @@ s._setKameleoonTracking = function (s) {
 };
 
 s._setAdvertisingBranch = function (s) {
-    s.eVar219 = (window.ASCDP && window.ASCDP.pageSet.branch) || 'noAdlib';
+
+    const branch = (window.ASCDP && window.ASCDP.pageSet.branch) || 'noAdlib';
+    const lsKey = 'asadTls';
+
+    if (localStorage.getItem(lsKey) !== null) {
+        const asadTls = JSON.parse(localStorage.getItem(lsKey));
+        s.eVar219 = asadTls.springUGAdobe != null ? branch + '_' + asadTls.springUGAdobe : branch;
+    } else {
+        s.eVar219 = branch;
+    }
 };
 
 /**
