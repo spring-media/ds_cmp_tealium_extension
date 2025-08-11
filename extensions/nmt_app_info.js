@@ -34,9 +34,8 @@ const getNmtAppInfo = {
 
     getWebviewData: function() {
         if (typeof window.nmtAppInfo != 'undefined') {
-            window.utag.data.app_name = this.getAppName(
-                window.nmtAppInfo.appIdentifier
-            );
+            window.utag.data.nmtAppInfo = window.b.nmtAppInfo = window.nmtAppInfo;
+            window.utag.data.app_name = this.getAppName(window.nmtAppInfo.appIdentifier) || 'no-entry';
             window.utag.data.page_platform = 'app';
             window.utag.data.app_os = window.nmtAppInfo.platform || '';
             window.utag.data.app_version = window.nmtAppInfo.semanticVersion || '';
@@ -46,7 +45,7 @@ const getNmtAppInfo = {
             if (window.utag.data.app_os == 'ios') {
                 window.utag.data.app_os = 'iOS';
             } else if (window.utag.data.app_os == 'android') {
-                window.tag.data.app_os = 'Android';
+                window.utag.data.app_os = 'Android';
             } else if (typeof window.nmtAppInfo == 'undefined') {
                 window.utag.data.app_os = 'no-entry';
             }
