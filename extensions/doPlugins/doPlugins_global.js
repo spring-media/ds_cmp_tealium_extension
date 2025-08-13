@@ -149,7 +149,10 @@ s._utils = {
             .getEntriesByType('navigation')
             .map((nav) => nav.type).toString();
 
-    }
+    },
+    isPageStatus: function(expectedStatus) {
+        return this.getPageReloadStatus() === expectedStatus;
+    },
 };
 
 /**
@@ -316,11 +319,19 @@ s._articleViewTypeObj = {
 
     isDirect: function (referrer) {
         const noReferrer = this.isWithoutReferrer(referrer);
-        const sessionStart = s._utils.isSessionStart();
+        const newVisit = this.isNewVisit();
         
-        return (noReferrer && sessionStart);
+        return (noReferrer && newVisit);
 
     },
+
+    isNewVisit: function () {
+        const sessionStart = s._utils.isSessionStart();
+        const pageOneInSession = s._utils.isPageOneInSession();
+        
+        return (sessionStart || pageOneInSession);
+
+    },    
 
     isValidURL: function (urlString) {
         try {
@@ -339,11 +350,14 @@ s._articleViewTypeObj = {
         }
     },
 
-    isNavigated: function(){
-        const reloadStatus = s._utils.getPageReloadStatus();
-        return window.performance && (window.performance.navigation && window.performance.navigation.type === 0) || reloadStatus === 'navigate';
+    isNavigated: function () {
+        return s._utils.isPageStatus('navigate');
     },
-    
+
+    isReloaded: function () {
+        return s._utils.isPageStatus('reload'); 
+    },
+
     isSelfRedirect: function() {
         return (s._ppvPreviousPage || '').includes((s.pageName || 'NEVER').split(':').pop());
     },
@@ -378,9 +392,8 @@ s._articleViewTypeObj = {
 
     getExternalType: function (referrer) {
         const referringDomain = s._utils.getDomainFromURLString(referrer);
-        const isSessionStart = s._utils.isSessionStart();
+        const isNewVisit = this.isNewVisit();
         const isHomepage = s._utils.isHomepage();
-        const isArticle = s._utils.isArticlePage(); 
         let pageViewEvent;
         let channel;
         let mkt_channel_detail;
@@ -409,24 +422,37 @@ s._articleViewTypeObj = {
             pageViewEvent = 'event205'; 
             channel = 'AS News';
             mkt_channel_detail = referringDomain;
-        } else if ((this.isFromPremiumService(referrer)||this.isFromPaypal(referrer)) && isSessionStart) {
+        } else if ((this.isFromPremiumService(referrer)||this.isFromPaypal(referrer)) && isNewVisit) {
             pageViewEvent = 'event208'; 
             channel = 'Register & Payment';
             mkt_channel_detail = referringDomain;
         } else if (this.isFromPremiumService(referrer)||this.isFromPaypal(referrer)) {
             pageViewEvent = 'event23,event201'; // Login via secure.mypass during session
-        } else if (this.isWithoutReferrer() && this.isNavigated() && isArticle && isSessionStart) {
-            pageViewEvent = 'event26,event202'; // Dark Social 
-            channel = 'Dark Social';
-        } else if (this.isWithoutReferrer() && this.isNavigated() && isArticle) {
-            pageViewEvent = 'event26,event202'; // Dark Social Marketing Channel only with session start
-        }else if (this.isDirect(referrer)) {
-            pageViewEvent = 'event207'; // no Referrer at Session Start
-            channel = 'Direct';
-        }  else {
+        } else {
             pageViewEvent = 'event27,event203';  // Other External (Referrer)
             channel = 'Other External';
             mkt_channel_detail = referringDomain;
+        }
+        return {pageViewEvent, channel, mkt_channel_detail};
+    },
+
+    noReferrerType: function () {
+        const isArticle = s._utils.isArticlePage(); 
+        const isNewVisit = this.isNewVisit();
+        const isNavigated = this.isNavigated();
+        const isReloaded = this.isReloaded();
+        let pageViewEvent;
+        let channel;
+        let mkt_channel_detail;
+
+        if (isNewVisit && isNavigated && isArticle) {
+            pageViewEvent = 'event26,event202'; // Dark Social 
+            channel = 'Dark Social';
+        } else if (isNewVisit && (isNavigated || isReloaded)) {
+            pageViewEvent = 'event207'; // Direct 
+            channel = 'Direct';
+        } else if (isNavigated || isReloaded) {
+            pageViewEvent = 'event23,event201'; 
         }
         return {pageViewEvent, channel, mkt_channel_detail};
     },
@@ -437,7 +463,14 @@ s._articleViewTypeObj = {
         let channel;
         let mkt_channel_detail;
 
-        if (this.isFromInternal(referrer)) {
+        if (!referrer) {
+            // no Referrer is set
+            const noReferrerType = this.noReferrerType(referrer);
+            pageViewEvent = noReferrerType.pageViewEvent;
+            channel = noReferrerType.channel;
+            mkt_channel_detail = '';
+
+        } else if (this.isFromInternal(referrer)) {
             // Referrer is of same domain
             const internalType = this.getInternalType(referrer);
             pageViewEvent = internalType.pageViewEvent;
@@ -466,9 +499,13 @@ s._articleViewTypeObj = {
         const isFromReco = this.isFromReco();
         const pageNumberOne = s._utils.isPageOneInSession();
         const isFromRecoFf = this.isFromRecoFf();
+        const pageIsReloaded = this.isReloaded();
+        const newVisit = this.isNewVisit();
 
-
-        if (trackingValue.startsWith('sea.')) {
+        if (trackingValue && pageIsReloaded && newVisit) {
+            pageViewEvent = 'event207'; // Direct 
+            channel = 'Direct';
+        } else if (trackingValue.startsWith('sea.')) {
             pageViewEvent = 'event24,event206,event242'; // Search
             channel = 'Paid Marketing';
             channelCategory = 'Sea';
@@ -568,7 +605,8 @@ s._articleViewTypeObj = {
 
     setExtraViewTypes: function(s) {
         const trackingChannel= this.isOtherTrackingValue();
-        if (trackingChannel) {
+        const pageIsReloaded = this.isReloaded();
+        if (trackingChannel && !pageIsReloaded) {
             s._setTrackingValueEvents(s);
         } else {
             s._setExternalReferringDomainEvents(s);
