@@ -38,18 +38,6 @@ describe('s_utils', () => {
             expect(result).toEqual({});
         });
 
-        it('should return the Adobe object when it has the name \'cmp\'', () => {
-            window.cmp = validAdobeObject;
-            const result = s._utils.getAdobeObject();
-            expect(result).toBe(validAdobeObject);
-        });
-
-        it('should return an empty object when something else is assigned to the global variable with name \'cmp\'', () => {
-            window.cmp = invalidAdobeObject;
-            const result = s._utils.getAdobeObject();
-            expect(result).toEqual({});
-        });
-
         it('should return an empty object when something else is assigned to the global variables \'s\' and \'cmp\' ', () => {
             window.s = invalidAdobeObject;
             window.cmp = invalidAdobeObject;
