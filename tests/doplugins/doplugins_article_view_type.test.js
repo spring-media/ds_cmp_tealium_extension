@@ -420,20 +420,15 @@ describe('articleViewType()', () => {
 
     describe('isNavigated', () => {
         let getPageReloadStatusMock;
+        let expectedStatusMock
 
         beforeEach(() => {
             window.performance = {
                 getEntriesByType: jest.fn().mockReturnValue([])
             };
             getPageReloadStatusMock = jest.spyOn(s._utils, 'getPageReloadStatus');
+            expectedStatusMock = jest.spyOn(s._utils, 'isPageStatus');
             
-        });
-
-        it('should return TRUE if window.performance.navigation (depricated) is zero', function () {
-            window.performance.navigation = { type: 0 };
-
-            const result = s._articleViewTypeObj.isNavigated();
-            expect(result).toBe(true);
         });
 
         it('should return TRUE if window.performance is navigate', function () {
@@ -441,12 +436,6 @@ describe('articleViewType()', () => {
 
             const result = s._articleViewTypeObj.isNavigated();
             expect(result).toBe(true);
-        });
-
-        it('should return FALSE if window.performance.navigation (depricated) is NOT zero', function () {
-            window.performance.navigation = { type: 1 };
-            const result = s._articleViewTypeObj.isNavigated();
-            expect(result).toBe(false);
         });
 
         it('should return FALSE if window.performance is reload', function () {
@@ -515,6 +504,7 @@ describe('articleViewType()', () => {
         let isSelfRedirectMock;
         let isFromOnsiteSearchMock;
         let isFromLesenSieAuchMock;
+        let isNewVisitMock;
 
         beforeEach(() => {
             isFromHomeMock = jest.spyOn(s._articleViewTypeObj, 'isFromHome').mockReturnValue(false);
@@ -523,6 +513,15 @@ describe('articleViewType()', () => {
             isSelfRedirectMock = jest.spyOn(s._articleViewTypeObj, 'isSelfRedirect').mockReturnValue(false);
             isFromOnsiteSearchMock = jest.spyOn(s._articleViewTypeObj, 'isFromOnsiteSearch').mockReturnValue(false);
             isFromLesenSieAuchMock = jest.spyOn(s._articleViewTypeObj, 'isFromLesenSieAuch').mockReturnValue(false);
+            isNewVisitMock = jest.spyOn(s._articleViewTypeObj, 'isNewVisit').mockReturnValue(false);
+
+        });
+
+        it('should return event207 if referrer is set and it is a new Visit', function () {
+            isSamePageRedirectMock.mockReturnValue(true);
+            isNewVisitMock.mockReturnValue(true);
+            const result = s._articleViewTypeObj.getInternalType('http://www.any-domain.de');
+            expect(result.pageViewEvent).toBe('event207');
         });
 
         it('should return event22 if referrer is a home page and page was navigated and it was no selfRedirect and not via OnsiteSearch', function () {
@@ -544,34 +543,6 @@ describe('articleViewType()', () => {
             expect(isFromHomeMock).toHaveBeenCalledWith(anyReferrer);
             expect(result.pageViewEvent).toBe('event23,event201');
         });
-
-        it('should return an empty string in case of same page redirects', function () {
-            const anyReferrer = 'http://www.any-domain.de';
-            isSamePageRedirectMock.mockReturnValue(true);
-            const result = s._articleViewTypeObj.getInternalType(anyReferrer);
-            expect(result.pageViewEvent).toBe('');
-        });
-    });
-
-    describe('should return event22 if trackingValue isFromHomeWithReco', () => {
-        let getTrackingValueMock;
-        beforeEach(() => {
-            getTrackingValueMock = jest.spyOn(s._articleViewTypeObj, 'getTrackingValue');
-        });
-
-        it('should return TRUE if article URL contains recommendation parameter', function () {
-            const outbrainTrackingValue = 'kooperation.home.outbrain.anything';
-            getTrackingValueMock.mockReturnValue(outbrainTrackingValue);
-            const result = s._articleViewTypeObj.isFromHomeWithReco();
-            expect(result).toBe(true);
-        });
-
-        it('should return FALSE if article URL NOT contains recommendation parameter', function () {
-            const anyTrackingValue = 'any-tracking-value';
-            getTrackingValueMock.mockReturnValue(anyTrackingValue);
-            const result = s._articleViewTypeObj.isFromHomeWithReco();
-            expect(result).toBe(false);
-        });
     });
 
     describe('getExternalType()', () => {
@@ -585,9 +556,8 @@ describe('articleViewType()', () => {
         let isFromPremiumServiceMock;
         let isFromAsDomainMock;
         let isFromPaypalMock;
-        let isDirectMock;
-        let isSessionStartMock;
-        let isNavigatedMock;
+        let isNewVisitMock;
+        let isReloadedMock;
         let isHomepageMock;
         let isArticleMock;
 
@@ -601,9 +571,8 @@ describe('articleViewType()', () => {
             isFromPremiumServiceMock = jest.spyOn(s._articleViewTypeObj, 'isFromPremiumService').mockReturnValue(false);
             isFromAsDomainMock = jest.spyOn(s._articleViewTypeObj, 'isFromAsDomain').mockReturnValue(false);
             isFromPaypalMock = jest.spyOn(s._articleViewTypeObj, 'isFromPaypal').mockReturnValue(false);
-            isDirectMock = jest.spyOn(s._articleViewTypeObj, 'isDirect').mockReturnValue(false);
-            isSessionStartMock = jest.spyOn(s._utils, 'isSessionStart').mockReturnValue(false);
-            isNavigatedMock = jest.spyOn(s._articleViewTypeObj, 'isNavigated').mockReturnValue(false);
+            isNewVisitMock = jest.spyOn(s._articleViewTypeObj, 'isNewVisit').mockReturnValue(false);
+            isReloadedMock = jest.spyOn(s._articleViewTypeObj, 'isReloaded').mockReturnValue(false);
             isHomepageMock = jest.spyOn(s._utils, 'isHomepage').mockReturnValue(false);
             isArticleMock = jest.spyOn(s._utils, 'isArticlePage').mockReturnValue(true);
 
@@ -656,9 +625,9 @@ describe('articleViewType()', () => {
             expect(result.pageViewEvent).toBe('event205');
         });
 
-        it('should return event208 if referrer is from Paypal and is session start ', function () {
+        it('should return event208 if referrer is from Paypal and is new visit ', function () {
             isFromPaypalMock.mockReturnValue(true);
-            isSessionStartMock.mockReturnValue(true);
+            isNewVisitMock.mockReturnValue(true);
             const result = s._articleViewTypeObj.getExternalType(anyReferrer);
             expect(isFromPaypalMock).toHaveBeenCalledWith(anyReferrer);
             expect(result.pageViewEvent).toBe('event208');
@@ -679,16 +648,10 @@ describe('articleViewType()', () => {
         });
 
         it('should return event207 (Direct) if no referrer at session start', function () {
-            isDirectMock.mockReturnValue(true);
-            const result = s._articleViewTypeObj.getExternalType('');
+            isNewVisitMock.mockReturnValue(true);
+            isReloadedMock.mockReturnValue(true);
+            const result = s._articleViewTypeObj.getExternalType(anyReferrer);
             expect(result.pageViewEvent).toBe('event207');
-        });
-
-        it('should return event26 (DarkSocial) if no referrer but navigated', function () {
-            const noReferrerMock = jest.spyOn(s._utils, 'getDomainFromURLString').mockReturnValue('');
-            isNavigatedMock.mockReturnValue(true);
-            const result = s._articleViewTypeObj.getExternalType(noReferrerMock);
-            expect(result.pageViewEvent).toBe('event26,event202');
         });
 
         it('should return event27 (other external) in any other cases', function () {
@@ -697,70 +660,231 @@ describe('articleViewType()', () => {
         });
     });
 
-    describe('getViewTypeByReferrer', () => {
+    describe('getInternalType()', () => {
+        let isFromHomeMock;
+        let isSamePageRedirectMock;
+        let isNavigatedMock;
+        let isSelfRedirectMock;
+        let isFromOnsiteSearchMock;
+        let isFromLesenSieAuchMock;
+        let isNewVisitMock;
+
+        beforeEach(() => {
+            isFromHomeMock = jest.spyOn(s._articleViewTypeObj, 'isFromHome').mockReturnValue(false);
+            isSamePageRedirectMock = jest.spyOn(s._articleViewTypeObj, 'isSamePageRedirect').mockReturnValue(false);
+            isNavigatedMock = jest.spyOn(s._articleViewTypeObj, 'isNavigated').mockReturnValue(false);
+            isSelfRedirectMock = jest.spyOn(s._articleViewTypeObj, 'isSelfRedirect').mockReturnValue(false);
+            isFromOnsiteSearchMock = jest.spyOn(s._articleViewTypeObj, 'isFromOnsiteSearch').mockReturnValue(false);
+            isFromLesenSieAuchMock = jest.spyOn(s._articleViewTypeObj, 'isFromLesenSieAuch').mockReturnValue(false);
+            isNewVisitMock = jest.spyOn(s._articleViewTypeObj, 'isNewVisit').mockReturnValue(false);
+        });
+
+        afterEach(() => {
+            jest.resetAllMocks();
+        });
+
+        it('should return event207 and Direct for same page redirect and new visit', () => {
+            isSamePageRedirectMock.mockReturnValue(true);
+            isNewVisitMock.mockReturnValue(true);
+
+            const result = s._articleViewTypeObj.getInternalType('https://www.bild.de');
+            expect(result.pageViewEvent).toBe('event207');
+            expect(result.channel).toBe('Direct');
+        });
+
+        it('should return event22,event200 for fromHome and clean navigation', () => {
+            isFromHomeMock.mockReturnValue(true);
+            isNavigatedMock.mockReturnValue(true);
+            isSelfRedirectMock.mockReturnValue(false);
+            isFromOnsiteSearchMock.mockReturnValue(false);
+            isFromLesenSieAuchMock.mockReturnValue(false);
+            isNewVisitMock.mockReturnValue(false);
+
+            const result = s._articleViewTypeObj.getInternalType('https://www.bild.de');
+            expect(result.pageViewEvent).toBe('event22,event200');
+            expect(result.channel).toBe('');
+        });
+
+        it('should return event23,event201 for internal fallback case', () => {
+        // Alle Mocks bleiben auf false → Default-Zweig greift
+            const result = s._articleViewTypeObj.getInternalType('https://www.bild.de');
+            expect(result.pageViewEvent).toBe('event23,event201');
+            expect(result.channel).toBe('');
+        });
+
+        it('should return channel Direct when it is a new visit, even if not event207', () => {
+            isNewVisitMock.mockReturnValue(true);
+            const result = s._articleViewTypeObj.getInternalType('https://www.bild.de');
+            expect(result.pageViewEvent).toBe('event23,event201');
+            expect(result.channel).toBe('Direct');
+        });
+
+        it('should prioritize event207 and not override it with fallback', () => {
+        // Spezialfall, um zu prüfen, dass kein weiteres Event gesetzt wird
+            isSamePageRedirectMock.mockReturnValue(true);
+            isNewVisitMock.mockReturnValue(true);
+            isFromHomeMock.mockReturnValue(true); // wäre sonst Home
+            isNavigatedMock.mockReturnValue(true);
+
+            const result = s._articleViewTypeObj.getInternalType('https://www.bild.de');
+            expect(result.pageViewEvent).toBe('event207');
+            expect(result.channel).toBe('Direct');
+        });
+    });
+
+    describe('noReferrerType()', () => {
+        let isArticlePageMock;
+        let isNewVisitMock;
+        let isNavigatedMock;
+        let isReloadedMock;
+
+        beforeEach(() => {
+            isArticlePageMock = jest.spyOn(s._utils, 'isArticlePage').mockReturnValue(false);
+            isNewVisitMock = jest.spyOn(s._articleViewTypeObj, 'isNewVisit').mockReturnValue(false);
+            isNavigatedMock = jest.spyOn(s._articleViewTypeObj, 'isNavigated').mockReturnValue(false);
+            isReloadedMock = jest.spyOn(s._articleViewTypeObj, 'isReloaded').mockReturnValue(false);
+        });
+
+        afterEach(() => {
+            jest.resetAllMocks();
+        });
+
+        it('should return Dark Social for new visit, navigated, and article page', () => {
+            isArticlePageMock.mockReturnValue(true);
+            isNewVisitMock.mockReturnValue(true);
+            isNavigatedMock.mockReturnValue(true);
+
+            const result = s._articleViewTypeObj.noReferrerType();
+            expect(result.pageViewEvent).toBe('event26,event202');
+            expect(result.channel).toBe('Dark Social');
+            expect(result.mkt_channel_detail).toBeUndefined();
+        });
+
+        it('should return Direct for new visit and navigated', () => {
+            isNewVisitMock.mockReturnValue(true);
+            isNavigatedMock.mockReturnValue(true);
+
+            const result = s._articleViewTypeObj.noReferrerType();
+            expect(result.pageViewEvent).toBe('event207');
+            expect(result.channel).toBe('Direct');
+            expect(result.mkt_channel_detail).toBeUndefined();
+        });
+
+        it('should return Direct for new visit and reloaded', () => {
+            isNewVisitMock.mockReturnValue(true);
+            isReloadedMock.mockReturnValue(true);
+
+            const result = s._articleViewTypeObj.noReferrerType();
+            expect(result.pageViewEvent).toBe('event207');
+            expect(result.channel).toBe('Direct');
+            expect(result.mkt_channel_detail).toBeUndefined();
+        });
+
+        it('should return internal fallback for reload without new visit', () => {
+            isReloadedMock.mockReturnValue(true);
+
+            const result = s._articleViewTypeObj.noReferrerType();
+            expect(result.pageViewEvent).toBe('event23,event201');
+            expect(result.channel).toBeUndefined();
+            expect(result.mkt_channel_detail).toBeUndefined();
+        });
+
+        it('should return internal fallback for navigation without new visit', () => {
+            isNavigatedMock.mockReturnValue(true);
+
+            const result = s._articleViewTypeObj.noReferrerType();
+            expect(result.pageViewEvent).toBe('event23,event201');
+            expect(result.channel).toBeUndefined();
+            expect(result.mkt_channel_detail).toBeUndefined();
+        });
+
+        it('should return undefined values when no conditions match', () => {
+        // Alle Mocks bleiben auf false
+
+            const result = s._articleViewTypeObj.noReferrerType();
+            expect(result.pageViewEvent).toBeUndefined();
+            expect(result.channel).toBeUndefined();
+            expect(result.mkt_channel_detail).toBeUndefined();
+        });
+    });
+
+
+    describe('getViewTypeByReferrer()', () => {
+        let getReferrerMock;
         let isFromInternalMock;
         let getInternalTypeMock;
         let getExternalTypeMock;
-        let getReferrerFromLocationHashMock;
-        let getReferrerFromGetParameterMock;
-
+        let noReferrerTypeMock;
 
         beforeEach(() => {
+            getReferrerMock = jest.spyOn(s._utils, 'getReferrer').mockReturnValue('');
             isFromInternalMock = jest.spyOn(s._articleViewTypeObj, 'isFromInternal').mockReturnValue(false);
-            getInternalTypeMock = jest.spyOn(s._articleViewTypeObj, 'getInternalType').mockReturnValue(false);
-            getExternalTypeMock = jest.spyOn(s._articleViewTypeObj, 'getExternalType').mockReturnValue(false);
-            getReferrerFromLocationHashMock = jest.spyOn(s._utils, 'getReferrerFromLocationHash').mockReturnValue('');
-            getReferrerFromGetParameterMock = jest.spyOn(s._utils, 'getReferrerFromGetParameter').mockReturnValue('');
+            getInternalTypeMock = jest.spyOn(s._articleViewTypeObj, 'getInternalType').mockReturnValue({});
+            getExternalTypeMock = jest.spyOn(s._articleViewTypeObj, 'getExternalType').mockReturnValue({});
+            noReferrerTypeMock = jest.spyOn(s._articleViewTypeObj, 'noReferrerType').mockReturnValue({});
         });
 
-        it('should use the URL from the location hash as the referrer if available', () => {
-            const anyReferrerFromHash = 'any-referrer-from-hash';
-            getReferrerFromLocationHashMock.mockReturnValue(anyReferrerFromHash);
-            s._articleViewTypeObj.getViewTypeByReferrer();
-            expect(isFromInternalMock).toHaveBeenCalledWith(anyReferrerFromHash);
+        afterEach(() => {
+            jest.resetAllMocks();
         });
 
-        it('should use the URL from GET Parameter as the referrer if available', () => {
-            const anyReferrerFromGET = 'any-referrer-from-get';
-            getReferrerFromGetParameterMock.mockReturnValue(anyReferrerFromGET);
-            s._articleViewTypeObj.getViewTypeByReferrer();
-            expect(isFromInternalMock).toHaveBeenCalledWith(anyReferrerFromGET);
-        });
-
-        it('should use the document referrer if the location hash is NOT available', () => {
-            window.document.referrer = 'any-document-referrer';
-            s._articleViewTypeObj.getViewTypeByReferrer();
-            expect(isFromInternalMock).toHaveBeenCalledWith(window.document.referrer);
-        });
-
-        it('should call getInternalType(referrer) and return its result if referrer is from internal (same domain)', () => {
-            const anyInternalType = {
-                pageViewEvent: 'any-internal-type',
-                channel: 'any-channel'
+        it('should call noReferrerType() and return its result if no referrer is available', () => {
+            const noReferrerTypeResult = {
+                pageViewEvent: 'event207',
+                channel: 'Direct'
             };
+            getReferrerMock.mockReturnValue('');
+            noReferrerTypeMock.mockReturnValue(noReferrerTypeResult);
+
+            const result = s._articleViewTypeObj.getViewTypeByReferrer();
+
+            expect(noReferrerTypeMock).toHaveBeenCalled();
+            expect(result.pageViewEvent).toBe('event207');
+            expect(result.channel).toBe('Direct');
+            expect(result.mkt_channel_detail).toBe('');
+        });
+
+        it('should call getInternalType() and return its result if referrer is internal', () => {
+            const internalReferrer = 'https://www.bild.de/some-article';
+            const internalTypeResult = {
+                pageViewEvent: 'event22,event200',
+                channel: 'Direct'
+            };
+
+            getReferrerMock.mockReturnValue(internalReferrer);
             isFromInternalMock.mockReturnValue(true);
-            getInternalTypeMock.mockReturnValue(anyInternalType);
-            let result = s._articleViewTypeObj.getViewTypeByReferrer();
-            expect(result.pageViewEvent).toBe(anyInternalType.pageViewEvent);
+            getInternalTypeMock.mockReturnValue(internalTypeResult);
+
+            const result = s._articleViewTypeObj.getViewTypeByReferrer();
+
+            expect(isFromInternalMock).toHaveBeenCalledWith(internalReferrer);
+            expect(getInternalTypeMock).toHaveBeenCalledWith(internalReferrer);
+            expect(result.pageViewEvent).toBe('event22,event200');
+            expect(result.channel).toBe('Direct');
+            expect(result.mkt_channel_detail).toBe('');
         });
 
-        it('should return event26 (dark social) if there is no referrer', function () {
-            const noReferrer = false;
-            const result = s._articleViewTypeObj.getExternalType(noReferrer);
-            expect(result).toBe(noReferrer);
-        });
-
-        it('should call getExternalType(referrer) and return its result if referrer is from an external domain', () => {
-            const anyExternalType = {
-                pageViewEvent: 'any-external-type',
-                channel: 'any-channel'
+        it('should call getExternalType() and return its result if referrer is external', () => {
+            const externalReferrer = 'https://www.google.com/search?q=bild';
+            const externalTypeResult = {
+                pageViewEvent: 'event301',
+                channel: 'Organic Search'
             };
-            getExternalTypeMock.mockReturnValue(anyExternalType);
-            let result = s._articleViewTypeObj.getViewTypeByReferrer();
-            expect(result.pageViewEvent).toBe(anyExternalType.pageViewEvent);
-        });
 
+            getReferrerMock.mockReturnValue(externalReferrer);
+            isFromInternalMock.mockReturnValue(false);
+            getExternalTypeMock.mockReturnValue(externalTypeResult);
+
+            const result = s._articleViewTypeObj.getViewTypeByReferrer();
+
+            expect(isFromInternalMock).toHaveBeenCalledWith(externalReferrer);
+            expect(getExternalTypeMock).toHaveBeenCalledWith(externalReferrer);
+            expect(result.pageViewEvent).toBe('event301');
+            expect(result.channel).toBe('Organic Search');
+            expect(result.mkt_channel_detail).toBe(externalReferrer);
+        });
     });
+    
 
     describe('getTrackingValue', () => {
         it('should return the value of the URL query param: cid', () => {

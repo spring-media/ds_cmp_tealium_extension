@@ -371,34 +371,50 @@ s._articleViewTypeObj = {
     },
 
     getInternalType: function (referrer) {
-        let pageViewEvent;
-        let channel;
-        const pageNumberOne = s._utils.isPageOneInSession();
-        // Check if page view was caused by a viewport switch
-        if (this.isSamePageRedirect(referrer)) {
-            pageViewEvent = '';
-            return {pageViewEvent};
+        const isNewVisit = this.isNewVisit();
+        let channel = '';
+        let pageViewEvent = '';
+
+        // internal referrer and redirected www.bild.de to m.bild.de (BILD only use mDot) 
+        if (this.isSamePageRedirect(referrer) && isNewVisit) {
+            return {
+                pageViewEvent: 'event207',
+                channel: 'Direct'
+            };
         }
 
-        if (this.isFromHome(referrer) && this.isNavigated() && !this.isSelfRedirect() && !this.isFromOnsiteSearch() && !this.isFromLesenSieAuch()) {
-            pageViewEvent = 'event22,event200'; //Home
-            channel = pageNumberOne ? 'Direct' : channel || '';
+        // fromHome when user click Homepage Teaser
+        const isFromHome = this.isFromHome(referrer);
+        const isCleanNavigation = this.isNavigated() && !this.isSelfRedirect() && !this.isFromOnsiteSearch() && !this.isFromLesenSieAuch();
+
+        if (isFromHome && isCleanNavigation) {
+            pageViewEvent = 'event22,event200'; // Home
         } else {
-            pageViewEvent = 'event23,event201'; //Other Internal
-            channel = pageNumberOne ? 'Direct' : channel || '';
+            pageViewEvent = 'event23,event201'; // interne Quelle
         }
-        return {pageViewEvent, channel};
+
+        // 3. Channel setzen, falls es die erste Seite der Session ist
+        if (isNewVisit) {
+            channel = 'Direct';
+        }
+
+        return { pageViewEvent, channel };
     },
+
 
     getExternalType: function (referrer) {
         const referringDomain = s._utils.getDomainFromURLString(referrer);
         const isNewVisit = this.isNewVisit();
         const isHomepage = s._utils.isHomepage();
+        const pageIsReloaded = this.isReloaded();
         let pageViewEvent;
         let channel;
         let mkt_channel_detail;
 
-        if (this.isFromSearch(referringDomain) && isHomepage) {
+        if (referringDomain && pageIsReloaded && isNewVisit) {
+            pageViewEvent = 'event207'; // Direct 
+            channel = 'Direct';
+        } else if (this.isFromSearch(referringDomain) && isHomepage) {
             pageViewEvent = 'event24,event209'; 
             channel = 'Organic Search Brand';  
             mkt_channel_detail = referringDomain;       
