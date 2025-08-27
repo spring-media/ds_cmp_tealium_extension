@@ -165,7 +165,39 @@ s._articleViewTypeObj = {
     },
 
     isFromSearch: function (referringDomain) {
-        const searchEngines = ['google.', 'bing.com', 'ecosia.org', 'duckduckgo.com', 'amp-welt-de.cdn.ampproject.org', 'qwant.com', 'suche.t-online.de', '.yandex.', 'yahoo.com', 'googleapis.com', 'nortonsafe.search.ask.com', 'wikipedia.org', 'googleadservices.com', 'search.myway.com', 'lycos.de'];
+        const searchEngines = [
+            'google.', 
+            'bing.com', 
+            'ecosia.org', 
+            'duckduckgo.com', 
+            'amp-welt-de.cdn.ampproject.org', 
+            'qwant.com', 'suche.t-online.de', 
+            '.yandex.', 
+            'yahoo.com', 
+            'googleapis.com', 
+            'nortonsafe.search.ask.com', 
+            'wikipedia.org', 
+            'googleadservices.com', 
+            'search.myway.com', 
+            'lycos.de', 
+            'baidu.com',
+            'msn.',
+            'search.ch',
+            'web.de',
+            'ask.com',
+            'naver.com',
+            'seznam.cz',
+            'daum.net',
+            'rambler.ru',
+            'search.aol.',            
+            'so.com',
+            'startpage.com',
+            'gibiru.com',
+            'gigablast.com',
+            'yippy.com',
+            'search.brave.com',
+            'petalsearch.com'
+        ];
 
         return searchEngines.some(item => {
             return referringDomain.indexOf(item) !== -1;
