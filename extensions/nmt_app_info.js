@@ -1,14 +1,12 @@
 const appBuildNames = {
-    
     bildNews:[
         'de.bild.newsapp',
         'de.bild.newsapp-legacy',
         'de.bild.ipad-legacy',
         'de.bild.ipad',
         'com.netbiscuits.bild.android',
-        'de.bild.MeinKlub',
     ],
-    bildSport:['de.bild.bundesliga-legacy', 'de.bild.bundesliga'], 
+    bildSport:['de.bild.bundesliga-legacy', 'de.bild.bundesliga', 'de.bild.MeinKlub',], 
     weltNews:[
         'de.cellular.n24hybrid',
         'de.cellular.n24hybrid.staging',
