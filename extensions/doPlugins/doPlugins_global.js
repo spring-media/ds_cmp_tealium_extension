@@ -892,7 +892,24 @@ s._setKameleoonTracking = function (s) {
 };
 
 s._setAdvertisingBranch = function (s) {
-    s.eVar219 = (window.ASCDP && window.ASCDP.pageSet.branch) || 'noAdlib';
+    const branch = window.ASCDP?.pageSet?.branch || 'noAdlib';
+    
+    try {
+        const lsKey = 'asadTls';
+        if (typeof localStorage !== 'undefined' && localStorage.getItem(lsKey)) {
+            const asadTlsStr = localStorage.getItem(lsKey);
+            const asadTls = JSON.parse(asadTlsStr);
+            
+            if (asadTls?.springUGAdobe) {
+                s.eVar219 = branch + '_' + asadTls.springUGAdobe;
+                return;
+            }
+        }
+    } catch (e) {
+        console.log('Error accessing localStorage or parsing asadTls:', e);
+    }
+    
+    s.eVar219 = branch;
 };
 
 /**
