@@ -1308,17 +1308,6 @@ s._doPluginsGlobal = function (s) {
         s._scrollDepthObj.setScrollDepthProperties(s);
     }
 
-    // Set app information for tracking
-    if (window.utag.data && window.utag.data.app_name) {
-        s.eVar67 = window.utag.data.app_name;
-    }
-    if (window.utag.data && window.utag.data.app_version) {
-        s.eVar68 = window.utag.data.app_version;
-    }
-    if (window.utag.data && window.utag.data.app_os) {
-        s.eVar70 = window.utag.data.app_os;
-    }
-
     s._eventsObj.setEventsProperty(s);
     s._setKameleoonTracking(s);
     s._setAdvertisingBranch(s);
