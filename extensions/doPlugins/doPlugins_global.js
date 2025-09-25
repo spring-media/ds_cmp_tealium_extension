@@ -892,24 +892,15 @@ s._setKameleoonTracking = function (s) {
 };
 
 s._setAdvertisingBranch = function (s) {
-    const branch = window.ASCDP?.pageSet?.branch || 'noAdlib';
-    
-    try {
-        const lsKey = 'asadTls';
-        if (typeof localStorage !== 'undefined' && localStorage.getItem(lsKey)) {
-            const asadTlsStr = localStorage.getItem(lsKey);
-            const asadTls = JSON.parse(asadTlsStr);
-            
-            if (asadTls?.springUGAdobe) {
-                s.eVar219 = branch + '_' + asadTls.springUGAdobe;
-                return;
-            }
-        }
-    } catch (e) {
-        console.log('Error accessing localStorage or parsing asadTls:', e);
+    const branch = (window.ASCDP && window.ASCDP.pageSet.branch) || 'noAdlib';
+    const lsKey = 'asadTls';
+
+    if (localStorage.getItem(lsKey) !== null) {
+        const asadTls = JSON.parse(localStorage.getItem(lsKey));
+        s.eVar219 = asadTls.springUGAdobe != null ? branch + '_' + asadTls.springUGAdobe : branch;
+    } else {
+        s.eVar219 = branch;
     }
-    
-    s.eVar219 = branch;
 };
 
 /**
@@ -1315,6 +1306,17 @@ s._doPluginsGlobal = function (s) {
     // Some functions are not allowed on the first page view (before consent is given).
     if (!s._utils.isFirstPageView()) {
         s._scrollDepthObj.setScrollDepthProperties(s);
+    }
+
+    // Set app information for tracking
+    if (window.utag.data && window.utag.data.app_name) {
+        s.eVar67 = window.utag.data.app_name;
+    }
+    if (window.utag.data && window.utag.data.app_version) {
+        s.eVar68 = window.utag.data.app_version;
+    }
+    if (window.utag.data && window.utag.data.app_os) {
+        s.eVar70 = window.utag.data.app_os;
     }
 
     s._eventsObj.setEventsProperty(s);
