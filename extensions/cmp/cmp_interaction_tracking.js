@@ -138,7 +138,7 @@
     }
 
     function sendLinkEvent(label) {
-        if (!exportedFunctions.hasUserAlreadyConsentGranted() && exportedFunctions.notPurUser()) {
+        if (exportedFunctions.notPurUser()) {
             window.utag.link({
                 'event_name': 'cmp_interactions',
                 'event_action': 'click',
