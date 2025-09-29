@@ -32,7 +32,7 @@ const getNmtAppInfo = {
 
     getWebviewData: function() {
         if (typeof window.nmtAppInfo != 'undefined') {
-            window.utag.data.nmtAppInfo = window.b.nmtAppInfo = window.nmtAppInfo;
+            window.utag.data.nmtAppInfo = window.nmtAppInfo;
             window.utag.data.app_name = this.getAppName(window.nmtAppInfo.appIdentifier) || 'no-entry';
             window.utag.data.page_platform = 'app';
             window.utag.data.app_os = window.nmtAppInfo.platform || '';
