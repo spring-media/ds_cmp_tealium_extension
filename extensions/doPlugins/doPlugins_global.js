@@ -892,15 +892,25 @@ s._setKameleoonTracking = function (s) {
 };
 
 s._setAdvertisingBranch = function (s) {
-    const branch = (window.ASCDP && window.ASCDP.pageSet.branch) || 'noAdlib';
-    const lsKey = 'asadTls';
 
-    if (localStorage.getItem(lsKey) !== null) {
-        const asadTls = JSON.parse(localStorage.getItem(lsKey));
-        s.eVar219 = asadTls.springUGAdobe != null ? branch + '_' + asadTls.springUGAdobe : branch;
-    } else {
-        s.eVar219 = branch;
+    const branch = window.ASCDP?.pageSet?.branch || 'noAdlib';
+    
+    try {
+        const lsKey = 'asadTls';
+        if (typeof localStorage !== 'undefined' && localStorage.getItem(lsKey)) {
+            const asadTlsStr = localStorage.getItem(lsKey);
+            const asadTls = JSON.parse(asadTlsStr);
+            
+            if (asadTls?.springUGAdobe) {
+                s.eVar219 = branch + '_' + asadTls.springUGAdobe;
+                return;
+            }
+        }
+    } catch (e) {
+        console.log('Error accessing localStorage or parsing asadTls:', e);
     }
+ 
+    s.eVar219 = branch;  
 };
 
 /**
