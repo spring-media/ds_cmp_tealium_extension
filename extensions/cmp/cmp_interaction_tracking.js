@@ -66,8 +66,29 @@
         sendFirstPageViewEvent,
         hasUserAlreadyConsentGranted,
         isAfterCMP,
-        notPurUser
+        notPurUser,
+        getDomainNoConsent
     };
+
+    function getDomainNoConsent() {
+        //domains where consent can be rejected
+        const domains = [
+            'fitbook-magazine.com',
+            'myhomebook-magazine.com',
+            'petbook-magazine.com',
+            'stylebook-magazine.com',
+            'techbook-magazine.com',
+            'travelbook-magazine.com',
+            'shop.welt.de',
+            'bildplusshop.bild.de',
+        ];
+        if ((window.utag.data['dom.domain']) && domains.indexOf(window.utag.data['dom.domain']) === -1){
+            return false;
+        } else {
+            // all other domains are allowed
+            return true;
+        }
+    }
 
     function getABTestingProperties() {
         if (cmp_ab_id || cmp_ab_desc || cmp_ab_bucket) {
@@ -149,12 +170,13 @@
     }
 
     function onUserConsent() {
-        if (window.cmp && window.cmp._scrollDepthObj) {
+        const consentCanNotRejected = getDomainNoConsent();
+        if (consentCanNotRejected && window.s && window.s._scrollDepthObj) {
             // Calling setScrollDepthProperties() will make the current page trackable as the _ppvPreviousPage of the next page view.
-            window.cmp._scrollDepthObj.setScrollDepthProperties(window.cmp);
+            window.s._scrollDepthObj.setScrollDepthProperties(window.s);
         }
-        if (window.cmp && window.cmp._campaignObj) {
-            window.cmp._campaignObj.setCampaignVariables(window.cmp, true);
+        if (consentCanNotRejected && window.s && window.s._campaignObj) {
+            window.s._campaignObj.setCampaignVariables(window.s, true);
         }
     }
 
