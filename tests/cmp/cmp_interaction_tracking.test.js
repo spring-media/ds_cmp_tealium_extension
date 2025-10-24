@@ -280,6 +280,13 @@ describe('CMP Interaction Tracking', () => {
             );
         });
 
+        it('should NOT call sendLinkEvent() function if user has declined consent', () => {
+            const anyLabel = 'any-label';
+            hasUserAlreadyConsentGrantedMock.mockReturnValue(true);
+            cmpInteractionTracking.sendLinkEvent(anyLabel);
+            expect(window.utag.link).not.toHaveBeenCalled();
+        });
+
         it('should NOT call sendLinkEvent() function if user is PUR subscriber', () => {
             const anyLabel = 'any-label';
             hasUserAlreadyConsentGrantedMock.mockReturnValue(true);
