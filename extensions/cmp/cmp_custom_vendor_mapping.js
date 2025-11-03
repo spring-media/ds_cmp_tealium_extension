@@ -48,7 +48,8 @@
         { 'name': 'tealium_collect', 'id': '5ef5f18f50fefa143f611d21' },
         { 'name': 'xandr', 'id': '5e7ced57b8e05c4854221bba' },
         { 'name': 'snowplow', 'id': '5eaaa739a55a2d743f32f7c3' },
-        { 'name': 'cmmrclly', 'id': '632d7b3af8efe104ae62dc45' }
+        { 'name': 'cmmrclly', 'id': '632d7b3af8efe104ae62dc45' },
+        { 'name': 'kilkaya', 'id': '6155654a60e90105b791536a' }
     ];
 
     /* Tealium tag values for different vendors for bild and welt.
@@ -90,6 +91,9 @@
             stylebook: [53],
             techbook: [105],
             travelbook: [72]
+        },
+        kilkaya: {
+            welt: [298],
         }
     };
 
@@ -231,6 +235,17 @@
                 && !!getDomainTagValue(window.location.hostname, 'kameleoon')) {
                         
                 window.utag.view(window.utag.data, null, getDomainTagValue(window.location.hostname, 'kameleoon'));
+            }
+
+            // kilkaya
+            if (
+                ((existingCookie && existingCookie[0].indexOf('kilkaya') >= 0) ||
+               (existingFallbackCookie && existingFallbackCookie[0].indexOf('kilkaya') >= 0)) &&
+              !!getDomainTagValue(window.location.hostname, 'kilkaya')
+            ) {
+                window.k5aMeta = window.k5aMeta || {};
+                window.k5aMeta.consent = 1;  // consent granted for Kilkaya
+                window.utag.view(window.utag.data, null, getDomainTagValue(window.location.hostname, 'kilkaya'));
             }
         }
     };
