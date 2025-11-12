@@ -35,12 +35,12 @@ _whoamiSnipped_log('whoami : start  ');
     function updateUserSubscriptionsStatus(domain) {
         const subscriptionsConfig = {
             'welt.de': {
-                pur: ['weltpur', 'WLT1001284'],
-                subscriptions: ['WLT1000043']
+                pur: ['welt-pur'],
+                subscriptions: ['weltplus']
             },
             'bild.de': {
-                pur: ['bildpur', 'BDE1001282'],
-                subscriptions: ['BDE1000351']
+                pur: ['bild-pur'],
+                subscriptions: ['bildplus']
             }
         };
 
