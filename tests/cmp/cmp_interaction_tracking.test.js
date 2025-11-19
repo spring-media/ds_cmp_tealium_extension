@@ -77,7 +77,7 @@ describe('CMP Interaction Tracking', () => {
 
             cmpInteractionTracking.init();
 
-            expect(cmpInteractionTracking.run).toBeCalledTimes(1);
+            expect(cmpInteractionTracking.run).toHaveBeenCalledTimes(1);
         });
 
         it('should execute extension only once', () => {
@@ -86,7 +86,7 @@ describe('CMP Interaction Tracking', () => {
             cmpInteractionTracking.init();
             cmpInteractionTracking.init();
 
-            expect(cmpInteractionTracking.run).toBeCalledTimes(1);
+            expect(cmpInteractionTracking.run).toHaveBeenCalledTimes(1);
         });
     });
 
@@ -102,9 +102,9 @@ describe('CMP Interaction Tracking', () => {
 
             cmpInteractionTracking.run();
 
-            expect(cmpInteractionTracking.configSourcepoint).toBeCalledTimes(1);
-            expect(cmpInteractionTracking.registerEventHandler).toBeCalledTimes(1);
-            expect(cmpInteractionTracking.initABTestingProperties).toBeCalledTimes(1);
+            expect(cmpInteractionTracking.configSourcepoint).toHaveBeenCalledTimes(1);
+            expect(cmpInteractionTracking.registerEventHandler).toHaveBeenCalledTimes(1);
+            expect(cmpInteractionTracking.initABTestingProperties).toHaveBeenCalledTimes(1);
         });
     });
 
@@ -157,8 +157,8 @@ describe('CMP Interaction Tracking', () => {
                 handler();
             });
 
-            expect(window._sp_.addEventListener).toBeCalledTimes(3);
-            expect(window.__tcfapi).toBeCalledTimes(1);
+            expect(window._sp_.addEventListener).toHaveBeenCalledTimes(3);
+            expect(window.__tcfapi).toHaveBeenCalledTimes(1);
             expect(window._sp_.addEventListener).toHaveBeenCalledWith('onMessageReceiveData', cmpInteractionTracking.onMessageReceiveData);
             expect(window._sp_.addEventListener).toHaveBeenCalledWith('onMessageChoiceSelect', cmpInteractionTracking.onMessageChoiceSelect);
             expect(window._sp_.addEventListener).toHaveBeenCalledWith('onPrivacyManagerAction', cmpInteractionTracking.onPrivacyManagerAction);
@@ -429,7 +429,7 @@ describe('CMP Interaction Tracking', () => {
 
         it('should get the tag ID of the first-page-view tag if user has NOT already given/declined consent', function () {
             cmpInteractionTracking.sendFirstPageViewEvent();
-            expect(cmpInteractionTracking.getAdobeTagId).toBeCalledTimes(1);
+            expect(cmpInteractionTracking.getAdobeTagId).toHaveBeenCalledTimes(1);
         });
 
         it('should send first-page-view tracking event if user has NOT already given/declined consent', function () {
