@@ -145,7 +145,7 @@
     }
 
     function deleteCookie(name) {
-        document.cookie = name + '=; expires=' + new Date(0).toUTCString();
+        document.cookie = name + '=; expires=' + new Date(0).toUTCString() + '; secure';
     }
 
     const fetchConsentData = function () {
