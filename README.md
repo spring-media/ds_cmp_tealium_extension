@@ -63,12 +63,14 @@ the extension, in case profiles or Adobe tags are changing.
 
 This extension is the result of a refactoring and generalization process of the various existing DoPlugins extensions.
 The goal of the refactoring was to have only one centralized version of this extension which can be used on all brand 
-profiles. [Read more](https://github.com/spring-media/ds_cmp_tealium_extension/blob/master/extensions/doPlugins_global.README.md)
+profiles.
 
 The extension contains features which are needed for the Adobe Analytics tracking.
 
 The different features are organized as simple Javascript objects which are attached to the global S-Object which 
 is provided by the Adobe Analytics tag.
+
+!!! After changes are done in DoPlugins global extension to make it live the deployment in Tealium is required
 
 ### Adobe DoPlugins App Extensions (Bild and Welt)
 
