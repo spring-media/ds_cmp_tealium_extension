@@ -57,7 +57,7 @@ describe('CMP Custom Vendor Mapping', () => {
 
     describe('getCookie', () => {
         test('returns the correct cookie value', () => {
-            document.cookie = 'test_cookie=test_value';
+            document.cookie = 'test_cookie=test_value;secure';
             expect(cmpCustomVendorMapping.getCookie('test_cookie')).toBe('test_value');
         });
 
@@ -75,7 +75,7 @@ describe('CMP Custom Vendor Mapping', () => {
 
     describe('deleteCookie', () => {
         test('deletes a cookie by setting its expiration date to the past', () => {
-            document.cookie = 'test_cookie=test_value';
+            document.cookie = 'test_cookie=test_value;secure';
             cmpCustomVendorMapping.deleteCookie('test_cookie');
             expect(document.cookie).not.toContain('test_cookie=test_value');
         });
@@ -113,7 +113,7 @@ describe('CMP Custom Vendor Mapping', () => {
             window.__utag_view_fired = false;
     
             // Mock document.cookie
-            document.cookie = '';
+            document.cookie = ';secure';
 
             // Mock document.URL
             document.URL = '';
@@ -148,7 +148,7 @@ describe('CMP Custom Vendor Mapping', () => {
     
         test('calls utag.view for Adobe club on bild.de with appropriate parameters', () => {
             window.utag.data['cp.utag_main_cmp_after'] = 'true';
-            document.cookie = 'cmp_cv_list=adobe_analytics;';
+            document.cookie = 'cmp_cv_list=adobe_analytics;secure';
             window.location.hostname = 'club.bild.de';
             cmpCustomVendorMapping.processUtag();
             expect(window.utag.view).toHaveBeenCalledWith(window.utag.data, null, domainTagValues.adobeClub.bild);
@@ -156,27 +156,27 @@ describe('CMP Custom Vendor Mapping', () => {
     
         test('calls utag.view for piano vendor on bild.de', () => {
             window.location.hostname = 'bild.de';
-            document.cookie = 'cmp_cv_list=piano;';
+            document.cookie = 'cmp_cv_list=piano;secure';
             cmpCustomVendorMapping.processUtag();
             expect(window.utag.view).toHaveBeenCalledWith(window.utag.data, null, [16]);
         });
     
         test('calls utag.view for google fallback on bild.de', () => {
-            document.cookie = 'cmp_cv_list=google_fallback;';
+            document.cookie = 'cmp_cv_list=google_fallback;secure';
             cmpCustomVendorMapping.processUtag();
             expect(window.utag.view).toHaveBeenCalledWith(window.utag.data, null, [21]);
         });
     
         test('calls utag.view for AGF vendor on welt.de', () => {
             window.location.hostname = 'welt.de';
-            document.cookie = 'cmp_cv_list=agf;';
+            document.cookie = 'cmp_cv_list=agf;secure';
             cmpCustomVendorMapping.processUtag();
             expect(window.utag.view).toHaveBeenCalledWith(window.utag.data, null, [251]);
         });
     
         test('calls utag.view for kameleoon vendor', () => {
             window.location.hostname = 'bild.de';
-            document.cookie = 'cmp_cv_list=kameleoon;';
+            document.cookie = 'cmp_cv_list=kameleoon;secure';
             window.utag.data.user_hasPurSubscription = 'false';
             cmpCustomVendorMapping.processUtag();
             expect(window.utag.view).toHaveBeenCalledWith(window.utag.data, null, [24]);
