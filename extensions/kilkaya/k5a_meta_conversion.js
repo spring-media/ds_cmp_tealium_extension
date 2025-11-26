@@ -24,9 +24,13 @@
             window.k5aMeta.cntTag.push('offer_' + String(b.offer_id));
         }
 
-        utag.DB('k5aMeta conversion set for checkout success');
+        if (window.utag && window.utag.cfg && window.utag.cfg.utDebug) {
+            utag.DB('k5aMeta conversion set for checkout success');
+        }
 
     } catch (e) {
-        utag.DB('k5aMeta conversion error: ' + e);
+        if (window.utag && window.utag.cfg && window.utag.cfg.utDebug) {
+            utag.DB('k5aMeta conversion error: ' + e);
+        }
     }
 })(a, b);
