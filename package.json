@@ -1,6 +1,9 @@
 {
   "name": "ds_tealium_extensions",
   "version": "1.0.0",
+  "engines": {
+    "node": "24"
+  },
   "scripts": {
     "prepare": "husky install",
     "test": "jest",
