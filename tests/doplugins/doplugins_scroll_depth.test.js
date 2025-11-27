@@ -56,7 +56,6 @@ describe('_scrollDepthObj', () => {
     });
 
     describe('getPageId', () => {
-        
         it('should return empty string if no page id is present', () => {
             const value = s._scrollDepthObj.getPageId();
 
@@ -186,7 +185,6 @@ describe('_scrollDepthObj', () => {
             jest.spyOn(s._scrollDepthObj, 'getPageId').mockReturnValue('test_pageId');
             jest.spyOn(s._scrollDepthObj, 'getPageChannel').mockReturnValue('test_pageChannel');
             jest.spyOn(s._scrollDepthObj, 'getPagePremiumStatus').mockReturnValue('test_is_page_premium_yes : ');
-        
             s._scrollDepthObj.setPreviousPage(s);
 
             expect(s._prevPage).toBe('test_docType : test_is_page_premium_yes : test_pageId : test_pageChannel');
@@ -196,7 +194,7 @@ describe('_scrollDepthObj', () => {
 
     describe('setScrollDepthProperties', () => {
 
-        afterEach( ()=>{
+        afterEach(() => {
             s._scrollDepthObj.isFirstRun = true;
         });
 
@@ -210,7 +208,7 @@ describe('_scrollDepthObj', () => {
             expect(setPrevPage).toHaveBeenCalledWith(s);
             expect(s.getPercentPageViewed).toHaveBeenCalledWith(s._prevPage);
         });
-        
+
         it('should call setData if pageName and _ppvPreviousPage is defined', () => {
             s.pageName = 'test_pageName';
             s._ppvPreviousPage = 'test_ppvPreviousPage';
@@ -235,7 +233,6 @@ describe('_scrollDepthObj', () => {
 
             expect(setData).toHaveBeenCalledTimes(1);
         });
-        
     });
 
     describe('setData', () => {
@@ -258,5 +255,4 @@ describe('_scrollDepthObj', () => {
             expect(addEventMock).toHaveBeenCalledWith('event46=' + s.prop65);
         });
     });
-    
 });

@@ -24,7 +24,7 @@ describe('s._utils', () => {
             const PROPERTY_NAMES = [
                 'mapped_page_document_type',
                 'mapped_page_doc_type',
-                'mapped_document_type',
+                'mapped_document_type'
             ];
 
             PROPERTY_NAMES.forEach(propertyName => {

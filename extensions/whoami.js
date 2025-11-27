@@ -11,7 +11,7 @@ function _whoamiSnipped_log(message) {
 
 _whoamiSnipped_log('whoami : start  ');
 
-! function () {
+! function() {
     function _whoamiSnipped_getAsInfo() {
         try {
             var cookieString = document.cookie;

@@ -27,7 +27,7 @@ describe('s.doPlugins()', () => {
             version: 'test_visitor_version'
         };
         s.getPreviousValue.mockReturnValue('test_value');
-        
+
         s.doPlugins(s);
 
         expect(s.expectSupplementalData).toBe(false);

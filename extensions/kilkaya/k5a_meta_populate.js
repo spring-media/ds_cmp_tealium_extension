@@ -1,19 +1,19 @@
 /* global utag, a, b */
 /* eslint-disable-next-line no-unused-vars */
-(function (a, b) {
-    
-    if (a !== 'view') return;
+(function(a, b) {
+
+    if (a !== 'view') { return; }
     try {
-        var U = (window.utag && utag.data) || {};
-        var as1 = function (v) { return (v === 1 || v === '1' || v === true || v === 'true') ? 1 : 0; };
-        var arr = function (v) { return v == null ? [] : (Array.isArray(v) ? v : [v]); };
+        const U = (window.utag && utag.data) || {};
+        const as1 = function(v) { return (v === 1 || v === '1' || v === true || v === 'true') ? 1 : 0; };
+        const arr = function(v) { return v == null ? [] : (Array.isArray(v) ? v : [v]); };
 
-        var paid = as1(U.page_isPremium || 0);
-        var subscriber = as1(U.user_hasPlusSubscription2);
-        var login = as1(U.user_isLoggedIn2);
-        var paywall = (paid && !subscriber) ? 'hard' : 'open';
+        const paid = as1(U.page_isPremium || 0);
+        const subscriber = as1(U.user_hasPlusSubscription2);
+        const login = as1(U.user_isLoggedIn2);
+        const paywall = (paid && !subscriber) ? 'hard' : 'open';
 
-        var meta = {
+        const meta = {
             url: document.URL,
             title: document.title,
             image: U['meta.og:image'] || '',
@@ -33,8 +33,12 @@
         };
 
         window.k5aMeta = Object.assign({}, window.k5aMeta || {}, meta);
-        if (window.utag && window.utag.cfg && window.utag.cfg.utDebug) window.utag.DB('k5aMeta populated');
+        if (window.utag && window.utag.cfg && window.utag.cfg.utDebug) {
+            window.utag.DB('k5aMeta populated');
+        }
     } catch (e) {
-        if (window.utag && window.utag.cfg && window.utag.cfg.utDebug) window.utag.DB('k5aMeta error: ' + e);
+        if (window.utag && window.utag.cfg && window.utag.cfg.utDebug) {
+            window.utag.DB('k5aMeta error: ' + e);
+        }
     }
 })(a, b);

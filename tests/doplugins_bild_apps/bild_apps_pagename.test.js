@@ -31,7 +31,7 @@ describe('_bildAppsPageNameObj', () => {
 
         it('should be true if document type is article and page_cms_path contains im-live-ticker', () => {
             window.utag.data.page_cms_path = 'test/im-live-ticker/';
-            //isDocTypeArticleMock.mockReturnValue(true);
+            // isDocTypeArticleMock.mockReturnValue(true);
 
             const returnValue = s._bildAppsPageNameObj.isLive();
             expect(returnValue).toBe(true);
@@ -73,7 +73,7 @@ describe('_bildAppsPageNameObj', () => {
         });
     });
 
-    describe('setDocTypeProperty', () => { 
+    describe('setDocTypeProperty', () => {
         it('should set mapped_page_document_type if it is defined to the argument value', () => {
             window.utag.data.mapped_page_document_type = 'test_mapped_page_document_type';
 
@@ -128,7 +128,7 @@ describe('_bildAppsPageNameObj', () => {
             isDocTypeArticleMock.mockReturnValue(true);
             isLive.mockReturnValue(true);
             isSport.mockReturnValue(false);
-            
+
             s._bildAppsPageNameObj.setAppsPageName(s);
 
             expect(setDocTypePropertyMock).toHaveBeenCalledWith('live');

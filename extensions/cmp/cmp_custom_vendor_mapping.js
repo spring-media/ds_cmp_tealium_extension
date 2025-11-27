@@ -1,9 +1,9 @@
-(function () {
+(function() {
     const OLD_STORAGE_KEY = '__utag_cmp_vendor_list';
 
     const SUB_DOMAINS = ['sportbild.bild.de', 'shop.welt.de', 'bildplusshop.bild.de'];
     const CLUB_DOMAIN = ['club'];
-    
+
     const NEW_STORAGE_KEY = (CLUB_DOMAIN.some(domain => window.location.hostname.includes(domain))) ?
         'cmp_cv_list_club' :
         (SUB_DOMAINS.some(domain => window.location.hostname.includes(domain)) ?
@@ -25,7 +25,7 @@
         { 'name': 'agf2', 'id': '5f9be0a9a228636148510755' },
         { 'name': 'appnexus', 'id': '5e542b3a4cd8884eb41b5a6c' },
         { 'name': 'awin', 'id': '5e7f6927b8e05c48537f6074' },
-        { 'name': 'bingads', 'id': '5e7786abf443bb795772efee' }, //old 20240731
+        { 'name': 'bingads', 'id': '5e7786abf443bb795772efee' }, // old 20240731
         { 'name': 'bingads', 'id': '62a312aa293cdf1b5e6a2509' },
         { 'name': 'braze', 'id': '62963427cdae8508f684c053' },
         { 'name': 'chartbeat', 'id': '5ea172e36ede87504f7b4590' },
@@ -54,7 +54,7 @@
 
     /* Tealium tag values for different vendors for bild and welt.
     If the tag is deactivated or the tag number is changed in Tealium,
-    the tag numbers will need to be updated below. */ 
+    the tag numbers will need to be updated below. */
     const domainTagValues = {
         piano: {
             bild: [16],
@@ -93,7 +93,7 @@
             travelbook: [72]
         },
         kilkaya: {
-            welt: [298],
+            welt: [298]
         }
     };
 
@@ -104,17 +104,17 @@
             return domainTagValues[vendor].bild;
         } else if (domain.includes('fitbook.de') || domain.includes('fitbook-magazine.com')) {
             return domainTagValues[vendor].fitbook;
-        }else if (domain.includes('myhomebook.de') || domain.includes('myhomebook-magazine.com')) {
+        } else if (domain.includes('myhomebook.de') || domain.includes('myhomebook-magazine.com')) {
             return domainTagValues[vendor].myhomebook;
-        }else if (domain.includes('petbook.de') || domain.includes('petbook-magazine.com')) {
+        } else if (domain.includes('petbook.de') || domain.includes('petbook-magazine.com')) {
             return domainTagValues[vendor].petbook;
-        }else if (domain.includes('stylebook.de') || domain.includes('stylebook-magazine.com')) {
+        } else if (domain.includes('stylebook.de') || domain.includes('stylebook-magazine.com')) {
             return domainTagValues[vendor].stylebook;
-        }else if (domain.includes('techbook.de') || domain.includes('techbook-magazine.com')) {
+        } else if (domain.includes('techbook.de') || domain.includes('techbook-magazine.com')) {
             return domainTagValues[vendor].techbook;
-        }else if (domain.includes('travelbook.de') || domain.includes('travelbook-magazine.com')) {
+        } else if (domain.includes('travelbook.de') || domain.includes('travelbook-magazine.com')) {
             return domainTagValues[vendor].travelbook;
-        }else {
+        } else {
             // Return nothing if domain doesn't match
             return null;
         }
@@ -148,9 +148,9 @@
         document.cookie = name + '=; expires=' + new Date(0).toUTCString() + '; secure';
     }
 
-    const fetchConsentData = function () {
-        return new Promise(function (resolve, reject) {
-            window.__tcfapi('getCustomVendorConsents', 2, function (data, success) {
+    const fetchConsentData = function() {
+        return new Promise(function(resolve, reject) {
+            window.__tcfapi('getCustomVendorConsents', 2, function(data, success) {
                 if (!success) {
                     return reject();
                 }
@@ -159,18 +159,18 @@
         });
     };
 
-    const spCMPisEnabled = function () {
+    const spCMPisEnabled = function() {
         return window.__tcfapi;
     };
 
-    const getGrantedVendors = function (cb) {
+    const getGrantedVendors = function(cb) {
         var cmp_customvendor = '';
         var currentGrants = getCookie(NEW_STORAGE_KEY) || getCookie(OLD_STORAGE_KEY);
-        fetchConsentData().then(function (data) {
+        fetchConsentData().then(function(data) {
             if (!data) {
                 return;
             }
-            vendorArray.forEach(function (vendor) {
+            vendorArray.forEach(function(vendor) {
                 if (data && data.grants && data.grants[vendor.id] && data.grants[vendor.id].vendorGrant) {
                     cmp_customvendor += vendor.name + ',';
                 }
@@ -182,7 +182,7 @@
         });
     };
 
-    const processUtag = function () {
+    const processUtag = function() {
         if (!window.__utag_view_fired) {
             window.__utag_view_fired = true;
             var cmp_cv_listCookie = document.cookie.match(/cmp_cv_list=([a-zA-z0-9_,-]*)/);
@@ -196,14 +196,14 @@
                     || (existingFallbackCookie && existingFallbackCookie[0].indexOf('adobe_analytics') >= 0)
                 ) {
 
-                    //adobe club
+                    // adobe club
                     if ((window.location.hostname && window.location.hostname.includes('club')) && window.utag.data['cp.utag_main_cmp_after'] == 'true') {
                         window.utag.view(window.utag.data, null, domainTagValues.adobeClub.bild);
                     }
                 }
             }
 
-            //cxense/piano 
+            // cxense/piano
             if (((existingCookie && existingCookie[0].indexOf('piano') >= 0)
                 || (existingFallbackCookie && existingFallbackCookie[0].indexOf('piano') >= 0))
                 && !!getDomainTagValue(window.location.hostname, 'piano')) {
@@ -211,29 +211,29 @@
                 window.utag.view(window.utag.data, null, getDomainTagValue(window.location.hostname, 'piano'));
             }
 
-            //google ads
+            // google ads
             if (((existingCookie && existingCookie[0].indexOf('google_fallback') >= 0)
                 || (existingFallbackCookie && existingFallbackCookie[0].indexOf('google_fallback') >= 0))
                 && !!getDomainTagValue(window.location.hostname, 'googleAds')) {
 
                 window.utag.view(window.utag.data, null, getDomainTagValue(window.location.hostname, 'googleAds'));
-            }            
+            }
 
-            //nielsenAgf
+            // nielsenAgf
             if (((existingCookie && existingCookie[0].indexOf('agf') >= 0)
                 || (existingFallbackCookie && existingFallbackCookie[0].indexOf('agf') >= 0))
                 && !!getDomainTagValue(window.location.hostname, 'nielsenAgf')) {
 
                 window.utag.view(window.utag.data, null, getDomainTagValue(window.location.hostname, 'nielsenAgf'));
             }
-            //kameleoon
+            // kameleoon
             if (((existingCookie && existingCookie[0].indexOf('kameleoon') >= 0)
                 || (existingFallbackCookie && existingFallbackCookie[0].indexOf('kameleoon') >= 0)
                 && (window.utag.data.user_hasPurSubscription2 === 'false'
                 || (!window.utag.data['cp._cpauthhint']
                 || !(window.utag.data['cp._cpauthhint']?.includes('1')))))
                 && !!getDomainTagValue(window.location.hostname, 'kameleoon')) {
-                        
+
                 window.utag.view(window.utag.data, null, getDomainTagValue(window.location.hostname, 'kameleoon'));
             }
 
@@ -244,18 +244,18 @@
               !!getDomainTagValue(window.location.hostname, 'kilkaya')
             ) {
                 window.k5aMeta = window.k5aMeta || {};
-                window.k5aMeta.consent = 1;  // consent granted for Kilkaya
+                window.k5aMeta.consent = 1; // consent granted for Kilkaya
                 window.utag.view(window.utag.data, null, getDomainTagValue(window.location.hostname, 'kilkaya'));
             }
         }
     };
 
-    const init = function () {
+    const init = function() {
         if (spCMPisEnabled()) {
             if (!window.__utag_layer_tracking_init) {
                 window.__utag_layer_tracking_init = true;
                 getGrantedVendors();
-                window.__tcfapi('addEventListener', 2, function (tcData) {
+                window.__tcfapi('addEventListener', 2, function(tcData) {
                     if (tcData && tcData.eventStatus === 'useractioncomplete') {
                         getGrantedVendors(processUtag);
                     }
@@ -274,7 +274,7 @@
         spCMPisEnabled,
         getGrantedVendors,
         processUtag,
-        init,
+        init
     };
 
     // Evaluate runtime environment (Browser or Node.js)
@@ -285,5 +285,4 @@
         // Call entry point in browser context.
         init();
     }
-    
 })();

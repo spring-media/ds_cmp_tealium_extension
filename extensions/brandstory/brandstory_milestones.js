@@ -53,7 +53,7 @@ window.onload = function setMilestones() {
 
 // Create a reference to members of this unit which need to be exposed for unit testing.
 const exportedFunctions = {
-    getDomainTagValue,
+    getDomainTagValue
 };
 
 // Evaluate runtime environment (Browser or Node.js)

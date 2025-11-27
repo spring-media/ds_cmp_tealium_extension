@@ -1,5 +1,5 @@
 const sObject = require('../../extensions/doPlugins/doPlugins_global');
-const {createWindowMock} = require('../mocks/browserMocks');
+const { createWindowMock } = require('../mocks/browserMocks');
 
 describe('s.doPlugins()', () => {
     let s;
@@ -15,7 +15,7 @@ describe('s.doPlugins()', () => {
             .mockImplementation(() => (windowMock));
 
         // Provide a fresh copy of the s-object for each test.
-        s = {...sObject};
+        s = { ...sObject };
         setEventsPropertyMock = jest.spyOn(s._eventsObj, 'setEventsProperty');
         setScrollDepthPropertiesMock = jest.spyOn(s._scrollDepthObj, 'setScrollDepthProperties');
         firstPageViewMock = jest.spyOn(s._utils, 'isFirstPageView').mockImplementation().mockReturnValue(false);
@@ -28,7 +28,7 @@ describe('s.doPlugins()', () => {
 
     it('should assign values to some eVars', () => {
         s.version = 'test';
-        s.visitor = {version: 'test'};
+        s.visitor = { version: 'test' };
 
         window.utag.data.myCW = 'test_cw';
 
@@ -39,7 +39,7 @@ describe('s.doPlugins()', () => {
         expect(s.eVar184.length).toBeGreaterThanOrEqual(1);
         expect(s.eVar181.length).toBeGreaterThanOrEqual(1);
         expect(s.eVar185).toBe(window.utag.data.myCW);
-        expect(s.expectSupplementalData).toBe(false);        
+        expect(s.expectSupplementalData).toBe(false);
     });
 
     it('should call s._setEventsProperty() function', () => {

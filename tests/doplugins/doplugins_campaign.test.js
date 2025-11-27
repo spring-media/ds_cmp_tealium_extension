@@ -1,5 +1,5 @@
 const sObject = require('../../extensions/doPlugins/doPlugins_global');
-const {createWindowMock} = require('../mocks/browserMocks');
+const { createWindowMock } = require('../mocks/browserMocks');
 
 describe('campaign', () => {
     let s;
@@ -10,7 +10,7 @@ describe('campaign', () => {
             .mockImplementation(() => (windowMock));
 
         // Provide a fresh copy of the s-object for each test.
-        s = {...sObject};
+        s = { ...sObject };
     });
 
     afterEach(() => {
@@ -54,7 +54,7 @@ describe('campaign', () => {
         });
         it('should return wt_mc as adobe_campaign if it is present and cid, wtrid and wtmc are not defined', () => {
             window.utag.data = {
-                'qp.wt_mc': 'wt_mc.test',
+                'qp.wt_mc': 'wt_mc.test'
             };
 
             const adobe_campaign = s._campaignObj.getAdobeCampaign();
@@ -63,7 +63,6 @@ describe('campaign', () => {
         });
 
         it('should return empty string if no campaign is defined', () => {
-        
             const adobe_campaign = s._campaignObj.getAdobeCampaign();
             expect(adobe_campaign).toBe('');
 

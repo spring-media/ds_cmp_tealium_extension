@@ -10,7 +10,7 @@ describe('s_utils', () => {
             .mockImplementation(() => (windowMock));
 
         // Provide a fresh copy of the s-object for each test.
-        s = {...sObject};
+        s = { ...sObject };
     });
 
     afterEach(() => {
@@ -239,7 +239,7 @@ describe('s_utils', () => {
             };
         });
 
-        it('should return any-type if window.performance is navigate', function () {
+        it('should return any-type if window.performance is navigate', function() {
             window.performance.getEntriesByType.mockReturnValue([{ type: 'any-type' }]);
 
             const result = s._utils.getPageReloadStatus();

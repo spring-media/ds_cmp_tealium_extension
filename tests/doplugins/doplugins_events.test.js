@@ -33,7 +33,7 @@ describe('_eventsObj', () => {
 
         });
 
-        it('should set s.events property by calling s.apl() plugin', function () {
+        it('should set s.events property by calling s.apl() plugin', function() {
             const anyEvent = 'any-event';
             s._eventsObj.events = [anyEvent];
             aplMock.mockReturnValue(anyEvent);
@@ -43,7 +43,7 @@ describe('_eventsObj', () => {
             expect(s.events).toBe(anyEvent);
         });
 
-        it('should create a comma separated list of events', function () {
+        it('should create a comma separated list of events', function() {
             const eventsArray = ['event-1', 'event-2', 'event-3'];
             const expectedEventsList = 'event-1,event-2,event-3';
             s._eventsObj.events = eventsArray;
@@ -51,7 +51,7 @@ describe('_eventsObj', () => {
             expect(aplMock).toHaveBeenCalledWith('', expectedEventsList);
         });
 
-        it('should clear the internal events array afterwards', function () {
+        it('should clear the internal events array afterwards', function() {
             const anyEvent = 'any-event';
             s._eventsObj.events = [anyEvent];
             s._eventsObj.setEventsProperty(s);

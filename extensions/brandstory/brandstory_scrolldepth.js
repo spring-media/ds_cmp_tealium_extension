@@ -42,12 +42,12 @@ const scrollArray = [];
 
 /* If scroll depth is 50, 75 or 100 the request should be triggered once
 for each number. To prevent multiple requests for each, we set trigger flags */
-var triggered50  = false; 
-var triggered75  = false; 
+var triggered50  = false;
+var triggered75  = false;
 var triggered100 = false;
 
 // Scroll event listener
-window.addEventListener('scroll', function () {
+window.addEventListener('scroll', function() {
     // Get scroll depth from cookie
     const s_ppv = getCookie('s_ppv');
     let scrollDepth = parseInt(s_ppv);
@@ -81,14 +81,14 @@ window.addEventListener('scroll', function () {
         eventData.event_action = 'view' + scrollDepth,
         // Send data to utag
         window.utag.link(eventData, null, tagNumber);
-        //sendLinkEvent(scrollDepth, window.utag.data.page_platform, window.utag.data.adobe_pageName, tagNumber);
+        // sendLinkEvent(scrollDepth, window.utag.data.page_platform, window.utag.data.adobe_pageName, tagNumber);
     }
 });
 
 // Create a reference to members of this unit which need to be exposed for unit testing.
 const exportedFunctions = {
     getCookie,
-    getDomainTagValue,
+    getDomainTagValue
 };
 
 // Evaluate runtime environment (Browser or Node.js)
