@@ -2,6 +2,7 @@
 import pluginImport from 'eslint-plugin-import';
 import tseslint from 'typescript-eslint';
 import stylistic from '@stylistic/eslint-plugin';
+import globals from 'globals';
 import { defineConfig } from 'eslint/config';
 
 export default defineConfig([
@@ -12,14 +13,9 @@ export default defineConfig([
         files: ['**/*.js', '**/*.ts'],
         languageOptions: {
             globals: {
-                jest: true,
-                require: true,
-                expect: true,
-                describe: true,
-                it: true,
-                afterEach: true,
-                global: true,
-                window: true
+                ...globals.jest, // Jest globals: describe, it, beforeEach, etc.
+                ...globals.node, // Node.js globals: setTimeout, setInterval, require, etc.
+                ...globals.browser // Browser globals: window, document, etc.
             },
             parser: tseslint.parser,
             parserOptions: {
