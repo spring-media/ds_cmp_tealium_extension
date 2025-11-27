@@ -142,7 +142,7 @@ if ((existingCookie && existingCookie[0].indexOf('adobe_analytics') >= 0) || (ex
                         encodeURIComponent(b) +
                         "; path=/;" +
                         (a ? " expires=" + f.toUTCString() + ";" : "") +
-                        (g ? " domain=" + g + ";" : "")),
+                        (g ? " domain=" + g + ";" : "")+';secure'),
                     "undefined" !== typeof window.cookieRead)
                         ? window.cookieRead(c) === b
                         : !1;

@@ -171,7 +171,7 @@
     deleteCookie(OLD_STORAGE_KEY);
   }
   function deleteCookie(name) {
-    document.cookie = name + "=; expires=" + new Date(0).toUTCString();
+    document.cookie = name + "=; expires=" + new Date(0).toUTCString()+';secure';
   }
   const fetchConsentData = function () {
     return new Promise(function (resolve, reject) {

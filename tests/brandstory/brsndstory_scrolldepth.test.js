@@ -27,12 +27,12 @@ afterEach(() => {
 describe('getCookie', () => {
 
     test('returns the value from the cookie', () => {
-        document.cookie = 'testCookie=someValue,value2';
+        document.cookie = 'testCookie=someValue,value2;secure';
         expect(getCookie('testCookie')).toBe('value2');
     });
 
     test('returns an empty string if the cookie is not found', () => {
-        document.cookie = 'anotherCookie=value';
+        document.cookie = 'anotherCookie=value;secure';
         expect(getCookie('testCookie')).toBe('');
     });
 });
@@ -67,7 +67,7 @@ describe('scroll event listener', () => {
     });
 
     const triggerScroll = (scrollDepth, hostname) => {
-        document.cookie = `s_ppv=test,${scrollDepth}`;
+        document.cookie = `s_ppv=test,${scrollDepth};secure`;
 
         window.location.hostname = hostname;
 
