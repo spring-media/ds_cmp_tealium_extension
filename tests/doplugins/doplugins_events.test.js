@@ -4,7 +4,7 @@ describe('_eventsObj', () => {
     let s;
     beforeEach(() => {
         // Provide a fresh copy of the s-object for each test.
-        s = {...sObject};
+        s = { ...sObject };
     });
 
     afterEach(() => {

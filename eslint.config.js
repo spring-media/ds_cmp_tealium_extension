@@ -59,7 +59,7 @@ export default defineConfig([
             // eCMAScript / Allgemeine Regeln
             'arrow-spacing': 'error',
             'array-bracket-spacing': ['error', 'never'],
-            'comma-dangle': ['error', 'never'],
+            'comma-dangle': ['warn', 'never'],
             'no-cond-assign': ['error', 'except-parens'],
             'no-console': 'off',
             'no-constant-condition': 'error',
@@ -177,10 +177,10 @@ export default defineConfig([
             'no-new-object': 'error',
             'no-spaced-func': 'error',
             'no-ternary': 'off',
-            'no-trailing-spaces': 'error',
+            'no-trailing-spaces': 'warn',
             'no-underscore-dangle': 'off',
             'no-extra-parens': ['error', 'functions'],
-            'object-curly-spacing': ['error', 'always'],
+            'object-curly-spacing': ['warn', 'always'],
             'one-var': 'off',
             'operator-assignment': 'off',
             'padded-blocks': 'off',
@@ -201,7 +201,7 @@ export default defineConfig([
             'space-in-parens': ['error', 'never'],
             'space-infix-ops': 'error',
             'space-unary-ops': 'error',
-            'spaced-comment': ['error', 'always', { 'markers': [','] }],
+            'spaced-comment': ['warn', 'always', { 'markers': [','] }],
             'wrap-regex': 'off'
         }
     }

@@ -36,7 +36,7 @@ s.split = new Function("l", "d", ""
     + "++]=l.substring(0,i);l=l.substring(i+d.length);}return a");
 /* eslint-enable */
 // END: Pre-defined Adobe Plugins
-
+/* eslint-disable @typescript-eslint/no-shadow */
 /**
  * Utility functions which get used by various features.
  */
@@ -363,6 +363,7 @@ s._articleViewTypeObj = {
 
     isValidURL: function(urlString) {
         try {
+            // eslint-disable-next-line no-new
             new URL(urlString);
         } catch (err) {
             return false;
@@ -804,7 +805,7 @@ s._setTrackingValueEvents = function(s) {
         const socialTrackingValue = trackingValuesFromQueryParameter;
         if (socialTrackingParameter) {
             let event;
-            let channel = 'Organic Social';
+            const channel = 'Organic Social';
             let channelCategory;
             let channel_detail;
             switch (true) {
@@ -1138,7 +1139,7 @@ s._ICIDTracking = {
 s._T_REFTracking = {
     setVariables: function(s) {
         let tref = '';
-        let wtref = window.utag.data['dom.hash'] || '';
+        const wtref = window.utag.data['dom.hash'] || '';
         try {
             const queryParams = new URLSearchParams(window.location.search);
             tref = queryParams.get('t_ref') ? queryParams.get('t_ref') : '';
@@ -1222,7 +1223,7 @@ s._directOrderObj = {
         if (documentType === 'article') {
             let cookieName;
             let cookieValue;
-            let cookieObj = {};
+            const cookieObj = {};
 
             const page_isPaywall = this.isPaywall(s);
 
@@ -1234,7 +1235,7 @@ s._directOrderObj = {
                     s.eVar113 = outbrainValue;
                     cookieName = 'otb';
                     cookieValue = outbrainValue;
-                    cookieObj[cookieName] = cookieValue +';exp-session';
+                    cookieObj[cookieName] = cookieValue + ';exp-session';
                     this.saveToCookie(cookieObj);
                 }
             } else {

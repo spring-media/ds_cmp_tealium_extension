@@ -17,8 +17,8 @@ function localStorageMock() {
 /**
    * Erstellt ein konfigurierbares window-Mock-Objekt für Tests.
    * @param {Object} options
-   * @param {string} options.hostname - Der Hostname (z. B. 'www.welt.de')
-   * @param {string[]} options.candidates - Kandidaten-Segment-IDs (z. B. ['8n4...'])
+   * @param {string} options.hostname - Der Hostname (z.B. 'www.welt.de')
+   * @param {string[]} options.candidates - Kandidaten-Segment-IDs (z.B. ['8n4...'])
    * @param {string[]} options.shortIds - Optionale shortIds für jedes Segment
    * @param {boolean} options.simulateTimeout - Wenn true, wird getSegments nie aufgerufen
    * @returns {object} Mock für window

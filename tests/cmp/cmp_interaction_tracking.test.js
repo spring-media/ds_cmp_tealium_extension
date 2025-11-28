@@ -211,7 +211,7 @@ describe('CMP Interaction Tracking', () => {
         });
     });
 
-    describe('isAfterCMP', () =>{
+    describe('isAfterCMP', () => {
         it('should return true if utag_main_cmp_after cookie is set to true', function() {
             window.utag.data['cp.utag_main_cmp_after'] = 'true';
             const result = cmpInteractionTracking.isAfterCMP();
@@ -251,7 +251,7 @@ describe('CMP Interaction Tracking', () => {
     describe('hasUserAlreadyConsentGranted()', () => {
         it('should be false if user consented to Adobe Analytics tracking', function() {
             window.utag.data['cp.cmp_cv_list'] = 'any-vendor,adobe_analytics';
-            let result = cmpInteractionTracking.hasUserAlreadyConsentGranted();
+            const result = cmpInteractionTracking.hasUserAlreadyConsentGranted();
             expect(result).toBe(true);
         });
     });

@@ -29,7 +29,7 @@ describe('directOrderObj', () => {
         it('should store the adobe campaign value of article recommendations in utag_main cookie', function() {
             const anyCookieValue = 'any-otb';
             const anyCookieName = 'otb';
-            let anyCookieObj = {};
+            const anyCookieObj = {};
             anyCookieObj[anyCookieName] = anyCookieValue + ';exp-session';
 
             s._directOrderObj.saveToCookie(anyCookieObj);
@@ -109,9 +109,9 @@ describe('directOrderObj', () => {
             s._directOrderObj.isPaywall.mockReturnValue('true');
             s._campaignObj.getAdobeCampaign.mockReturnValue('cid=kooperation.article.outbrain.A_23');
             s._directOrderObj.setDirectOrderValues(s);
-            let cookieName = 'otb';
-            let cookieValue = 'cid=kooperation.article.outbrain.A_23';
-            let cookieObj = {};
+            const cookieName = 'otb';
+            const cookieValue = 'cid=kooperation.article.outbrain.A_23';
+            const cookieObj = {};
             cookieObj[cookieName] = cookieValue + ';exp-session';
             expect(saveToCookieMock).toHaveBeenCalledWith(cookieObj);
         });

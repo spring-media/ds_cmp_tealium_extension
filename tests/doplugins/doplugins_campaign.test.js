@@ -71,7 +71,7 @@ describe('campaign', () => {
 
     describe('setCampaignVariables', () => {
         let isFirstPageViewMock;
-        let anyCampaignValue =
+        const anyCampaignValue = undefined;
         beforeEach(() => {
             isFirstPageViewMock = jest.spyOn(s._utils, 'isFirstPageView').mockImplementation();
             jest.spyOn(s._campaignObj, 'getAdobeCampaign').mockReturnValue(anyCampaignValue);

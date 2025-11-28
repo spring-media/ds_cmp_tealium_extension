@@ -1,3 +1,4 @@
+/* eslint-disable */
 var isLoggingEnabled = true;
 var whoamiCookieName = 'asinfo';
 

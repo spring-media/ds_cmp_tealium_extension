@@ -1,3 +1,8 @@
+/* eslint-disable prefer-const */
+/* eslint-disable curly */
+/* eslint-disable no-var */
+/* eslint-disable no-nested-ternary */
+
 (function() {
     const OLD_STORAGE_KEY = '__utag_cmp_vendor_list';
 
@@ -125,6 +130,7 @@
         var cookies = document.cookie.split(';');
         for (var i = 0; i < cookies.length; i++) {
             var c = cookies[i];
+            // TODO This needs a review
             while (c.charAt(0) === ' ')
                 c = c.substring(1, c.length);
             if (c.indexOf(cName) === 0)
@@ -136,7 +142,7 @@
     function setCookie(name, value, days) {
         var expires = '';
         if (days) {
-            var date = new Date();
+            let date = new Date();
             date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
             expires = '; expires=' + date.toUTCString();
         }

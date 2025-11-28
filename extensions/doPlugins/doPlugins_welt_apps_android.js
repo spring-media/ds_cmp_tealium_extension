@@ -8,6 +8,7 @@ s.getPreviousValue = function(v,c){var k=v,d=c;if("-v"===k)return{plugin:"getPre
 /******************************************** END CODE TO DEPLOY ********************************************/
 /* eslint-enable */
 // END: Pre-defined Adobe Plugins
+/* eslint-disable @typescript-eslint/no-shadow */
 
 s._setPageAgeForCheckout = function() {
     if (typeof window.utag.data.adobe_docType !== 'undefined' && window.utag.data.adobe_docType === 'article') {

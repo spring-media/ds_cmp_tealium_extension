@@ -47,7 +47,7 @@ const getNmtAppInfo = {
             } else if (typeof window.nmtAppInfo == 'undefined') {
                 window.utag.data.app_os = 'no-entry';
             }
-        } else return;
+        }
     },
 
     getAppName: function(appIdentifier) {

@@ -38,8 +38,8 @@
         if (!isNaN(publishDate)) {
             setTime(currentDate);
             setTime(publishDate);
-            var timeDiff = Math.abs(currentDate.getTime() - publishDate.getTime());
-            var dayDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+            const timeDiff = Math.abs(currentDate.getTime() - publishDate.getTime());
+            const dayDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
             return dayDiff.toString();
         }
     }

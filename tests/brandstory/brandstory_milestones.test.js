@@ -39,12 +39,13 @@ describe('setMilestones', () => {
 
     afterAll(() => {
         // Restore original window object
+        // eslint-disable-next-line no-native-reassign
         window = originalWindow;
     });
 
     // Skipped temporarily because the test is failing and blocking PR
     it.skip('should set milestones with the correct parameters', () => {
-        //Upated because old implementation is not supported in jsdom
+        // Upated because old implementation is not supported in jsdom
         Object.defineProperty(window, 'location', {
             value: {
                 ...window.location,
@@ -83,6 +84,6 @@ describe('setMilestones', () => {
         });
 
         // Restore real timers
-        jest.useRealTimers(); 
+        jest.useRealTimers();
     });
 });

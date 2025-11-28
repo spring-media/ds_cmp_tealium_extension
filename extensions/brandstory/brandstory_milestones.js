@@ -38,7 +38,7 @@ window.onload = function setMilestones() {
         setTimeout(() => {
 
             // full utag.data
-            var eventData = {...window.utag.data};
+            const eventData = { ...window.utag.data };
 
             // Add custom event data
             eventData.event_name = 'article_milestone';

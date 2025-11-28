@@ -100,7 +100,6 @@ describe('_bildAppsPageNameObj', () => {
     });
 
     describe('setAppsPageName', () => {
-        let isLive;
         let isSport;
         let setDocTypePropertyMock;
 

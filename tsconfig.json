@@ -18,10 +18,8 @@
 
     "skipLibCheck": true,
     "noEmit": true,
+    "allowJs": true
   },
   "include": ["tests/**/*", "extensions/**/*"],
   "exclude": ["node_modules"]
 }
-
-
-

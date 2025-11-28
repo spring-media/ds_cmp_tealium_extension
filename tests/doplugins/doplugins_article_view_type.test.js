@@ -69,7 +69,7 @@ describe('articleViewType()', () => {
 
     describe('isOtherTrackingValue()', () => {
         it('should return TRUE if trackingChannel is from the list of other', function() {
-            const trackingChannel = ['social.','upday','kooperation'];
+            const trackingChannel = ['social.', 'upday', 'kooperation'];
             trackingChannel.forEach((item) => {
                 const trackingValue = jest.spyOn(s._articleViewTypeObj, 'getTrackingValue').mockReturnValue(item);
                 const result = s._articleViewTypeObj.isOtherTrackingValue(trackingValue);
@@ -420,7 +420,7 @@ describe('articleViewType()', () => {
 
     describe('isNavigated', () => {
         let getPageReloadStatusMock;
-        let expectedStatusMock
+        let expectedStatusMock;
 
         beforeEach(() => {
             window.performance = {
@@ -527,7 +527,7 @@ describe('articleViewType()', () => {
             isFromLesenSieAuchMock.mockReturnValue(false);
             const result = s._articleViewTypeObj.getInternalType('http://www.any-domain.de');
             expect(isFromHomeMock).toHaveBeenCalledWith(anyReferrer);
-            expect(result.pageViewEvent).toBe('event22,event200','Home');
+            expect(result.pageViewEvent).toBe('event22,event200', 'Home');
         });
 
         it('should return event23 if referrer is NOT a home page', function() {

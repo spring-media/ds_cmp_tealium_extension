@@ -29,30 +29,31 @@ describe('getSegmentsWithTimeout', () => {
 });
 
 describe('handlePianoSegments', () => {
-    let windowMock;
+    let windowMockWelt;
+    let windowMockBILD;
 
     beforeEach(() => {
         pianoConfig.length = 0;
         pianoConfig.push({
             domainMatch: 'welt.de',
             persistedQueryId: 'query-id',
-            candidateSegmentIds: ['test-id'],
+            candidateSegmentIds: ['test-id']
         });
         pianoConfig.push({
             domainMatch: 'bild.de',
             persistedQueryId: 'query-id',
-            candidateSegmentIds: ['test-id'],
+            candidateSegmentIds: ['test-id']
         });
 
         windowMockWelt = createWindowMock({
             hostname: 'www.welt.de',
             candidates: ['test-id'],
-            shortIds: ['abc'],
+            shortIds: ['abc']
         });
         windowMockBILD = createWindowMock({
             hostname: 'www.bild.de',
             candidates: ['test-id'],
-            shortIds: ['abc'],
+            shortIds: ['abc']
         });
     });
 

@@ -179,14 +179,14 @@ describe('s_utils', () => {
 
     describe('isValidURL', () => {
         it('should return true if passed string is URL', () => {
-            urlString = 'https://www.bild.de';
+            const urlString = 'https://www.bild.de';
             const result = s._utils.isValidURL(urlString);
 
             expect(result).toBe(true);
         });
 
         it('should return false if passed string is not URL', () => {
-            urlString = 'www.bild.de';
+            const urlString = 'www.bild.de';
             const result = s._utils.isValidURL(urlString);
 
             expect(result).toBe(false);

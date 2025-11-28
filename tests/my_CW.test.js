@@ -1,12 +1,9 @@
-const { getMonthDay } = require('../extensions/my_CW');
 const myCW = require('../extensions/my_CW');
 const { createWindowMock } = require('./mocks/browserMocks');
 
 describe('CW time format: CW {week} {year} {first DOW} - {last DOW}', () => {
-
-    let cw;
     let leadingZeroMock;
-    cw = { ...myCW };
+    const cw = { ...myCW };
 
     beforeEach(() => {
         const windowMock = createWindowMock();
@@ -95,12 +92,12 @@ describe('CW time format: CW {week} {year} {first DOW} - {last DOW}', () => {
             const mockDate2 = new Date(2022, 0, 2);
 
             jest.spyOn(global, 'Date').mockImplementation().mockReturnValue(mockDate);
-            getDayOfWeekMock = jest.spyOn(cw, 'getDayOfWeek').mockImplementation();
+            const getDayOfWeekMock = jest.spyOn(cw, 'getDayOfWeek').mockImplementation();
             getDayOfWeekMock.mockReturnValueOnce(mockDate1);
             getDayOfWeekMock.mockReturnValueOnce(mockDate2);
 
-            getWeekMock = jest.spyOn(cw, 'getWeek');
-            getMonthDayMock = jest.spyOn(cw, 'getMonthDay');
+            const getWeekMock = jest.spyOn(cw, 'getWeek');
+            const getMonthDayMock = jest.spyOn(cw, 'getMonthDay');
 
             expect(cw.getCW(mockDate)).toBe('CW 01 2021.12.27 - 01.02.');
 
@@ -115,7 +112,7 @@ describe('CW time format: CW {week} {year} {first DOW} - {last DOW}', () => {
 
         it('should set window.utag.data.myCW to the result of _myCW.getCW()', () => {
             const returnValue = 'any-value';
-            getCWMock = jest.spyOn(cw, 'getCW').mockImplementation().mockReturnValue(returnValue);
+            jest.spyOn(cw, 'getCW').mockImplementation().mockReturnValue(returnValue);
             cw.init();
 
             expect(window.utag.data.myCW).toBe(returnValue);

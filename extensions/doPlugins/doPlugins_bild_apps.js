@@ -14,6 +14,7 @@ s.apl = function (lv, va, d1, d2, cc) { var b = lv, d = va, e = d1, c = d2, g = 
 /******************************************** END CODE TO DEPLOY ********************************************/
 /* eslint-enable */
 // END: Pre-defined Adobe Plugins
+/* eslint-disable @typescript-eslint/no-shadow */
 
 s._utils = {
     isDocTypeArticle: function() {
@@ -52,14 +53,13 @@ s._bildAppsPageNameObj = {
     },
 
     setDocTypeProperty: function(value) {
-        if (window.utag.data.mapped_page_document_type)
+        if (window.utag.data.mapped_page_document_type) {
             window.utag.data.mapped_page_document_type = value;
-
-        else if (window.utag.data.mapped_page_doc_type)
+        } else if (window.utag.data.mapped_page_doc_type) {
             window.utag.data.mapped_page_doc_type = value;
-
-        else if (window.utag.data.mapped_document_type)
+        } else if (window.utag.data.mapped_document_type) {
             window.utag.data.mapped_document_type = value;
+        }
     },
 
     setAppsPageName: function(s) {

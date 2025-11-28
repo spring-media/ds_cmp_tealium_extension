@@ -65,5 +65,4 @@ describe('s.doPlugins()', () => {
         s._doPluginsGlobal(s);
         expect(setKameleoonTrackingMock).toHaveBeenCalledWith(s);
     });
-
 });

@@ -34,7 +34,11 @@ async function getSegmentsWithTimeout(persistedQueryId, candidateSegmentIds, tim
                     persistedQueryId,
                     callback: function(res) {
                         clearTimeout(timeout);
-                        res ? resolve(res) : reject('No response received');
+                        if (res) {
+                            resolve(res);
+                        } else {
+                            reject('No response received');
+                        }
                     }
                 },
                 { candidateSegmentIds }
