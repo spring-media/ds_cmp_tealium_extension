@@ -113,7 +113,7 @@ export default defineConfig([
             'no-loop-func': 'off',
             'no-multi-spaces': 'error',
             'no-multi-str': 'warn',
-            'no-native-reassign': 'error',
+            'no-global-assign': 'error',
             'no-new': 'error',
             'no-new-func': 'error',
             'no-new-wrappers': 'error',
