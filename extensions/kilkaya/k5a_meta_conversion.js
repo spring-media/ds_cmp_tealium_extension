@@ -1,5 +1,5 @@
 /* Pre Loader — k5aMeta conversion for checkout success */
-/* global utag, a, b */
+/* global a, b */
 /* eslint-disable-next-line no-unused-vars */
 (function (a, b) {
     try {
@@ -24,13 +24,8 @@
             window.k5aMeta.cntTag.push('offer_' + String(b.offer_id));
         }
 
-        if (window.utag && window.utag.cfg && window.utag.cfg.utDebug) {
-            utag.DB('k5aMeta conversion set for checkout success');
-        }
-
     } catch (e) {
-        if (window.utag && window.utag.cfg && window.utag.cfg.utDebug) {
-            utag.DB('k5aMeta conversion error: ' + e);
-        }
+        // Silent error handling - conversion tracking should not break page functionality
+        console.error('[K5A CONVERSION] Error:', e);
     }
 })(a, b);
