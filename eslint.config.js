@@ -77,7 +77,7 @@ export default defineConfig([
             'no-inner-declarations': 'off',
             'no-invalid-regexp': 'error',
             'no-irregular-whitespace': 'error',
-            'no-negated-in-lhs': 'error',
+            'no-unsafe-negation': 'error',
             'no-obj-calls': 'error',
             'no-regex-spaces': 'error',
             'quote-props': ['off', 'as-needed', { 'keywords': true }],
