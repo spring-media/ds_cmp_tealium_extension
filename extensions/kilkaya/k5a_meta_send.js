@@ -2,6 +2,9 @@
 /* global a, b */
 /* eslint-disable-next-line no-unused-vars */
 (function (a, b) {
+    // Configuration: delay to ensure conversion data is set by conversion extension
+    var CONVERSION_DATA_WAIT_MS = 150;
+    
     try {
         if (String(b.event_name) !== 'checkout' || String(b.event_action) !== 'success') {
             return;
@@ -80,7 +83,7 @@
             } catch (err) {
                 persistLog('✗ ERROR sending conversion', {error: err.message, stack: err.stack});
             }
-        }, 150); // Small delay to ensure k5aMeta.conversion is set
+        }, CONVERSION_DATA_WAIT_MS);
 
     } catch (e) {
         try {
