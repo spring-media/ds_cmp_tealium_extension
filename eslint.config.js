@@ -197,7 +197,6 @@ export default defineConfig([
             // 'space-in-brackets' wurde in neueren ESLint-Versionen entfernt,
             // ersetzt durch 'object-curly-spacing' und 'array-bracket-spacing'
             // wir setzen es auf 'off', um Konflikte zu vermeiden.
-            'space-in-brackets': 'off',
             'space-in-parens': ['error', 'never'],
             'space-infix-ops': 'error',
             'space-unary-ops': 'error',
