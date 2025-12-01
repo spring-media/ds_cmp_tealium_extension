@@ -63,7 +63,9 @@
     const domainTagValues = {
         piano: {
             bild: [16],
+            springpremium_bild:[130],
             welt: [230],
+            springpremium_welt:[68],
             fitbook: [43],
             myhomebook: [46],
             petbook: [83],
@@ -86,7 +88,9 @@
         },
         googleAds: {
             bild: [21],
-            welt: [147]
+            springpremium_bild:[57],
+            welt: [147],
+            springpremium_welt:[77]
         },
         nielsenAgf: {
             welt: [251],
