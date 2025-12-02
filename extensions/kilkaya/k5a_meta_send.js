@@ -31,17 +31,32 @@
                 var installationId = '68ee5be64709bd7f4b3e3bf2';
                 var baseUrl = 'https://cl-eu10.k5a.io/';
                 
-                // Get page data
+                // Get page data and utag data
                 var pageData = window.k5aMeta || {};
+                var U = (window.utag && window.utag.data) || {};
                 
                 // Build query parameters for Kilkaya
                 var params = [];
                 params.push('i=' + encodeURIComponent(installationId));
                 params.push('l=p'); // pageview log type
                 params.push('cs=1'); // conversion status = 1
+                params.push('nopv=1'); // Don't log as pageview, only sale
                 params.push('_s=conversion');
                 params.push('_m=b'); // method=beacon
                 
+                // REQUIRED: Add URL parameter (u=)
+                var url = pageData.url || U['dom.url'] || document.URL;
+                if (url) {
+                    params.push('u=' + encodeURIComponent(url));
+                }
+                
+                // Add channel/platform (c=desktop|mobile)
+                var platform = U.page_platform || U['cp.utag_main_page_platform'] || '';
+                if (platform) {
+                    // Normalize platform value to desktop or mobile
+                    var channel = (platform.toLowerCase() === 'mobile') ? 'mobile' : 'desktop';
+                    params.push('c=' + encodeURIComponent(channel));
+                }
                 
                 // Add conversion-specific data
                 if (pageData.conversion) params.push('cv=' + pageData.conversion);

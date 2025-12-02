@@ -113,7 +113,7 @@ describe('k5a_meta_send', () => {
     });
 
     describe('Tracking URL construction', () => {
-        it('should build minimal tracking URL with installation ID', () => {
+        it('should build minimal tracking URL with required parameters', () => {
             const installationId = '68ee5be64709bd7f4b3e3bf2';
             const baseUrl = 'https://cl-eu10.k5a.io/';
             const params = [];
@@ -121,7 +121,7 @@ describe('k5a_meta_send', () => {
             params.push('i=' + encodeURIComponent(installationId));
             params.push('l=p');
             params.push('cs=1');
-            params.push('_h=pageView');
+            params.push('nopv=1');
             params.push('_s=conversion');
             params.push('_m=b');
 
@@ -129,7 +129,104 @@ describe('k5a_meta_send', () => {
 
             expect(url).toContain('i=68ee5be64709bd7f4b3e3bf2');
             expect(url).toContain('cs=1');
+            expect(url).toContain('nopv=1');
             expect(url).toContain('l=p');
+        });
+
+        it('should include URL parameter from pageData', () => {
+            global.window.k5aMeta = {
+                url: 'https://checkout-v2.prod.ps.welt.de/?offerId=O_TEST'
+            };
+
+            const params = [];
+            const pageData = window.k5aMeta || {};
+            
+            if (pageData.url) {
+                params.push('u=' + encodeURIComponent(pageData.url));
+            }
+
+            const url = 'https://cl-eu10.k5a.io/?' + params.join('&');
+            expect(url).toContain('u=https%3A%2F%2Fcheckout-v2.prod.ps.welt.de');
+        });
+
+        it('should include URL parameter from utag.data if not in pageData', () => {
+            global.window.utag = {
+                data: {
+                    'dom.url': 'https://digital.welt.de/?cid=test'
+                }
+            };
+
+            const params = [];
+            const pageData = window.k5aMeta || {};
+            const U = (window.utag && window.utag.data) || {};
+            const url = pageData.url || U['dom.url'] || document.URL;
+            
+            if (url) {
+                params.push('u=' + encodeURIComponent(url));
+            }
+
+            const trackingUrl = 'https://cl-eu10.k5a.io/?' + params.join('&');
+            expect(trackingUrl).toContain('u=https%3A%2F%2Fdigital.welt.de');
+        });
+
+        it('should include platform parameter as desktop', () => {
+            global.window.utag = {
+                data: {
+                    page_platform: 'desktop'
+                }
+            };
+
+            const params = [];
+            const U = (window.utag && window.utag.data) || {};
+            const platform = U.page_platform || U['cp.utag_main_page_platform'] || '';
+            
+            if (platform) {
+                const channel = (platform.toLowerCase() === 'mobile') ? 'mobile' : 'desktop';
+                params.push('c=' + encodeURIComponent(channel));
+            }
+
+            const url = 'https://cl-eu10.k5a.io/?' + params.join('&');
+            expect(url).toContain('c=desktop');
+        });
+
+        it('should include platform parameter as mobile', () => {
+            global.window.utag = {
+                data: {
+                    page_platform: 'mobile'
+                }
+            };
+
+            const params = [];
+            const U = (window.utag && window.utag.data) || {};
+            const platform = U.page_platform || U['cp.utag_main_page_platform'] || '';
+            
+            if (platform) {
+                const channel = (platform.toLowerCase() === 'mobile') ? 'mobile' : 'desktop';
+                params.push('c=' + encodeURIComponent(channel));
+            }
+
+            const url = 'https://cl-eu10.k5a.io/?' + params.join('&');
+            expect(url).toContain('c=mobile');
+        });
+
+        it('should get platform from cookie fallback', () => {
+            global.window.utag = {
+                data: {
+                    'cp.utag_main_page_platform': 'desktop'
+                }
+            };
+
+            const params = [];
+            const U = (window.utag && window.utag.data) || {};
+            const platform = U.page_platform || U['cp.utag_main_page_platform'] || '';
+            
+            if (platform) {
+                const channel = (platform.toLowerCase() === 'mobile') ? 'mobile' : 'desktop';
+                params.push('c=' + encodeURIComponent(channel));
+            }
+
+            const url = 'https://cl-eu10.k5a.io/?' + params.join('&');
+            expect(url).toContain('c=desktop');
         });
 
         it('should include conversion-specific parameters', () => {
