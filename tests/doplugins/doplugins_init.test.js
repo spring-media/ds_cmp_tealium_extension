@@ -1,5 +1,5 @@
 const sObject = require('../../extensions/doPlugins/doPlugins_global');
-const {createWindowMock} = require('../mocks/browserMocks');
+const { createWindowMock } = require('../mocks/browserMocks');
 
 describe('init()', () => {
     let s;
@@ -16,7 +16,7 @@ describe('init()', () => {
             .mockImplementation(() => (windowMock));
 
         // Provide a fresh copy of the s-object for each test.
-        s = {...sObject};
+        s = { ...sObject };
 
         setCampaignVariablesMock = jest.spyOn(s._campaignObj, 'setCampaignVariables').mockImplementation();
         setViewTypesMock = jest.spyOn(s._articleViewTypeObj, 'setViewTypes').mockImplementation();
@@ -50,7 +50,6 @@ describe('init()', () => {
         const anyScreenSize = 111;
         window.screen.width = window.screen.height = anyScreenSize;
         window.navigator.userAgent = 'Mozilla/5.0 (iPhone; CPU iPhone OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148';
-        
 
         s._init(s);
 
@@ -79,7 +78,7 @@ describe('init()', () => {
 
         s._init(s);
         expect(setExtraViewTypesMock).toHaveBeenCalledWith(s);
-    });    
+    });
 
     it('should call s._ICIDTracking.setVariables(s)', () => {
 

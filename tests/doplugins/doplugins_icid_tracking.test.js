@@ -1,5 +1,5 @@
 const sObject = require('../../extensions/doPlugins/doPlugins_global');
-const {createWindowMock} = require('../mocks/browserMocks');
+const { createWindowMock } = require('../mocks/browserMocks');
 
 describe('setICIDTrackingCode', () => {
     let s;
@@ -18,7 +18,7 @@ describe('setICIDTrackingCode', () => {
         jest.restoreAllMocks();
     });
 
-    it('should assign the value of the ICID tracking value to eVar78 and eVar79', function () {
+    it('should assign the value of the ICID tracking value to eVar78 and eVar79', function() {
         const anyICID = 'any-icid';
         window.location.search = `?icid=${anyICID}`;
         s._ICIDTracking.setVariables(s);
@@ -26,7 +26,7 @@ describe('setICIDTrackingCode', () => {
         expect(s.eVar79).toBe(anyICID);
     });
 
-    it('should assign empty string to eVar78 and eVar79 if there is no ICID tracking value', function () {
+    it('should assign empty string to eVar78 and eVar79 if there is no ICID tracking value', function() {
         s._ICIDTracking.setVariables(s);
         expect(s.eVar78).toBe('');
         expect(s.eVar79).toBe('');

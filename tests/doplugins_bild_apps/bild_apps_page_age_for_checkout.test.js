@@ -23,7 +23,6 @@ describe('_setPageAgeForCheckout', () => {
     it('should store the page age (utag.data.page_age) in the utag_main cookie if page_age is defined and doc type is article', () => {
         window.utag.data.page_age = 'test-page-age';
         jest.spyOn(s._utils, 'isDocTypeArticle').mockReturnValue(true);
-        
         s._setPageAgeForCheckout();
 
         expect(window.utag.loader.SC).toHaveBeenCalledWith('utag_main', { 'pa': window.utag.data.page_age + ';exp-session' });

@@ -9,10 +9,8 @@ describe('k5a_meta_populate', () => {
     beforeEach(() => {
         // Clean up window.k5aMeta before each test
         delete window.k5aMeta;
-        
         // Save original utag if it exists
         originalUtag = window.utag;
-        
         // Mock utag.data
         mockUtagData = {
             'meta.og:image': 'https://example.com/image.jpg',

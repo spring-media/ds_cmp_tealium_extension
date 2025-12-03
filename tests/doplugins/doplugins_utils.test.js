@@ -1,4 +1,4 @@
-const {createWindowMock} = require('../mocks/browserMocks');
+const { createWindowMock } = require('../mocks/browserMocks');
 const sObject = require('../../extensions/doPlugins/doPlugins_global');
 
 describe('s_utils', () => {
@@ -10,7 +10,7 @@ describe('s_utils', () => {
             .mockImplementation(() => (windowMock));
 
         // Provide a fresh copy of the s-object for each test.
-        s = {...sObject};
+        s = { ...sObject };
     });
 
     afterEach(() => {
@@ -179,14 +179,14 @@ describe('s_utils', () => {
 
     describe('isValidURL', () => {
         it('should return true if passed string is URL', () => {
-            urlString = 'https://www.bild.de';
+            const urlString = 'https://www.bild.de';
             const result = s._utils.isValidURL(urlString);
 
             expect(result).toBe(true);
         });
 
         it('should return false if passed string is not URL', () => {
-            urlString = 'www.bild.de';
+            const urlString = 'www.bild.de';
             const result = s._utils.isValidURL(urlString);
 
             expect(result).toBe(false);
@@ -239,7 +239,7 @@ describe('s_utils', () => {
             };
         });
 
-        it('should return any-type if window.performance is navigate', function () {
+        it('should return any-type if window.performance is navigate', function() {
             window.performance.getEntriesByType.mockReturnValue([{ type: 'any-type' }]);
 
             const result = s._utils.getPageReloadStatus();

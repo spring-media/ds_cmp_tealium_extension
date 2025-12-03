@@ -20,9 +20,8 @@ describe('_prevPageObj', () => {
 
     describe('setPrevPageData', () => {
 
-        beforeEach( ()=>{
+        beforeEach(() => {
             s._prevPageObj.isFirstRun = true;
-            
         });
 
         it('should run only once', () => {
@@ -40,37 +39,37 @@ describe('_prevPageObj', () => {
             expect(s._prevPage).toBe(result);
         });
 
-        it('should return TRUE if prevPage is homepage', function () {
+        it('should return TRUE if prevPage is homepage', function() {
             s._prevPage = 'test__prevPage_20595788';
             const result = s._prevPageObj.isFromHomePageId(s);
             expect(result).toBe(true);
         });
 
-        it('should return FALSE if prevPage is Not homepage', function () {
+        it('should return FALSE if prevPage is Not homepage', function() {
             s._prevPage = 'test_prevPage';
             const result = s._prevPageObj.isFromHomePageId(s);
             expect(result).toBe(false);
         });
 
-        it('should return TRUE if pageName is article', function () {
+        it('should return TRUE if pageName is article', function() {
             s.pageName = 'test_pageName_article';
             const result = s._prevPageObj.isArticlePage(s);
             expect(result).toBe(true);
         });
 
-        it('should return FALSE if pageName is Not article', function () {
+        it('should return FALSE if pageName is Not article', function() {
             s.pageName = 'test_pageName';
             const result = s._prevPageObj.isArticlePage(s);
             expect(result).toBe(false);
         });
 
-        it('should return FALSE if pageName is not Homepage', function () {
+        it('should return FALSE if pageName is not Homepage', function() {
             s.pageName = 'test_pageName';
             const result = s._prevPageObj.isHomePage(s);
             expect(result).toBe(false);
         });
 
-        it('should return TRUE if pageName is Homepage', function () {
+        it('should return TRUE if pageName is Homepage', function() {
             s.pageName = 'test_pageName_20595788';
             const result = s._prevPageObj.isHomePage(s);
             expect(result).toBe(true);
@@ -101,9 +100,5 @@ describe('_prevPageObj', () => {
 
             expect(addEventMock).toHaveBeenCalledWith('event20');
         });
-
-        
     });
-
-    
 });

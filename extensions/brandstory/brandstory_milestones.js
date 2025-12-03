@@ -38,7 +38,7 @@ window.onload = function setMilestones() {
         setTimeout(() => {
 
             // full utag.data
-            var eventData = {...window.utag.data};
+            const eventData = { ...window.utag.data };
 
             // Add custom event data
             eventData.event_name = 'article_milestone';
@@ -53,7 +53,7 @@ window.onload = function setMilestones() {
 
 // Create a reference to members of this unit which need to be exposed for unit testing.
 const exportedFunctions = {
-    getDomainTagValue,
+    getDomainTagValue
 };
 
 // Evaluate runtime environment (Browser or Node.js)

@@ -160,7 +160,7 @@ s.getPercentPageViewed = function(pid, ch) {
             encodeURIComponent(b) +
             "; path=/;" +
             (a ? " expires=" + f.toUTCString() + ";" : "") +
-            (g ? " domain=" + g + ";" : "")),
+            (g ? " domain=" + g + ";" : "")+';secure'),
           "undefined" !== typeof window.cookieRead)
           ? window.cookieRead(c) === b
           : !1;

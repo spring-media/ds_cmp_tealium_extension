@@ -1,5 +1,5 @@
 const sObject = require('../../extensions/doPlugins/doPlugins_global');
-const {createWindowMock} = require('../mocks/browserMocks');
+const { createWindowMock } = require('../mocks/browserMocks');
 
 describe('setKameleoonTracking', () => {
     let s;
@@ -11,14 +11,14 @@ describe('setKameleoonTracking', () => {
         windowMock.Kameleoon = {
             API: {
                 Tracking: {
-                    processOmniture: processOmnitureMock,
-                },
-            },
+                    processOmniture: processOmnitureMock
+                }
+            }
         };
         jest.spyOn(global, 'window', 'get').mockImplementation(() => (windowMock));
 
         // Provide a fresh copy of the s-object for each test.
-        s = {...sObject};
+        s = { ...sObject };
     });
     afterEach(() => {
         jest.restoreAllMocks();

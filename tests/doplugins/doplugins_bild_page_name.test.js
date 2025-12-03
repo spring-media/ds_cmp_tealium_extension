@@ -1,5 +1,5 @@
 const sObject = require('../../extensions/doPlugins/doPlugins_global');
-const {createWindowMock} = require('../mocks/browserMocks');
+const { createWindowMock } = require('../mocks/browserMocks');
 
 describe('_bildPageNameObj', () => {
     let s;
@@ -10,7 +10,7 @@ describe('_bildPageNameObj', () => {
             .mockImplementation(() => (windowMock));
 
         // Provide a fresh copy of the s-object for each test.
-        s = {...sObject};
+        s = { ...sObject };
     });
 
     afterEach(() => {
@@ -56,7 +56,7 @@ describe('_bildPageNameObj', () => {
 
             const returnValue = s._bildPageNameObj.isLive();
             expect(returnValue).toBe(true);
-        });        
+        });
     });
 
     describe('isSportDatencenterTyp', () => {
@@ -121,7 +121,7 @@ describe('_bildPageNameObj', () => {
 
             const returnValue = s._bildPageNameObj.isErrorPage();
             expect(returnValue).toBe(true);
-        });    
+        });
     });
 
     describe('isSearchPage', () => {
@@ -143,8 +143,8 @@ describe('_bildPageNameObj', () => {
 
             const returnValue = s._bildPageNameObj.isSearchPage();
             expect(returnValue).toBe(true);
-        });    
-    });   
+        });
+    });
 
     describe('setPageName', () => {
         let isHome;
@@ -170,9 +170,9 @@ describe('_bildPageNameObj', () => {
             window.utag.data.page_id = '12345678';
 
             s._bildPageNameObj.setPageName(s);
-            
+
             expect(window.utag.data.page_document_type).toBe('any-doctype');
-            expect(s.pageName).toBe('any-doctype : ' + '12345678');            
+            expect(s.pageName).toBe('any-doctype : ' + '12345678');
 
         });
 
@@ -216,9 +216,9 @@ describe('_bildPageNameObj', () => {
             window.utag.data.page_id = '12345678';
             window.location.hostname = 'www.sport.bild.de';
             window.location.pathname = 'any/path/';
-            
+
             s._bildPageNameObj.setPageName(s);
-            
+
             expect(s.eVar3).toBe('sportdaten');
             expect(s.prop3).toBe('sportdaten');
             expect(s.pageName).toBe('sportdaten : ' + window.utag.data.page_id);
@@ -247,6 +247,6 @@ describe('_bildPageNameObj', () => {
             isSearchPage.mockReturnValue(true);
             s._bildPageNameObj.setPageName(s);
             expect(s.pageName).toBe('search : search');
-        });        
+        });
     });
 });

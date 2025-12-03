@@ -4,14 +4,22 @@
 
 describe('k5a_meta_conversion', () => {
     let originalUtag;
-
     beforeEach(() => {
         // Clean up window.k5aMeta before each test
         delete window.k5aMeta;
-        
+
         // Save original utag if it exists
         originalUtag = window.utag;
-        
+
+        // Mock utag
+        window.utag = {
+            data: {},
+            cfg: {
+                utDebug: true
+            },
+            DB: jest.fn()
+        };
+
         // Mock console.error (since we removed utag.DB)
         jest.spyOn(console, 'error').mockImplementation();
 

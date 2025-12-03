@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /**
  * Tests for k5a_meta_send.js
  * Kilkaya conversion tracking sender using sendBeacon
@@ -69,7 +70,7 @@ describe('k5a_meta_send', () => {
             ];
 
             testCases.forEach(b => {
-                const shouldRun = String(b.event_name) === 'checkout' && 
+                const shouldRun = String(b.event_name) === 'checkout' &&
                                  String(b.event_action) === 'success';
                 expect(shouldRun).toBe(false);
             });
@@ -119,7 +120,7 @@ describe('k5a_meta_send', () => {
         it('should build minimal tracking URL with required parameters', () => {
             const installationId = '68ee5be64709bd7f4b3e3bf2';
             const params = [];
-            
+
             params.push('i=' + encodeURIComponent(installationId));
             params.push('l=p');
             params.push('cs=1');
@@ -142,7 +143,7 @@ describe('k5a_meta_send', () => {
 
             const params = [];
             const pageData = window.k5aMeta || {};
-            
+
             if (pageData.url) {
                 params.push('u=' + encodeURIComponent(pageData.url));
             }
@@ -162,13 +163,13 @@ describe('k5a_meta_send', () => {
             const pageData = window.k5aMeta || {};
             const U = (window.utag && window.utag.data) || {};
             const url = pageData.url || U['dom.url'] || document.URL;
-            
+
             if (url) {
                 params.push('u=' + encodeURIComponent(url));
             }
 
-            const trackingUrl = baseUrl + params.join('&');
-            expect(trackingUrl).toContain('u=https%3A%2F%2Fdigital.welt.de');
+            const expected = baseUrl + params.join('&');
+            expect(expected).toContain('u=https%3A%2F%2Fdigital.welt.de');
         });
 
         it('should include platform parameter as desktop', () => {
@@ -181,7 +182,7 @@ describe('k5a_meta_send', () => {
             const params = [];
             const U = (window.utag && window.utag.data) || {};
             const platform = U.page_platform || U['cp.utag_main_page_platform'] || '';
-            
+
             if (platform) {
                 const channel = (platform.toLowerCase() === 'mobile') ? 'mobile' : 'desktop';
                 params.push('c=' + encodeURIComponent(channel));
@@ -201,7 +202,7 @@ describe('k5a_meta_send', () => {
             const params = [];
             const U = (window.utag && window.utag.data) || {};
             const platform = U.page_platform || U['cp.utag_main_page_platform'] || '';
-            
+
             if (platform) {
                 const channel = (platform.toLowerCase() === 'mobile') ? 'mobile' : 'desktop';
                 params.push('c=' + encodeURIComponent(channel));
@@ -221,7 +222,7 @@ describe('k5a_meta_send', () => {
             const params = [];
             const U = (window.utag && window.utag.data) || {};
             const platform = U.page_platform || U['cp.utag_main_page_platform'] || '';
-            
+
             if (platform) {
                 const channel = (platform.toLowerCase() === 'mobile') ? 'mobile' : 'desktop';
                 params.push('c=' + encodeURIComponent(channel));
@@ -239,7 +240,7 @@ describe('k5a_meta_send', () => {
 
             const params = [];
             params.push('i=test');
-            
+
             if (pageData.conversion) params.push('cv=' + pageData.conversion);
             if (pageData.cntTag && Array.isArray(pageData.cntTag)) {
                 params.push('cntt=' + encodeURIComponent(pageData.cntTag.join(',')));
@@ -289,8 +290,6 @@ describe('k5a_meta_send', () => {
 
     describe('sendBeacon tracking', () => {
         it('should use sendBeacon when available', () => {
-            
-            
             const sent = navigator.sendBeacon(trackingUrl);
 
             expect(mockNavigator.sendBeacon).toHaveBeenCalledWith(trackingUrl);
@@ -299,7 +298,6 @@ describe('k5a_meta_send', () => {
 
         it('should handle sendBeacon success', () => {
             mockNavigator.sendBeacon.mockReturnValue(true);
-            
 
             const sent = navigator.sendBeacon(trackingUrl);
 
@@ -319,7 +317,6 @@ describe('k5a_meta_send', () => {
 
         it('should handle sendBeacon failure', () => {
             mockNavigator.sendBeacon.mockReturnValue(false);
-            
 
             const sent = navigator.sendBeacon(trackingUrl);
 
@@ -360,8 +357,6 @@ describe('k5a_meta_send', () => {
         });
 
         it('should use image pixel as last resort', () => {
-            
-            
             // Create image (would trigger HTTP request in browser)
             const img = { src: '' };
             img.src = trackingUrl;
@@ -373,7 +368,6 @@ describe('k5a_meta_send', () => {
     describe('Error handling', () => {
         it('should log errors to localStorage', () => {
             const error = new Error('Test error');
-            
             const log = {
                 timestamp: new Date().toISOString(),
                 message: '✗ ERROR sending conversion',
@@ -388,7 +382,6 @@ describe('k5a_meta_send', () => {
 
         it('should handle critical errors', () => {
             const error = new Error('Critical error');
-            
             try {
                 localStorage.setItem('k5a_send_log', JSON.stringify({
                     timestamp: new Date().toISOString(),
@@ -415,7 +408,6 @@ describe('k5a_meta_send', () => {
             };
 
             const b = { event_name: 'checkout', event_action: 'success' };
-            
             // Verify event matches
             expect(String(b.event_name)).toBe('checkout');
             expect(String(b.event_action)).toBe('success');
@@ -427,17 +419,17 @@ describe('k5a_meta_send', () => {
                 'cv=1',
                 'cntt=offer_123'
             ];
-            const trackingUrl = baseUrl + params.join('&');
+            const expected = baseUrl + params.join('&');
 
             // Send beacon
-            const sent = navigator.sendBeacon(trackingUrl);
+            const sent = navigator.sendBeacon(expected);
             expect(sent).toBe(true);
 
             // Verify localStorage log
             const log = {
                 timestamp: new Date().toISOString(),
                 message: '✓ SUCCESS: Sent via sendBeacon',
-                data: { url: trackingUrl, method: 'sendBeacon' }
+                data: { url: expected, method: 'sendBeacon' }
             };
             localStorage.setItem('k5a_send_log', JSON.stringify(log));
 
@@ -453,7 +445,9 @@ describe('k5a_meta_send', () => {
             const pageData = window.k5aMeta || {};
             const params = ['i=test', 'cs=1'];
 
-            if (pageData.conversion) params.push('cv=' + pageData.conversion);
+            if (pageData.conversion) {
+                params.push('cv=' + pageData.conversion);
+            }
             if (pageData.cntTag && Array.isArray(pageData.cntTag)) {
                 params.push('cntt=' + pageData.cntTag.join(','));
             }
@@ -468,13 +462,9 @@ describe('k5a_meta_send', () => {
     describe('setTimeout delay', () => {
         it('should wait 150ms before executing', () => {
             const callback = jest.fn();
-            
             setTimeout(callback, 150);
-            
             expect(callback).not.toHaveBeenCalled();
-            
             jest.advanceTimersByTime(150);
-            
             expect(callback).toHaveBeenCalled();
         });
     });
