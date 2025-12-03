@@ -3,6 +3,9 @@
  * Kilkaya conversion tracking sender using sendBeacon
  */
 
+const trackingUrl = 'https://cl-eu10.k5a.io/?i=test&cs=1';
+const baseUrl = 'https://cl-eu10.k5a.io/?';
+
 describe('k5a_meta_send', () => {
     let mockLocalStorage;
     let mockNavigator;
@@ -115,7 +118,6 @@ describe('k5a_meta_send', () => {
     describe('Tracking URL construction', () => {
         it('should build minimal tracking URL with required parameters', () => {
             const installationId = '68ee5be64709bd7f4b3e3bf2';
-            const baseUrl = 'https://cl-eu10.k5a.io/';
             const params = [];
             
             params.push('i=' + encodeURIComponent(installationId));
@@ -125,7 +127,7 @@ describe('k5a_meta_send', () => {
             params.push('_s=conversion');
             params.push('_m=b');
 
-            const url = baseUrl + '?' + params.join('&');
+            const url = baseUrl + params.join('&');
 
             expect(url).toContain('i=68ee5be64709bd7f4b3e3bf2');
             expect(url).toContain('cs=1');
@@ -145,7 +147,7 @@ describe('k5a_meta_send', () => {
                 params.push('u=' + encodeURIComponent(pageData.url));
             }
 
-            const url = 'https://cl-eu10.k5a.io/?' + params.join('&');
+            const url = baseUrl + params.join('&');
             expect(url).toContain('u=https%3A%2F%2Fcheckout-v2.prod.ps.welt.de');
         });
 
@@ -165,7 +167,7 @@ describe('k5a_meta_send', () => {
                 params.push('u=' + encodeURIComponent(url));
             }
 
-            const trackingUrl = 'https://cl-eu10.k5a.io/?' + params.join('&');
+            const trackingUrl = baseUrl + params.join('&');
             expect(trackingUrl).toContain('u=https%3A%2F%2Fdigital.welt.de');
         });
 
@@ -185,7 +187,7 @@ describe('k5a_meta_send', () => {
                 params.push('c=' + encodeURIComponent(channel));
             }
 
-            const url = 'https://cl-eu10.k5a.io/?' + params.join('&');
+            const url = baseUrl + params.join('&');
             expect(url).toContain('c=desktop');
         });
 
@@ -205,7 +207,7 @@ describe('k5a_meta_send', () => {
                 params.push('c=' + encodeURIComponent(channel));
             }
 
-            const url = 'https://cl-eu10.k5a.io/?' + params.join('&');
+            const url = baseUrl + params.join('&');
             expect(url).toContain('c=mobile');
         });
 
@@ -225,7 +227,7 @@ describe('k5a_meta_send', () => {
                 params.push('c=' + encodeURIComponent(channel));
             }
 
-            const url = 'https://cl-eu10.k5a.io/?' + params.join('&');
+            const url = baseUrl + params.join('&');
             expect(url).toContain('c=desktop');
         });
 
@@ -243,7 +245,7 @@ describe('k5a_meta_send', () => {
                 params.push('cntt=' + encodeURIComponent(pageData.cntTag.join(',')));
             }
 
-            const url = 'https://cl-eu10.k5a.io/?' + params.join('&');
+            const url = baseUrl + params.join('&');
 
             expect(url).toContain('cv=1');
             expect(url).toContain('cntt=offer_123%2Coffer_456');
@@ -267,7 +269,7 @@ describe('k5a_meta_send', () => {
             if (pageData.channel) params.push('c=' + encodeURIComponent(pageData.channel));
             if (pageData.referer) params.push('r=' + encodeURIComponent(pageData.referer));
 
-            const url = 'https://cl-eu10.k5a.io/?' + params.join('&');
+            const url = baseUrl + params.join('&');
 
             expect(url).toContain('u=https%3A%2F%2Fwelt.de%2Fcheckout');
             expect(url).toContain('ptl=Checkout%20Success');
@@ -287,7 +289,7 @@ describe('k5a_meta_send', () => {
 
     describe('sendBeacon tracking', () => {
         it('should use sendBeacon when available', () => {
-            const trackingUrl = 'https://cl-eu10.k5a.io/?i=test&cs=1';
+            
             
             const sent = navigator.sendBeacon(trackingUrl);
 
@@ -297,7 +299,7 @@ describe('k5a_meta_send', () => {
 
         it('should handle sendBeacon success', () => {
             mockNavigator.sendBeacon.mockReturnValue(true);
-            const trackingUrl = 'https://cl-eu10.k5a.io/?i=test&cs=1';
+            
 
             const sent = navigator.sendBeacon(trackingUrl);
 
@@ -317,7 +319,7 @@ describe('k5a_meta_send', () => {
 
         it('should handle sendBeacon failure', () => {
             mockNavigator.sendBeacon.mockReturnValue(false);
-            const trackingUrl = 'https://cl-eu10.k5a.io/?i=test&cs=1';
+            
 
             const sent = navigator.sendBeacon(trackingUrl);
 
@@ -358,7 +360,7 @@ describe('k5a_meta_send', () => {
         });
 
         it('should use image pixel as last resort', () => {
-            const trackingUrl = 'https://cl-eu10.k5a.io/?i=test&cs=1';
+            
             
             // Create image (would trigger HTTP request in browser)
             const img = { src: '' };
@@ -425,7 +427,7 @@ describe('k5a_meta_send', () => {
                 'cv=1',
                 'cntt=offer_123'
             ];
-            const trackingUrl = 'https://cl-eu10.k5a.io/?' + params.join('&');
+            const trackingUrl = baseUrl + params.join('&');
 
             // Send beacon
             const sent = navigator.sendBeacon(trackingUrl);
