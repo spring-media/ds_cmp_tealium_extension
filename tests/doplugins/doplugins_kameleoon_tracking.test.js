@@ -11,7 +11,7 @@ describe('setKameleoonTracking', () => {
         windowMock.Kameleoon = {
             API: {
                 Tracking: {
-                    processOmniture: processOmnitureMock,
+                    processOmniture: processOmnitureMock
                 }
             }
         };

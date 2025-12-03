@@ -1,4 +1,4 @@
-const {createWindowMock} = require('../mocks/browserMocks');
+const { createWindowMock } = require('../mocks/browserMocks');
 const sObject = require('../../extensions/doPlugins/doPlugins_global');
 
 describe('s_utils', () => {

@@ -16,7 +16,7 @@ const appBuildNames = {
         'com.sprylab.axelspringer.tablet.welt',
         'de.axelspringer.weltipad',
         'de.axelspringer.weltipad',
-        'de.axelspringer.SessionPaymentFeaturesPreview',
+        'de.axelspringer.SessionPaymentFeaturesPreview'
     ]
 
 };

@@ -4,14 +4,13 @@
 
 describe('k5a_meta_conversion', () => {
     let originalUtag;
-
     beforeEach(() => {
         // Clean up window.k5aMeta before each test
         delete window.k5aMeta;
-        
+
         // Save original utag if it exists
         originalUtag = window.utag;
-        
+
         // Mock utag
         window.utag = {
             data: {},

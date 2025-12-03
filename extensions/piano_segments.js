@@ -93,7 +93,7 @@ async function handlePianoSegments(windowLike = window) {
         if (typeof windowLike.gtag === 'function') {
             if (windowLike.utag.data.piano_candidates_short) {
                 windowLike.gtag('event', 'piano_short', {
-                    piano_short: '.' + windowLike.utag.data.piano_candidates_short + '.',
+                    piano_short: '.' + windowLike.utag.data.piano_candidates_short + '.'
                 });
             }
         }
@@ -102,7 +102,7 @@ async function handlePianoSegments(windowLike = window) {
             if (windowLike.utag.data.piano_full_res) {
                 // facebook
                 windowLike.fbq('trackCustom', 'piano_short', {
-                    piano_short: windowLike.utag.data.piano_full_res,
+                    piano_short: windowLike.utag.data.piano_full_res
                 });
             }
         }

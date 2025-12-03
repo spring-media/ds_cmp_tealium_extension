@@ -43,8 +43,7 @@ const _myCW = {
         if (window.utag && window.utag.data) {
             window.utag.data.myCW = this.getCW();
         }
-    },
-
+    }
 };
 
 if (typeof exports === 'object') {

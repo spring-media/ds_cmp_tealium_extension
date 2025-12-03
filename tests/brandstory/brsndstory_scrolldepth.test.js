@@ -1,10 +1,10 @@
-const { getCookie, getDomainTagValue, sendLinkEvent } = require('../../extensions/brandstory/brandstory_scrolldepth');
+const { getCookie, getDomainTagValue } = require('../../extensions/brandstory/brandstory_scrolldepth');
 
 beforeEach(() => {
     // Mock document.cookie
     Object.defineProperty(document, 'cookie', {
         value: '',
-        writable: true,
+        writable: true
     });
 
     // Mock window.location.hostname
@@ -22,7 +22,6 @@ beforeEach(() => {
 afterEach(() => {
     jest.restoreAllMocks();
 });
-
 
 describe('getCookie', () => {
 
@@ -52,10 +51,6 @@ describe('getDomainTagValue', () => {
 });
 
 describe('scroll event listener', () => {
-    let scrollArray;
-    let triggered50;
-    let triggered75;
-    let triggered100;
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -101,9 +96,7 @@ describe('scroll event listener', () => {
     });
 
     test('does not trigger event if already triggered', () => {
-        triggered50 = true;
         triggerScroll(50, 'www.welt.de');
-
         expect(window.utag.link).not.toHaveBeenCalled();
     });
 });

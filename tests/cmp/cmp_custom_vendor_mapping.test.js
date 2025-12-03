@@ -1,5 +1,5 @@
 const cmpCustomVendorMapping = require('../../extensions/cmp/cmp_custom_vendor_mapping');
-const browserMocks = require('../mocks/browserMocks');
+
 
 describe('CMP Custom Vendor Mapping', () => {
     beforeEach(() => {
@@ -127,7 +127,7 @@ describe('CMP Custom Vendor Mapping', () => {
             Object.defineProperty(window, 'location', {
                 value: {
                     hostname: 'bild.de',
-                    href: 'https://www.bild.de',
+                    href: 'https://www.bild.de'
                 },
                 writable: true
             });

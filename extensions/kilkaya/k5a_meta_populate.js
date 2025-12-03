@@ -1,12 +1,15 @@
 /* global utag, a, b */
-/* eslint-disable-next-line no-unused-vars */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 (function(a, b) {
 
     if (a !== 'view') { return; }
     try {
         const U = (window.utag && utag.data) || {};
         const as1 = function(v) { return (v === 1 || v === '1' || v === true || v === 'true') ? 1 : 0; };
-        const arr = function(v) { return v == null ? [] : (Array.isArray(v) ? v : [v]); };
+        const arr = function(v) {
+            const vArray = Array.isArray(v) ? v : [v];
+            return v == null ? [] : vArray;
+        };
 
         const paid = as1(U.page_isPremium || 0);
         const subscriber = as1(U.user_hasPlusSubscription2);

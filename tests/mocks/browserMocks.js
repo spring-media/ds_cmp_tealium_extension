@@ -58,6 +58,7 @@ function createWindowMock({
         gtag: jest.fn(),
         fbq: jest.fn(),
         cX: {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             getSegments: jest.fn((params, _) => {
                 if (simulateTimeout) { return; }
                 setTimeout(() => {

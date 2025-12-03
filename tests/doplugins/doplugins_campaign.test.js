@@ -24,7 +24,7 @@ describe('campaign', () => {
                 'qp.cid': 'cid.test',
                 'qp.wtrid': 'wtrid.test',
                 'qp.wtmc': 'wtmc.test',
-                'qp.wt_mc': 'wt_mc.test',
+                'qp.wt_mc': 'wt_mc.test'
             };
 
             const adobe_campaign = s._campaignObj.getAdobeCampaign();
@@ -35,7 +35,7 @@ describe('campaign', () => {
             window.utag.data = {
                 'qp.wtrid': 'wtrid.test',
                 'qp.wtmc': 'wtmc.test',
-                'qp.wt_mc': 'wt_mc.test',
+                'qp.wt_mc': 'wt_mc.test'
             };
 
             const adobe_campaign = s._campaignObj.getAdobeCampaign();
@@ -45,7 +45,7 @@ describe('campaign', () => {
         it('should return wtmc as adobe_campaign if it is present and cid and wtrid are not defined', () => {
             window.utag.data = {
                 'qp.wtmc': 'wtmc.test',
-                'qp.wt_mc': 'wt_mc.test',
+                'qp.wt_mc': 'wt_mc.test'
             };
 
             const adobe_campaign = s._campaignObj.getAdobeCampaign();

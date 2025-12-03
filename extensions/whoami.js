@@ -5,8 +5,8 @@ var whoamiCookieName = 'asinfo';
 
 // remove logs if no issues , messages not needed
 function _whoamiSnipped_log(message) {
-    if (isLoggingEnabled && console !== undefined && console.log !== undefined) { // eslint-disable-line
-        console.log(message); // eslint-disable-line
+    if (isLoggingEnabled && console !== undefined && console.log !== undefined) {
+        console.log(message);
     }
 }
 

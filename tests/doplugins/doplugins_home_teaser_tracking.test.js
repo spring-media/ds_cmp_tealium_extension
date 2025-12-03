@@ -111,8 +111,8 @@ describe('_homeTeaserTrackingObj', () => {
         it('should delete the hti and tb values of the utag_main cookie', function() {
             window.utag.loader.SC = jest.fn();
             s._homeTeaserTrackingObj.deleteTrackingValuesFromCookie();
-            expect(window.utag.loader.SC).toHaveBeenNthCalledWith(1, 'utag_main', {'hti': ';exp-session'});
-            expect(window.utag.loader.SC).toHaveBeenNthCalledWith(2, 'utag_main', {'tb': ';exp-session'});
+            expect(window.utag.loader.SC).toHaveBeenNthCalledWith(1, 'utag_main', { 'hti': ';exp-session' });
+            expect(window.utag.loader.SC).toHaveBeenNthCalledWith(2, 'utag_main', { 'tb': ';exp-session' });
         });
     });
 

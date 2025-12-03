@@ -419,15 +419,13 @@ describe('articleViewType()', () => {
     });
 
     describe('isNavigated', () => {
-        let getPageReloadStatusMock;
-        let expectedStatusMock;
 
         beforeEach(() => {
             window.performance = {
                 getEntriesByType: jest.fn().mockReturnValue([])
             };
-            getPageReloadStatusMock = jest.spyOn(s._utils, 'getPageReloadStatus');
-            expectedStatusMock = jest.spyOn(s._utils, 'isPageStatus');
+            jest.spyOn(s._utils, 'getPageReloadStatus');
+            jest.spyOn(s._utils, 'isPageStatus');
         });
 
         it('should return TRUE if window.performance is navigate', function() {
@@ -450,7 +448,7 @@ describe('articleViewType()', () => {
             [false, undefined],
             [false, ''],
             [true, 'search : 245145230'],
-            [false, 'article : 245145230'],
+            [false, 'article : 245145230']
         ];
         it.each(testData)('should return true for previousPage: "search : 245145230" ', function(exected, _ppvPreviousPage) {
             Object.assign(sObject, { _ppvPreviousPage });
@@ -466,7 +464,7 @@ describe('articleViewType()', () => {
             [false, '', ''],
             [false, '', 'article : 245145230'],
             [false, 'home : 5', 'article : 245145230'],
-            [true, 'article : false : 245145230 : vermischtes', 'article : 245145230'],
+            [true, 'article : false : 245145230 : vermischtes', 'article : 245145230']
         ];
         it.each(testData)('should return %s for previousPage: "%s" and pageName "%s"', function(exected, _ppvPreviousPage, pageName) {
             Object.assign(sObject, { _ppvPreviousPage, pageName });
@@ -553,7 +551,6 @@ describe('articleViewType()', () => {
         let isNewVisitMock;
         let isReloadedMock;
         let isHomepageMock;
-        let isArticleMock;
 
         beforeEach(() => {
             jest.spyOn(s._utils, 'getDomainFromURLString').mockReturnValue(anyReferrerDomain);
@@ -568,7 +565,7 @@ describe('articleViewType()', () => {
             isNewVisitMock = jest.spyOn(s._articleViewTypeObj, 'isNewVisit').mockReturnValue(false);
             isReloadedMock = jest.spyOn(s._articleViewTypeObj, 'isReloaded').mockReturnValue(false);
             isHomepageMock = jest.spyOn(s._utils, 'isHomepage').mockReturnValue(false);
-            isArticleMock = jest.spyOn(s._utils, 'isArticlePage').mockReturnValue(true);
+            jest.spyOn(s._utils, 'isArticlePage').mockReturnValue(true);
 
         });
 
@@ -913,12 +910,11 @@ describe('articleViewType()', () => {
 
     describe('getViewTypeByTrackingProperty()', () => {
         let getTrackingValueMock;
-        let isMarketingMock;
         let isPageOneInSessionMock;
 
         beforeEach(() => {
             getTrackingValueMock = jest.spyOn(s._articleViewTypeObj, 'getTrackingValue').mockReturnValue('');
-            isMarketingMock = jest.spyOn(s._articleViewTypeObj, 'isPaidMarketing').mockReturnValue(true);
+            jest.spyOn(s._articleViewTypeObj, 'isPaidMarketing').mockReturnValue(true);
             isPageOneInSessionMock = jest.spyOn(s._utils, 'isPageOneInSession').mockImplementation();
         });
 

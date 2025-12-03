@@ -5,9 +5,6 @@ describe('External referring domains', () => {
     let s;
     let addEventMock;
     let getReferrerMock;
-    let isArticlePageMock;
-    let isNotTrackingvalueMock;
-    let isNotPageViewFromHomeMock;
 
     beforeEach(() => {
         // Create a fresh window mock for each test.
@@ -15,12 +12,12 @@ describe('External referring domains', () => {
         jest.spyOn(global, 'window', 'get')
             .mockImplementation(() => (windowMock));
         // Provide a fresh copy of the s-object for each test.
-        s = {...sObject};
+        s = { ...sObject };
         addEventMock = jest.spyOn(s._eventsObj, 'addEvent').mockImplementation();
         getReferrerMock = jest.spyOn(s._utils, 'getReferrer').mockImplementation();
-        isArticlePageMock = jest.spyOn(s._utils, 'isArticlePage').mockImplementation().mockReturnValue(true);
-        isNotTrackingvalueMock = jest.spyOn(s._articleViewTypeObj, 'isOtherTrackingValue').mockImplementation().mockReturnValue(false);
-        isNotPageViewFromHomeMock = jest.spyOn(s._articleViewTypeObj, 'isFromInternal').mockImplementation().mockReturnValue(false);
+        jest.spyOn(s._utils, 'isArticlePage').mockImplementation().mockReturnValue(true);
+        jest.spyOn(s._articleViewTypeObj, 'isOtherTrackingValue').mockImplementation().mockReturnValue(false);
+        jest.spyOn(s._articleViewTypeObj, 'isFromInternal').mockImplementation().mockReturnValue(false);
 
     });
 

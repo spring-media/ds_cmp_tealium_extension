@@ -155,7 +155,7 @@ export default defineConfig([
             'no-mixed-requires': 'off',
             'indent': ['warn', 4, { 'SwitchCase': 1 }],
             'brace-style': ['error', '1tbs', { 'allowSingleLine': true }],
-            'camelcase': 'warn',
+            'camelcase': 'off',
             'comma-spacing': ['error', { 'before': false, 'after': true }],
             'comma-style': ['error', 'last'],
             'consistent-this': ['warn', 'self'],

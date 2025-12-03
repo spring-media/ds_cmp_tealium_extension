@@ -1,3 +1,4 @@
+/* eslint-disable no-global-assign */
 const brandstory_milestones = require('../../extensions/brandstory/brandstory_milestones');
 
 describe('getDomainTagValue', () => {
@@ -39,7 +40,6 @@ describe('setMilestones', () => {
 
     afterAll(() => {
         // Restore original window object
-        // eslint-disable-next-line no-native-reassign
         window = originalWindow;
     });
 
@@ -58,7 +58,7 @@ describe('setMilestones', () => {
         const tagNumber = brandstory_milestones.getDomainTagValue(window.location.hostname);
 
         // Use fake timers
-        jest.useFakeTimers(); 
+        jest.useFakeTimers();
 
         window.onload();
 

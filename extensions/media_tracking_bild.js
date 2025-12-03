@@ -106,7 +106,7 @@
             'play',
             'end',
             'unmute',
-            'mute',
+            'mute'
         ];
 
         if (eventActionsToDeleteLabel.includes(newData.event_action)) {

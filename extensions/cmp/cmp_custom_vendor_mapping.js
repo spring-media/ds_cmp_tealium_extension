@@ -63,9 +63,9 @@
     const domainTagValues = {
         piano: {
             bild: [16],
-            springpremium_bild:[130],
+            springpremium_bild: [130],
             welt: [230],
-            springpremium_welt:[68],
+            springpremium_welt: [68],
             fitbook: [43],
             myhomebook: [46],
             petbook: [83],
@@ -88,9 +88,9 @@
         },
         googleAds: {
             bild: [21],
-            springpremium_bild:[57],
+            springpremium_bild: [57],
             welt: [147],
-            springpremium_welt:[77]
+            springpremium_welt: [77]
         },
         nielsenAgf: {
             welt: [251],
@@ -134,7 +134,6 @@
         var cookies = document.cookie.split(';');
         for (var i = 0; i < cookies.length; i++) {
             var c = cookies[i];
-            // TODO This needs a review
             while (c.charAt(0) === ' ')
                 c = c.substring(1, c.length);
             if (c.indexOf(cName) === 0)

@@ -37,6 +37,8 @@ s.split = new Function("l", "d", ""
 /* eslint-enable */
 // END: Pre-defined Adobe Plugins
 /* eslint-disable @typescript-eslint/no-shadow */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-warning-comments */
 /**
  * Utility functions which get used by various features.
  */
@@ -152,7 +154,7 @@ s._utils = {
     },
     isPageStatus: function(expectedStatus) {
         return this.getPageReloadStatus() === expectedStatus;
-    },
+    }
 };
 
 /**
@@ -593,7 +595,7 @@ s._articleViewTypeObj = {
             channel = 'Paid Marketing';
             mkt_channel_detail = trackingValue;
         }
-        return {pageViewEvent, channel, channelCategory, mkt_channel_detail};
+        return { pageViewEvent, channel, channelCategory, mkt_channel_detail };
     },
 
     setPageSourceAndAgeForCheckout: function(s) {
@@ -657,7 +659,7 @@ s._articleViewTypeObj = {
 };
 
 /**
- * Set additional events with referrer context only (not for trackingValues or internal events). 
+ * Set additional events with referrer context only (not for trackingValues or internal events).
  */
 s._setExternalReferringDomainEvents = function(s) {
     const domainsToEventMapping = [
@@ -856,7 +858,7 @@ s._setTrackingValueEvents = function(s) {
             }
             s._eventsObj.addEvent(event);
             s._articleViewType = s.eVar44 = window.utag.data.sp_events += ',' + event;
-            s.eVar37 = s.prop59 = window.utag.data.mkt_channel = channel; 
+            s.eVar37 = s.prop59 = window.utag.data.mkt_channel = channel;
             s.eVar38 = s.prop60 = window.utag.data.mkt_channel_category = channelCategory || '';
             s.eVar39 = window.utag.data.mkt_channel_detail = channel_detail;
         }

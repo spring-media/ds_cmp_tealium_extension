@@ -5,7 +5,7 @@ describe('getSegmentsWithTimeout', () => {
     test('should resolve if callback is called with result', async () => {
         const windowLike = createWindowMock({
             candidates: ['test-id'],
-            shortIds: ['abc'],
+            shortIds: ['abc']
         });
 
         const result = await getSegmentsWithTimeout('query-id', ['test-id'], 500, windowLike);
