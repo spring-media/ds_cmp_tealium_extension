@@ -3,9 +3,8 @@ import pluginImport from 'eslint-plugin-import';
 import tseslint from 'typescript-eslint';
 import stylistic from '@stylistic/eslint-plugin';
 import globals from 'globals';
-import { defineConfig } from 'eslint/config';
 
-export default defineConfig([
+export default [
     {
         ignores: ['backup/**', 'node_modules/**', 'dist/**']
     },
@@ -204,4 +203,4 @@ export default defineConfig([
             'wrap-regex': 'off'
         }
     }
-]);
+];
