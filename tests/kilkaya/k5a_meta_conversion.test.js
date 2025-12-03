@@ -19,7 +19,7 @@ describe('k5a_meta_conversion', () => {
             },
             DB: jest.fn()
         };
-        
+
         // Mock console.error (since we removed utag.DB)
         jest.spyOn(console, 'error').mockImplementation();
 

@@ -91,7 +91,7 @@ export default defineConfig([
             'block-scoped-var': 'off',
             'complexity': 'off',
             'consistent-return': 'off',
-            'curly': 'error',
+            'curly': ['error', 'multi-line'],
             'default-case': 'warn',
             'dot-notation': 'off',
             'eqeqeq': 'off',
