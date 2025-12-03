@@ -1,17 +1,18 @@
+/* eslint-disable */
 var isLoggingEnabled = true;
 var whoamiCookieName = 'asinfo';
 
 
 // remove logs if no issues , messages not needed
 function _whoamiSnipped_log(message) {
-    if (isLoggingEnabled && console !== undefined && console.log !== undefined) { // eslint-disable-line
-        console.log(message); // eslint-disable-line
+    if (isLoggingEnabled && console !== undefined && console.log !== undefined) {
+        console.log(message);
     }
 }
 
 _whoamiSnipped_log('whoami : start  ');
 
-! function () {
+! function() {
     function _whoamiSnipped_getAsInfo() {
         try {
             var cookieString = document.cookie;
@@ -35,12 +36,12 @@ _whoamiSnipped_log('whoami : start  ');
     function updateUserSubscriptionsStatus(domain) {
         const subscriptionsConfig = {
             'welt.de': {
-                pur: ['weltpur', 'WLT1001284'],
-                subscriptions: ['WLT1000043']
+                pur: ['welt-pur'],
+                subscriptions: ['weltplus']
             },
             'bild.de': {
-                pur: ['bildpur', 'BDE1001282'],
-                subscriptions: ['BDE1000351']
+                pur: ['bild-pur'],
+                subscriptions: ['bildplus']
             }
         };
 

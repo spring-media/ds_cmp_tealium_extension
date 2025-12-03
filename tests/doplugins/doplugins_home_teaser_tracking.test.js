@@ -1,4 +1,4 @@
-const {createWindowMock} = require('../mocks/browserMocks');
+const { createWindowMock } = require('../mocks/browserMocks');
 const sObject = require('../../extensions/doPlugins/doPlugins_global');
 
 describe('_homeTeaserTrackingObj', () => {
@@ -10,7 +10,7 @@ describe('_homeTeaserTrackingObj', () => {
             .mockImplementation(() => (windowMock));
 
         // Provide a fresh copy of the s-object for each test.
-        s = {...sObject};
+        s = { ...sObject };
     });
 
     afterEach(() => {
@@ -19,34 +19,34 @@ describe('_homeTeaserTrackingObj', () => {
     });
 
     describe('getTeaserBrandFromCID', () => {
-        it('should return the brand segment of the CID string', function () {
+        it('should return the brand segment of the CID string', function() {
             const brandSegment = 'any-brand';
             window.utag.data['qp.cid'] = 'kooperation.reco.outbrain.free.welt.desktop.AR_2.' + brandSegment;
             const result = s._homeTeaserTrackingObj.getTeaserBrandFromCID();
             expect(result).toBe(brandSegment);
         });
 
-        it('should return an empty string if there is no CID value', function () {
+        it('should return an empty string if there is no CID value', function() {
             const result = s._homeTeaserTrackingObj.getTeaserBrandFromCID();
             expect(result).toBe('');
         });
     });
 
     describe('getTrackingValue', () => {
-        it('should return the hti value from utag_main cookie if available', function () {
+        it('should return the hti value from utag_main cookie if available', function() {
             window.utag.data['cp.utag_main_hti'] = 'any-hti-value';
             const result = s._homeTeaserTrackingObj.getTrackingValue();
             expect(result).toBe(window.utag.data['cp.utag_main_hti']);
         });
 
-        it('should return the teaser brand segment from CID URL query parameter if available', function () {
+        it('should return the teaser brand segment from CID URL query parameter if available', function() {
             const anyTeaserBrand = 'any-brand';
             jest.spyOn(s._homeTeaserTrackingObj, 'getTrackingValue').mockImplementation().mockReturnValue(anyTeaserBrand);
             const result = s._homeTeaserTrackingObj.getTrackingValue();
             expect(result).toBe(anyTeaserBrand);
         });
 
-        it('should return the dtp URL query parameter if available', function () {
+        it('should return the dtp URL query parameter if available', function() {
             window.utag.data['qp.dtp'] = 'any-dtp-value';
             const result = s._homeTeaserTrackingObj.getTrackingValue();
             expect(result).toBe(window.utag.data['qp.dtp']);
@@ -54,13 +54,13 @@ describe('_homeTeaserTrackingObj', () => {
     });
 
     describe('getBlockValue', () => {
-        it('should return the tb value from utag_main cookie if available', function () {
+        it('should return the tb value from utag_main cookie if available', function() {
             window.utag.data['cp.utag_main_tb'] = 'any-tb-value';
             const result = s._homeTeaserTrackingObj.getBlockValue();
             expect(result).toBe(window.utag.data['cp.utag_main_tb']);
         });
 
-        it('should return the tbl URL query parameter if available', function () {
+        it('should return the tbl URL query parameter if available', function() {
             window.utag.data['qp.tbl'] = 'any-dtp-value';
             const result = s._homeTeaserTrackingObj.getBlockValue();
             expect(result).toBe(window.utag.data['qp.tbl']);
@@ -68,7 +68,6 @@ describe('_homeTeaserTrackingObj', () => {
     });
 
     describe('getPageId', () => {
-        
         it('should return empty string if no page id is present', () => {
             const value = s._homeTeaserTrackingObj.getPageId();
 
@@ -93,7 +92,7 @@ describe('_homeTeaserTrackingObj', () => {
 
 
     describe('setEvars', () => {
-        it('should assign teaser tracking values to certain eVars', function () {
+        it('should assign teaser tracking values to certain eVars', function() {
             const anyTrackingValue = 'any-tracking-value';
             const anyBlockValue = 'any-block-value';
             const anyPageId = '123456';
@@ -108,12 +107,12 @@ describe('_homeTeaserTrackingObj', () => {
         });
     });
 
-    describe('deleteTrackingValuesFromCookie()', ()=>{
-        it('should delete the hti and tb values of the utag_main cookie', function () {
+    describe('deleteTrackingValuesFromCookie()', () => {
+        it('should delete the hti and tb values of the utag_main cookie', function() {
             window.utag.loader.SC = jest.fn();
             s._homeTeaserTrackingObj.deleteTrackingValuesFromCookie();
-            expect(window.utag.loader.SC).toHaveBeenNthCalledWith(1, 'utag_main', {'hti': ';exp-session'});
-            expect(window.utag.loader.SC).toHaveBeenNthCalledWith(2, 'utag_main', {'tb': ';exp-session'});
+            expect(window.utag.loader.SC).toHaveBeenNthCalledWith(1, 'utag_main', { 'hti': ';exp-session' });
+            expect(window.utag.loader.SC).toHaveBeenNthCalledWith(2, 'utag_main', { 'tb': ';exp-session' });
         });
     });
 
@@ -126,7 +125,7 @@ describe('_homeTeaserTrackingObj', () => {
             deleteTrackingValuesFromCookieMock = jest.spyOn(s._homeTeaserTrackingObj, 'deleteTrackingValuesFromCookie').mockImplementation();
         });
 
-        it('should call this.setEvars(s) and this.deleteTrackingValuesFromCookie()', function () {
+        it('should call this.setEvars(s) and this.deleteTrackingValuesFromCookie()', function() {
             s._homeTeaserTrackingObj.setHomeTeaserProperties(s);
             expect(setEvarsMock).toHaveBeenCalledTimes(1);
             expect(deleteTrackingValuesFromCookieMock).toHaveBeenCalledTimes(1);

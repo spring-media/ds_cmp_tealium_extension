@@ -1,32 +1,30 @@
 const sObject = require('../../extensions/doPlugins/doPlugins_global');
-const {createWindowMock} = require('../mocks/browserMocks');
+const { createWindowMock } = require('../mocks/browserMocks');
 
 describe('_setTrackingValueEvents (URL Parameter like cid)', () => {
     let s;
     let addEventMock;
     let getTrackingValueMock;
-    let isArticlePageMock;
     let isSocialTrackingParameterMock;
 
     beforeEach(() => {
         // Create a fresh window mock for each test.
         const windowMock = createWindowMock();
         jest.spyOn(global, 'window', 'get')
-            .mockImplementation(() => (windowMock));        
+            .mockImplementation(() => (windowMock));
         // Provide a fresh copy of the s-object for each test.
-        s = {...sObject};
+        s = { ...sObject };
         addEventMock = jest.spyOn(s._eventsObj, 'addEvent').mockImplementation();
         getTrackingValueMock = jest.spyOn(s._articleViewTypeObj, 'getTrackingValue').mockImplementation();
-        isArticlePageMock = jest.spyOn(s._utils, 'isArticlePage').mockImplementation().mockReturnValue(true);
+        jest.spyOn(s._utils, 'isArticlePage').mockImplementation().mockReturnValue(true);
         isSocialTrackingParameterMock = jest.spyOn(s._articleViewTypeObj, 'isTrackingValueOrganicSocial').mockImplementation();
-        
     });
 
     afterEach(() => {
         jest.restoreAllMocks();
     });
-    
-    //Telegram
+
+    // Telegram
     it('should set event225 if the trackingValue contains telegram', () => {
         getTrackingValueMock.mockReturnValue('telegram');
         isSocialTrackingParameterMock.mockReturnValue(true);
@@ -34,6 +32,7 @@ describe('_setTrackingValueEvents (URL Parameter like cid)', () => {
         s._setTrackingValueEvents(s);
         expect(addEventMock).toHaveBeenCalledWith('event225');
     });
+
     it('should not set event225 if the trackingValue does not contain telegram', () => {
         getTrackingValueMock.mockReturnValue('any-trackingValue');
         isSocialTrackingParameterMock.mockReturnValue(true);
@@ -42,7 +41,7 @@ describe('_setTrackingValueEvents (URL Parameter like cid)', () => {
         expect(addEventMock).not.toHaveBeenCalledWith('event225');
     });
 
-    //Instagram
+    // Instagram
     it('should set event53 if the trackingValue contains instagram', () => {
         getTrackingValueMock.mockReturnValue('instagram');
         isSocialTrackingParameterMock.mockReturnValue(true);
@@ -56,9 +55,9 @@ describe('_setTrackingValueEvents (URL Parameter like cid)', () => {
 
         s._setTrackingValueEvents(s);
         expect(addEventMock).not.toHaveBeenCalledWith('event53,event224');
-    });   
+    });
 
-    //Youtube
+    // Youtube
     it('should set event50 if the trackingValue contains youtube', () => {
         getTrackingValueMock.mockReturnValue('youtube');
         isSocialTrackingParameterMock.mockReturnValue(true);
@@ -72,9 +71,9 @@ describe('_setTrackingValueEvents (URL Parameter like cid)', () => {
 
         s._setTrackingValueEvents(s);
         expect(addEventMock).not.toHaveBeenCalledWith('event50,event223');
-    });     
- 
-    //Twitter
+    });
+
+    // Twitter
     it('should set event50 if the trackingValue contains twitter', () => {
         getTrackingValueMock.mockReturnValue('twitter');
         isSocialTrackingParameterMock.mockReturnValue(true);
@@ -88,8 +87,9 @@ describe('_setTrackingValueEvents (URL Parameter like cid)', () => {
 
         s._setTrackingValueEvents(s);
         expect(addEventMock).not.toHaveBeenCalledWith('event51,event222');
-    });         
-    //Facebook
+    });
+
+    // Facebook
     it('should set event52 if the trackingValue contains facebook', () => {
         getTrackingValueMock.mockReturnValue('facebook');
         isSocialTrackingParameterMock.mockReturnValue(true);
@@ -103,9 +103,9 @@ describe('_setTrackingValueEvents (URL Parameter like cid)', () => {
 
         s._setTrackingValueEvents(s);
         expect(addEventMock).not.toHaveBeenCalledWith('event52');
-    });     
+    });
 
-    //Linkedin
+    // Linkedin
     it('should set event52 if the trackingValue contains linkedin', () => {
         getTrackingValueMock.mockReturnValue('linkedin');
         isSocialTrackingParameterMock.mockReturnValue(true);
@@ -119,9 +119,9 @@ describe('_setTrackingValueEvents (URL Parameter like cid)', () => {
 
         s._setTrackingValueEvents(s);
         expect(addEventMock).not.toHaveBeenCalledWith('event227');
-    });    
+    });
 
-    //Xing
+    // Xing
     it('should set event if the trackingValue contains xing', () => {
         getTrackingValueMock.mockReturnValue('xing');
         isSocialTrackingParameterMock.mockReturnValue(true);
@@ -129,15 +129,16 @@ describe('_setTrackingValueEvents (URL Parameter like cid)', () => {
         s._setTrackingValueEvents(s);
         expect(addEventMock).toHaveBeenCalledWith('event228');
     });
+
     it('should not set event52 if the trackingValue does not contain xing', () => {
         getTrackingValueMock.mockReturnValue('any-trackingValue');
         isSocialTrackingParameterMock.mockReturnValue(true);
 
         s._setTrackingValueEvents(s);
         expect(addEventMock).not.toHaveBeenCalledWith('event228');
-    });           
+    });
 
-    //Pinterest
+    // Pinterest
     it('should set event if the trackingValue contains pinterest', () => {
         getTrackingValueMock.mockReturnValue('pinterest');
         isSocialTrackingParameterMock.mockReturnValue(true);
@@ -151,23 +152,23 @@ describe('_setTrackingValueEvents (URL Parameter like cid)', () => {
 
         s._setTrackingValueEvents(s);
         expect(addEventMock).not.toHaveBeenCalledWith('event229');
-    });    
-    //other organic social 
+    });
+    // other organic social
     it('should set event226 if the trackingValue start with social ', () => {
         getTrackingValueMock.mockReturnValue('social');
         isSocialTrackingParameterMock.mockReturnValue(true);
 
         s._setTrackingValueEvents(s);
         expect(addEventMock).toHaveBeenCalledWith('event226');
-    });      
- 
+    });
+
     it('should not set event226 if the trackingValue start with social_paid ', () => {
         getTrackingValueMock.mockReturnValue('social_paid');
         isSocialTrackingParameterMock.mockReturnValue(false);
 
         s._setTrackingValueEvents(s);
         expect(addEventMock).not.toHaveBeenCalledWith('event226');
-    }); 
+    });
 
     it('should not set event226 if the trackingValue start with socialmediapaid ', () => {
         getTrackingValueMock.mockReturnValue('socialmediapaid');
@@ -175,6 +176,5 @@ describe('_setTrackingValueEvents (URL Parameter like cid)', () => {
 
         s._setTrackingValueEvents(s);
         expect(addEventMock).not.toHaveBeenCalledWith('event226');
-    }); 
-
+    });
 });

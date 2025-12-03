@@ -1,9 +1,9 @@
-(function () {
-    /* 1. Important event: event on_playing sends "playback_initiated_by" 
-     *    autoplay, user, autoplay_muted 
-     * 2. Important event: event unmute sends "switched_from_muted_autoplay" 
+(function() {
+    /* 1. Important event: event on_playing sends "playback_initiated_by"
+     *    autoplay, user, autoplay_muted
+     * 2. Important event: event unmute sends "switched_from_muted_autoplay"
      *    true when user unmutes a video initially
-     *    Both events together help us map Adobe's events Media Start, 
+     *    Both events together help us map Adobe's events Media Start,
      *    Media Content Start, Unmuted Media Start.
      */
     const media_events = [
@@ -19,45 +19,45 @@
         'fullscreen_on',
         'fullscreen_off',
         'unmute',
-        'sticky',
+        'sticky'
     ];
- 
+
     const exportedFunctions = {
         run,
         init,
         getMediaAge,
         setTime,
-        setEventData,
+        setEventData
     };
- 
-    var newData = window.b;
- 
+
+    const newData = window.b;
+
     function getMediaAge(cd, pd) {
-        var currentDate = cd;
-        var publishDate = new Date(pd);
+        const currentDate = cd;
+        const publishDate = new Date(pd);
         if (!isNaN(publishDate)) {
             setTime(currentDate);
             setTime(publishDate);
-            var timeDiff = Math.abs(currentDate.getTime() - publishDate.getTime());
-            var dayDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+            const timeDiff = Math.abs(currentDate.getTime() - publishDate.getTime());
+            const dayDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
             return dayDiff.toString();
         }
     }
- 
+
     function setTime(d) {
         d.setMilliseconds(0);
         d.setSeconds(0);
         d.setMinutes(0);
         d.setHours(0);
     }
- 
+
     function setEventData() {
         newData.linkName = 'video';
         newData.page_document_type = 'media';
         newData.event_data.media_player = 'bitmovin';
         newData.teaser_position = window.utag.data.sp_teaser_position;
         newData.teaser_block = window.utag.data.sp_teaser_block;
- 
+
         // Calculate media age
         if (
             newData &&
@@ -69,7 +69,7 @@
                 newData.event_data.media_publication_date
             );
         }
- 
+
         // Event 31 when playback_initiated_by is not autoplay-muted
         if (
             newData.event_action &&
@@ -78,7 +78,7 @@
         ) {
             sessionStorage.setItem('play_flag', 'true');
         }
- 
+
         if (
             newData.event_action &&
             newData.event_action === 'play' &&
@@ -86,7 +86,7 @@
         ) {
             newData.event_action_play_flag = 'true';
         }
- 
+
         // Exclude muted-autoplay events on Home
         if (
             newData.event_action === 'on_playing' &&
@@ -95,7 +95,7 @@
         ) {
             window.utag.data.is_media_event = 'false';
         }
- 
+
         // Delete event label (too many expressions in Adobe e.g., 9.87654)
         const eventActionsToDeleteLabel = [
             'pos',
@@ -106,13 +106,13 @@
             'play',
             'end',
             'unmute',
-            'mute',
+            'mute'
         ];
- 
+
         if (eventActionsToDeleteLabel.includes(newData.event_action)) {
             delete newData.event_label;
         }
- 
+
         // Media start was initiated 'from home' == Video was clicked on the homepage
         if (
             document.referrer === 'https://www.bild.de/' ||
@@ -123,8 +123,8 @@
         ) {
             newData.video_start_from_home = 'true';
         }
- 
-        for (var i = 0; i < media_events.length; i++) {
+
+        for (let i = 0; i < media_events.length; i++) {
             if (newData.event_action === media_events[i]) {
                 newData.is_media_event = 'true';
                 // Trigger Adobe Media
@@ -133,17 +133,17 @@
             }
         }
     }
- 
+
     function run() {
         setEventData();
     }
- 
+
     function init() {
         if (window.a === 'media') {
             run();
         }
     }
- 
+
     // Evaluate runtime environment (Browser or Node.js)
     if (typeof exports === 'object') {
         // Expose reference to members for unit testing.

@@ -1,3 +1,4 @@
+/* eslint-disable no-global-assign */
 const brandstory_milestones = require('../../extensions/brandstory/brandstory_milestones');
 
 describe('getDomainTagValue', () => {
@@ -44,7 +45,7 @@ describe('setMilestones', () => {
 
     // Skipped temporarily because the test is failing and blocking PR
     it.skip('should set milestones with the correct parameters', () => {
-        //Upated because old implementation is not supported in jsdom
+        // Upated because old implementation is not supported in jsdom
         Object.defineProperty(window, 'location', {
             value: {
                 ...window.location,
@@ -57,7 +58,7 @@ describe('setMilestones', () => {
         const tagNumber = brandstory_milestones.getDomainTagValue(window.location.hostname);
 
         // Use fake timers
-        jest.useFakeTimers(); 
+        jest.useFakeTimers();
 
         window.onload();
 
@@ -83,6 +84,6 @@ describe('setMilestones', () => {
         });
 
         // Restore real timers
-        jest.useRealTimers(); 
+        jest.useRealTimers();
     });
 });

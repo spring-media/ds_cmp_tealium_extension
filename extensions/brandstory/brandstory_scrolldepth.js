@@ -5,7 +5,7 @@ function getCookie(cookieName) {
     const cookieArray = decodedCookie.split(';');
 
     for (let i = 0; i < cookieArray.length; i++) {
-        let cookie = cookieArray[i].trim();
+        const cookie = cookieArray[i].trim();
         if (cookie.indexOf(name) === 0) {
             return cookie.substring(name.length).split(',')[1];
         }
@@ -42,53 +42,51 @@ const scrollArray = [];
 
 /* If scroll depth is 50, 75 or 100 the request should be triggered once
 for each number. To prevent multiple requests for each, we set trigger flags */
-var triggered50  = false; 
-var triggered75  = false; 
-var triggered100 = false;
+let triggered50 = false;
+let triggered75 = false;
+let triggered100 = false;
 
 // Scroll event listener
-window.addEventListener('scroll', function () {
+window.addEventListener('scroll', function() {
     // Get scroll depth from cookie
     const s_ppv = getCookie('s_ppv');
-    let scrollDepth = parseInt(s_ppv);
+    const scrollDepth = parseInt(s_ppv, 10);
 
     // Get domain-specific tag number
     const tagNumber = getDomainTagValue(window.location.hostname);
     // full utag.data
-    var eventData = {...window.utag.data};
+    const eventData = { ...window.utag.data };
 
     // Trigger scrolldepth request only if it has not been triggered before
     if (!triggered50 && scrollDepth === 50) {
         triggered50 = true;
         scrollArray.push(scrollDepth);
-        eventData.event_name = 'scroll depth',
-        eventData.event_action = 'view' + scrollDepth,
+        eventData.event_name = 'scroll depth';
+        eventData.event_action = 'view' + scrollDepth;
         // Send data to utag
         window.utag.link(eventData, null, tagNumber);
-    } 
-    else if (!triggered75 && scrollDepth === 75) {
+    } else if (!triggered75 && scrollDepth === 75) {
         triggered75 = true;
         scrollArray.push(scrollDepth);
-        eventData.event_name = 'scroll depth',
-        eventData.event_action = 'view' + scrollDepth,
+        eventData.event_name = 'scroll depth';
+        eventData.event_action = 'view' + scrollDepth;
         // Send data to utag
         window.utag.link(eventData, null, tagNumber);
-    } 
-    else if (!triggered100 && scrollDepth === 100) {
+    } else if (!triggered100 && scrollDepth === 100) {
         triggered100 = true;
         scrollArray.push(scrollDepth);
-        eventData.event_name = 'scroll depth',
-        eventData.event_action = 'view' + scrollDepth,
+        eventData.event_name = 'scroll depth';
+        eventData.event_action = 'view' + scrollDepth;
         // Send data to utag
         window.utag.link(eventData, null, tagNumber);
-        //sendLinkEvent(scrollDepth, window.utag.data.page_platform, window.utag.data.adobe_pageName, tagNumber);
+        // sendLinkEvent(scrollDepth, window.utag.data.page_platform, window.utag.data.adobe_pageName, tagNumber);
     }
 });
 
 // Create a reference to members of this unit which need to be exposed for unit testing.
 const exportedFunctions = {
     getCookie,
-    getDomainTagValue,
+    getDomainTagValue
 };
 
 // Evaluate runtime environment (Browser or Node.js)

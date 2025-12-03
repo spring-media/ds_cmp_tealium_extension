@@ -8,8 +8,9 @@ s.getPreviousValue = function(v,c){var k=v,d=c;if("-v"===k)return{plugin:"getPre
 /******************************************** END CODE TO DEPLOY ********************************************/
 /* eslint-enable */
 // END: Pre-defined Adobe Plugins
+/* eslint-disable @typescript-eslint/no-shadow */
 
-s._setPageAgeForCheckout = function () {
+s._setPageAgeForCheckout = function() {
     if (typeof window.utag.data.adobe_docType !== 'undefined' && window.utag.data.adobe_docType === 'article') {
         window.utag.loader.SC('utag_main', { 'pa': window.utag.data.screen_agePublication + ';exp-session' });
         window.utag.data['cp.utag_main_pa'] = window.utag.data.screen_agePublication;
@@ -17,13 +18,13 @@ s._setPageAgeForCheckout = function () {
 
 };
 
-s._setPageSection = function (s) {
+s._setPageSection = function(s) {
     if (typeof s.pageName !== 'undefined'
         && s.pageName.indexOf('home : home') !== -1) {
         s.eVar5 = 'home';
         s.prop5 = 'home';
         s.channel = 'home';
-    } else if (typeof s.pageName !== 'undefined' 
+    } else if (typeof s.pageName !== 'undefined'
                 && s.pageName.indexOf('section : Titelseite') !== -1) {
         s.eVar5 = 'section';
         s.prop5 = 'section';
@@ -31,23 +32,22 @@ s._setPageSection = function (s) {
     }
 };
 
-s._weltAppsInit = function (s) {
+s._weltAppsInit = function(s) {
     s.usePlugins = true;
     s.currencyCode = 'EUR';
-    
+
     s.eVar61 = window.navigator.userAgent;
 
-    //height & width for iPhones
+    // height & width for iPhones
     if (window.navigator.userAgent.indexOf('iPhone') > -1) {
         s.eVar94 = window.screen.width + 'x' + window.screen.height;
     }
 
     s._setPageAgeForCheckout();
-    
 };
 
-s.doPlugins = function (s) {
-    //no sdid for A4T
+s.doPlugins = function(s) {
+    // no sdid for A4T
     s.expectSupplementalData = false; // Force to false;
 
     s.eVar63 = s.version;
@@ -59,7 +59,6 @@ s.doPlugins = function (s) {
 
 
     s.eVar33 = s.prop61 = s.getPreviousValue(s.pageName);
-
 
     s._setPageSection(s);
 };

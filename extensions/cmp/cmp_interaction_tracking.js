@@ -1,19 +1,20 @@
-(function () {
+/* eslint-disable @typescript-eslint/no-shadow */
+(function() {
 
     const CONSENT_MESSAGE_EVENTS = {
         11: 'cm_accept_all',
         12: 'cm_show_privacy_manager',
         13: 'cm_reject_all',
-        5: 'cm_subscribe_pur',
+        5: 'cm_subscribe_pur'
     };
     const PRIVACY_MANAGER_EVENTS = {
         1: 'pm_accept_as_selected',
         2: 'pm_back_to_cmp_layer',
         9: 'pm_subscribe_pur',
-        11: 'pm_accept_all',
+        11: 'pm_accept_all'
     };
     const TCFAPI_COMMON_EVENTS = {
-        CMP_UI_SHOWN: 'cm_layer_shown',
+        CMP_UI_SHOWN: 'cm_layer_shown'
     };
 
     // Tealium profile to Adobe TagId mapping.
@@ -37,7 +38,7 @@
         'bz-bz-berlin.de': 6,
         'cbo-computerbild.de': 25,
         'shop.bild': 181,
-        'spring-premium' : 135,
+        'spring-premium': 135,
         'welt': 155,
         'welt-shop.welt.de': 28
     };
@@ -77,7 +78,6 @@
         } else {
             return null;
         }
-
     }
 
     function setABTestingProperties(data) {
@@ -99,7 +99,7 @@
         exportedFunctions.setABTestingProperties(data);
     }
 
-    // User can jump over different subdomains with different layers 
+    // User can jump over different subdomains with different layers
     // Cookie utag_main_cmp_after support to differ between them
     function isAfterCMP() {
         const hasCMPAfterCookie = window.utag.data['cp.utag_main_cmp_after'] ? (window.utag.data['cp.utag_main_cmp_after'] === 'true') : false;
@@ -121,7 +121,7 @@
             'digital.welt.de'
         ];
         // sportbild.bild.de, shop.bild.de, offerpages needs special treatment because of sub-domain issues/different layers.
-        if ((window.utag.data['dom.domain']) && subdomains.indexOf(window.utag.data['dom.domain']) !== -1){
+        if ((window.utag.data['dom.domain']) && subdomains.indexOf(window.utag.data['dom.domain']) !== -1) {
             // hasCMPAfterCookie cannot be used here because it shares cookie with base domain
             return hasCMPAfterCookie_subdomain || hasVendors_subdomain;
         } else {
@@ -131,7 +131,7 @@
 
     function hasUserAlreadyConsentGranted() {
         const consentedVendors = window.utag.data['cp.cmp_cv_list'] || window.utag.data['cp.cm_cv_list'] || '';
-        const hasUserGivenConsent =  consentedVendors.includes('adobe_analytics');
+        const hasUserGivenConsent = consentedVendors.includes('adobe_analytics');
         const isAfterCMP = exportedFunctions.isAfterCMP();
 
         return hasUserGivenConsent === false ? false : isAfterCMP;
@@ -170,15 +170,14 @@
             window.utag.data['cmp_events'] = CONSENT_MESSAGE_EVENTS[eventType];
             exportedFunctions.sendLinkEvent(CONSENT_MESSAGE_EVENTS[eventType]);
 
-            if (eventType === 11 && window.utag.data['dom.domain'] && window.utag.data['dom.domain'].includes('sportbild.bild.de'))
-            {
-                window.utag.loader.SC('utag_main', {'cmp_after_sub': 'true'});
+            if (eventType === 11 && window.utag.data['dom.domain'] && window.utag.data['dom.domain'].includes('sportbild.bild.de')) {
+                window.utag.loader.SC('utag_main', { 'cmp_after_sub': 'true' });
                 window.utag.data['cp.utag_main_cmp_after_sub'] = 'true';
-            } else if(eventType === 11){
-                window.utag.loader.SC('utag_main', {'cmp_after': 'true'});
+            } else if (eventType === 11) {
+                window.utag.loader.SC('utag_main', { 'cmp_after': 'true' });
                 window.utag.data['cp.utag_main_cmp_after'] = 'true';
             }
-            
+
             if (eventType === 11) {
                 exportedFunctions.onUserConsent();
             }
@@ -190,11 +189,11 @@
             window.utag.data['cmp_events'] = PRIVACY_MANAGER_EVENTS[eventType];
             exportedFunctions.sendLinkEvent(PRIVACY_MANAGER_EVENTS[eventType]);
             // Set cookie for first page view tracking.
-            if ((eventType === 1 || eventType === 11) && window.utag.data['dom.domain'] && window.utag.data['dom.domain'].includes('sportbild.bild.de')){
-                window.utag.loader.SC('utag_main', {'cmp_after_sub': 'true'});
-                window.utag.data['cp.utag_main_cmp_after_sub'] = 'true';    
-            }else if (eventType === 1 || eventType === 11){
-                window.utag.loader.SC('utag_main', {'cmp_after': 'true'});
+            if ((eventType === 1 || eventType === 11) && window.utag.data['dom.domain'] && window.utag.data['dom.domain'].includes('sportbild.bild.de')) {
+                window.utag.loader.SC('utag_main', { 'cmp_after_sub': 'true' });
+                window.utag.data['cp.utag_main_cmp_after_sub'] = 'true';
+            } else if (eventType === 1 || eventType === 11) {
+                window.utag.loader.SC('utag_main', { 'cmp_after': 'true' });
                 window.utag.data['cp.utag_main_cmp_after'] = 'true';
             }
             if (eventType === 1 || eventType === 11) {
@@ -227,7 +226,6 @@
         if (window.utag.data.user_hasPurSubscription2 === 'true' || window.utag.data['cp._cpauthhint'] === '1') {
             return false;
         }
-    
         return true;
     }
 
@@ -252,7 +250,7 @@
         });
         window._sp_queue.push(() => {
             window.__tcfapi('addEventListener', 2, onCmpuishown);
-        });         
+        });
         window.addEventListener('message', onMessage, false);
     }
 

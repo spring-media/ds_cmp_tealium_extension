@@ -27,9 +27,9 @@ git clone https://github.com/spring-media/ds_cmp_tealium_extension.git
 
 This is an example of how to list things you need to use the software and how to install them.
 
-* npm
+* yarn
   ```sh
-  npm install npm@latest -g
+  npm install -g yarn
   ```
 
 ### Installation
@@ -40,12 +40,12 @@ This is an example of how to list things you need to use the software and how to
    ```
 2. Change into Root Directory and Install NPM packages
    ```sh
-   npm install
+   yarn install
    ```
 3. Run the Tests
 
    ```sh
-   npm run test
+   yarn run test
    ```
 
 ## Extensions

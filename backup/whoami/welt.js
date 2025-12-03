@@ -71,15 +71,10 @@ if (console !== undefined && console.log !== undefined) {
                         console.log("whoami : user_hasPlusSubscription2:  " + utag.data.user_hasPlusSubscription2);
                     }
                 }
-
-
-
             } catch (error) {
                 console.error("whoami : Failed to retrieve user information:", error);
             }
-
         }
-
     }).catch(function () {
         console.error("handle unavilability of whoami api")
     })

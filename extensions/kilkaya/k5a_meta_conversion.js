@@ -1,7 +1,6 @@
 /* Pre Loader — k5aMeta conversion for checkout success */
 /* global a, b */
-/* eslint-disable-next-line no-unused-vars */
-(function (a, b) {
+(function(a, b) {
     try {
         if (String(b.event_name) !== 'checkout' || String(b.event_action) !== 'success') {
             return;
