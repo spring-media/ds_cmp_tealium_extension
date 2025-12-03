@@ -19,6 +19,9 @@ describe('k5a_meta_conversion', () => {
             },
             DB: jest.fn()
         };
+        
+        // Mock console.error (since we removed utag.DB)
+        jest.spyOn(console, 'error').mockImplementation();
 
         // Clean up global variables
         delete global.a;
@@ -35,6 +38,7 @@ describe('k5a_meta_conversion', () => {
         }
         delete global.a;
         delete global.b;
+        jest.restoreAllMocks();
         jest.resetModules();
     });
 
@@ -52,7 +56,6 @@ describe('k5a_meta_conversion', () => {
         expect(window.k5aMeta.conversion).toBe(1);
         expect(Array.isArray(window.k5aMeta.cntTag)).toBe(true);
         expect(window.k5aMeta.cntTag).toContain('offer_12345');
-        expect(window.utag.DB).toHaveBeenCalledWith('k5aMeta conversion set for checkout success');
     });
 
     it('should not set conversion if event_name is not "checkout"', () => {
@@ -66,7 +69,6 @@ describe('k5a_meta_conversion', () => {
         require('../../extensions/kilkaya/k5a_meta_conversion.js');
 
         expect(window.k5aMeta).toBeUndefined();
-        expect(window.utag.DB).not.toHaveBeenCalledWith('k5aMeta conversion set for checkout success');
     });
 
     it('should not set conversion if event_action is not "success"', () => {
@@ -80,7 +82,6 @@ describe('k5a_meta_conversion', () => {
         require('../../extensions/kilkaya/k5a_meta_conversion.js');
 
         expect(window.k5aMeta).toBeUndefined();
-        expect(window.utag.DB).not.toHaveBeenCalledWith('k5aMeta conversion set for checkout success');
     });
 
     it('should initialize k5aMeta object if it does not exist', () => {
@@ -234,13 +235,16 @@ describe('k5a_meta_conversion', () => {
 
         require('../../extensions/kilkaya/k5a_meta_conversion.js');
 
-        expect(window.utag.DB).toHaveBeenCalledWith(expect.stringContaining('k5aMeta conversion error:'));
+        expect(console.error).toHaveBeenCalledWith(
+            expect.stringContaining('[K5A CONVERSION] Error:'),
+            expect.any(Error)
+        );
 
         // Clean up the read-only property
         delete window.k5aMeta;
     });
 
-    it('should handle missing utag gracefully', () => {
+    it('should work without utag dependency', () => {
         global.a = 'some_value';
         global.b = {
             event_name: 'checkout',
@@ -249,33 +253,13 @@ describe('k5a_meta_conversion', () => {
         };
 
         delete window.utag;
-        global.utag = undefined;
 
-        // With the guard in place, the code should not throw even if utag is missing
+        // Should work fine without utag
         expect(() => {
             require('../../extensions/kilkaya/k5a_meta_conversion.js');
         }).not.toThrow();
 
         // The conversion should still be set
-        expect(window.k5aMeta).toBeDefined();
-        expect(window.k5aMeta.conversion).toBe(1);
-        expect(window.k5aMeta.cntTag).toContain('offer_12345');
-    });
-    it('should work when utag is defined but utag.data is missing', () => {
-        global.a = 'some_value';
-        global.b = {
-            event_name: 'checkout',
-            event_action: 'success',
-            offer_id: '12345'
-        };
-
-        window.utag = {
-            DB: jest.fn()
-        };
-        // utag.data is undefined
-
-        require('../../extensions/kilkaya/k5a_meta_conversion.js');
-
         expect(window.k5aMeta).toBeDefined();
         expect(window.k5aMeta.conversion).toBe(1);
         expect(window.k5aMeta.cntTag).toContain('offer_12345');
@@ -322,44 +306,4 @@ describe('k5a_meta_conversion', () => {
         expect(window.k5aMeta.cntTag).toContain('offer_special-offer_123@test');
     });
 
-    it('should not log when debug mode is disabled', () => {
-        global.a = 'some_value';
-        global.b = {
-            event_name: 'checkout',
-            event_action: 'success',
-            offer_id: '12345'
-        };
-
-        window.utag.cfg.utDebug = false;
-
-        require('../../extensions/kilkaya/k5a_meta_conversion.js');
-
-        expect(window.k5aMeta.conversion).toBe(1);
-        expect(window.utag.DB).not.toHaveBeenCalled();
-    });
-
-    it('should not log errors when debug mode is disabled', () => {
-        global.a = 'some_value';
-        global.b = {
-            event_name: 'checkout',
-            event_action: 'success',
-            offer_id: '12345'
-        };
-
-        window.utag.cfg.utDebug = false;
-
-        // Force an error
-        Object.defineProperty(window, 'k5aMeta', {
-            value: null,
-            writable: false,
-            configurable: true
-        });
-
-        require('../../extensions/kilkaya/k5a_meta_conversion.js');
-
-        expect(window.utag.DB).not.toHaveBeenCalled();
-
-        // Clean up
-        delete window.k5aMeta;
-    });
 });
