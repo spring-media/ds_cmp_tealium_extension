@@ -185,18 +185,18 @@ describe('mehr_zum_thema - Mehr zum Thema Link Tracking', () => {
             expect(mockUtagLoader.SC).not.toHaveBeenCalled();
         });
 
-        it('should throw error when b is undefined (bug in original code)', () => {
+        it('should NOT call SC when b is undefined', () => {
             // Arrange: Link event with undefined b
             global.a = 'link';
             global.b = undefined;
 
-            // Act & Assert: This reveals a bug in the original code
-            // The code tries to access b.event_name without checking if b exists first
-            expect(() => {
-                jest.isolateModules(() => {
-                    require('../../extensions/lib_books/mehr_zum_thema.js');
-                });
-            }).toThrow(TypeError);
+            // Act
+            jest.isolateModules(() => {
+                require('../../extensions/lib_books/mehr_zum_thema.js');
+            });
+
+            // Assert: SC should not be called because b is undefined
+            expect(mockUtagLoader.SC).not.toHaveBeenCalled();
         });
     });
 
