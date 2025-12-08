@@ -1,0 +1,26 @@
+// Runs only on Tealium link events for video interactions.
+// Ensures contentID is present before extracting media_id.
+(function (a, b) {
+
+  // Only run on link events where event_name === "video"
+  if (a !== "link" || !b || b.event_name !== "video") {
+    return;
+  }
+
+  // Get contentID from data layer
+  var cid = utag.data.contentID;
+
+  // Validate contentID
+  if (!cid || typeof cid !== "string") return;
+
+  // Clean stray quotes/spaces
+  cid = cid.trim().replace(/^"+|"+$/g, "");
+
+  // Extract media ID based on content-discovery pattern
+  if (cid.indexOf("content-discovery") > -1) {
+    utag.data.media_id = cid.split("/")[4] || "";
+  } else {
+    utag.data.media_id = cid.split("/")[3] || "";
+  }
+
+})(a, b);
