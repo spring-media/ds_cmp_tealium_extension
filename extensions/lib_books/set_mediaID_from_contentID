@@ -14,7 +14,7 @@
   if (!cid || typeof cid !== "string") return;
 
   // Clean stray quotes/spaces
-  cid = cid.trim().replace(/^"+|"+$/g, "");
+  cid = cid.trim().replace(/^\"+|\"+$/g, "");
 
   // Extract media ID based on content-discovery pattern
   if (cid.indexOf("content-discovery") > -1) {
