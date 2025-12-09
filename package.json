@@ -8,11 +8,16 @@
   "scripts": {
     "prepare": "husky install",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test:mutation": "stryker run",
+    "test:mutation:watch": "stryker run --watch",
+    "test:mutation:incremental": "stryker run --incremental"
   },
   "dependencies": {},
   "devDependencies": {
     "@eslint/js": "^9.19.0",
+    "@stryker-mutator/core": "^9.4.0",
+    "@stryker-mutator/jest-runner": "^9.4.0",
     "@stylistic/eslint-plugin": "^5.6.1",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.10.1",
@@ -28,7 +33,7 @@
     "typescript-eslint": "^8.48.0"
   },
   "jest": {
-    "testEnvironment": "jsdom",
+    "testEnvironment": "@stryker-mutator/jest-runner/jest-env/jsdom",
     "preset": "ts-jest"
   }
 }

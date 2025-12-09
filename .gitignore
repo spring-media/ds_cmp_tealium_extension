@@ -2,6 +2,12 @@
 node_modules
 coverage
 
+# Mutation testing reports
+.stryker-tmp
+reports/mutation
+mutation-report.html
+mutation-report.json
+
 # VSCode specific files
 .vscode/*
 !.vscode/extensions.json
@@ -9,4 +15,3 @@ coverage
 # Editor config files
 .prettierrc
 .editorconfig
-
