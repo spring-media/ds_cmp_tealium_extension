@@ -7,6 +7,12 @@
     "clear-text",
     "progress"
   ],
+  "htmlReporter": {
+    "fileName": "mutation-report.html"
+  },
+  "jsonReporter": {
+    "fileName": "mutation-report.json"
+  },
   "testRunner": "jest",
   "testRunner_comment": "Take a look at https://stryker-mutator.io/docs/stryker-js/jest-runner for information about the jest plugin.",
   "coverageAnalysis": "perTest",
@@ -14,5 +20,20 @@
     "extensions/**/*.js",
     "!extensions/**/*.test.js",
     "!extensions/**/*.spec.js"
-  ]
+  ],
+  "thresholds": {
+    "high": 80,
+    "low": 60,
+    "break": 50
+  },
+  "timeoutMS": 60000,
+  "timeoutFactor": 2,
+  "ignorePatterns": [
+    "backup/**",
+    "node_modules/**",
+    "*.config.js",
+    "*.config.json"
+  ],
+  "checkers": [],
+  "concurrency": 4
 }
