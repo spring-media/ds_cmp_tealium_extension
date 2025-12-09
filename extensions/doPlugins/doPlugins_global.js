@@ -83,7 +83,7 @@ s._utils = {
     },
 
     isAdWall: function(s) {
-        return !!(!!s.pageName && (s.pageName.indexOf('42925516') !== -1
+        return !!(s.pageName && (s.pageName.indexOf('42925516') !== -1
             || s.pageName.indexOf('54578900') !== -1)
             || window.location.toString().indexOf('unangemeldet-42925516') !== -1
             || window.location.toString().indexOf('unangemeldet-54578900') !== -1
