@@ -4,7 +4,6 @@
  */
 
 /* global utag, braze */
-/* eslint-disable no-unused-vars */
 
 describe('Braze Checkout Tracking', () => {
     let mockUtag;
@@ -62,42 +61,42 @@ describe('Braze Checkout Tracking', () => {
         it('should detect consent when braze is in cmp_cv_list cookie', () => {
             document.cookie = 'cmp_cv_list=vendor1,braze,vendor2;';
             const consentGiven = /(^|;)\s*cmp_cv_list\s*=\s*[^;]*braze[^;]*(;|$)/.test(document.cookie);
-            
+
             expect(consentGiven).toBe(true);
         });
 
         it('should detect consent when braze is at start of cookie', () => {
             document.cookie = 'cmp_cv_list=braze,vendor1;';
             const consentGiven = /(^|;)\s*cmp_cv_list\s*=\s*[^;]*braze[^;]*(;|$)/.test(document.cookie);
-            
+
             expect(consentGiven).toBe(true);
         });
 
         it('should detect consent when braze is at end of cookie', () => {
             document.cookie = 'cmp_cv_list=vendor1,braze;';
             const consentGiven = /(^|;)\s*cmp_cv_list\s*=\s*[^;]*braze[^;]*(;|$)/.test(document.cookie);
-            
+
             expect(consentGiven).toBe(true);
         });
 
         it('should not detect consent when braze is not in cookie', () => {
             document.cookie = 'cmp_cv_list=vendor1,vendor2;';
             const consentGiven = /(^|;)\s*cmp_cv_list\s*=\s*[^;]*braze[^;]*(;|$)/.test(document.cookie);
-            
+
             expect(consentGiven).toBe(false);
         });
 
         it('should not detect consent when cmp_cv_list cookie is missing', () => {
             document.cookie = 'other_cookie=value;';
             const consentGiven = /(^|;)\s*cmp_cv_list\s*=\s*[^;]*braze[^;]*(;|$)/.test(document.cookie);
-            
+
             expect(consentGiven).toBe(false);
         });
 
         it('should handle empty cookie', () => {
             document.cookie = '';
             const consentGiven = /(^|;)\s*cmp_cv_list\s*=\s*[^;]*braze[^;]*(;|$)/.test(document.cookie);
-            
+
             expect(consentGiven).toBe(false);
         });
     });
@@ -105,51 +104,51 @@ describe('Braze Checkout Tracking', () => {
     describe('Checkout referrer detection', () => {
         it('should detect checkout from PayPal referrer', () => {
             utag.data['dom.referrer'] = 'https://www.paypal.com/checkout';
-            
-            const fromCheckout = (typeof utag.data['dom.referrer'] != 'undefined' && 
+
+            const fromCheckout = (typeof utag.data['dom.referrer'] != 'undefined' &&
                 utag.data['dom.referrer'].toString().indexOf('paypal.com') > -1);
-            
+
             expect(fromCheckout).toBe(true);
         });
 
         it('should detect checkout from checkout-v2 in dom.referrer', () => {
             utag.data['dom.referrer'] = 'https://checkout-v2.prod.ps.welt.de/success';
-            
-            const fromCheckout = (typeof utag.data['dom.referrer'] != 'undefined' && 
+
+            const fromCheckout = (typeof utag.data['dom.referrer'] != 'undefined' &&
                 utag.data['dom.referrer'].toString().indexOf('checkout-v2.prod.ps.welt.de') > -1);
-            
+
             expect(fromCheckout).toBe(true);
         });
 
         it('should detect checkout from t_ref parameter', () => {
             utag.data['dom.referrer'] = undefined;
             utag.data['qp.t_ref'] = 'https://checkout-v2.prod.ps.welt.de/';
-            
-            const fromCheckout = (typeof utag.data['qp.t_ref'] != 'undefined' && 
+
+            const fromCheckout = (typeof utag.data['qp.t_ref'] != 'undefined' &&
                 utag.data['qp.t_ref'].toString().indexOf('checkout-v2.prod.ps.welt.de') > -1);
-            
+
             expect(fromCheckout).toBe(true);
         });
 
         it('should not detect checkout from other referrers', () => {
             utag.data['dom.referrer'] = 'https://www.google.com';
             utag.data['qp.t_ref'] = undefined;
-            
-            const fromCheckout = (typeof utag.data['dom.referrer'] != 'undefined' && 
-                utag.data['dom.referrer'].toString().indexOf('paypal.com') > -1) || 
-                (typeof utag.data['dom.referrer'] != 'undefined' && 
+
+            const fromCheckout = (typeof utag.data['dom.referrer'] != 'undefined' &&
+                utag.data['dom.referrer'].toString().indexOf('paypal.com') > -1) ||
+                (typeof utag.data['dom.referrer'] != 'undefined' &&
                 utag.data['dom.referrer'].toString().indexOf('checkout-v2.prod.ps.welt.de') > -1);
-            
+
             expect(fromCheckout).toBe(false);
         });
 
         it('should handle undefined referrers', () => {
             utag.data['dom.referrer'] = undefined;
             utag.data['qp.t_ref'] = undefined;
-            
-            const fromCheckout = (typeof utag.data['dom.referrer'] != 'undefined' && 
+
+            const fromCheckout = (typeof utag.data['dom.referrer'] != 'undefined' &&
                 utag.data['dom.referrer'].toString().indexOf('paypal.com') > -1);
-            
+
             expect(fromCheckout).toBe(false);
         });
     });
@@ -157,33 +156,33 @@ describe('Braze Checkout Tracking', () => {
     describe('Subscriber detection', () => {
         it('should detect subscriber when user_hasPlusSubscription2 is true', () => {
             utag.data.user_hasPlusSubscription2 = 'true';
-            
+
             const isSubscriber = utag.data.user_hasPlusSubscription2.includes('true');
-            
+
             expect(isSubscriber).toBe(true);
         });
 
         it('should detect subscriber when user_hasPlusSubscription2 contains true', () => {
             utag.data.user_hasPlusSubscription2 = ['true', 'premium'];
-            
+
             const isSubscriber = utag.data.user_hasPlusSubscription2.includes('true');
-            
+
             expect(isSubscriber).toBe(true);
         });
 
         it('should not detect subscriber when user_hasPlusSubscription2 is false', () => {
             utag.data.user_hasPlusSubscription2 = 'false';
-            
+
             const isSubscriber = utag.data.user_hasPlusSubscription2.includes('true');
-            
+
             expect(isSubscriber).toBe(false);
         });
 
         it('should not detect subscriber when user_hasPlusSubscription2 is empty', () => {
             utag.data.user_hasPlusSubscription2 = '';
-            
+
             const isSubscriber = utag.data.user_hasPlusSubscription2.includes('true');
-            
+
             expect(isSubscriber).toBe(false);
         });
     });
@@ -196,7 +195,7 @@ describe('Braze Checkout Tracking', () => {
                         content_type: utag.data.page_document_type || '',
                         entitlement_ids: utag.data.user_entitlements2.toString() || '',
                         page_id: utag.data.page_id || '',
-                        offerId: utag.data['qp.offerId'] || '',
+                        offerId: utag.data['qp.offerId'] || ''
                     });
                 }
             };
@@ -223,7 +222,7 @@ describe('Braze Checkout Tracking', () => {
                         content_type: utag.data.page_document_type || '',
                         entitlement_ids: (utag.data.user_entitlements2 && utag.data.user_entitlements2.toString()) || '',
                         page_id: utag.data.page_id || '',
-                        offerId: utag.data['qp.offerId'] || '',
+                        offerId: utag.data['qp.offerId'] || ''
                     });
                 }
             };
@@ -247,7 +246,7 @@ describe('Braze Checkout Tracking', () => {
                         content_type: utag.data.page_document_type || '',
                         entitlement_ids: utag.data.user_entitlements2.toString() || '',
                         page_id: utag.data.page_id || '',
-                        offerId: utag.data['qp.offerId'] || '',
+                        offerId: utag.data['qp.offerId'] || ''
                     });
                 }
             };
@@ -258,7 +257,7 @@ describe('Braze Checkout Tracking', () => {
 
     describe('retryBrazeCheck function', () => {
         it('should call trackBrazeCheckout immediately when braze is available', () => {
-            let retryCount = 0;
+            const retryCount = 0;
             const trackBrazeCheckout = jest.fn();
 
             const retryBrazeCheck = () => {
@@ -324,15 +323,14 @@ describe('Braze Checkout Tracking', () => {
 
         it('should use 100ms delay for retries', () => {
             delete global.braze;
-            let retryCount = 0;
             const callback = jest.fn();
 
             setTimeout(callback, 100);
-            
+
             expect(callback).not.toHaveBeenCalled();
-            
+
             jest.advanceTimersByTime(100);
-            
+
             expect(callback).toHaveBeenCalled();
         });
     });
@@ -344,7 +342,7 @@ describe('Braze Checkout Tracking', () => {
             utag.data.user_hasPlusSubscription2 = 'true';
 
             const consentGiven = /(^|;)\s*cmp_cv_list\s*=\s*[^;]*braze[^;]*(;|$)/.test(document.cookie);
-            const fromCheckout = (typeof utag.data['dom.referrer'] != 'undefined' && 
+            const fromCheckout = (typeof utag.data['dom.referrer'] != 'undefined' &&
                 utag.data['dom.referrer'].toString().indexOf('checkout-v2.prod.ps.welt.de') > -1);
             const isSubscriber = utag.data.user_hasPlusSubscription2.includes('true');
 
@@ -357,7 +355,7 @@ describe('Braze Checkout Tracking', () => {
             utag.data.user_hasPlusSubscription2 = 'true';
 
             const consentGiven = /(^|;)\s*cmp_cv_list\s*=\s*[^;]*braze[^;]*(;|$)/.test(document.cookie);
-            const fromCheckout = (typeof utag.data['dom.referrer'] != 'undefined' && 
+            const fromCheckout = (typeof utag.data['dom.referrer'] != 'undefined' &&
                 utag.data['dom.referrer'].toString().indexOf('checkout-v2.prod.ps.welt.de') > -1);
             const isSubscriber = utag.data.user_hasPlusSubscription2.includes('true');
 
@@ -370,7 +368,7 @@ describe('Braze Checkout Tracking', () => {
             utag.data.user_hasPlusSubscription2 = 'true';
 
             const consentGiven = /(^|;)\s*cmp_cv_list\s*=\s*[^;]*braze[^;]*(;|$)/.test(document.cookie);
-            const fromCheckout = (typeof utag.data['dom.referrer'] != 'undefined' && 
+            const fromCheckout = (typeof utag.data['dom.referrer'] != 'undefined' &&
                 (utag.data['dom.referrer'].toString().indexOf('paypal.com') > -1 ||
                  utag.data['dom.referrer'].toString().indexOf('checkout-v2.prod.ps.welt.de') > -1));
             const isSubscriber = utag.data.user_hasPlusSubscription2.includes('true');
@@ -384,7 +382,7 @@ describe('Braze Checkout Tracking', () => {
             utag.data.user_hasPlusSubscription2 = 'false';
 
             const consentGiven = /(^|;)\s*cmp_cv_list\s*=\s*[^;]*braze[^;]*(;|$)/.test(document.cookie);
-            const fromCheckout = (typeof utag.data['dom.referrer'] != 'undefined' && 
+            const fromCheckout = (typeof utag.data['dom.referrer'] != 'undefined' &&
                 utag.data['dom.referrer'].toString().indexOf('checkout-v2.prod.ps.welt.de') > -1);
             const isSubscriber = utag.data.user_hasPlusSubscription2.includes('true');
 
@@ -401,7 +399,7 @@ describe('Braze Checkout Tracking', () => {
             utag.data['qp.offerId'] = 'PREMIUM_YEARLY';
 
             const consentGiven = /(^|;)\s*cmp_cv_list\s*=\s*[^;]*braze[^;]*(;|$)/.test(document.cookie);
-            const fromCheckout = (typeof utag.data['dom.referrer'] != 'undefined' && 
+            const fromCheckout = (typeof utag.data['dom.referrer'] != 'undefined' &&
                 utag.data['dom.referrer'].toString().indexOf('paypal.com') > -1);
             const isSubscriber = utag.data.user_hasPlusSubscription2.includes('true');
 
@@ -411,7 +409,7 @@ describe('Braze Checkout Tracking', () => {
                         content_type: utag.data.page_document_type || '',
                         entitlement_ids: utag.data.user_entitlements2.toString() || '',
                         page_id: utag.data.page_id || '',
-                        offerId: utag.data['qp.offerId'] || '',
+                        offerId: utag.data['qp.offerId'] || ''
                     });
                 }
             }
