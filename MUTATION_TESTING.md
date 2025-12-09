@@ -96,25 +96,6 @@ Stryker applies various mutations:
 - **Incremental**: Use `--incremental` flag for faster iterations
 - **File filtering**: Temporarily modify `mutate` array to test specific files
 
-## CI/CD Integration
-
-Add to your CI pipeline:
-
-```yaml
-# Example GitHub Actions
-- name: Run mutation tests
-  run: yarn test:mutation
-  
-# Fail build if mutation score is below threshold
-- name: Check mutation score
-  run: |
-    SCORE=$(jq '.mutationScore' mutation-report.json)
-    if (( $(echo "$SCORE < 50" | bc -l) )); then
-      echo "Mutation score $SCORE is below threshold"
-      exit 1
-    fi
-```
-
 ## Troubleshooting
 
 ### Tests timeout during mutation testing
