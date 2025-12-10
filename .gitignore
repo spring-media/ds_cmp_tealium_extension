@@ -7,6 +7,4 @@ coverage
 !.vscode/extensions.json
 
 # Editor config files
-.prettierrc
 .editorconfig
-
