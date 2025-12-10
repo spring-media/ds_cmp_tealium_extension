@@ -1,4 +1,4 @@
-// Type your JavaScript code here...// Runs only on Tealium link events for video interactions.
+//Runs only on Tealium link events for video interactions.
 // Ensures contentID is present before extracting media_id.
 (function (a, b) {
 
