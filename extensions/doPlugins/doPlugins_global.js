@@ -45,6 +45,9 @@ s.split = new Function("l", "d", ""
 s._utils = {
     getAdobeObject: _getAdobeObject,
     getDomainFromURLString: function(urlString) {
+        if (!urlString || typeof urlString !== 'string') {
+            return '';
+        }
         try {
             const urlObject = new URL(urlString);
             return urlObject.hostname;
@@ -54,6 +57,9 @@ s._utils = {
     },
 
     setSportDatencenter: function() {
+        if (!window.utag || !window.utag.data) {
+            return false;
+        }
         if (window.location.hostname.includes('sport.bild.de') || window.location.hostname.includes('sportdaten.sportbild.bild.de')) {
             window.utag.data.page_document_type = window.location.pathname.includes('/liveticker/') ? 'live-sport' : 'sportdaten';
             return window.utag.data.page_document_type;
@@ -62,6 +68,10 @@ s._utils = {
     },
 
     getDocType: function() {
+        if (!window.utag || !window.utag.data) {
+            return '';
+        }
+
         window.utag.data.page_document_type = this.setSportDatencenter() ? this.setSportDatencenter() : window.utag.data.page_document_type;
 
         return window.utag.data.page_type
@@ -73,15 +83,18 @@ s._utils = {
     },
 
     isAdWall: function(s) {
-        return (!!s.pageName && (s.pageName.indexOf('42925516') !== -1
+        return !!(!!s.pageName && (s.pageName.indexOf('42925516') !== -1
             || s.pageName.indexOf('54578900') !== -1)
             || window.location.toString().indexOf('unangemeldet-42925516') !== -1
             || window.location.toString().indexOf('unangemeldet-54578900') !== -1
-            || (!!window.utag.data['dom.pathname'] && window.utag.data['dom.pathname'].indexOf('adblockwall.html') !== -1)
-            || (!!window.utag.data.page_document_type && window.utag.data.page_document_type.indexOf('adwall') !== -1));
+            || (window.utag && window.utag.data && window.utag.data['dom.pathname'] && window.utag.data['dom.pathname'].indexOf('adblockwall.html') !== -1)
+            || (window.utag && window.utag.data && window.utag.data.page_document_type && window.utag.data.page_document_type.indexOf('adwall') !== -1));
     },
 
     isHomepage: function() {
+        if (!window.utag || !window.utag.data) {
+            return false;
+        }
         return (!!window.utag.data['page_id'] && (window.utag.data['page_id'] === '22P2NufXQ03Ny17A6vwi' || window.utag.data['page_id'] === 'wDmWJyqHFeqhJHmeuqfN')
                 || (this.getDocType === 'home') || !!window.utag.data['page_pageId'] && window.utag.data['page_pageId'] === '5');
     },
@@ -106,9 +119,15 @@ s._utils = {
         return ARTICLE_TYPES.indexOf(pageType) !== -1;
     },
     isFirstPageView: function() {
+        if (!window.utag || !window.utag.data) {
+            return false;
+        }
         return window.utag.data.cmp_event_status == 'cmpuishown';
     },
     isValidURL: function(urlString) {
+        if (!urlString || typeof urlString !== 'string') {
+            return false;
+        }
         try {
             const urlObject = new URL(urlString);
             return !!urlObject.hostname;
@@ -126,6 +145,9 @@ s._utils = {
     },
 
     getReferrerFromGetParameter: function() {
+        if (!window.utag || !window.utag.data) {
+            return '';
+        }
         let referrerFromGetParameter;
         if (window.utag.data['qp.t_ref']) {
             referrerFromGetParameter = window.utag.data['qp.t_ref'];
@@ -141,9 +163,15 @@ s._utils = {
         return this.getDomainFromURLString(this.getReferrer());
     },
     isSessionStart: function() {
+        if (!window.utag || !window.utag.data) {
+            return false;
+        }
         return (window.utag.data['cp.utag_main__ss'] === '1');
     },
     isPageOneInSession: function() {
+        if (!window.utag || !window.utag.data) {
+            return false;
+        }
         return (window.utag.data['cp.utag_main__pn'] === '1');
     },
     getPageReloadStatus: function() {
@@ -163,10 +191,16 @@ s._utils = {
 s._articleViewTypeObj = {
     cleanUpReferrer: function(referrer) {
         // remove malformed query param (TRAC-1229)
+        if (!referrer || typeof referrer !== 'string') {
+            return '';
+        }
         return referrer.split('&wt_t')[0];
     },
 
     isFromSearch: function(referringDomain) {
+        if (!referringDomain || typeof referringDomain !== 'string') {
+            return false;
+        }
         const searchEngines = [
             'google.',
             'bing.com',
@@ -207,6 +241,9 @@ s._articleViewTypeObj = {
     },
 
     isFromSocial: function(referrer) {
+        if (!referrer || typeof referrer !== 'string') {
+            return false;
+        }
         const socialDomains = ['facebook.com', 'xing.com', 'instagram.com', 'youtube.com', 't.co', 'linkedin.com', 'away.vk.com', 'www.pinterest.de', 'linkedin.android', 'ok.ru', 'mobile.ok.ru', 'www.yammer.com', 'twitter.com', 'www.netvibes.com', 'pinterest.com', 'wordpress.com', 'blogspot.com', 'lnkd.in', 'xing.android', 'vk.com', 'com.twitter.android', 'm.ok.ru', 'welt.de/instagram', 'linkin.bio', 'telegram.org', 'org.telegram', '.threads.net'];
 
         return socialDomains.some(item => {
@@ -217,9 +254,21 @@ s._articleViewTypeObj = {
     // Same domain check including subdomains.
     isFromInternal: function(referrer) {
         const referringDomain = s._utils.getDomainFromURLString(referrer);
+        if (!referringDomain) {
+            return false;
+        }
+
         const domain = window.location.hostname;
+        if (!domain) {
+            return false;
+        }
+
         const referringDomainSegments = referringDomain.split('.');
         const documentDomainSegments = domain.split('.');
+
+        if (referringDomainSegments.length < 2 || documentDomainSegments.length < 2) {
+            return false;
+        }
 
         // Exception for Sportbild: 'sportbild.bild.de' should not be treated as an internal (sub) domain of Bild
         if (referringDomain.indexOf('sportbild') !== -1) {
@@ -233,6 +282,9 @@ s._articleViewTypeObj = {
     // Only certain subdomains are considered as homepages: eg. www.bild.de, m.bild.de, sportbild.bild.de
     // Other special subdomains should not be considered: eg. sport.bild.de, online.welt.de
     isHomepageSubdomain: function(domain) {
+        if (!domain || typeof domain !== 'string') {
+            return false;
+        }
         const subdomainsWithHomepages = ['www', 'm', 'sportbild'];
         const domainSegments = domain.split('.');
         if (domainSegments.length > 2) {
@@ -244,7 +296,13 @@ s._articleViewTypeObj = {
     },
 
     isFromHome: function(referrer) {
+        if (!referrer || typeof referrer !== 'string') {
+            return false;
+        }
         const cleanedReferrer = this.cleanUpReferrer(referrer);
+        if (!cleanedReferrer) {
+            return false;
+        }
         try {
             const urlObject = new URL(cleanedReferrer);
             return urlObject.pathname === '/' && this.isHomepageSubdomain(urlObject.hostname);
@@ -256,12 +314,16 @@ s._articleViewTypeObj = {
     isFromAsDomain: function(referrer) {
         const asDomains = ['bild.de', 'welt.de', 'fitbook.de', 'stylebook.de', 'techbook.de', 'travelbook.de', 'myhomebook.de', 'bz-berlin.de', 'rollingstone.de', 'metal-hammer.de', 'musikexpress.de', 'petbook.de'];
         const referringDomain = s._utils.getDomainFromURLString(referrer);
+        if (!referringDomain) {
+            return false;
+        }
         const isInternal = this.isFromInternal(referrer);
         if (!isInternal) {
             return asDomains.some(item => {
                 return referringDomain.indexOf(item) !== -1;
             });
         }
+        return false;
     },
 
     isFromBild: function(referringDomain) {
@@ -305,6 +367,9 @@ s._articleViewTypeObj = {
 
     isFromPremiumService: function(referrer) {
         const referringDomain = s._utils.getDomainFromURLString(referrer);
+        if (!referringDomain) {
+            return false;
+        }
         return (referringDomain === 'secure.mypass.de' || referringDomain.includes('signin.auth.'));
     },
 
@@ -398,6 +463,9 @@ s._articleViewTypeObj = {
     },
 
     isFromLesenSieAuch: function() {
+        if (!window.utag || !window.utag.data) {
+            return false;
+        }
         return ((window.utag.data['cp.utag_main_lsa'] || '').includes('1'));
     },
 
@@ -599,18 +667,24 @@ s._articleViewTypeObj = {
     },
 
     setPageSourceAndAgeForCheckout: function(s) {
+        if (!window.utag || !window.utag.data) {
+            return;
+        }
         const pageAge = window.utag.data.page_age
             || window.utag.data.page_datePublication_age
             || window.utag.data.screen_agePublication
             || '';
         const channel = s.eVar37 || '';
         const channelCat = s.eVar38 || '';
+
         // Adding article view type, channel, channelCategory and page age to cookies for checkout
-        window.utag.loader.SC('utag_main', { 'articleview': s._articleViewType + ';exp-session' });
-        window.utag.loader.SC('utag_main', { channel: channel + ';exp-session' });
-        window.utag.loader.SC('utag_main', { channelCat: channelCat + ';exp-session' });
+        if (window.utag.loader && typeof window.utag.loader.SC === 'function') {
+            window.utag.loader.SC('utag_main', { 'articleview': s._articleViewType + ';exp-session' });
+            window.utag.loader.SC('utag_main', { channel: channel + ';exp-session' });
+            window.utag.loader.SC('utag_main', { channelCat: channelCat + ';exp-session' });
+            window.utag.loader.SC('utag_main', { 'pa': pageAge + ';exp-session' });
+        }
         window.utag.data['cp.utag_main_articleview'] = s._articleViewType;
-        window.utag.loader.SC('utag_main', { 'pa': pageAge + ';exp-session' });
         window.utag.data['cp.utag_main_pa'] = pageAge;
     },
 
@@ -906,6 +980,9 @@ s._setAdvertisingBranch = function(s) {
  */
 s._homeTeaserTrackingObj = {
     getTeaserBrandFromCID: function() {
+        if (!window.utag || !window.utag.data) {
+            return '';
+        }
         let teaserBrand = '';
 
         const cid = window.utag.data['qp.cid'];
@@ -918,26 +995,40 @@ s._homeTeaserTrackingObj = {
     },
 
     getTrackingValue: function() {
+        if (!window.utag || !window.utag.data) {
+            return '';
+        }
         const teaserBrand = this.getTeaserBrandFromCID();
         return teaserBrand || window.utag.data['cp.utag_main_hti'] || window.utag.data['qp.dtp'] || '';
     },
 
     getBlockValue: function() {
+        if (!window.utag || !window.utag.data) {
+            return '';
+        }
         const teaserBlock = window.utag.data['cp.utag_main_tb'] || window.utag.data['qp.tbl'] || '';
         return teaserBlock.split('_')[0];
     },
     deleteTrackingValuesFromCookie: function() {
-        window.utag.loader.SC('utag_main', { 'hti': '' + ';exp-session' });
-        window.utag.loader.SC('utag_main', { 'tb': '' + ';exp-session' });
+        if (window.utag && window.utag.loader && typeof window.utag.loader.SC === 'function') {
+            window.utag.loader.SC('utag_main', { 'hti': '' + ';exp-session' });
+            window.utag.loader.SC('utag_main', { 'tb': '' + ';exp-session' });
+        }
     },
 
     getPageId: function() {
+        if (!window.utag || !window.utag.data) {
+            return '';
+        }
         return window.utag.data.page_id
             || window.utag.data.page_escenicId
             || '';
     },
 
     setEvars: function(s) {
+        if (!window.utag || !window.utag.data) {
+            return;
+        }
         const trackingValue = this.getTrackingValue();
         const blockValue = this.getBlockValue();
         const pageId = this.getPageId();
@@ -1182,18 +1273,28 @@ s._eventsObj = {
  */
 s._directOrderObj = {
     saveToCookie: (cookieObj) => {
-        window.utag.loader.SC('utag_main', cookieObj);
+        if (window.utag && window.utag.loader && typeof window.utag.loader.SC === 'function') {
+            window.utag.loader.SC('utag_main', cookieObj);
+        }
     },
 
     deleteFromCookieOtb: () => {
-        window.utag.loader.SC('utag_main', { 'otb': '' + ';exp-session' });
+        if (window.utag && window.utag.loader && typeof window.utag.loader.SC === 'function') {
+            window.utag.loader.SC('utag_main', { 'otb': '' + ';exp-session' });
+        }
     },
 
     getTealiumProfile: function() {
+        if (!window.utag || !window.utag.data) {
+            return '';
+        }
         return window.utag.data.tealium_profile || window.utag.data['ut.profile'];
     },
 
     isPaywall: function() {
+        if (!window.utag || !window.utag.data) {
+            return false;
+        }
         let is_paywall = false;
         const eventName = window.utag.data.event_name;
         const eventAction = window.utag.data.event_action;
