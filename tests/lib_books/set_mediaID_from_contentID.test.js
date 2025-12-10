@@ -15,6 +15,7 @@
  * - Validates contentID exists and is a string
  * - Cleans contentID by trimming and removing quotes
  * - Extracts media_id based on URL pattern
+ * - Sets media_id in TWO places: b.media_id (event object) AND utag.data.media_id (global)
  */
 
 describe('set_mediaID_from_contentID - Video Media ID Extraction', () => {
@@ -56,7 +57,8 @@ describe('set_mediaID_from_contentID - Video Media ID Extraction', () => {
                 require('../../extensions/lib_books/set_mediaID_from_contentID');
             });
 
-            // Assert
+            // Assert: Check BOTH locations where media_id is set
+            expect(global.b.media_id).toBe('media123');
             expect(global.utag.data.media_id).toBe('media123');
         });
 
@@ -71,7 +73,8 @@ describe('set_mediaID_from_contentID - Video Media ID Extraction', () => {
                 require('../../extensions/lib_books/set_mediaID_from_contentID');
             });
 
-            // Assert
+            // Assert: Check BOTH locations
+            expect(global.b.media_id).toBe('video456');
             expect(global.utag.data.media_id).toBe('video456');
         });
 
@@ -86,7 +89,8 @@ describe('set_mediaID_from_contentID - Video Media ID Extraction', () => {
                 require('../../extensions/lib_books/set_mediaID_from_contentID');
             });
 
-            // Assert
+            // Assert: Check BOTH locations get empty string
+            expect(global.b.media_id).toBe('');
             expect(global.utag.data.media_id).toBe('');
         });
     });
@@ -103,7 +107,8 @@ describe('set_mediaID_from_contentID - Video Media ID Extraction', () => {
                 require('../../extensions/lib_books/set_mediaID_from_contentID');
             });
 
-            // Assert
+            // Assert: Check BOTH locations
+            expect(global.b.media_id).toBe('article789');
             expect(global.utag.data.media_id).toBe('article789');
         });
 
@@ -118,7 +123,8 @@ describe('set_mediaID_from_contentID - Video Media ID Extraction', () => {
                 require('../../extensions/lib_books/set_mediaID_from_contentID');
             });
 
-            // Assert
+            // Assert: Check BOTH locations
+            expect(global.b.media_id).toBe('content999');
             expect(global.utag.data.media_id).toBe('content999');
         });
 
@@ -133,7 +139,8 @@ describe('set_mediaID_from_contentID - Video Media ID Extraction', () => {
                 require('../../extensions/lib_books/set_mediaID_from_contentID');
             });
 
-            // Assert
+            // Assert: Check BOTH locations get empty string
+            expect(global.b.media_id).toBe('');
             expect(global.utag.data.media_id).toBe('');
         });
     });
@@ -150,7 +157,8 @@ describe('set_mediaID_from_contentID - Video Media ID Extraction', () => {
                 require('../../extensions/lib_books/set_mediaID_from_contentID');
             });
 
-            // Assert
+            // Assert: Check BOTH locations
+            expect(global.b.media_id).toBe('media123');
             expect(global.utag.data.media_id).toBe('media123');
         });
 
@@ -165,7 +173,8 @@ describe('set_mediaID_from_contentID - Video Media ID Extraction', () => {
                 require('../../extensions/lib_books/set_mediaID_from_contentID');
             });
 
-            // Assert
+            // Assert: Check BOTH locations
+            expect(global.b.media_id).toBe('media456');
             expect(global.utag.data.media_id).toBe('media456');
         });
 
@@ -180,7 +189,8 @@ describe('set_mediaID_from_contentID - Video Media ID Extraction', () => {
                 require('../../extensions/lib_books/set_mediaID_from_contentID');
             });
 
-            // Assert
+            // Assert: Check BOTH locations
+            expect(global.b.media_id).toBe('media789');
             expect(global.utag.data.media_id).toBe('media789');
         });
 
@@ -195,7 +205,8 @@ describe('set_mediaID_from_contentID - Video Media ID Extraction', () => {
                 require('../../extensions/lib_books/set_mediaID_from_contentID');
             });
 
-            // Assert
+            // Assert: Check BOTH locations
+            expect(global.b.media_id).toBe('media111');
             expect(global.utag.data.media_id).toBe('media111');
         });
 
@@ -210,7 +221,8 @@ describe('set_mediaID_from_contentID - Video Media ID Extraction', () => {
                 require('../../extensions/lib_books/set_mediaID_from_contentID');
             });
 
-            // Assert
+            // Assert: Neither location should be set
+            expect(global.b.media_id).toBeUndefined();
             expect(global.utag.data.media_id).toBeUndefined();
         });
 
@@ -225,7 +237,8 @@ describe('set_mediaID_from_contentID - Video Media ID Extraction', () => {
                 require('../../extensions/lib_books/set_mediaID_from_contentID');
             });
 
-            // Assert
+            // Assert: Neither location should be set
+            expect(global.b.media_id).toBeUndefined();
             expect(global.utag.data.media_id).toBeUndefined();
         });
 
@@ -240,7 +253,8 @@ describe('set_mediaID_from_contentID - Video Media ID Extraction', () => {
                 require('../../extensions/lib_books/set_mediaID_from_contentID');
             });
 
-            // Assert
+            // Assert: Neither location should be set
+            expect(global.b.media_id).toBeUndefined();
             expect(global.utag.data.media_id).toBeUndefined();
         });
 
@@ -255,7 +269,8 @@ describe('set_mediaID_from_contentID - Video Media ID Extraction', () => {
                 require('../../extensions/lib_books/set_mediaID_from_contentID');
             });
 
-            // Assert
+            // Assert: Neither location should be set
+            expect(global.b.media_id).toBeUndefined();
             expect(global.utag.data.media_id).toBeUndefined();
         });
     });
@@ -272,7 +287,8 @@ describe('set_mediaID_from_contentID - Video Media ID Extraction', () => {
                 require('../../extensions/lib_books/set_mediaID_from_contentID');
             });
 
-            // Assert
+            // Assert: Neither location should be set
+            expect(global.b.media_id).toBeUndefined();
             expect(global.utag.data.media_id).toBeUndefined();
         });
 
@@ -287,7 +303,8 @@ describe('set_mediaID_from_contentID - Video Media ID Extraction', () => {
                 require('../../extensions/lib_books/set_mediaID_from_contentID');
             });
 
-            // Assert
+            // Assert: Neither location should be set
+            expect(global.b.media_id).toBeUndefined();
             expect(global.utag.data.media_id).toBeUndefined();
         });
 
@@ -379,7 +396,8 @@ describe('set_mediaID_from_contentID - Video Media ID Extraction', () => {
                 require('../../extensions/lib_books/set_mediaID_from_contentID');
             });
 
-            // Assert: Should use position [4] when content-discovery is found
+            // Assert: Check BOTH locations - should use position [4] when content-discovery is found
+            expect(global.b.media_id).toBe('media555');
             expect(global.utag.data.media_id).toBe('media555');
         });
 
@@ -394,7 +412,8 @@ describe('set_mediaID_from_contentID - Video Media ID Extraction', () => {
                 require('../../extensions/lib_books/set_mediaID_from_contentID');
             });
 
-            // Assert
+            // Assert: Check BOTH locations
+            expect(global.b.media_id).toBe('media-123_abc');
             expect(global.utag.data.media_id).toBe('media-123_abc');
         });
 
@@ -409,7 +428,8 @@ describe('set_mediaID_from_contentID - Video Media ID Extraction', () => {
                 require('../../extensions/lib_books/set_mediaID_from_contentID');
             });
 
-            // Assert
+            // Assert: Check BOTH locations
+            expect(global.b.media_id).toBe('999888777');
             expect(global.utag.data.media_id).toBe('999888777');
         });
     });
