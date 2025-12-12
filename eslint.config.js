@@ -6,7 +6,7 @@ import globals from 'globals';
 
 export default [
     {
-        ignores: ['backup/**', 'node_modules/**', 'dist/**']
+        ignores: ['backup/**', 'node_modules/**', 'dist/**', '.stryker-tmp/**']
     },
     {
         files: ['**/*.js', '**/*.ts'],

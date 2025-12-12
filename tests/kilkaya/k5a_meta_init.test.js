@@ -1,5 +1,5 @@
 /**
- * @jest-environment jsdom
+ * @stryker-mutator/jest-runner/jest-env/jsdom
  */
 
 describe('k5a_meta_init', () => {

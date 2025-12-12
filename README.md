@@ -48,6 +48,51 @@ This is an example of how to list things you need to use the software and how to
    yarn run test
    ```
 
+4. Run Mutation Tests (optional)
+
+   ```sh
+   yarn test:mutation
+   ```
+
+## Testing
+
+This project includes comprehensive unit tests and mutation testing to ensure code quality.
+
+### Unit Tests
+
+Run the standard Jest test suite:
+
+```sh
+yarn test
+```
+
+### Mutation Testing
+
+Mutation testing measures the quality of your tests by introducing small changes (mutations) to the code and checking if tests catch them. See [MUTATION_TESTING.md](./MUTATION_TESTING.md) for detailed documentation.
+
+**Quick Start:**
+
+```sh
+# Run mutation tests on all extensions
+yarn test:mutation
+
+# Run in incremental mode (faster, only changed files)
+yarn test:mutation:incremental
+
+# Run in watch mode
+yarn test:mutation:watch
+```
+
+The mutation testing will generate an HTML report (`mutation-report.html`) showing which code mutations were caught by tests and which survived, helping identify gaps in test coverage.
+
+### Linting
+
+Check code quality with ESLint:
+
+```sh
+yarn lint
+```
+
 ## Extensions
 
 ### CMP Interaction Tracking Extension
