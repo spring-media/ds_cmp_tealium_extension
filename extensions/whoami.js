@@ -10,7 +10,6 @@ function _whoamiSnipped_log(message) {
     }
 }
 
-_whoamiSnipped_log('whoami : start  ');
 
 ! function() {
     function _whoamiSnipped_getAsInfo() {
@@ -69,7 +68,6 @@ _whoamiSnipped_log('whoami : start  ');
         window.utag.data.user_entitlements2 = 'false';
 
     }
-    _whoamiSnipped_log('whoami : user_isLoggedIn:  ' + window.utag.data.user_isLoggedIn2);
 
     if (isLoggedIn) {
         var getJaId = asinfo.jaId || '';
@@ -80,10 +78,5 @@ _whoamiSnipped_log('whoami : start  ');
 
         updateUserSubscriptionsStatus(window.location.host);
        
-        //remove debug console logs after everything is working
-        _whoamiSnipped_log('whoami : user_jaId2:  ' + window.utag.data.user_jaId2);
-        _whoamiSnipped_log('whoami : user_entitlements2:  ' + window.utag.data.user_entitlements2);
-        _whoamiSnipped_log('whoami : user_hasPurSubscription2:  ' + window.utag.data.user_hasPurSubscription2);
-        _whoamiSnipped_log('whoami : user_hasPlusSubscription2:  ' + window.utag.data.user_hasPlusSubscription2);
     }
 }();
