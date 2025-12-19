@@ -17,6 +17,13 @@
  * - Sets values in TWO places: b (event object) AND utag.data (global)
  */
 
+// Helper function to execute the extension
+const executeExtension = () => {
+    jest.isolateModules(() => {
+        require('../../extensions/bz/set_media_id_and_headline');
+    });
+};
+
 describe('set_media_id_and_headline - Video Media ID and Headline Normalization', () => {
     let originalA;
     let originalB;
@@ -58,9 +65,7 @@ describe('set_media_id_and_headline - Video Media ID and Headline Normalization'
             global.utag.data.contentID = '/some/path/fallback';
 
             // Act
-            jest.isolateModules(() => {
-                require('../../extensions/bz/set_media_id_and_headline');
-            });
+            executeExtension();
 
             // Assert: Check BOTH locations
             expect(global.b.media_id).toBe('xymatic_123');
@@ -81,9 +86,7 @@ describe('set_media_id_and_headline - Video Media ID and Headline Normalization'
             global.utag.data.contentID = '/some/path/fallback';
 
             // Act
-            jest.isolateModules(() => {
-                require('../../extensions/bz/set_media_id_and_headline');
-            });
+            executeExtension();
 
             // Assert: Check BOTH locations
             expect(global.b.media_id).toBe('xymatic_456');
@@ -105,9 +108,7 @@ describe('set_media_id_and_headline - Video Media ID and Headline Normalization'
             global.utag.data.contentID = '/some/path/fallback';
 
             // Act
-            jest.isolateModules(() => {
-                require('../../extensions/bz/set_media_id_and_headline');
-            });
+            executeExtension();
 
             // Assert: Should work because player name is lowercased
             expect(global.b.media_id).toBe('xymatic_789');
@@ -127,9 +128,7 @@ describe('set_media_id_and_headline - Video Media ID and Headline Normalization'
             global.utag.data.contentID = '/some/path/fallback';
 
             // Act
-            jest.isolateModules(() => {
-                require('../../extensions/bz/set_media_id_and_headline');
-            });
+            executeExtension();
 
             // Assert
             expect(global.b.media_id).toBe('xymatic_mixed');
@@ -149,9 +148,7 @@ describe('set_media_id_and_headline - Video Media ID and Headline Normalization'
             global.utag.data.contentID = '/some/path/fallback';
 
             // Act
-            jest.isolateModules(() => {
-                require('../../extensions/bz/set_media_id_and_headline');
-            });
+            executeExtension();
 
             // Assert: media_id set, but not headline
             expect(global.b.media_id).toBe('xymatic_no_headline');
@@ -173,9 +170,7 @@ describe('set_media_id_and_headline - Video Media ID and Headline Normalization'
             global.utag.data.contentID = '/category/subcategory/media123/extra';
 
             // Act
-            jest.isolateModules(() => {
-                require('../../extensions/bz/set_media_id_and_headline');
-            });
+            executeExtension();
 
             // Assert: Check BOTH locations
             expect(global.b.media_id).toBe('media123');
@@ -194,9 +189,7 @@ describe('set_media_id_and_headline - Video Media ID and Headline Normalization'
             global.utag.data.contentID = '/path/to/content-discovery/media456/more';
 
             // Act
-            jest.isolateModules(() => {
-                require('../../extensions/bz/set_media_id_and_headline');
-            });
+            executeExtension();
 
             // Assert: Should use position [4] for content-discovery
             expect(global.b.media_id).toBe('media456');
@@ -215,9 +208,7 @@ describe('set_media_id_and_headline - Video Media ID and Headline Normalization'
             global.utag.data.contentID = ' ""/path/to/media789"" ';
 
             // Act
-            jest.isolateModules(() => {
-                require('../../extensions/bz/set_media_id_and_headline');
-            });
+            executeExtension();
 
             // Assert
             expect(global.b.media_id).toBe('media789');
@@ -237,9 +228,7 @@ describe('set_media_id_and_headline - Video Media ID and Headline Normalization'
             global.utag.data.contentID = '/path/to/media111';
 
             // Act
-            jest.isolateModules(() => {
-                require('../../extensions/bz/set_media_id_and_headline');
-            });
+            executeExtension();
 
             // Assert
             expect(global.b.media_id).toBe('media111');
@@ -260,9 +249,7 @@ describe('set_media_id_and_headline - Video Media ID and Headline Normalization'
             global.utag.data.contentID = '/path/to/media222';
 
             // Act
-            jest.isolateModules(() => {
-                require('../../extensions/bz/set_media_id_and_headline');
-            });
+            executeExtension();
 
             // Assert
             expect(global.b.media_id).toBe('media222');
@@ -284,9 +271,7 @@ describe('set_media_id_and_headline - Video Media ID and Headline Normalization'
             global.utag.data.contentID = '/path/to/media333';
 
             // Act
-            jest.isolateModules(() => {
-                require('../../extensions/bz/set_media_id_and_headline');
-            });
+            executeExtension();
 
             // Assert: Should use media_headline, not headline
             expect(global.b.media_headline).toBe('Primary Headline');
@@ -305,9 +290,7 @@ describe('set_media_id_and_headline - Video Media ID and Headline Normalization'
             global.utag.data.contentID = '/path/to/media444';
 
             // Act
-            jest.isolateModules(() => {
-                require('../../extensions/bz/set_media_id_and_headline');
-            });
+            executeExtension();
 
             // Assert: media_id set, but not headline
             expect(global.b.media_id).toBe('media444');
@@ -330,9 +313,7 @@ describe('set_media_id_and_headline - Video Media ID and Headline Normalization'
             global.utag.data.contentID = '/path/to/media';
 
             // Act
-            jest.isolateModules(() => {
-                require('../../extensions/bz/set_media_id_and_headline');
-            });
+            executeExtension();
 
             // Assert: Nothing should be set
             expect(global.b.media_id).toBeUndefined();
@@ -352,9 +333,7 @@ describe('set_media_id_and_headline - Video Media ID and Headline Normalization'
             global.utag.data.contentID = '/path/to/media';
 
             // Act
-            jest.isolateModules(() => {
-                require('../../extensions/bz/set_media_id_and_headline');
-            });
+            executeExtension();
 
             // Assert: Nothing should be set
             expect(global.b.media_id).toBeUndefined();
@@ -368,9 +347,7 @@ describe('set_media_id_and_headline - Video Media ID and Headline Normalization'
             global.utag.data.contentID = '/path/to/media';
 
             // Act
-            jest.isolateModules(() => {
-                require('../../extensions/bz/set_media_id_and_headline');
-            });
+            executeExtension();
 
             // Assert
             expect(global.utag.data.media_id).toBeUndefined();
@@ -383,9 +360,7 @@ describe('set_media_id_and_headline - Video Media ID and Headline Normalization'
             global.utag.data.contentID = '/path/to/media';
 
             // Act
-            jest.isolateModules(() => {
-                require('../../extensions/bz/set_media_id_and_headline');
-            });
+            executeExtension();
 
             // Assert
             expect(global.utag.data.media_id).toBeUndefined();
@@ -400,9 +375,7 @@ describe('set_media_id_and_headline - Video Media ID and Headline Normalization'
             global.utag.data.contentID = '/path/to/media';
 
             // Act
-            jest.isolateModules(() => {
-                require('../../extensions/bz/set_media_id_and_headline');
-            });
+            executeExtension();
 
             // Assert
             expect(global.utag.data.media_id).toBeUndefined();
@@ -422,9 +395,7 @@ describe('set_media_id_and_headline - Video Media ID and Headline Normalization'
             global.utag.data.contentID = undefined;
 
             // Act
-            jest.isolateModules(() => {
-                require('../../extensions/bz/set_media_id_and_headline');
-            });
+            executeExtension();
 
             // Assert
             expect(global.b.media_id).toBeUndefined();
@@ -443,9 +414,7 @@ describe('set_media_id_and_headline - Video Media ID and Headline Normalization'
             global.utag.data.contentID = 12345;
 
             // Act
-            jest.isolateModules(() => {
-                require('../../extensions/bz/set_media_id_and_headline');
-            });
+            executeExtension();
 
             // Assert
             expect(global.b.media_id).toBeUndefined();
@@ -464,9 +433,7 @@ describe('set_media_id_and_headline - Video Media ID and Headline Normalization'
             global.utag.data.contentID = null;
 
             // Act
-            jest.isolateModules(() => {
-                require('../../extensions/bz/set_media_id_and_headline');
-            });
+            executeExtension();
 
             // Assert
             expect(global.b.media_id).toBeUndefined();
@@ -485,9 +452,7 @@ describe('set_media_id_and_headline - Video Media ID and Headline Normalization'
             global.utag.data.contentID = '/short/path';
 
             // Act
-            jest.isolateModules(() => {
-                require('../../extensions/bz/set_media_id_and_headline');
-            });
+            executeExtension();
 
             // Assert
             expect(global.b.media_id).toBeUndefined();
@@ -505,9 +470,7 @@ describe('set_media_id_and_headline - Video Media ID and Headline Normalization'
             global.utag.data.contentID = '/path/to/media555';
 
             // Act
-            jest.isolateModules(() => {
-                require('../../extensions/bz/set_media_id_and_headline');
-            });
+            executeExtension();
 
             // Assert: Should fall back to contentID extraction
             expect(global.b.media_id).toBe('media555');
@@ -524,9 +487,7 @@ describe('set_media_id_and_headline - Video Media ID and Headline Normalization'
             global.utag.data.contentID = '/path/to/media666';
 
             // Act
-            jest.isolateModules(() => {
-                require('../../extensions/bz/set_media_id_and_headline');
-            });
+            executeExtension();
 
             // Assert: Should fall back to contentID extraction
             expect(global.b.media_id).toBe('media666');
@@ -545,9 +506,7 @@ describe('set_media_id_and_headline - Video Media ID and Headline Normalization'
             global.utag.data.contentID = '/path/to/media777';
 
             // Act
-            jest.isolateModules(() => {
-                require('../../extensions/bz/set_media_id_and_headline');
-            });
+            executeExtension();
 
             // Assert: Should fall back to contentID extraction
             expect(global.b.media_id).toBe('media777');
@@ -569,9 +528,7 @@ describe('set_media_id_and_headline - Video Media ID and Headline Normalization'
             global.utag.data.contentID = '/path/to/fallback_media';
 
             // Act
-            jest.isolateModules(() => {
-                require('../../extensions/bz/set_media_id_and_headline');
-            });
+            executeExtension();
 
             // Assert: Should use xymatic media_id, not contentID
             expect(global.b.media_id).toBe('xymatic_priority');
@@ -590,9 +547,7 @@ describe('set_media_id_and_headline - Video Media ID and Headline Normalization'
             global.utag.data.contentID = '/path/to/media-123_abc';
 
             // Act
-            jest.isolateModules(() => {
-                require('../../extensions/bz/set_media_id_and_headline');
-            });
+            executeExtension();
 
             // Assert
             expect(global.b.media_id).toBe('media-123_abc');
@@ -611,9 +566,7 @@ describe('set_media_id_and_headline - Video Media ID and Headline Normalization'
             global.utag.data.contentID = '/category/subcategory/999888777';
 
             // Act
-            jest.isolateModules(() => {
-                require('../../extensions/bz/set_media_id_and_headline');
-            });
+            executeExtension();
 
             // Assert
             expect(global.b.media_id).toBe('999888777');
@@ -638,9 +591,7 @@ describe('set_media_id_and_headline - Video Media ID and Headline Normalization'
             global.utag.data.contentID = '/path/to/fallback';
 
             // Act
-            jest.isolateModules(() => {
-                require('../../extensions/bz/set_media_id_and_headline');
-            });
+            executeExtension();
 
             // Assert: Should set media_id and headline, preserve other fields
             expect(global.b.media_id).toBe('complex_123');
@@ -665,9 +616,7 @@ describe('set_media_id_and_headline - Video Media ID and Headline Normalization'
             global.utag.data.contentID = '/path/to/fallback';
 
             // Act
-            jest.isolateModules(() => {
-                require('../../extensions/bz/set_media_id_and_headline');
-            });
+            executeExtension();
 
             // Assert: Should use xymatic headline from event_data
             expect(global.b.media_headline).toBe('Xymatic Headline');
