@@ -4,10 +4,16 @@
 Problem was that when a page loads library twice, braze start a new sessions
 There was no way in braze to stop that or check it before
 */
-const consentGiven = /(^|;)\s*cmp_cv_list\s*=\s*[^;]*braze[^;]*(;|$)/.test(document.cookie);
-const fromCheckout = (typeof utag.data['dom.referrer'] != 'undefined' && utag.data['dom.referrer'].toString().indexOf('paypal.com') > -1) || (typeof utag.data['dom.referrer'] != 'undefined' && utag.data['dom.referrer'].toString().indexOf('checkout-v2.prod.ps.welt.de') > -1) || (typeof utag.data['qp.t_ref'] != 'undefined' && utag.data['qp.t_ref'].toString().indexOf('checkout-v2.prod.ps.welt.de') > -1);
-const isSubscriber = utag.data.user_hasPlusSubscription2.includes('true');
 
+const consentGiven = /(^|;)\s*cmp_cv_list\s*=\s*[^;]*braze[^;]*(;|$)/.test(document.cookie);
+const fromCheckout =
+    (typeof utag.data['dom.referrer'] != 'undefined' &&
+        utag.data['dom.referrer'].toString().indexOf('paypal.com') > -1) ||
+    (typeof utag.data['dom.referrer'] != 'undefined' &&
+        utag.data['dom.referrer'].toString().indexOf('checkout-v2.prod.ps.welt.de') > -1) ||
+    (typeof utag.data['qp.t_ref'] != 'undefined' &&
+        utag.data['qp.t_ref'].toString().indexOf('checkout-v2.prod.ps.welt.de') > -1);
+const isSubscriber = utag.data.user_hasPlusSubscription2.includes('true');
 
 function trackBrazeCheckout() {
     if (typeof braze != 'undefined') {
