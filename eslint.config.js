@@ -3,6 +3,7 @@ import pluginImport from 'eslint-plugin-import';
 import tseslint from 'typescript-eslint';
 import stylistic from '@stylistic/eslint-plugin';
 import globals from 'globals';
+import prettierConfig from 'eslint-config-prettier';
 
 export default [
     {
@@ -200,5 +201,7 @@ export default [
             'spaced-comment': ['warn', 'always', { markers: [','] }],
             'wrap-regex': 'off'
         }
-    }
+    },
+    // Prettier config should be last to override conflicting rules
+    prettierConfig
 ];

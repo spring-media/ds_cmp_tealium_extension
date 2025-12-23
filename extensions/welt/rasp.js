@@ -28,10 +28,6 @@
                       adLibBranch: ''
                   };
 
-        // Get advertising branch (eVar219 equivalent)
-        const advertisingBranch =
-            typeof RaspHelpers !== 'undefined' ? RaspHelpers.getAdvertisingBranch() : 'noAdlib';
-
         const tiqVersion = utag.cfg.utid.split('/').slice(1).join('/');
         const customDataLayer = {
             appName: 'WELT.de',
@@ -45,6 +41,7 @@
             timezoneOffset: new Date().getTimezoneOffset() / -60,
             timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
             appOs: utag.data.app_os || '',
+            appVersion: utag.data.app_version || '',
             previousPage: utag.data.previous_page_name || '',
             pageReloadStatus: trackingData.pageReloadstatus,
             adLibBranch: trackingData.adLibBranch,
@@ -54,12 +51,11 @@
             pageId: trackingData.pageId,
             cid: trackingData.cid,
             icid: trackingData.icid,
-            outbrainModel: utag.data.page_outbrain_model || '', // eVar237 - Outbrain Model
+            outbrainModel: utag.data.page_outbrain_model || '',
             userStatus: utag.data.user_isLoggedIn2 || '',
             pageContainsVideo: utag.data.page_has_video || '',
             cmpFirstPageview: utag.data.cmp_event_status === 'cmpuishown' ? 'cmp_first_pv' : '',
-            ac1: utag.data['cp.utag_main_ac'] || '' // eVar241 - First-Party Cookie
-            // ac1: utag.data['cp.utag_main_v_id'] || '' // eVar85 - Visitor ID
+            ac1: utag.data['cp.utag_main_ac'] || '' // eVar241
         };
 
         window.ringDataLayer = {
