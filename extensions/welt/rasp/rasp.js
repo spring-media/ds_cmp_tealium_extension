@@ -52,7 +52,7 @@
             cid: trackingData.cid,
             icid: trackingData.icid,
             outbrainModel: utag.data.page_outbrain_model || '',
-            userStatus: utag.data.user_isLoggedIn2 || '',
+            isLoggedIn: utag.data.user_isLoggedIn2 || '',
             pageContainsVideo: utag.data.page_has_video || '',
             cmpFirstPageview: utag.data.cmp_event_status === 'cmpuishown' ? 'cmp_first_pv' : '',
             ac1: utag.data['cp.utag_main_ac'] || '' // eVar241
@@ -78,6 +78,16 @@
                 source: {
                     system: 'BFF',
                     id: utag.data.page_escenicId || 'no pageId'
+                }
+            },
+            user: {
+                sso: {
+                    logged: { id: utag.data.user_jaId2 || '' }
+                },
+                id: {
+                    external: {
+                        id: { peterId: utag.data.peterId || '' }
+                    }
                 }
             }
         };

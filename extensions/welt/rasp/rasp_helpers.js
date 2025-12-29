@@ -179,3 +179,8 @@ const RaspHelpers = {
 if (typeof window !== 'undefined') {
     window.RaspHelpers = RaspHelpers;
 }
+
+// Export for tests
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports = RaspHelpers;
+}
