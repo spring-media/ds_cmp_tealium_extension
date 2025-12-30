@@ -7,12 +7,6 @@
     "clear-text",
     "progress"
   ],
-  "htmlReporter": {
-    "fileName": "mutation-report.html"
-  },
-  "jsonReporter": {
-    "fileName": "mutation-report.json"
-  },
   "testRunner": "jest",
   "testRunner_comment": "Take a look at https://stryker-mutator.io/docs/stryker-js/jest-runner for information about the jest plugin.",
   "coverageAnalysis": "perTest",
