@@ -28,7 +28,7 @@ const RaspTracking = {
                         teaserPositionPage: '',
                         cid: '',
                         icid: '',
-                        pageReloadstatus: '',
+                        pageReloadStatus: '',
                         adLibBranch: ''
                     };
 
@@ -47,7 +47,7 @@ const RaspTracking = {
                 appOs: utag.data.app_os || '',
                 appVersion: utag.data.app_version || '',
                 previousPage: utag.data.previous_page_name || '',
-                pageReloadStatus: trackingData.pageReloadstatus,
+                pageReloadStatus: trackingData.pageReloadStatus,
                 adLibBranch: trackingData.adLibBranch,
                 teaserPosition: trackingData.trackingValue,
                 teaserPositionPage: trackingData.teaserPositionPage,
