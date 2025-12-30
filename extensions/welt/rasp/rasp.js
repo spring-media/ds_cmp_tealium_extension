@@ -13,6 +13,15 @@
 
 const RaspTracking = {
     /**
+     * Check if user has consented to Rasp tracking
+     * @param {string} cookie - The document.cookie string
+     * @returns {boolean} True if rasp consent is present
+     */
+    hasRaspConsent: function(cookie) {
+        return /(^|;)\s*cmp_cv_list\s*=\s*[^;]*rasp[^;]*(;|$)/.test(cookie);
+    },
+
+    /**
      * Initialize Rasp tracking
      */
     initialize: function() {
@@ -28,7 +37,7 @@ const RaspTracking = {
                         teaserPositionPage: '',
                         cid: '',
                         icid: '',
-                        pageReloadstatus: '',
+                        pageReloadStatus: '',
                         adLibBranch: ''
                     };
 
@@ -47,7 +56,7 @@ const RaspTracking = {
                 appOs: utag.data.app_os || '',
                 appVersion: utag.data.app_version || '',
                 previousPage: utag.data.previous_page_name || '',
-                pageReloadStatus: trackingData.pageReloadstatus,
+                pageReloadStatus: trackingData.pageReloadStatus,
                 adLibBranch: trackingData.adLibBranch,
                 teaserPosition: trackingData.trackingValue,
                 teaserPositionPage: trackingData.teaserPositionPage,
@@ -104,11 +113,7 @@ const RaspTracking = {
             };
 
             // runs with click at "alle akzeptieren"
-            if (
-                /(^|;)\s*cmp_cv_list\s*=\s*[^;]*rasp[^;]*(;|$)/.test(
-                    document.cookie
-                )
-            ) {
+            if (this.hasRaspConsent(document.cookie)) {
                 window.dlApi = window.dlApi != null ? window.dlApi : {};
                 window.dlApi.kropka =
                     window.dlApi.kropka != null ? window.dlApi.kropka : {};

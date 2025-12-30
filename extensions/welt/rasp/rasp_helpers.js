@@ -179,7 +179,7 @@ const RaspHelpers = {
             ...this.getTeaserTrackingData(),
             cid: this.getCID(),
             icid: this.getICID(),
-            pageReloadstatus: this.getPageReloadStatus(),
+            pageReloadStatus: this.getPageReloadStatus(),
             adLibBranch: this.getAdvertisingBranch()
         };
     }

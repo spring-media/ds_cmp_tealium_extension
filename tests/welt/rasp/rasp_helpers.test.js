@@ -180,7 +180,7 @@ describe('RaspHelpers', () => {
                 teaserPositionPage: 'stylebook|12345',
                 cid: 'cid=brand.segment.stylebook',
                 icid: 'icid_123',
-                pageReloadstatus: 'navigate',
+                pageReloadStatus: 'navigate',
                 adLibBranch: 'testBranch'
             });
         });
