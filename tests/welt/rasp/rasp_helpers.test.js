@@ -87,13 +87,30 @@ describe('RaspHelpers', () => {
     });
 
     describe('getCID', () => {
-        it('should prioritize parameters in correct order', () => {
+        it('should prioritize cid over other parameters', () => {
             utag.data['qp.cid'] = 'cid_value';
             utag.data['qp.wtrid'] = 'wtrid_value';
+            utag.data['qp.wtmc'] = 'wtmc_value';
+            utag.data['qp.wt_mc'] = 'wt_mc_value';
             expect(RaspHelpers.getCID()).toBe('cid=cid_value');
+        });
 
-            delete utag.data['qp.cid'];
+        it('should fall back to wtrid when no cid', () => {
+            utag.data['qp.wtrid'] = 'wtrid_value';
+            utag.data['qp.wtmc'] = 'wtmc_value';
+            utag.data['qp.wt_mc'] = 'wt_mc_value';
             expect(RaspHelpers.getCID()).toBe('wtrid=wtrid_value');
+        });
+
+        it('should fall back to wtmc when no cid or wtrid', () => {
+            utag.data['qp.wtmc'] = 'wtmc_value';
+            utag.data['qp.wt_mc'] = 'wt_mc_value';
+            expect(RaspHelpers.getCID()).toBe('wtmc=wtmc_value');
+        });
+
+        it('should fall back to wt_mc when no other parameters', () => {
+            utag.data['qp.wt_mc'] = 'wt_mc_value';
+            expect(RaspHelpers.getCID()).toBe('wt_mc=wt_mc_value');
         });
 
         it('should return empty string when no campaign parameter', () => {
