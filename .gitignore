@@ -15,3 +15,5 @@ mutation-report.json
 # Editor config files
 .prettierrc
 .editorconfig
+
+local/
