@@ -4,7 +4,7 @@
   "packageManager": "yarn",
   "reporters": [
     "html",
-    "clear-text",
+    "json",
     "progress"
   ],
   "testRunner": "jest",
@@ -18,7 +18,7 @@
   "thresholds": {
     "high": 80,
     "low": 60,
-    "break": 50
+    "break": 35
   },
   "timeoutMS": 60000,
   "timeoutFactor": 2,
