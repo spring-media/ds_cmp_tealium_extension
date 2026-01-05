@@ -166,13 +166,6 @@ describe('CMP Custom Vendor Mapping', () => {
             expect(window.utag.view).toHaveBeenCalledWith(window.utag.data, null, [21]);
         });
 
-        test('calls utag.view for AGF vendor on welt.de', () => {
-            window.location.hostname = 'welt.de';
-            document.cookie = 'cmp_cv_list=agf;secure';
-            cmpCustomVendorMapping.processUtag();
-            expect(window.utag.view).toHaveBeenCalledWith(window.utag.data, null, [251]);
-        });
-
         test('calls utag.view for kameleoon vendor', () => {
             window.location.hostname = 'bild.de';
             document.cookie = 'cmp_cv_list=kameleoon;secure';

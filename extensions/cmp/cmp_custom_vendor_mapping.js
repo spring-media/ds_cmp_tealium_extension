@@ -25,9 +25,6 @@
         { 'name': 'adup', 'id': '5ed6aeb2b8e05c4a1160fe92' },
         { 'name': 'adsense', 'id': '5e74df5ff443bb795772df9c' },
         { 'name': 'adwords', 'id': '5e74df5ff443bb795772df9c' },
-        { 'name': 'agf', 'id': '5ef4ba9d744f1a148a3450f4' },
-        { 'name': 'agf1', 'id': '5ef5c3a5b8e05c69980eaa5b' },
-        { 'name': 'agf2', 'id': '5f9be0a9a228636148510755' },
         { 'name': 'appnexus', 'id': '5e542b3a4cd8884eb41b5a6c' },
         { 'name': 'awin', 'id': '5e7f6927b8e05c48537f6074' },
         { 'name': 'bingads', 'id': '5e7786abf443bb795772efee' }, // old 20240731
@@ -91,15 +88,6 @@
             springpremium_bild: [57],
             welt: [147],
             springpremium_welt: [77]
-        },
-        nielsenAgf: {
-            welt: [251],
-            fitbook: [64],
-            myhomebook: [76],
-            petbook: [91],
-            stylebook: [53],
-            techbook: [105],
-            travelbook: [72]
         },
         kilkaya: {
             welt: [298]
@@ -228,13 +216,6 @@
                 window.utag.view(window.utag.data, null, getDomainTagValue(window.location.hostname, 'googleAds'));
             }
 
-            // nielsenAgf
-            if (((existingCookie && existingCookie[0].indexOf('agf') >= 0)
-                || (existingFallbackCookie && existingFallbackCookie[0].indexOf('agf') >= 0))
-                && !!getDomainTagValue(window.location.hostname, 'nielsenAgf')) {
-
-                window.utag.view(window.utag.data, null, getDomainTagValue(window.location.hostname, 'nielsenAgf'));
-            }
             // kameleoon
             if (((existingCookie && existingCookie[0].indexOf('kameleoon') >= 0)
                 || (existingFallbackCookie && existingFallbackCookie[0].indexOf('kameleoon') >= 0)
