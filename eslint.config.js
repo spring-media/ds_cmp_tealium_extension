@@ -79,7 +79,7 @@ export default [
             'no-unsafe-negation': 'error',
             'no-obj-calls': 'error',
             'no-regex-spaces': 'error',
-            'quote-props': ['off', 'as-needed', { 'keywords': true }],
+            'quote-props': ['off', 'as-needed', { keywords: true }],
             'no-sparse-arrays': 'off',
             'no-unreachable': 'warn',
             'no-var': 'error',
@@ -88,12 +88,12 @@ export default [
             'valid-jsdoc': 'off',
             'valid-typeof': 'error',
             'block-scoped-var': 'off',
-            'complexity': 'off',
+            complexity: 'off',
             'consistent-return': 'off',
-            'curly': ['error', 'multi-line'],
+            curly: ['error', 'multi-line'],
             'default-case': 'warn',
             'dot-notation': 'off',
-            'eqeqeq': 'off',
+            eqeqeq: 'off',
             'guard-for-in': 'warn',
             'no-alert': 'error',
             'no-caller': 'error',
@@ -129,18 +129,19 @@ export default [
             'no-throw-literal': 'error',
             // "@typescript-eslint/no-unused-expressions" ersetzt die no-unused-expressions
             'no-void': 'off',
-            'no-warning-comments': ['warn',
+            'no-warning-comments': [
+                'warn',
                 {
-                    'terms': ['todo', 'fixme'],
-                    'location': 'start'
+                    terms: ['todo', 'fixme'],
+                    location: 'start'
                 }
             ],
             'no-with': 'error',
-            'radix': 'warn',
+            radix: 'warn',
             'vars-on-top': 'off',
             'wrap-iife': 'off',
-            'yoda': 'off',
-            'strict': 'off',
+            yoda: 'off',
+            strict: 'off',
             'no-catch-shadow': 'error',
             'no-delete-var': 'error',
             'no-label-var': 'error',
@@ -152,15 +153,15 @@ export default [
             // "no-unused-vars": "off" ist oben deaktiviert und durch die TS-Version ersetzt
             // "no-use-before-define": "off" ist oben deaktiviert und durch die TS-Version ersetzt
             'no-mixed-requires': 'off',
-            'indent': ['warn', 4, { 'SwitchCase': 1 }],
-            'brace-style': ['error', '1tbs', { 'allowSingleLine': true }],
-            'camelcase': 'off',
-            'comma-spacing': ['error', { 'before': false, 'after': true }],
+            indent: ['warn', 4, { SwitchCase: 1 }],
+            'brace-style': ['error', '1tbs', { allowSingleLine: true }],
+            camelcase: 'off',
+            'comma-spacing': ['error', { before: false, after: true }],
             'comma-style': ['error', 'last'],
             'consistent-this': ['warn', 'self'],
             'eol-last': 'error',
             'func-names': 'off',
-            'key-spacing': ['error', { 'beforeColon': false, 'afterColon': true }],
+            'key-spacing': ['error', { beforeColon: false, afterColon: true }],
             'capitalized-comments': 'off',
             'max-nested-callbacks': 'off',
             'new-cap': 'off',
@@ -183,23 +184,20 @@ export default [
             'one-var': 'off',
             'operator-assignment': 'off',
             'padded-blocks': 'off',
-            'quotes': ['error', 'single', 'avoid-escape'],
-            'semi': 'error',
-            'semi-spacing': ['error', { 'before': false, 'after': true }],
+            quotes: ['error', 'single', 'avoid-escape'],
+            semi: 'error',
+            'semi-spacing': ['error', { before: false, after: true }],
             'sort-vars': 'off',
             'keyword-spacing': 'error',
             'space-before-blocks': ['error', 'always'],
-            'space-before-function-paren': ['error', {
-                'anonymous': 'never',
-                'named': 'never'
-            }],
+            'space-before-function-paren': 'off', // Disabled to avoid conflict with Prettier
             // 'space-in-brackets' wurde in neueren ESLint-Versionen entfernt,
             // ersetzt durch 'object-curly-spacing' und 'array-bracket-spacing'
             // wir setzen es auf 'off', um Konflikte zu vermeiden.
             'space-in-parens': ['error', 'never'],
             'space-infix-ops': 'error',
             'space-unary-ops': 'error',
-            'spaced-comment': ['warn', 'always', { 'markers': [','] }],
+            'spaced-comment': ['warn', 'always', { markers: [','] }],
             'wrap-regex': 'off'
         }
     }
