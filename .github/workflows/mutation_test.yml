@@ -28,11 +28,3 @@ jobs:
           name: mutation-report
           path: reports/mutation/
           retention-days: 2
-
-      - name: Extract Score
-        id: exctract_score
-        if: always()
-        run: |
-          SCORE=$(node -e "console.log(require('./reports/mutation/mutation-stats.json')).performanceMetrics.mutationScore.toFixed(2);")
-          echo "score=$SCORE" >> $GITHUB_OUTPUT
-          echo "### Mutation Score: $SCORE%" >> $GITHUB_STEP_SUMMARY
