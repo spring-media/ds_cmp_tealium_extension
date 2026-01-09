@@ -1,5 +1,12 @@
 import axios from 'axios';
 
+// Enums
+export enum TealiumExtensionScope {
+    AfterLoadRules = 'After Load Rules',
+    BeforeLoadRules = 'Before Load Rules',
+    DOMReady = 'DOM Ready'
+}
+
 export class TealiumAPI {
 
     private readonly apiKey: string;
@@ -76,4 +83,114 @@ export class TealiumAPI {
             throw new Error(`Deploy failed. ${error.message}`);
         }
     }
+
+    public buildCreatePayload(params: ExtensionCreateParams): TealiumDeployPayload {
+        return {
+            versionTitle: params.versionTitle || `Deploy ${new Date().toISOString()}`,
+            saveType: 'saveAs',
+            notes: params.deploymentNotes,
+            operationList: [
+                {
+                    op: 'add',
+                    path: '/extensions',
+                    value: {
+                        object: 'extension',
+                        name: params.name,
+                        notes: params.extensionNotes || '',
+                        type: 'Javascript Code',
+                        scope: params.scope || TealiumExtensionScope.AfterLoadRules,
+                        occurence: 'Run Always',
+                        status: 'active',
+                        selectedTargets: params.targets || {
+                            dev: true,
+                            qa: true,
+                            prod: true
+                        },
+                        conditions: [[]],
+                        configuration: [
+                            {
+                                name: 'code',
+                                value: params.code
+                            }
+                        ]
+                    }
+                }
+            ]
+        };
+    }
+
+    public buildUpdatePayload(extensionId: string, params: ExtensionUpdateParams): TealiumDeployPayload {
+        return {
+            versionTitle: params.versionTitle || `Update ${new Date().toISOString()}`,
+            saveType: 'saveAs',
+            notes: params.deploymentNotes,
+            operationList: [
+                {
+                    op: 'replace',
+                    path: `/extensions/${extensionId}`,
+                    value: {
+                        object: 'extension',
+                        name: params.name,
+                        notes: params.extensionNotes || '',
+                        type: 'Javascript Code',
+                        scope: params.scope || TealiumExtensionScope.AfterLoadRules,
+                        occurence: 'Run Always',
+                        status: 'active',
+                        selectedTargets: params.targets || {
+                            dev: true,
+                            qa: true,
+                            prod: true
+                        },
+                        conditions: [[]],
+                        configuration: [
+                            {
+                                name: 'code',
+                                value: params.code
+                            }
+                        ]
+                    }
+                }
+            ]
+        };
+    }
+}
+
+// TypeScript Interfaces
+export interface ExtensionCreateParams {
+    name: string;
+    code: string;
+    extensionNotes?: string;
+    deploymentNotes: string;
+    versionTitle?: string;
+    scope?: TealiumExtensionScope;
+    targets?: {
+        dev?: boolean;
+        qa?: boolean;
+        prod?: boolean;
+    };
+}
+
+export interface ExtensionUpdateParams {
+    name: string;
+    code: string;
+    extensionNotes?: string;
+    deploymentNotes: string;
+    versionTitle?: string;
+    scope?: TealiumExtensionScope;
+    targets?: {
+        dev?: boolean;
+        qa?: boolean;
+        prod?: boolean;
+    };
+}
+
+export interface TealiumDeployPayload {
+    versionTitle: string;
+    saveType: 'saveAs' | 'save';
+    notes: string;
+    operationList: Array<{
+        op: 'add' | 'replace' | 'remove';
+        path: string;
+        value?: any;
+    }>;
 }

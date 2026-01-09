@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { TealiumAPI } from './TealiumAPI';
+import { TealiumAPI, TealiumExtensionScope } from './TealiumAPI';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -248,6 +248,180 @@ describe('TealiumAPI', () => {
                     'Content-Type': 'application/json'
                 });
             });
+        });
+    });
+
+    describe('buildCreatePayload', () => {
+        it('creates valid payload with minimal params', () => {
+            const tealium = new TealiumAPI(fakeUser, fakeApiKey);
+
+            const payload = tealium.buildCreatePayload({
+                name: 'Test Extension',
+                code: 'console.log("test");',
+                deploymentNotes: 'just a test'
+            });
+
+            expect(payload.saveType).toBe('saveAs');
+            expect(payload.operationList).toHaveLength(1);
+            expect(payload.operationList[0]!.op).toBe('add');
+            expect(payload.operationList[0]!.path).toBe('/extensions');
+            expect(payload.operationList[0]!.value.name).toBe('Test Extension');
+            expect(payload.operationList[0]!.value.configuration[0].value).toBe('console.log("test");');
+        });
+
+        it('uses default values for optional params', () => {
+            const tealium = new TealiumAPI(fakeUser, fakeApiKey);
+
+            const payload = tealium.buildCreatePayload({
+                name: 'Test Extension',
+                code: 'console.log("test");',
+                deploymentNotes: 'just a test'
+            });
+
+            const extension = payload.operationList[0]!.value;
+            expect(extension.scope).toBe('After Load Rules');
+            expect(extension.selectedTargets).toEqual({
+                dev: true,
+                qa: true,
+                prod: true
+            });
+            expect(extension.notes).toBe('');
+            expect(payload.notes).toBe('just a test');
+        });
+
+        it('respects custom scope and targets', () => {
+            const tealium = new TealiumAPI(fakeUser, fakeApiKey);
+
+            const payload = tealium.buildCreatePayload({
+                name: 'Test Extension',
+                code: 'console.log("test");',
+                scope: TealiumExtensionScope.BeforeLoadRules,
+                deploymentNotes: 'just a test',
+                targets: { dev: true, qa: false, prod: false }
+            });
+
+            const extension = payload.operationList[0]!.value;
+            expect(extension.scope).toBe('Before Load Rules');
+            expect(extension.selectedTargets).toEqual({
+                dev: true,
+                qa: false,
+                prod: false
+            });
+        });
+
+        it('includes custom notes and version title', () => {
+            const tealium = new TealiumAPI(fakeUser, fakeApiKey);
+
+            const payload = tealium.buildCreatePayload({
+                name: 'Test Extension',
+                code: 'console.log("test");',
+                extensionNotes: 'Extension level notes',
+                deploymentNotes: 'Deployment level notes',
+                versionTitle: 'v1.2.3'
+            });
+
+            expect(payload.versionTitle).toBe('v1.2.3');
+            expect(payload.notes).toBe('Deployment level notes');
+            expect(payload.operationList[0]!.value.notes).toBe('Extension level notes');
+        });
+
+        it('generates timestamp-based version title if not provided', () => {
+            const tealium = new TealiumAPI(fakeUser, fakeApiKey);
+
+            const payload = tealium.buildCreatePayload({
+                name: 'Test Extension',
+                code: 'console.log("test");',
+                deploymentNotes: 'just a test'
+            });
+
+            expect(payload.versionTitle).toContain('Deploy');
+            expect(payload.versionTitle).toMatch(/\d{4}-\d{2}-\d{2}/);
+        });
+    });
+
+    describe('buildUpdatePayload', () => {
+        it('creates valid update payload with extension ID', () => {
+            const tealium = new TealiumAPI(fakeUser, fakeApiKey);
+
+            const payload = tealium.buildUpdatePayload('ext-123', {
+                name: 'Updated Extension',
+                code: 'console.log("updated");',
+                deploymentNotes: 'just a test'
+            });
+
+            expect(payload.saveType).toBe('saveAs');
+            expect(payload.operationList).toHaveLength(1);
+            expect(payload.operationList[0]!.op).toBe('replace');
+            expect(payload.operationList[0]!.path).toBe('/extensions/ext-123');
+            expect(payload.operationList[0]!.value.name).toBe('Updated Extension');
+            expect(payload.operationList[0]!.value.configuration[0].value).toBe('console.log("updated");');
+        });
+
+        it('uses default values for optional params', () => {
+            const tealium = new TealiumAPI(fakeUser, fakeApiKey);
+
+            const payload = tealium.buildUpdatePayload('ext-123', {
+                name: 'Updated Extension',
+                code: 'console.log("updated");',
+                deploymentNotes: 'just a test'
+            });
+
+            const extension = payload.operationList[0]!.value;
+            expect(extension.scope).toBe('After Load Rules');
+            expect(extension.selectedTargets).toEqual({
+                dev: true,
+                qa: true,
+                prod: true
+            });
+        });
+
+        it('respects custom scope and targets', () => {
+            const tealium = new TealiumAPI(fakeUser, fakeApiKey);
+
+            const payload = tealium.buildUpdatePayload('ext-123', {
+                name: 'Updated Extension',
+                code: 'console.log("updated");',
+                scope: TealiumExtensionScope.DOMReady,
+                deploymentNotes: 'just a test',
+                targets: { dev: false, qa: true, prod: true }
+            });
+
+            const extension = payload.operationList[0]!.value;
+            expect(extension.scope).toBe('DOM Ready');
+            expect(extension.selectedTargets).toEqual({
+                dev: false,
+                qa: true,
+                prod: true
+            });
+        });
+
+        it('includes custom notes and version title', () => {
+            const tealium = new TealiumAPI(fakeUser, fakeApiKey);
+
+            const payload = tealium.buildUpdatePayload('ext-123', {
+                name: 'Updated Extension',
+                code: 'console.log("updated");',
+                extensionNotes: 'PR #42 by user@example.com',
+                deploymentNotes: 'Hotfix deployment',
+                versionTitle: 'v2.0.0'
+            });
+
+            expect(payload.versionTitle).toBe('v2.0.0');
+            expect(payload.notes).toBe('Hotfix deployment');
+            expect(payload.operationList[0]!.value.notes).toBe('PR #42 by user@example.com');
+        });
+
+        it('generates timestamp-based version title if not provided', () => {
+            const tealium = new TealiumAPI(fakeUser, fakeApiKey);
+
+            const payload = tealium.buildUpdatePayload('ext-123', {
+                name: 'Updated Extension',
+                code: 'console.log("updated");',
+                deploymentNotes: 'just a test'
+            });
+
+            expect(payload.versionTitle).toContain('Update');
+            expect(payload.versionTitle).toMatch(/\d{4}-\d{2}-\d{2}/);
         });
     });
 });
