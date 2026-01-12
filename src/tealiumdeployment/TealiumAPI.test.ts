@@ -6,6 +6,104 @@ const mockedAxios = axios as jest.Mocked<typeof axios>;
 const accountName = 'tealium-account';
 const profileName = 'test-profile';
 
+const simulateConnectionSucessful = () => {
+    mockedAxios.post.mockImplementation((url) => {
+        if (url.includes('https://platform.tealiumapis.com/v3/auth/accounts')) {
+            return Promise.resolve({
+                status: 200,
+                data: { token: 'testtokenABC123', host: 'test.tealium.com' },
+                message: 'Ok'
+            });
+        }
+        return Promise.reject(new Error('Unexpected URL'));
+    });
+};
+
+const simulateConntectionUnauthorized = () => {
+    mockedAxios.post.mockImplementation((url) => {
+        if (url.includes('https://platform.tealiumapis.com/v3/auth/accounts')) {
+            return Promise.reject({
+                status: 401,
+                message: 'Unauthorized'
+            });
+        }
+        return Promise.reject(new Error('Unexpected URL'));
+    });
+};
+
+const simulateConnectionAccepted = () => {
+    mockedAxios.post.mockImplementation((url) => {
+        if (url.includes('https://platform.tealiumapis.com/v3/auth/accounts')) {
+            return Promise.resolve({
+                status: 201,
+                message: 'Accepted'
+            });
+        }
+        return Promise.reject(new Error('Unexpected URL'));
+    });
+};
+
+const simulateGetProfileInternalError = () => {
+    mockedAxios.get.mockImplementation((url) => {
+        if (url.includes('/v3/tiq/accounts/')) {
+            return Promise.reject({
+                status: 500,
+                message: 'Internal Error'
+            });
+        }
+        return Promise.reject(new Error('Unexpected URL'));
+    });
+};
+
+const simulateGetProfileSucessful = () => {
+    mockedAxios.get.mockImplementation((url) => {
+        if (url.includes('/v3/tiq/accounts/')) {
+            return Promise.resolve({
+                status: 200,
+                data: { },
+                message: 'Ok'
+            });
+        }
+        return Promise.reject(new Error('Unexpected URL'));
+    });
+};
+
+const simulatePatchInternalError = () => {
+    mockedAxios.patch.mockImplementation((url) => {
+        if (url.includes('/v3/tiq/accounts/')) {
+            return Promise.reject({
+                status: 500,
+                message: 'Internal Error'
+            });
+        }
+        return Promise.reject(new Error('Unexpected URL'));
+    });
+};
+
+const simulatePatchSuccessful = () => {
+    mockedAxios.patch.mockImplementation((url) => {
+        if (url.includes('/v3/tiq/accounts/')) {
+            return Promise.resolve({
+                status: 200,
+                message: 'Ok'
+            });
+        }
+        return Promise.reject(new Error('Unexpected URL'));
+    });
+};
+
+const simulatePatchAccepted = () => {
+    mockedAxios.patch.mockImplementation((url) => {
+        if (url.includes('/v3/tiq/accounts/')) {
+            return Promise.resolve({
+                status: 201,
+                message: 'Accepted'
+            });
+        }
+        return Promise.reject(new Error('Unexpected URL'));
+    });
+};
+
 describe('TealiumAPI', () => {
 
     const fakeUser = 'fakeUser';
@@ -24,12 +122,7 @@ describe('TealiumAPI', () => {
         });
 
         it('throws if login fails', async () => {
-
-            mockedAxios.post.mockRejectedValue({
-                status: 401,
-                message: 'Unauthorized'
-            });
-
+            simulateConntectionUnauthorized();
             const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey);
             expect(async () => {
                 await tealium.connect(accountName, profileName);
@@ -37,13 +130,7 @@ describe('TealiumAPI', () => {
         });
 
         it('is connected if connection is successful (200)', async () => {
-
-            mockedAxios.post.mockResolvedValue({
-                status: 200,
-                data: { token: 'testtokenABC123', host: 'test.tealium.com' },
-                message: 'Ok'
-            });
-
+            simulateConnectionSucessful();
             const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey);
             const response = await tealium.connect(accountName, profileName);
             expect(response).toBe(true);
@@ -51,11 +138,8 @@ describe('TealiumAPI', () => {
         });
 
         it('is not connected if connection is only accepted (201)', async () => {
-            mockedAxios.post.mockResolvedValue({
-                status: 201,
-                message: 'Accepted'
-            });
-
+            /* Accepted (201) used to not trigger exception within axios */
+            simulateConnectionAccepted();
             const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey);
             const response = await tealium.connect(accountName, profileName);
             expect(response).toBe(false);
@@ -63,12 +147,7 @@ describe('TealiumAPI', () => {
         });
 
         it('sets connectionDetails if connection sucessful (200)', async () => {
-            mockedAxios.post.mockResolvedValue({
-                status: 200,
-                data: { token: 'testtokenABC123', host: 'test.tealium.com' },
-                message: 'Ok'
-            });
-
+            simulateConnectionSucessful();
             const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey);
 
             expect(tealium.getConnectionDetails()).toEqual({
@@ -88,12 +167,9 @@ describe('TealiumAPI', () => {
             });
         });
 
-        it('sets connectionDetails if connection only accepted (201)', async () => {
-            mockedAxios.post.mockResolvedValue({
-                status: 201,
-                message: 'Accepted'
-            });
-
+        it('not sets connectionDetails if connection only accepted (201)', async () => {
+            /* Accepted (201) used to not trigger exception within axios */
+            simulateConnectionAccepted();
             const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey);
 
             expect(tealium.getConnectionDetails()).toEqual({
@@ -115,11 +191,7 @@ describe('TealiumAPI', () => {
 
         describe('request details', () => {
             it('uses correct host and header', async () => {
-                mockedAxios.post.mockResolvedValue({
-                    status: 200,
-                    data: { token: 'testtokenABC123', host: 'test.tealium.com' },
-                    message: 'Ok'
-                });
+                simulateConnectionSucessful();
 
                 const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey);
                 await tealium.connect('axelspringer', 'test-solutions2');
@@ -158,16 +230,8 @@ describe('TealiumAPI', () => {
         });
 
         it('it throws if connected and response failed', async () => {
-            mockedAxios.post.mockResolvedValue({
-                status: 200,
-                data: { token: 'testtokenABC123', host: 'test.tealium.com' },
-                message: 'Ok'
-            });
-
-            mockedAxios.get.mockRejectedValue({
-                status: 500,
-                message: 'Internal Error'
-            });
+            simulateConnectionSucessful();
+            simulateGetProfileInternalError();
 
             const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey);
             await tealium.connect('axelspringer', 'test-solutions2');
@@ -179,17 +243,8 @@ describe('TealiumAPI', () => {
 
         describe('request details', () => {
             it('uses correct host and header', async () => {
-                mockedAxios.post.mockResolvedValue({
-                    status: 200,
-                    data: { token: 'testtokenABC123', host: 'test.tealium.com' },
-                    message: 'Ok'
-                });
-
-                mockedAxios.get.mockResolvedValue({
-                    status: 200,
-                    data: { },
-                    message: 'Ok'
-                });
+                simulateConnectionSucessful();
+                simulateGetProfileSucessful();
 
                 const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey);
                 await tealium.connect(accountName, 'test-profile');
@@ -226,16 +281,8 @@ describe('TealiumAPI', () => {
         });
 
         it('it throws if connected and response failed', async () => {
-            mockedAxios.post.mockResolvedValue({
-                status: 200,
-                data: { token: 'testtokenABC123', host: 'test.tealium.com' },
-                message: 'Ok'
-            });
-
-            mockedAxios.patch.mockRejectedValue({
-                status: 500,
-                message: 'Internal Error'
-            });
+            simulateConnectionSucessful();
+            simulatePatchInternalError();
 
             const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey);
             await tealium.connect('axelspringer', 'test-solutions2');
@@ -246,18 +293,9 @@ describe('TealiumAPI', () => {
             }).rejects.toThrow('Deploy failed. Internal Error');
         });
 
-        it('it succeeds if patch respondes with 200', async () => {
-
-            mockedAxios.post.mockResolvedValue({
-                status: 200,
-                data: { token: 'testtokenABC123', host: 'test.tealium.com' },
-                message: 'Ok'
-            });
-
-            mockedAxios.patch.mockResolvedValue({
-                status: 200,
-                message: 'Ok'
-            });
+        it('succeeds if patch respondes with 200', async () => {
+            simulateConnectionSucessful();
+            simulatePatchSuccessful();
 
             const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey);
             await tealium.connect('axelspringer', 'test-solutions2');
@@ -265,25 +303,26 @@ describe('TealiumAPI', () => {
             const fakePayLoad = { thisIs: 'justAFake' };
             const response = await tealium.deploy(fakePayLoad);
             expect(response).toBe(true);
+        });
 
-            // Negative test
-            mockedAxios.patch.mockResolvedValue({
-                status: 201,
-                message: 'Accepted'
-            });
 
-            const response1 = await tealium.deploy(fakePayLoad);
-            expect(response1).toBe(false);
+        it('fails if patch receives something else than 200', async () => {
+            /* Accepted (201) used to not trigger exception within axios */
+            simulateConnectionSucessful();
+            simulatePatchAccepted();
+
+            const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey);
+            await tealium.connect('axelspringer', 'test-solutions2');
+
+            const fakePayLoad = { thisIs: 'justAFake' };
+            const response = await tealium.deploy(fakePayLoad);
+            expect(response).toBe(false);
         });
 
 
         describe('request details', () => {
             it('uses correct host and header', async () => {
-                mockedAxios.post.mockResolvedValue({
-                    status: 200,
-                    data: { token: 'testtokenABC123', host: 'test.tealium.com' },
-                    message: 'Ok'
-                });
+                simulateConnectionSucessful();
 
                 const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey);
                 await tealium.connect(accountName, 'test-profile');
@@ -299,16 +338,10 @@ describe('TealiumAPI', () => {
                 // // Get the call arguments
                 const callArgs = mockedAxios.patch.mock.calls[0];
                 const url = callArgs?.[0];
-                // const body = callArgs?.[1] as URLSearchParams;
                 const config = callArgs?.[2];
 
                 // // Verify URL
                 expect(url).toBe('https://test.tealium.com/v3/tiq/accounts/tealium-account/profiles/test-profile');
-
-                // // Verify body contains correct parameters
-                // expect(body).toBeInstanceOf(URLSearchParams);
-                // expect(body.get('username')).toBe(fakeUser);
-                // expect(body.get('key')).toBe(fakeApiKey);
 
                 // Verify headers
                 expect(config?.headers).toEqual({
