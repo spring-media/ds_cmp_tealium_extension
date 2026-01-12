@@ -12,6 +12,7 @@ describe('TealiumAPI', () => {
     const fakeApiKey = 'fakeApiKeyABC123';
 
     beforeEach(() => {
+        mockedAxios.get.mockClear();
         mockedAxios.post.mockClear();
         mockedAxios.patch.mockClear();
     });
@@ -143,6 +144,73 @@ describe('TealiumAPI', () => {
                 // Verify headers
                 expect(config?.headers).toEqual({
                     'Content-Type': 'application/x-www-form-urlencoded'
+                });
+            });
+        });
+    });
+
+    describe('getExtensions', () => {
+        it('throws if not connected', async () => {
+            expect(async () => {
+                const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey);
+                await tealium.getProfile();
+            }).rejects.toThrow('TealiumAPI not connected.');
+        });
+
+        it('it throws if connected and response failed', async () => {
+            mockedAxios.post.mockResolvedValue({
+                status: 200,
+                data: { token: 'testtokenABC123', host: 'test.tealium.com' },
+                message: 'Ok'
+            });
+
+            mockedAxios.get.mockRejectedValue({
+                status: 500,
+                message: 'Internal Error'
+            });
+
+            const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey);
+            await tealium.connect('axelspringer', 'test-solutions2');
+
+            expect(async () => {
+                await tealium.getProfile();
+            }).rejects.toThrow('GetProfile failed. Internal Error');
+        });
+
+        describe('request details', () => {
+            it('uses correct host and header', async () => {
+                mockedAxios.post.mockResolvedValue({
+                    status: 200,
+                    data: { token: 'testtokenABC123', host: 'test.tealium.com' },
+                    message: 'Ok'
+                });
+
+                mockedAxios.get.mockResolvedValue({
+                    status: 200,
+                    data: { },
+                    message: 'Ok'
+                });
+
+                const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey);
+                await tealium.connect(accountName, 'test-profile');
+
+                await tealium.getProfile();
+
+                // Verify axios.post was called
+                expect(mockedAxios.get).toHaveBeenCalledTimes(1);
+
+                // // Get the call arguments
+                const callArgs = mockedAxios.get.mock.calls[0];
+                const url = callArgs?.[0];
+                const config = callArgs?.[1];
+
+                // Verify URL
+                expect(url).toBe('https://test.tealium.com/v3/tiq/accounts/tealium-account/profiles/test-profile??includes=loadRules&includes=extensions&includes=tags&includes=tags.template&includes=variables&includes=events&includes=versionIds');
+
+                // Verify headers
+                expect(config?.headers).toEqual({
+                    'Authorization': 'Bearer testtokenABC123',
+                    'Accept': 'application/json'
                 });
             });
         });

@@ -65,6 +65,30 @@ export class TealiumAPI {
         }
     }
 
+    public async getProfile(): Promise<TealiumProfilePayload> {
+        if (!this.isConnected()) {
+            throw new Error('TealiumAPI not connected.A');
+        }
+
+        try {
+            const url = `https://${this.host}/v3/tiq/accounts/${this.account}/profiles/${this.profile}??includes=loadRules&includes=extensions&includes=tags&includes=tags.template&includes=variables&includes=events&includes=versionIds`;
+            const response = await axios.get(url, {
+                headers: {
+                    'Authorization': `Bearer ${this.token}`,
+                    'Accept': 'application/json'
+                }
+            });
+            if (response.status === 200) {
+                return response.data;
+            } else {
+                return {};
+            }
+        } catch (error: any) {
+            console.log(error);
+            throw new Error(`GetProfile failed. ${error.message}`);
+        }
+    }
+
     public async deploy(payLoad: any): Promise<boolean> {
         if (!this.isConnected()) {
             throw new Error('TealiumAPI not connected.');
@@ -182,6 +206,10 @@ export interface ExtensionUpdateParams {
         qa?: boolean;
         prod?: boolean;
     };
+}
+
+export interface TealiumProfilePayload {
+
 }
 
 export interface TealiumDeployPayload {
