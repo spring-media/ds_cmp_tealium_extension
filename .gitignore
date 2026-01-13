@@ -13,5 +13,6 @@ mutation-report.json
 !.vscode/extensions.json
 
 # Editor config files
-.prettierrc
 .editorconfig
+
+local/
