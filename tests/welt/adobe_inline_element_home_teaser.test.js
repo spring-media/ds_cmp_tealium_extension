@@ -5,10 +5,11 @@
 
 /* global utag */
 
+const adobeInlineElementHomeTeaser = require('../../extensions/welt/adobe_inline_element_home_teaser');
+
 describe('Adobe Inline Element Home Teaser Tracking', () => {
     let mockUtag;
     let mockConsole;
-    let extensionCode;
 
     beforeEach(() => {
         // Mock utag.loader.SC for session storage
@@ -24,36 +25,6 @@ describe('Adobe Inline Element Home Teaser Tracking', () => {
             error: jest.fn()
         };
         global.console = mockConsole;
-
-        // Load the extension code as a function
-        extensionCode = (a, b) => {
-            // Only process link events with Inline Element tracking
-            if (
-                a !== 'link' ||
-                typeof b.event_name === 'undefined' ||
-                b.event_name === 'undefined' ||
-                b.event_name.indexOf('Inline Element') === -1 ||
-                b.page_escenicId !== '5'
-            ) {
-                return;
-            }
-
-            try {
-                const meinLinkEvent = b;
-                const teaserelement =
-                    meinLinkEvent.event_label +
-                    '|' +
-                    meinLinkEvent.event_data.target +
-                    '|' +
-                    meinLinkEvent.event_data['source'];
-
-                utag.loader.SC('utag_main', { hti: teaserelement }, 'session');
-                utag.loader.SC('utag_main', { tb: meinLinkEvent.event_label }, 'session');
-            } catch (e) {
-                // Silent error handling - should not break other extensions
-                console.error('[ADOBE INLINE ELEMENT] Error:', e);
-            }
-        };
     });
 
     afterEach(() => {
@@ -73,7 +44,7 @@ describe('Adobe Inline Element Home Teaser Tracking', () => {
             }
         };
 
-        extensionCode('link', eventData);
+        adobeInlineElementHomeTeaser('link', eventData);
 
         expect(mockUtag.loader.SC).toHaveBeenCalledTimes(2);
         expect(mockUtag.loader.SC).toHaveBeenCalledWith(
@@ -99,7 +70,7 @@ describe('Adobe Inline Element Home Teaser Tracking', () => {
             }
         };
 
-        extensionCode('view', eventData);
+        adobeInlineElementHomeTeaser('view', eventData);
 
         expect(mockUtag.loader.SC).not.toHaveBeenCalled();
     });
@@ -115,7 +86,7 @@ describe('Adobe Inline Element Home Teaser Tracking', () => {
             }
         };
 
-        extensionCode('link', eventData);
+        adobeInlineElementHomeTeaser('link', eventData);
 
         expect(mockUtag.loader.SC).not.toHaveBeenCalled();
     });
@@ -131,7 +102,7 @@ describe('Adobe Inline Element Home Teaser Tracking', () => {
             }
         };
 
-        extensionCode('link', eventData);
+        adobeInlineElementHomeTeaser('link', eventData);
 
         expect(mockUtag.loader.SC).not.toHaveBeenCalled();
     });
@@ -144,7 +115,7 @@ describe('Adobe Inline Element Home Teaser Tracking', () => {
             event_data: null // This will cause error when accessing .target
         };
 
-        expect(() => extensionCode('link', eventData)).not.toThrow();
+        expect(() => adobeInlineElementHomeTeaser('link', eventData)).not.toThrow();
         expect(mockUtag.loader.SC).not.toHaveBeenCalled();
     });
 
@@ -156,7 +127,7 @@ describe('Adobe Inline Element Home Teaser Tracking', () => {
             event_data: null
         };
 
-        extensionCode('link', eventData);
+        adobeInlineElementHomeTeaser('link', eventData);
 
         expect(mockConsole.error).toHaveBeenCalled();
         expect(mockConsole.error.mock.calls[0][0]).toContain('[ADOBE INLINE ELEMENT] Error:');
