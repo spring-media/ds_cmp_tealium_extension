@@ -1,6 +1,10 @@
 /* global a, b, utag */
 
-(function (a, b) {
+/**
+ * Adobe inline element home teaser tracking for WELT
+ * Tracks inline element clicks on home page (escenicId 5)
+ */
+const processAdobeInlineElement = function (a, b) {
     // Only process link events with Inline Element tracking
     if (
         a !== 'link' ||
@@ -27,4 +31,14 @@
         // Silent error handling - should not break other extensions
         console.error('[ADOBE INLINE ELEMENT] Error:', e);
     }
-})(a, b);
+};
+
+// Execute in browser context
+if (typeof a !== 'undefined' && typeof b !== 'undefined') {
+    processAdobeInlineElement(a, b);
+}
+
+// Export for tests
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports = { processAdobeInlineElement };
+}

@@ -5,6 +5,15 @@
 
 /* global utag, braze */
 
+const {
+    checkConsentGiven,
+    checkFromCheckout,
+    checkIsSubscriber,
+    trackBrazeCheckout,
+    retryBrazeCheck,
+    initBrazeCheckoutTracking
+} = require('../../extensions/welt/braze_checkout_tracking');
+
 describe('Braze Checkout Tracking', () => {
     let mockUtag;
     let mockBraze;
@@ -57,149 +66,92 @@ describe('Braze Checkout Tracking', () => {
         delete global.document;
     });
 
-    describe('Consent checking', () => {
+    describe('checkConsentGiven', () => {
         it('should detect consent when braze is in cmp_cv_list cookie', () => {
             document.cookie = 'cmp_cv_list=vendor1,braze,vendor2;';
-            const consentGiven = /(^|;)\s*cmp_cv_list\s*=\s*[^;]*braze[^;]*(;|$)/.test(document.cookie);
-
-            expect(consentGiven).toBe(true);
+            expect(checkConsentGiven()).toBe(true);
         });
 
         it('should detect consent when braze is at start of cookie', () => {
             document.cookie = 'cmp_cv_list=braze,vendor1;';
-            const consentGiven = /(^|;)\s*cmp_cv_list\s*=\s*[^;]*braze[^;]*(;|$)/.test(document.cookie);
-
-            expect(consentGiven).toBe(true);
+            expect(checkConsentGiven()).toBe(true);
         });
 
         it('should detect consent when braze is at end of cookie', () => {
             document.cookie = 'cmp_cv_list=vendor1,braze;';
-            const consentGiven = /(^|;)\s*cmp_cv_list\s*=\s*[^;]*braze[^;]*(;|$)/.test(document.cookie);
-
-            expect(consentGiven).toBe(true);
+            expect(checkConsentGiven()).toBe(true);
         });
 
         it('should not detect consent when braze is not in cookie', () => {
             document.cookie = 'cmp_cv_list=vendor1,vendor2;';
-            const consentGiven = /(^|;)\s*cmp_cv_list\s*=\s*[^;]*braze[^;]*(;|$)/.test(document.cookie);
-
-            expect(consentGiven).toBe(false);
+            expect(checkConsentGiven()).toBe(false);
         });
 
         it('should not detect consent when cmp_cv_list cookie is missing', () => {
             document.cookie = 'other_cookie=value;';
-            const consentGiven = /(^|;)\s*cmp_cv_list\s*=\s*[^;]*braze[^;]*(;|$)/.test(document.cookie);
-
-            expect(consentGiven).toBe(false);
+            expect(checkConsentGiven()).toBe(false);
         });
 
         it('should handle empty cookie', () => {
             document.cookie = '';
-            const consentGiven = /(^|;)\s*cmp_cv_list\s*=\s*[^;]*braze[^;]*(;|$)/.test(document.cookie);
-
-            expect(consentGiven).toBe(false);
+            expect(checkConsentGiven()).toBe(false);
         });
     });
 
-    describe('Checkout referrer detection', () => {
+    describe('checkFromCheckout', () => {
         it('should detect checkout from PayPal referrer', () => {
             utag.data['dom.referrer'] = 'https://www.paypal.com/checkout';
-
-            const fromCheckout = (typeof utag.data['dom.referrer'] != 'undefined' &&
-                utag.data['dom.referrer'].toString().indexOf('paypal.com') > -1);
-
-            expect(fromCheckout).toBe(true);
+            expect(checkFromCheckout()).toBe(true);
         });
 
         it('should detect checkout from checkout-v2 in dom.referrer', () => {
             utag.data['dom.referrer'] = 'https://checkout-v2.prod.ps.welt.de/success';
-
-            const fromCheckout = (typeof utag.data['dom.referrer'] != 'undefined' &&
-                utag.data['dom.referrer'].toString().indexOf('checkout-v2.prod.ps.welt.de') > -1);
-
-            expect(fromCheckout).toBe(true);
+            expect(checkFromCheckout()).toBe(true);
         });
 
         it('should detect checkout from t_ref parameter', () => {
             utag.data['dom.referrer'] = undefined;
             utag.data['qp.t_ref'] = 'https://checkout-v2.prod.ps.welt.de/';
-
-            const fromCheckout = (typeof utag.data['qp.t_ref'] != 'undefined' &&
-                utag.data['qp.t_ref'].toString().indexOf('checkout-v2.prod.ps.welt.de') > -1);
-
-            expect(fromCheckout).toBe(true);
+            expect(checkFromCheckout()).toBe(true);
         });
 
         it('should not detect checkout from other referrers', () => {
             utag.data['dom.referrer'] = 'https://www.google.com';
             utag.data['qp.t_ref'] = undefined;
-
-            const fromCheckout = (typeof utag.data['dom.referrer'] != 'undefined' &&
-                utag.data['dom.referrer'].toString().indexOf('paypal.com') > -1) ||
-                (typeof utag.data['dom.referrer'] != 'undefined' &&
-                utag.data['dom.referrer'].toString().indexOf('checkout-v2.prod.ps.welt.de') > -1);
-
-            expect(fromCheckout).toBe(false);
+            expect(checkFromCheckout()).toBe(false);
         });
 
         it('should handle undefined referrers', () => {
             utag.data['dom.referrer'] = undefined;
             utag.data['qp.t_ref'] = undefined;
-
-            const fromCheckout = (typeof utag.data['dom.referrer'] != 'undefined' &&
-                utag.data['dom.referrer'].toString().indexOf('paypal.com') > -1);
-
-            expect(fromCheckout).toBe(false);
+            expect(checkFromCheckout()).toBe(false);
         });
     });
 
-    describe('Subscriber detection', () => {
+    describe('checkIsSubscriber', () => {
         it('should detect subscriber when user_hasPlusSubscription2 is true', () => {
             utag.data.user_hasPlusSubscription2 = 'true';
-
-            const isSubscriber = utag.data.user_hasPlusSubscription2.includes('true');
-
-            expect(isSubscriber).toBe(true);
+            expect(checkIsSubscriber()).toBe(true);
         });
 
         it('should detect subscriber when user_hasPlusSubscription2 contains true', () => {
             utag.data.user_hasPlusSubscription2 = ['true', 'premium'];
-
-            const isSubscriber = utag.data.user_hasPlusSubscription2.includes('true');
-
-            expect(isSubscriber).toBe(true);
+            expect(checkIsSubscriber()).toBe(true);
         });
 
         it('should not detect subscriber when user_hasPlusSubscription2 is false', () => {
             utag.data.user_hasPlusSubscription2 = 'false';
-
-            const isSubscriber = utag.data.user_hasPlusSubscription2.includes('true');
-
-            expect(isSubscriber).toBe(false);
+            expect(checkIsSubscriber()).toBe(false);
         });
 
         it('should not detect subscriber when user_hasPlusSubscription2 is empty', () => {
             utag.data.user_hasPlusSubscription2 = '';
-
-            const isSubscriber = utag.data.user_hasPlusSubscription2.includes('true');
-
-            expect(isSubscriber).toBe(false);
+            expect(checkIsSubscriber()).toBe(false);
         });
     });
 
-    describe('trackBrazeCheckout function', () => {
+    describe('trackBrazeCheckout', () => {
         it('should call braze.logCustomEvent when braze is defined', () => {
-            const trackBrazeCheckout = () => {
-                if (typeof braze != 'undefined') {
-                    braze.logCustomEvent('Checkout Success', {
-                        content_type: utag.data.page_document_type || '',
-                        entitlement_ids: utag.data.user_entitlements2.toString() || '',
-                        page_id: utag.data.page_id || '',
-                        offerId: utag.data['qp.offerId'] || ''
-                    });
-                }
-            };
-
             trackBrazeCheckout();
 
             expect(mockBraze.logCustomEvent).toHaveBeenCalledWith('Checkout Success', {
@@ -216,17 +168,6 @@ describe('Braze Checkout Tracking', () => {
             utag.data.page_id = undefined;
             utag.data['qp.offerId'] = undefined;
 
-            const trackBrazeCheckout = () => {
-                if (typeof braze != 'undefined') {
-                    braze.logCustomEvent('Checkout Success', {
-                        content_type: utag.data.page_document_type || '',
-                        entitlement_ids: (utag.data.user_entitlements2 && utag.data.user_entitlements2.toString()) || '',
-                        page_id: utag.data.page_id || '',
-                        offerId: utag.data['qp.offerId'] || ''
-                    });
-                }
-            };
-
             trackBrazeCheckout();
 
             expect(mockBraze.logCustomEvent).toHaveBeenCalledWith('Checkout Success', {
@@ -240,113 +181,75 @@ describe('Braze Checkout Tracking', () => {
         it('should not throw error when braze is undefined', () => {
             delete global.braze;
 
-            const trackBrazeCheckout = () => {
-                if (typeof braze != 'undefined') {
-                    braze.logCustomEvent('Checkout Success', {
-                        content_type: utag.data.page_document_type || '',
-                        entitlement_ids: utag.data.user_entitlements2.toString() || '',
-                        page_id: utag.data.page_id || '',
-                        offerId: utag.data['qp.offerId'] || ''
-                    });
-                }
-            };
-
             expect(() => trackBrazeCheckout()).not.toThrow();
         });
     });
 
-    describe('retryBrazeCheck function', () => {
+    describe('retryBrazeCheck', () => {
         it('should call trackBrazeCheckout immediately when braze is available', () => {
-            const retryCount = 0;
-            const trackBrazeCheckout = jest.fn();
-
-            const retryBrazeCheck = () => {
-                if (typeof braze !== 'undefined') {
-                    trackBrazeCheckout();
-                } else if (retryCount < 10) {
-                    retryCount++;
-                    setTimeout(retryBrazeCheck, 100);
-                }
-            };
+            const trackSpy = jest.spyOn({ trackBrazeCheckout }, 'trackBrazeCheckout');
 
             retryBrazeCheck();
 
-            expect(trackBrazeCheckout).toHaveBeenCalled();
-            expect(retryCount).toBe(0);
+            expect(mockBraze.logCustomEvent).toHaveBeenCalled();
         });
 
         it('should retry when braze is not available', () => {
             delete global.braze;
-            let retryCount = 0;
-            const maxRetries = 10;
 
-            const retryBrazeCheck = () => {
-                if (typeof braze !== 'undefined') {
-                    // would call trackBrazeCheckout
-                } else if (retryCount < maxRetries) {
-                    console.warn('braze: Library not loaded, retrying...');
-                    retryCount++;
-                    setTimeout(retryBrazeCheck, 100);
-                } else {
-                    console.error('braze: Failed to load after maximum retries.');
-                }
-            };
-
-            retryBrazeCheck();
+            retryBrazeCheck(0, 10);
 
             expect(mockConsole.warn).toHaveBeenCalledWith('braze: Library not loaded, retrying...');
-            expect(retryCount).toBe(1);
         });
 
         it('should stop retrying after maxRetries', () => {
             delete global.braze;
-            let retryCount = 10;
-            const maxRetries = 10;
 
-            const retryBrazeCheck = () => {
-                if (typeof braze !== 'undefined') {
-                    // would call trackBrazeCheckout
-                } else if (retryCount < maxRetries) {
-                    console.warn('braze: Library not loaded, retrying...');
-                    retryCount++;
-                    setTimeout(retryBrazeCheck, 100);
-                } else {
-                    console.error('braze: Failed to load after maximum retries.');
-                }
-            };
+            retryBrazeCheck(10, 10);
 
-            retryBrazeCheck();
-
-            expect(mockConsole.error).toHaveBeenCalledWith('braze: Failed to load after maximum retries.');
-            expect(retryCount).toBe(10);
+            expect(mockConsole.error).toHaveBeenCalledWith(
+                'braze: Failed to load after maximum retries.'
+            );
         });
 
         it('should use 100ms delay for retries', () => {
             delete global.braze;
-            const callback = jest.fn();
+            const setTimeoutSpy = jest.spyOn(global, 'setTimeout');
 
-            setTimeout(callback, 100);
+            retryBrazeCheck(0, 10);
 
-            expect(callback).not.toHaveBeenCalled();
+            expect(setTimeoutSpy).toHaveBeenCalledWith(expect.any(Function), 100);
+            setTimeoutSpy.mockRestore();
+        });
 
+        it('should eventually succeed when braze becomes available', () => {
+            delete global.braze;
+
+            retryBrazeCheck(0, 10);
+
+            // First retry should be scheduled
+            expect(mockConsole.warn).toHaveBeenCalledWith('braze: Library not loaded, retrying...');
+
+            // Make braze available
+            global.braze = mockBraze;
+
+            // Fast-forward time
             jest.advanceTimersByTime(100);
 
-            expect(callback).toHaveBeenCalled();
+            // Should have called trackBrazeCheckout
+            expect(mockBraze.logCustomEvent).toHaveBeenCalled();
         });
     });
 
-    describe('Integration scenarios', () => {
-        it('should execute when all conditions are met', () => {
+    describe('initBrazeCheckoutTracking', () => {
+        it('should execute retryBrazeCheck when all conditions are met', () => {
             document.cookie = 'cmp_cv_list=braze;';
             utag.data['dom.referrer'] = 'https://checkout-v2.prod.ps.welt.de/success';
             utag.data.user_hasPlusSubscription2 = 'true';
 
-            const consentGiven = /(^|;)\s*cmp_cv_list\s*=\s*[^;]*braze[^;]*(;|$)/.test(document.cookie);
-            const fromCheckout = (typeof utag.data['dom.referrer'] != 'undefined' &&
-                utag.data['dom.referrer'].toString().indexOf('checkout-v2.prod.ps.welt.de') > -1);
-            const isSubscriber = utag.data.user_hasPlusSubscription2.includes('true');
+            initBrazeCheckoutTracking();
 
-            expect(consentGiven && fromCheckout && isSubscriber).toBe(true);
+            expect(mockBraze.logCustomEvent).toHaveBeenCalled();
         });
 
         it('should not execute when consent is not given', () => {
@@ -354,12 +257,9 @@ describe('Braze Checkout Tracking', () => {
             utag.data['dom.referrer'] = 'https://checkout-v2.prod.ps.welt.de/success';
             utag.data.user_hasPlusSubscription2 = 'true';
 
-            const consentGiven = /(^|;)\s*cmp_cv_list\s*=\s*[^;]*braze[^;]*(;|$)/.test(document.cookie);
-            const fromCheckout = (typeof utag.data['dom.referrer'] != 'undefined' &&
-                utag.data['dom.referrer'].toString().indexOf('checkout-v2.prod.ps.welt.de') > -1);
-            const isSubscriber = utag.data.user_hasPlusSubscription2.includes('true');
+            initBrazeCheckoutTracking();
 
-            expect(consentGiven && fromCheckout && isSubscriber).toBe(false);
+            expect(mockBraze.logCustomEvent).not.toHaveBeenCalled();
         });
 
         it('should not execute when not from checkout', () => {
@@ -367,13 +267,9 @@ describe('Braze Checkout Tracking', () => {
             utag.data['dom.referrer'] = 'https://www.google.com';
             utag.data.user_hasPlusSubscription2 = 'true';
 
-            const consentGiven = /(^|;)\s*cmp_cv_list\s*=\s*[^;]*braze[^;]*(;|$)/.test(document.cookie);
-            const fromCheckout = (typeof utag.data['dom.referrer'] != 'undefined' &&
-                (utag.data['dom.referrer'].toString().indexOf('paypal.com') > -1 ||
-                 utag.data['dom.referrer'].toString().indexOf('checkout-v2.prod.ps.welt.de') > -1));
-            const isSubscriber = utag.data.user_hasPlusSubscription2.includes('true');
+            initBrazeCheckoutTracking();
 
-            expect(consentGiven && fromCheckout && isSubscriber).toBe(false);
+            expect(mockBraze.logCustomEvent).not.toHaveBeenCalled();
         });
 
         it('should not execute when user is not a subscriber', () => {
@@ -381,14 +277,13 @@ describe('Braze Checkout Tracking', () => {
             utag.data['dom.referrer'] = 'https://checkout-v2.prod.ps.welt.de/success';
             utag.data.user_hasPlusSubscription2 = 'false';
 
-            const consentGiven = /(^|;)\s*cmp_cv_list\s*=\s*[^;]*braze[^;]*(;|$)/.test(document.cookie);
-            const fromCheckout = (typeof utag.data['dom.referrer'] != 'undefined' &&
-                utag.data['dom.referrer'].toString().indexOf('checkout-v2.prod.ps.welt.de') > -1);
-            const isSubscriber = utag.data.user_hasPlusSubscription2.includes('true');
+            initBrazeCheckoutTracking();
 
-            expect(consentGiven && fromCheckout && isSubscriber).toBe(false);
+            expect(mockBraze.logCustomEvent).not.toHaveBeenCalled();
         });
+    });
 
+    describe('Integration scenarios', () => {
         it('should track complete checkout flow with all data', () => {
             document.cookie = 'cmp_cv_list=vendor1,braze,vendor2;';
             utag.data['dom.referrer'] = 'https://www.paypal.com/checkoutnow';
@@ -398,21 +293,7 @@ describe('Braze Checkout Tracking', () => {
             utag.data.page_id = 'article_456';
             utag.data['qp.offerId'] = 'PREMIUM_YEARLY';
 
-            const consentGiven = /(^|;)\s*cmp_cv_list\s*=\s*[^;]*braze[^;]*(;|$)/.test(document.cookie);
-            const fromCheckout = (typeof utag.data['dom.referrer'] != 'undefined' &&
-                utag.data['dom.referrer'].toString().indexOf('paypal.com') > -1);
-            const isSubscriber = utag.data.user_hasPlusSubscription2.includes('true');
-
-            if (consentGiven && fromCheckout && isSubscriber) {
-                if (typeof braze !== 'undefined') {
-                    braze.logCustomEvent('Checkout Success', {
-                        content_type: utag.data.page_document_type || '',
-                        entitlement_ids: utag.data.user_entitlements2.toString() || '',
-                        page_id: utag.data.page_id || '',
-                        offerId: utag.data['qp.offerId'] || ''
-                    });
-                }
-            }
+            initBrazeCheckoutTracking();
 
             expect(mockBraze.logCustomEvent).toHaveBeenCalledWith('Checkout Success', {
                 content_type: 'article',
@@ -420,6 +301,43 @@ describe('Braze Checkout Tracking', () => {
                 page_id: 'article_456',
                 offerId: 'PREMIUM_YEARLY'
             });
+        });
+
+        it('should handle delayed braze loading', () => {
+            document.cookie = 'cmp_cv_list=braze;';
+            utag.data['dom.referrer'] = 'https://checkout-v2.prod.ps.welt.de/success';
+            utag.data.user_hasPlusSubscription2 = 'true';
+
+            // Braze not available yet
+            delete global.braze;
+
+            initBrazeCheckoutTracking();
+
+            expect(mockConsole.warn).toHaveBeenCalledWith('braze: Library not loaded, retrying...');
+
+            // Make braze available after some time
+            global.braze = mockBraze;
+            jest.advanceTimersByTime(100);
+
+            expect(mockBraze.logCustomEvent).toHaveBeenCalled();
+        });
+
+        it('should give up after max retries if braze never loads', () => {
+            document.cookie = 'cmp_cv_list=braze;';
+            utag.data['dom.referrer'] = 'https://checkout-v2.prod.ps.welt.de/success';
+            utag.data.user_hasPlusSubscription2 = 'true';
+
+            // Braze never becomes available
+            delete global.braze;
+
+            initBrazeCheckoutTracking();
+
+            // Fast-forward through all retries
+            jest.advanceTimersByTime(1100); // 100ms * 11 attempts
+
+            expect(mockConsole.error).toHaveBeenCalledWith(
+                'braze: Failed to load after maximum retries.'
+            );
         });
     });
 });

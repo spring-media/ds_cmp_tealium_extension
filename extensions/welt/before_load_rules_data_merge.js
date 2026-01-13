@@ -11,7 +11,7 @@
 
 /* global utag, a, b */
 
-(function() {
+const beforeLoadRulesDataMerge = function () {
     try {
         // Merge b object into utag.data
         if (typeof b !== 'undefined' && typeof utag !== 'undefined' && utag.ut) {
@@ -38,4 +38,14 @@
         // Silent error handling - should not break page functionality
         console.error('[TEALIUM BEFORE LOAD RULES] Error:', e);
     }
-})();
+};
+
+// Execute in browser context
+if (typeof window !== 'undefined' && typeof utag !== 'undefined') {
+    beforeLoadRulesDataMerge();
+}
+
+// Export for tests
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports = { beforeLoadRulesDataMerge };
+}

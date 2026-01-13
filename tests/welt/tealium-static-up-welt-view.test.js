@@ -3,10 +3,11 @@
  * Configures Tealium utag to enable view tracking on static.up.welt.de
  */
 
+const { configureStaticUpView } = require('../../extensions/welt/tealium-static-up-welt-view');
+
 describe('Tealium Static UP WELT View Configuration', () => {
     let originalLocation;
     let mockConsole;
-    let extensionCode;
 
     beforeEach(() => {
         originalLocation = global.location;
@@ -18,21 +19,6 @@ describe('Tealium Static UP WELT View Configuration', () => {
             error: jest.fn()
         };
         global.console = mockConsole;
-
-        // Load the extension code as a function
-        extensionCode = () => {
-            if (location.hostname !== 'static.up.welt.de') {
-                return;
-            }
-
-            try {
-                window.utag_cfg_ovrd = window.utag_cfg_ovrd || {};
-                window.utag_cfg_ovrd = { noview: false };
-            } catch (e) {
-                // Silent error handling - should not break page functionality
-                console.error('[TEALIUM STATIC UP] Error:', e);
-            }
-        };
     });
 
     afterEach(() => {
@@ -45,7 +31,7 @@ describe('Tealium Static UP WELT View Configuration', () => {
         delete global.location;
         global.location = { hostname: 'static.up.welt.de' };
 
-        extensionCode();
+        configureStaticUpView();
 
         expect(window.utag_cfg_ovrd).toEqual({ noview: false });
     });
@@ -54,7 +40,7 @@ describe('Tealium Static UP WELT View Configuration', () => {
         delete global.location;
         global.location = { hostname: 'www.welt.de' };
 
-        extensionCode();
+        configureStaticUpView();
 
         expect(window.utag_cfg_ovrd).toBeUndefined();
     });
@@ -73,7 +59,7 @@ describe('Tealium Static UP WELT View Configuration', () => {
             }
         });
 
-        expect(() => extensionCode()).not.toThrow();
+        expect(() => configureStaticUpView()).not.toThrow();
     });
 
     it('should log errors to console', () => {
@@ -90,7 +76,7 @@ describe('Tealium Static UP WELT View Configuration', () => {
             }
         });
 
-        extensionCode();
+        configureStaticUpView();
 
         expect(mockConsole.error).toHaveBeenCalled();
         expect(mockConsole.error.mock.calls[0][0]).toContain('[TEALIUM STATIC UP] Error:');

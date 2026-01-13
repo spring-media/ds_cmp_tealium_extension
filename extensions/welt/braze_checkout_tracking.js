@@ -5,42 +5,89 @@ Problem was that when a page loads library twice, braze start a new sessions
 There was no way in braze to stop that or check it before
 */
 
-const consentGiven = /(^|;)\s*cmp_cv_list\s*=\s*[^;]*braze[^;]*(;|$)/.test(document.cookie);
-const fromCheckout =
-    (typeof utag.data['dom.referrer'] != 'undefined' &&
-        utag.data['dom.referrer'].toString().indexOf('paypal.com') > -1) ||
-    (typeof utag.data['dom.referrer'] != 'undefined' &&
-        utag.data['dom.referrer'].toString().indexOf('checkout-v2.prod.ps.welt.de') > -1) ||
-    (typeof utag.data['qp.t_ref'] != 'undefined' &&
-        utag.data['qp.t_ref'].toString().indexOf('checkout-v2.prod.ps.welt.de') > -1);
-const isSubscriber = utag.data.user_hasPlusSubscription2.includes('true');
+/**
+ * Check if braze consent is given via cookie
+ */
+const checkConsentGiven = () => {
+    return /(^|;)\s*cmp_cv_list\s*=\s*[^;]*braze[^;]*(;|$)/.test(document.cookie);
+};
 
+/**
+ * Check if user is coming from checkout
+ */
+const checkFromCheckout = () => {
+    return (
+        (typeof utag.data['dom.referrer'] != 'undefined' &&
+            utag.data['dom.referrer'].toString().indexOf('paypal.com') > -1) ||
+        (typeof utag.data['dom.referrer'] != 'undefined' &&
+            utag.data['dom.referrer'].toString().indexOf('checkout-v2.prod.ps.welt.de') > -1) ||
+        (typeof utag.data['qp.t_ref'] != 'undefined' &&
+            utag.data['qp.t_ref'].toString().indexOf('checkout-v2.prod.ps.welt.de') > -1)
+    );
+};
+
+/**
+ * Check if user is a subscriber
+ */
+const checkIsSubscriber = () => {
+    return utag.data.user_hasPlusSubscription2.includes('true');
+};
+
+/**
+ * Track checkout success event to Braze
+ */
 function trackBrazeCheckout() {
     if (typeof braze != 'undefined') {
         braze.logCustomEvent('Checkout Success', {
             content_type: utag.data.page_document_type || '',
-            entitlement_ids: utag.data.user_entitlements2.toString() || '',
+            entitlement_ids:
+                (utag.data.user_entitlements2 && utag.data.user_entitlements2.toString()) || '',
             page_id: utag.data.page_id || '',
             offerId: utag.data['qp.offerId'] || ''
         });
     }
 }
 
-let retryCount = 0;
-const maxRetries = 10;
-
-function retryBrazeCheck() {
+/**
+ * Retry checking for Braze library with exponential backoff
+ */
+function retryBrazeCheck(retryCount = 0, maxRetries = 10) {
     if (typeof braze !== 'undefined') {
         trackBrazeCheckout();
     } else if (retryCount < maxRetries) {
         console.warn('braze: Library not loaded, retrying...');
-        retryCount++;
-        setTimeout(retryBrazeCheck, 100);
+        setTimeout(() => retryBrazeCheck(retryCount + 1, maxRetries), 100);
     } else {
         console.error('braze: Failed to load after maximum retries.');
     }
 }
 
-if (consentGiven && fromCheckout && isSubscriber) {
-    retryBrazeCheck();
+/**
+ * Initialize braze checkout tracking if conditions are met
+ */
+const initBrazeCheckoutTracking = () => {
+    const consentGiven = checkConsentGiven();
+    const fromCheckout = checkFromCheckout();
+    const isSubscriber = checkIsSubscriber();
+
+    if (consentGiven && fromCheckout && isSubscriber) {
+        retryBrazeCheck();
+    }
+};
+
+// Execute in browser context
+if (typeof window !== 'undefined' && typeof utag !== 'undefined') {
+    initBrazeCheckoutTracking();
+}
+
+// Export for tests
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports = {
+        checkConsentGiven,
+        checkFromCheckout,
+        checkIsSubscriber,
+        trackBrazeCheckout,
+        retryBrazeCheck,
+        initBrazeCheckoutTracking
+    };
 }

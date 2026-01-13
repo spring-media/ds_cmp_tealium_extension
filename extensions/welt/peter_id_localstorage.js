@@ -9,11 +9,14 @@
 
 /* global utag */
 
-(function() {
-    try {
-        const STORAGE_KEY = 'asadEls_se';
-        const DEFAULT_PETER_ID = 'false';
+const STORAGE_KEY = 'asadEls_se';
+const DEFAULT_PETER_ID = 'false';
 
+/**
+ * Initialize Peter ID from localStorage
+ */
+const initPeterId = function () {
+    try {
         // Initialize utag.data if not exists
         utag.data = utag.data || {};
 
@@ -38,4 +41,14 @@
             utag.data.peterId = 'false';
         }
     }
-})();
+};
+
+// Execute in browser context
+if (typeof window !== 'undefined' && typeof utag !== 'undefined') {
+    initPeterId();
+}
+
+// Export for tests
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports = { initPeterId, STORAGE_KEY, DEFAULT_PETER_ID };
+}
