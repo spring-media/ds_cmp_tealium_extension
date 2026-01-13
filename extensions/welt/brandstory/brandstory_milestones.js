@@ -69,24 +69,8 @@ function checkBrandstoryConditions() {
 function getDomainTagValue(domain) {
     if (domain.includes('welt.de')) {
         return [206];
-    } else if (domain.includes('bild.de')) {
-        return [10];
-    } else if (domain.includes('fitbook.de') || domain.includes('fitbook-magazine.com')) {
-        return [31];
-    } else if (domain.includes('myhomebook.de') || domain.includes('myhomebook-magazine.com')) {
-        return [31];
-    } else if (domain.includes('petbook.de') || domain.includes('petbook-magazine.com')) {
-        return [79];
-    } else if (domain.includes('stylebook.de') || domain.includes('stylebook-magazine.com')) {
-        return [20];
-    } else if (domain.includes('techbook.de') || domain.includes('techbook-magazine.com')) {
-        return [82];
-    } else if (domain.includes('travelbook.de') || domain.includes('travelbook-magazine.com')) {
-        return [69];
-    } else {
-        // Default values if domain doesn't match
-        return [];
     }
+    return [];
 }
 
 // Get domain-specific tag number
