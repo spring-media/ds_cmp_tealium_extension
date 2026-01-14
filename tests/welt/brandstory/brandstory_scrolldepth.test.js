@@ -3,6 +3,9 @@
  * Brandstory Scroll Depth Tracking for Welt
  */
 
+// snyk:ignore: Cookie security attributes not applicable in test environment
+// These cookies are only used for testing purposes, not in production code
+
 describe('Brandstory Scrolldepth', () => {
     let checkBrandstoryConditions;
     let getDomainTagValue;
