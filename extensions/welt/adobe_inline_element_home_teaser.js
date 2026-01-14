@@ -1,6 +1,6 @@
 /* global a, b, utag */
 
-(function (a, b) {
+const adobeInlineElementHomeTeaser = function (a, b) {
     // Only process link events with Inline Element tracking
     if (
         a !== 'link' ||
@@ -27,4 +27,14 @@
         // Silent error handling - should not break other extensions
         console.error('[ADOBE INLINE ELEMENT] Error:', e);
     }
-})(a, b);
+};
+
+// Export for testing
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = adobeInlineElementHomeTeaser;
+}
+
+// Execute in Tealium environment
+if (typeof a !== 'undefined' && typeof b !== 'undefined') {
+    adobeInlineElementHomeTeaser(a, b);
+}

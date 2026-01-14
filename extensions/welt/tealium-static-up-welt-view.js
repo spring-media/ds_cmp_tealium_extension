@@ -1,4 +1,4 @@
-(function () {
+const tealiumStaticUpWeltView = function () {
     if (location.hostname !== 'static.up.welt.de') {
         return;
     }
@@ -10,4 +10,14 @@
         // Silent error handling - should not break page functionality
         console.error('[TEALIUM STATIC UP] Error:', e);
     }
-})();
+};
+
+// Export for testing
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = tealiumStaticUpWeltView;
+}
+
+// Execute in Tealium environment
+if (typeof location !== 'undefined') {
+    tealiumStaticUpWeltView();
+}

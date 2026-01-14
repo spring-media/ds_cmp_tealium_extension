@@ -42,7 +42,7 @@ describe('Brandstory Milestones', () => {
             };
             window.utag = {
                 data: {
-                    consentedVendors: ['other_vendor'],
+                    'cp.cmp_cv_list': 'other_vendor',
                     page_type: 'article'
                 }
             };
@@ -62,7 +62,7 @@ describe('Brandstory Milestones', () => {
             };
             window.utag = {
                 data: {
-                    consentedVendors: ['adobe_analytics'],
+                    'cp.cmp_cv_list': 'adobe_analytics',
                     page_type: 'article'
                 }
             };
@@ -82,7 +82,7 @@ describe('Brandstory Milestones', () => {
             };
             window.utag = {
                 data: {
-                    consentedVendors: ['adobe_analytics'],
+                    'cp.cmp_cv_list': 'adobe_analytics',
                     page_type: 'article'
                 }
             };
@@ -102,7 +102,7 @@ describe('Brandstory Milestones', () => {
             };
             window.utag = {
                 data: {
-                    consentedVendors: ['adobe_analytics'],
+                    'cp.cmp_cv_list': 'adobe_analytics',
                     page_type: 'article'
                 }
             };
@@ -122,7 +122,7 @@ describe('Brandstory Milestones', () => {
             };
             window.utag = {
                 data: {
-                    consentedVendors: ['adobe_analytics'],
+                    'cp.cmp_cv_list': 'adobe_analytics',
                     page_type: 'article',
                     page_keywords_string: 'keyword1,brand-story,keyword2'
                 }
@@ -143,7 +143,7 @@ describe('Brandstory Milestones', () => {
             };
             window.utag = {
                 data: {
-                    consentedVendors: ['adobe_analytics'],
+                    'cp.cmp_cv_list': 'adobe_analytics',
                     page_type: 'article',
                     page_keywords_string: 'product-story-selection'
                 }
@@ -164,7 +164,7 @@ describe('Brandstory Milestones', () => {
             };
             window.utag = {
                 data: {
-                    consentedVendors: ['adobe_analytics'],
+                    'cp.cmp_cv_list': 'adobe_analytics',
                     page_type: 'article'
                 }
             };
@@ -184,7 +184,7 @@ describe('Brandstory Milestones', () => {
             };
             window.utag = {
                 data: {
-                    consentedVendors: ['adobe_analytics'],
+                    'cp.cmp_cv_list': 'adobe_analytics',
                     page_type: 'article',
                     page_keywords_string: 'regular,news'
                 }

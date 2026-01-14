@@ -39,7 +39,7 @@ describe('Brandstory Scrolldepth', () => {
             window.location = { href: 'https://www.welt.de/sponsored/article' };
             window.utag = {
                 data: {
-                    consentedVendors: ['other_vendor'],
+                    'cp.cmp_cv_list': 'other_vendor',
                     page_type: 'article'
                 }
             };
@@ -56,7 +56,7 @@ describe('Brandstory Scrolldepth', () => {
             window.location = { href: 'https://www.welt.de/sponsored/article' };
             window.utag = {
                 data: {
-                    consentedVendors: ['adobe_analytics'],
+                    'cp.cmp_cv_list': 'adobe_analytics',
                     page_type: 'article'
                 }
             };
@@ -73,7 +73,7 @@ describe('Brandstory Scrolldepth', () => {
             window.location = { href: 'https://www.welt.de/sponsored/article-title' };
             window.utag = {
                 data: {
-                    consentedVendors: ['adobe_analytics'],
+                    'cp.cmp_cv_list': 'adobe_analytics',
                     page_type: 'article'
                 }
             };
@@ -90,7 +90,7 @@ describe('Brandstory Scrolldepth', () => {
             window.location = { href: 'https://www.welt.de/advertorials/article-title' };
             window.utag = {
                 data: {
-                    consentedVendors: ['adobe_analytics'],
+                    'cp.cmp_cv_list': 'adobe_analytics',
                     page_type: 'article'
                 }
             };
@@ -107,7 +107,7 @@ describe('Brandstory Scrolldepth', () => {
             window.location = { href: 'https://www.welt.de/article' };
             window.utag = {
                 data: {
-                    consentedVendors: ['adobe_analytics'],
+                    'cp.cmp_cv_list': 'adobe_analytics',
                     page_type: 'article',
                     page_keywords_string: 'keyword1,brand-story,keyword2'
                 }
@@ -125,7 +125,7 @@ describe('Brandstory Scrolldepth', () => {
             window.location = { href: 'https://www.welt.de/article' };
             window.utag = {
                 data: {
-                    consentedVendors: ['adobe_analytics'],
+                    'cp.cmp_cv_list': 'adobe_analytics',
                     page_type: 'article',
                     page_keywords_string: 'product-story-selection'
                 }
@@ -143,7 +143,7 @@ describe('Brandstory Scrolldepth', () => {
             window.location = { href: 'https://www.welt.de/productstorys/article-title' };
             window.utag = {
                 data: {
-                    consentedVendors: ['adobe_analytics'],
+                    'cp.cmp_cv_list': 'adobe_analytics',
                     page_type: 'article'
                 }
             };
@@ -160,7 +160,7 @@ describe('Brandstory Scrolldepth', () => {
             window.location = { href: 'https://www.welt.de/news/article-title' };
             window.utag = {
                 data: {
-                    consentedVendors: ['adobe_analytics'],
+                    'cp.cmp_cv_list': 'adobe_analytics',
                     page_type: 'article',
                     page_keywords_string: 'regular,news'
                 }
