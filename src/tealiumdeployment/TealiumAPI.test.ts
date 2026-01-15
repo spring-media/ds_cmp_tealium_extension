@@ -444,7 +444,7 @@ describe('TealiumAPI', () => {
         it('creates valid update payload with extension ID', () => {
             const tealium = new TealiumAPI(fakeUser, fakeApiKey);
 
-            const payload = tealium.buildUpdatePayload('ext-123', {
+            const payload = tealium.buildUpdatePayload(123, {
                 name: 'Updated Extension',
                 code: 'console.log("updated");',
                 deploymentNotes: 'just a test'
@@ -453,7 +453,7 @@ describe('TealiumAPI', () => {
             expect(payload.saveType).toBe('saveAs');
             expect(payload.operationList).toHaveLength(1);
             expect(payload.operationList[0]!.op).toBe('replace');
-            expect(payload.operationList[0]!.path).toBe('/extensions/ext-123');
+            expect(payload.operationList[0]!.path).toBe('/extensions/123');
             expect(payload.operationList[0]!.value.name).toBe('Updated Extension');
             expect(payload.operationList[0]!.value.configuration[0].value).toBe('console.log("updated");');
         });
@@ -461,7 +461,7 @@ describe('TealiumAPI', () => {
         it('uses default values for optional params', () => {
             const tealium = new TealiumAPI(fakeUser, fakeApiKey);
 
-            const payload = tealium.buildUpdatePayload('ext-123', {
+            const payload = tealium.buildUpdatePayload(123, {
                 name: 'Updated Extension',
                 code: 'console.log("updated");',
                 deploymentNotes: 'just a test'
@@ -479,7 +479,7 @@ describe('TealiumAPI', () => {
         it('respects custom scope and targets', () => {
             const tealium = new TealiumAPI(fakeUser, fakeApiKey);
 
-            const payload = tealium.buildUpdatePayload('ext-123', {
+            const payload = tealium.buildUpdatePayload(123, {
                 name: 'Updated Extension',
                 code: 'console.log("updated");',
                 scope: TealiumExtensionScope.DOMReady,
@@ -499,7 +499,7 @@ describe('TealiumAPI', () => {
         it('includes custom notes and version title', () => {
             const tealium = new TealiumAPI(fakeUser, fakeApiKey);
 
-            const payload = tealium.buildUpdatePayload('ext-123', {
+            const payload = tealium.buildUpdatePayload(123, {
                 name: 'Updated Extension',
                 code: 'console.log("updated");',
                 extensionNotes: 'PR #42 by user@example.com',
@@ -515,7 +515,7 @@ describe('TealiumAPI', () => {
         it('generates timestamp-based version title if not provided', () => {
             const tealium = new TealiumAPI(fakeUser, fakeApiKey);
 
-            const payload = tealium.buildUpdatePayload('ext-123', {
+            const payload = tealium.buildUpdatePayload(123, {
                 name: 'Updated Extension',
                 code: 'console.log("updated");',
                 deploymentNotes: 'just a test'
