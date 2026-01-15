@@ -38,8 +38,18 @@ export class TealiumExtensionDiff {
         this.localExtensions.forEach((l) => {
             const remoteExtension = this.remoteExtensions.find(r => r.id === l.id);
             if (remoteExtension) {
-                // if code different -> update
+
                 if (l.code !== remoteExtension.code) {
+                    // if code different -> update
+                    this.extensionUpdateList.push(l);
+                } else if (l.getScope() !== remoteExtension.getScope()) {
+                    // if scope different -> update
+                    this.extensionUpdateList.push(l);
+                } else if (l.getOccurrence() !== remoteExtension.getOccurrence()) {
+                    // if occurance different -> update
+                    this.extensionUpdateList.push(l);
+                } else if (l.getStatus() !== remoteExtension.getStatus()) {
+                    // if status different -> update
                     this.extensionUpdateList.push(l);
                 }
             } else {

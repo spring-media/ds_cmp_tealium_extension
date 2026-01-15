@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { TealiumAPI, TealiumExtensionScope } from './TealiumAPI';
+import { Occurrence, Status, TealiumAPI, Scope } from './TealiumAPI';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -396,7 +396,7 @@ describe('TealiumAPI', () => {
             const payload = tealium.buildCreatePayload({
                 name: 'Test Extension',
                 code: 'console.log("test");',
-                scope: TealiumExtensionScope.BeforeLoadRules,
+                scope: Scope.BeforeLoadRules,
                 deploymentNotes: 'just a test',
                 targets: { dev: true, qa: false, prod: false }
             });
@@ -447,14 +447,18 @@ describe('TealiumAPI', () => {
             const payload = tealium.buildUpdatePayload(123, {
                 name: 'Updated Extension',
                 code: 'console.log("updated");',
-                deploymentNotes: 'just a test'
+                deploymentNotes: 'just a test',
+                occurrence: Occurrence.RunAlways,
+                status: Status.Inactive
             });
 
             expect(payload.saveType).toBe('saveAs');
             expect(payload.operationList).toHaveLength(1);
             expect(payload.operationList[0]!.op).toBe('replace');
             expect(payload.operationList[0]!.path).toBe('/extensions/123');
-            expect(payload.operationList[0]!.value.name).toBe('Updated Extension');
+            expect(payload.operationList[0]!.value.name).toBe('[A] Updated Extension');
+            expect(payload.operationList[0]!.value.occurrence).toBe('Run Always');
+            expect(payload.operationList[0]!.value.status).toBe('inactive');
             expect(payload.operationList[0]!.value.configuration[0].value).toBe('console.log("updated");');
         });
 
@@ -464,7 +468,9 @@ describe('TealiumAPI', () => {
             const payload = tealium.buildUpdatePayload(123, {
                 name: 'Updated Extension',
                 code: 'console.log("updated");',
-                deploymentNotes: 'just a test'
+                deploymentNotes: 'just a test',
+                occurrence: Occurrence.RunOnce,
+                status: Status.Inactive
             });
 
             const extension = payload.operationList[0]!.value;
@@ -482,8 +488,10 @@ describe('TealiumAPI', () => {
             const payload = tealium.buildUpdatePayload(123, {
                 name: 'Updated Extension',
                 code: 'console.log("updated");',
-                scope: TealiumExtensionScope.DOMReady,
+                scope: Scope.DOMReady,
                 deploymentNotes: 'just a test',
+                occurrence: Occurrence.RunOnce,
+                status: Status.Inactive,
                 targets: { dev: false, qa: true, prod: true }
             });
 
@@ -504,7 +512,9 @@ describe('TealiumAPI', () => {
                 code: 'console.log("updated");',
                 extensionNotes: 'PR #42 by user@example.com',
                 deploymentNotes: 'Hotfix deployment',
-                versionTitle: 'v2.0.0'
+                versionTitle: 'v2.0.0',
+                occurrence: Occurrence.RunOnce,
+                status: Status.Inactive
             });
 
             expect(payload.versionTitle).toBe('v2.0.0');
@@ -518,7 +528,9 @@ describe('TealiumAPI', () => {
             const payload = tealium.buildUpdatePayload(123, {
                 name: 'Updated Extension',
                 code: 'console.log("updated");',
-                deploymentNotes: 'just a test'
+                deploymentNotes: 'just a test',
+                occurrence: Occurrence.RunOnce,
+                status: Status.Inactive
             });
 
             expect(payload.versionTitle).toContain('Update');

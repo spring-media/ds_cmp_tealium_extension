@@ -1,10 +1,20 @@
 import axios from 'axios';
 
 // Enums
-export enum TealiumExtensionScope {
+export enum Scope {
     AfterLoadRules = 'After Load Rules',
     BeforeLoadRules = 'Before Load Rules',
     DOMReady = 'DOM Ready'
+}
+
+export enum Occurrence {
+    RunAlways = 'Run Always',
+    RunOnce = 'Run Once'
+}
+
+export enum Status {
+    Active = 'active',
+    Inactive = 'inactive'
 }
 
 export class TealiumAPI {
@@ -120,7 +130,7 @@ export class TealiumAPI {
                         name: params.name,
                         notes: params.extensionNotes || '',
                         type: 'Javascript Code',
-                        scope: params.scope || TealiumExtensionScope.AfterLoadRules,
+                        scope: params.scope || Scope.AfterLoadRules,
                         occurence: 'Run Always',
                         status: 'active',
                         selectedTargets: params.targets || {
@@ -152,12 +162,12 @@ export class TealiumAPI {
                     path: `/extensions/${id}`,
                     value: {
                         object: 'extension',
-                        name: params.name,
+                        name: '[A] ' + params.name,
                         notes: params.extensionNotes || '',
                         type: 'Javascript Code',
-                        scope: params.scope || TealiumExtensionScope.AfterLoadRules,
-                        occurence: 'Run Always',
-                        status: 'active',
+                        scope: params.scope || Scope.AfterLoadRules,
+                        occurrence: params.occurrence,
+                        status: params.status,
                         selectedTargets: params.targets || {
                             dev: true,
                             qa: true,
@@ -184,7 +194,7 @@ export interface ExtensionCreateParams {
     extensionNotes?: string;
     deploymentNotes: string;
     versionTitle?: string;
-    scope?: TealiumExtensionScope;
+    scope?: Scope;
     targets?: {
         dev?: boolean;
         qa?: boolean;
@@ -198,7 +208,9 @@ export interface ExtensionUpdateParams {
     extensionNotes?: string;
     deploymentNotes: string;
     versionTitle?: string;
-    scope?: TealiumExtensionScope;
+    scope?: Scope;
+    occurrence: Occurrence;
+    status: Status;
     targets?: {
         dev?: boolean;
         qa?: boolean;

@@ -70,18 +70,12 @@ export class TealiumDeploymentPipeline {
             throw new Error('Not connected');
         }
 
-        for (const ext of extensions) {
-            if (!ext.id) {
-                throw new Error('Extension has no id');
-            }
-        }
-
         // Create deployment messages
         const deploymentDate = new Date();
         for (const ext of extensions) {
 
             const deploymentNode =
-            'DEPLOYED BY GITHUB-CI/CD - DO NOT CHANGE MANUALY\n' +
+            '⚠️ DEPLOYED BY GITHUB-CI/CD - DO NOT CHANGE MANUALY ⚠️\n' +
             `Commit: ${deploymentMessage}\n` +
             `Src: ${ext.getFilepath()}\n` +
             `Deployed at:${deploymentDate.toUTCString()}`;
@@ -89,15 +83,22 @@ export class TealiumDeploymentPipeline {
             ext.setNotes(deploymentNode);
         }
 
-        const patchPayload = this.tealium.buildUpdatePayload(extension.id, {
-            name: extension.name,
-            code: extension.code,
-            deploymentNotes: 'Just a test',
-            extensionNotes: extension.getNotes()
-        });
+        for (const ext of extensions) {
+            if (!ext.id) {
+                throw new Error('Extension has no id');
+            }
+            const patchPayload = this.tealium.buildUpdatePayload(ext.id, {
+                name: ext.name,
+                code: ext.code,
+                deploymentNotes: 'Just a test',
+                extensionNotes: ext.getNotes(),
+                occurrence: ext.getOccurrence(),
+                status: ext.getStatus()
+            });
 
-        const response = await this.tealium.deploy(patchPayload);
-        console.log('\n');
-        console.log(response);
+            const response = await this.tealium.deploy(patchPayload);
+            console.log(`Extension ${ext.name} deployed`, response);
+        }
+
     }
 }

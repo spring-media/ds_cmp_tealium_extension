@@ -1,4 +1,5 @@
 import { Extension } from './Extension';
+import { Occurrence, Status, Scope } from './TealiumAPI';
 import { TealiumExtensionDiff } from './TealiumExtensionDiff';
 
 describe('TealiumExtensionDiff', () => {
@@ -25,7 +26,7 @@ describe('TealiumExtensionDiff', () => {
         expect(diff.getExtensionsToUpdate().length).toBe(0);
     });
 
-    it('returns extension for update if it does exist on remote', () => {
+    it('returns extension for update if it does exist on remote and is different', () => {
         const extensionLocal: Extension = Extension.fromLocal(123, 'test-extension', '<code v2>');
         const extensionRemote: Extension = Extension.fromLocal(123, 'test-extension', '<code v1>');
 
@@ -38,7 +39,52 @@ describe('TealiumExtensionDiff', () => {
         expect(diff.getExtensionsToUpdate().length).toBe(1);
     });
 
-    it('does not add extension for update if code matches', () => {
+    it('returns extension for update if it does exist on remote and scope is different', () => {
+        const extensionLocal: Extension = Extension.fromLocal(123, 'test-extension', '<code v1>');
+        const extensionRemote: Extension = Extension.fromLocal(123, 'test-extension', '<code v1>');
+        extensionLocal.setScope(Scope.AfterLoadRules);
+        extensionRemote.setScope(Scope.BeforeLoadRules);
+
+        const diff = new TealiumExtensionDiff();
+        diff.setLocalExtensions([extensionLocal]);
+        diff.setRemoteExtensions([extensionRemote]);
+        diff.diff();
+
+        expect(diff.getExtensionsNotFound().length).toBe(0);
+        expect(diff.getExtensionsToUpdate().length).toBe(1);
+    });
+
+    it('returns extension for update if it does exist on remote and occurrence is different', () => {
+        const extensionLocal: Extension = Extension.fromLocal(123, 'test-extension', '<code v1>');
+        const extensionRemote: Extension = Extension.fromLocal(123, 'test-extension', '<code v1>');
+        extensionLocal.setOccurrence(Occurrence.RunAlways);
+        extensionRemote.setOccurrence(Occurrence.RunOnce);
+
+        const diff = new TealiumExtensionDiff();
+        diff.setLocalExtensions([extensionLocal]);
+        diff.setRemoteExtensions([extensionRemote]);
+        diff.diff();
+
+        expect(diff.getExtensionsNotFound().length).toBe(0);
+        expect(diff.getExtensionsToUpdate().length).toBe(1);
+    });
+
+    it('returns extension for update if it does exist on remote and status is different', () => {
+        const extensionLocal: Extension = Extension.fromLocal(123, 'test-extension', '<code v1>');
+        const extensionRemote: Extension = Extension.fromLocal(123, 'test-extension', '<code v1>');
+        extensionLocal.setStatus(Status.Active);
+        extensionRemote.setStatus(Status.Inactive);
+
+        const diff = new TealiumExtensionDiff();
+        diff.setLocalExtensions([extensionLocal]);
+        diff.setRemoteExtensions([extensionRemote]);
+        diff.diff();
+
+        expect(diff.getExtensionsNotFound().length).toBe(0);
+        expect(diff.getExtensionsToUpdate().length).toBe(1);
+    });
+
+    it('does not add extension for update if code and scope are same', () => {
         const extensionLocal: Extension = Extension.fromLocal(123, 'test-extension', '<code v1>');
         const extensionRemote: Extension = Extension.fromLocal(123, 'test-extension', '<code v1>');
 
@@ -60,8 +106,6 @@ describe('TealiumExtensionDiff', () => {
         diff.setRemoteExtensions([extensionB]);
         expect(() => { diff.diff(); })
             .toThrow('Duplicate extension IDs found: 123, 456');
-
-
     });
 
     it('throws if remote has duplicate extensionIds', () => {

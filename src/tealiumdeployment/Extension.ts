@@ -1,4 +1,4 @@
-import { TealiumExtension } from './TealiumAPI';
+import { Occurrence, Status, TealiumExtension, Scope } from './TealiumAPI';
 
 export class Extension {
 
@@ -15,6 +15,9 @@ export class Extension {
 
     private filepath: string;
     private notes: string;
+    private scope: Scope;
+    private occurrence: Occurrence;
+    private status: Status;
 
     private constructor(
         public readonly name: string,
@@ -23,6 +26,17 @@ export class Extension {
     ) {
         this.notes = '';
         this.filepath = '';
+        this.scope = Scope.AfterLoadRules;
+        this.occurrence = Occurrence.RunAlways;
+        this.status = Status.Active;
+    }
+
+    setScope(scope: Scope) {
+        this.scope = scope;
+    }
+
+    getScope(): Scope {
+        return this.scope;
     }
 
     setNotes(notes: string) {
@@ -39,5 +53,21 @@ export class Extension {
 
     setFilePath(filepath: string) {
         this.filepath = filepath;
+    }
+
+    setOccurrence(occurrence: Occurrence) {
+        this.occurrence = occurrence;
+    }
+
+    getOccurrence() {
+        return this.occurrence;
+    }
+
+    setStatus(status: Status) {
+        this.status = status;
+    }
+
+    getStatus(): Status {
+        return this.status;
     }
 }
