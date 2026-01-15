@@ -34,23 +34,23 @@ export class TealiumExtensionDiff {
         console.log('Validate no duplicate extionsion IDs in remote extensions');
         this.validateNoDuplicateExtensionIds(this.remoteExtensions);
 
-        // Try to find remote extension
+        // find remote extension
         this.localExtensions.forEach((l) => {
-            const remoteExtension = this.remoteExtensions.find(r => r.extensionId === l.extensionId);
+            const remoteExtension = this.remoteExtensions.find(r => r.id === l.id);
             if (remoteExtension) {
-                // kandiate for update?
+                // if code different -> update
                 if (l.code !== remoteExtension.code) {
                     this.extensionUpdateList.push(l);
                 }
             } else {
-                // create from local
+                // extension not found in remote -> ignore
                 this.extensionNotFoundList.push(l);
             }
         });
     }
 
     private validateNoDuplicateExtensionIds(extensions: Extension[]): void {
-        const ids = extensions.map(e => e.extensionId);
+        const ids = extensions.map(e => e.id);
         const duplicates = ids.filter((id, index) => ids.indexOf(id) !== index);
         if (duplicates.length > 0) {
             throw new Error(`Duplicate extension IDs found: ${duplicates.join(', ')}`);

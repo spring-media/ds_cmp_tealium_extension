@@ -141,7 +141,7 @@ export class TealiumAPI {
         };
     }
 
-    public buildUpdatePayload(extensionId: string, params: ExtensionUpdateParams): TealiumDeployPayload {
+    public buildUpdatePayload(id: number, params: ExtensionUpdateParams): TealiumDeployPayload {
         return {
             versionTitle: params.versionTitle || `Update ${new Date().toISOString()}`,
             saveType: 'saveAs',
@@ -149,7 +149,7 @@ export class TealiumAPI {
             operationList: [
                 {
                     op: 'replace',
-                    path: `/extensions/${extensionId}`,
+                    path: `/extensions/${id}`,
                     value: {
                         object: 'extension',
                         name: params.name,
@@ -207,7 +207,7 @@ export interface ExtensionUpdateParams {
 }
 
 export interface TealiumExtension {
-    id: string;
+    id: number;
     extensionId: string;
     extenstionType: string;
     name: string;
