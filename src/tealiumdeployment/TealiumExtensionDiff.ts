@@ -1,0 +1,59 @@
+import { Extension } from './Extension';
+
+export class TealiumExtensionDiff {
+    private localExtensions: Extension[];
+    private remoteExtensions: Extension[];
+    private extensionNotFoundList: Extension[];
+    private extensionUpdateList: Extension[];
+
+    constructor() {
+        this.localExtensions = [];
+        this.remoteExtensions = [];
+        this.extensionNotFoundList = [];
+        this.extensionUpdateList = [];
+    }
+
+    getExtensionsToUpdate(): Extension[] {
+        return [...this.extensionUpdateList];
+    }
+    getExtensionsNotFound(): Extension[] {
+        return [...this.extensionNotFoundList];
+    }
+    setRemoteExtensions(extensions: Extension[]): void {
+        this.remoteExtensions = [...extensions];
+    }
+
+    setLocalExtensions(extensions: Extension[]): void {
+        this.localExtensions = [...extensions];
+    }
+
+    diff() {
+        // Duplication validation
+        console.log('Validate no duplicate extionsion IDs in local extensions');
+        this.validateNoDuplicateExtensionIds(this.localExtensions);
+        console.log('Validate no duplicate extionsion IDs in remote extensions');
+        this.validateNoDuplicateExtensionIds(this.remoteExtensions);
+
+        // Try to find remote extension
+        this.localExtensions.forEach((l) => {
+            const remoteExtension = this.remoteExtensions.find(r => r.extensionId === l.extensionId);
+            if (remoteExtension) {
+                // kandiate for update?
+                if (l.code !== remoteExtension.code) {
+                    this.extensionUpdateList.push(l);
+                }
+            } else {
+                // create from local
+                this.extensionNotFoundList.push(l);
+            }
+        });
+    }
+
+    private validateNoDuplicateExtensionIds(extensions: Extension[]): void {
+        const ids = extensions.map(e => e.extensionId);
+        const duplicates = ids.filter((id, index) => ids.indexOf(id) !== index);
+        if (duplicates.length > 0) {
+            throw new Error(`Duplicate extension IDs found: ${duplicates.join(', ')}`);
+        }
+    }
+}

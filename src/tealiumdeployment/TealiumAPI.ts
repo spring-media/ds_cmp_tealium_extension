@@ -65,7 +65,7 @@ export class TealiumAPI {
         }
     }
 
-    public async getProfile(): Promise<TealiumProfilePayload> {
+    public async getProfile(): Promise<TealiumProfilePayload | undefined> {
         if (!this.isConnected()) {
             throw new Error('TealiumAPI not connected.A');
         }
@@ -80,8 +80,6 @@ export class TealiumAPI {
             });
             if (response.status === 200) {
                 return response.data;
-            } else {
-                return {};
             }
         } catch (error: any) {
             console.log(error);
@@ -208,8 +206,22 @@ export interface ExtensionUpdateParams {
     };
 }
 
-export interface TealiumProfilePayload {
+export interface TealiumExtension {
+    id: string;
+    extensionId: string;
+    extenstionType: string;
+    name: string;
+    notes: string;
+    scope: string;
+    configuration: {
+        code: string
+    };
+}
 
+export interface TealiumProfilePayload {
+    account: string;
+    profile: string;
+    extensions: TealiumExtension[] | null
 }
 
 export interface TealiumDeployPayload {
