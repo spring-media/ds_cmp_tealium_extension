@@ -65,13 +65,28 @@ export class TealiumDeploymentPipeline {
         return false;
     }
 
-    async deployExtensions(extension: Extension) {
+    async deployExtensions(extensions: Extension[], deploymentMessage: string) {
         if (!this.tealium) {
             throw new Error('Not connected');
         }
 
-        if (!extension.id) {
-            throw new Error('Extension has no id');
+        for (const ext of extensions) {
+            if (!ext.id) {
+                throw new Error('Extension has no id');
+            }
+        }
+
+        // Create deployment messages
+        const deploymentDate = new Date();
+        for (const ext of extensions) {
+
+            const deploymentNode =
+            'DEPLOYED BY GITHUB-CI/CD - DO NOT CHANGE MANUALY\n' +
+            `Commit: ${deploymentMessage}\n` +
+            `Src: ${ext.getFilepath()}\n` +
+            `Deployed at:${deploymentDate.toUTCString()}`;
+
+            ext.setNotes(deploymentNode);
         }
 
         const patchPayload = this.tealium.buildUpdatePayload(extension.id, {

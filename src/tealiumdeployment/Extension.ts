@@ -1,6 +1,7 @@
 import { TealiumExtension } from './TealiumAPI';
 
 export class Extension {
+
     static fromRemote(data: TealiumExtension): Extension {
         const code = data.configuration.code;
         const extension = new Extension(data.name, code, data.id);
@@ -12,6 +13,7 @@ export class Extension {
         return new Extension(name, code, id);
     }
 
+    private filepath: string;
     private notes: string;
 
     private constructor(
@@ -20,6 +22,7 @@ export class Extension {
         public readonly id?: number
     ) {
         this.notes = '';
+        this.filepath = '';
     }
 
     setNotes(notes: string) {
@@ -30,7 +33,11 @@ export class Extension {
         return this.notes;
     }
 
-    // public getFileName() {
-    //     return this.notes;
-    // }
+    getFilepath(): string {
+        return this.filepath;
+    }
+
+    setFilePath(filepath: string) {
+        this.filepath = filepath;
+    }
 }
