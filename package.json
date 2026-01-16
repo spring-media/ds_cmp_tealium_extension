@@ -13,10 +13,11 @@
     "test:mutation": "stryker run",
     "test:mutation:watch": "stryker run --watch",
     "test:mutation:incremental": "stryker run --incremental",
-    "deploy": "ts-node src/tealiumdeployment/deployment.ts"
+    "deploy": "ts-node src/tealiumdeployment/main.ts"
   },
   "dependencies": {
-    "axios": "^1.13.2"
+    "axios": "^1.13.2",
+    "terser": "^5.44.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",

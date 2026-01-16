@@ -1,10 +1,24 @@
+import * as fs from 'fs';
+import { minify } from 'terser';
 import { config } from '../config';
 import { Extension } from './Extension';
-import { TealiumAPI, TealiumProfilePayload } from './TealiumAPI';
+import { Occurrence, Scope, Status, TealiumAPI, TealiumProfilePayload } from './TealiumAPI';
+import { TealiumExtensionDiff } from './TealiumExtensionDiff';
 
 export interface DeploymentPipelineConfig {
     profile: string;
     extensionsPath?: string;
+}
+
+export type DeploymentConfiguration = {
+    extensions: {
+        name: string,
+        id: number,
+        file: string,
+        scope: Scope,
+        occurrence: Occurrence,
+        status: Status,
+     }[]
 }
 
 export class TealiumDeploymentPipeline {
@@ -13,6 +27,7 @@ export class TealiumDeploymentPipeline {
     private readonly extensionsPath: string;
     private tealium: TealiumAPI | null;
     private currentProfile: TealiumProfilePayload | null;
+    private localExtensions: Extension[];
 
     constructor(deploymentConfig: DeploymentPipelineConfig) {
         if (!['test-solutions2'].includes(deploymentConfig.profile)) {
@@ -24,6 +39,7 @@ export class TealiumDeploymentPipeline {
         this.extensionsPath = deploymentConfig.extensionsPath || './extensions';
         this.tealium = null;
         this.currentProfile = null;
+        this.localExtensions = [];
     }
 
     async connect(): Promise<void> {
@@ -63,6 +79,57 @@ export class TealiumDeploymentPipeline {
 
     extensionCheck(): boolean {
         return false;
+    }
+
+    private readFile(path: string): string {
+        try {
+            const jsCode = fs.readFileSync(path, 'utf-8');
+            return jsCode;
+        } catch (error: any) {
+            throw Error(`Read File failed. ${path}`);
+        }
+    }
+
+    async readLocalExtensions(deploymentConfiguration: DeploymentConfiguration) {
+        let filesNotFound = 0;
+        for (const extensionConfig of deploymentConfiguration.extensions) {
+            try {
+                const code = this.readFile(extensionConfig.file);
+
+                const minifyResult = await minify(code, {
+                    compress: true,
+                    mangle: false
+                });
+
+                let extension;
+                if (!minifyResult.code) {
+                    console.warn(`Minify failed ${extensionConfig.file}. Fallback to original.`);
+                    extension = Extension.fromLocal(extensionConfig.id, extensionConfig.name, code);
+                } else {
+                    extension = Extension.fromLocal(extensionConfig.id, extensionConfig.name, minifyResult.code);
+                }
+                extension.setFilePath(extensionConfig.file);
+                this.localExtensions.push(extension);
+            } catch (error: any) {
+                console.log(error);
+                filesNotFound += 1;
+            }
+        }
+
+        if (filesNotFound > 0) {
+            throw new Error('Not all extensions found');
+        }
+    }
+
+    reconceil(): Extension[] {
+        const diff = new TealiumExtensionDiff();
+        diff.setLocalExtensions(this.localExtensions);
+        diff.setRemoteExtensions(this.getRemoteExtensions());
+        diff.diff();
+
+        console.log(diff.getExtensionsToUpdate());
+        console.log(diff.getExtensionsNotFound());
+        return diff.getExtensionsToUpdate();
     }
 
     async deployExtensions(extensions: Extension[], deploymentMessage: string) {
