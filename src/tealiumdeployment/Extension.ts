@@ -1,4 +1,5 @@
 import { Occurrence, Status, TealiumExtension, Scope } from './TealiumAPI';
+import crypto from 'node:crypto';
 
 export class Extension {
 
@@ -69,5 +70,15 @@ export class Extension {
 
     getStatus(): Status {
         return this.status;
+    }
+
+    getHash() {
+        const content = {
+            code: this.code,
+            scope: this.scope,
+            status: this.status,
+            occurrence: this.status
+        };
+        return crypto.createHash('sha256').update(JSON.stringify(content)).digest('hex');
     }
 }

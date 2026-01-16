@@ -52,7 +52,7 @@ export class TealiumDeploymentPipeline {
             await this.tealium.connect(this.account, this.profile);
         } catch (error) {
             if (error instanceof Error && error.message.includes('Unauthorized')) {
-                throw new Error('Login failed');
+                throw new Error('Tealium login failed');
             }
             throw error;
         }
@@ -127,9 +127,23 @@ export class TealiumDeploymentPipeline {
         diff.setRemoteExtensions(this.getRemoteExtensions());
         diff.diff();
 
-        console.log(diff.getExtensionsToUpdate());
-        console.log(diff.getExtensionsNotFound());
-        return diff.getExtensionsToUpdate();
+        const extensionsForUpdate = diff.getExtensionsToUpdate();
+        const extensionsNotFound = diff.getExtensionsNotFound();
+
+        if (extensionsForUpdate.length > 0) {
+            for (const extension of extensionsForUpdate) {
+                console.log(`Extension '${extension.name}' (${extension.id}) will be updated. ${extension.getHash()}`);
+            }
+        }
+
+        if (extensionsNotFound.length > 0) {
+            for (const extension of extensionsNotFound) {
+                console.log(`Remote extension ${extension.name} (${extension.id}) not found.`);
+            }
+            throw new Error('Not all extensions found in Tealium.');
+        }
+
+        return extensionsForUpdate;
     }
 
     async deployExtensions(extensions: Extension[], deploymentMessage: string) {
@@ -140,31 +154,32 @@ export class TealiumDeploymentPipeline {
         // Create deployment messages
         const deploymentDate = new Date();
         for (const ext of extensions) {
+            if (!ext.id) {
+                throw new Error('Extension has no id');
+            }
 
+            const hash = ext.getHash();
             const deploymentNode =
             '⚠️ DEPLOYED BY GITHUB-CI/CD - DO NOT CHANGE MANUALY ⚠️\n' +
             `Commit: ${deploymentMessage}\n` +
             `Src: ${ext.getFilepath()}\n` +
-            `Deployed at:${deploymentDate.toUTCString()}`;
-
+            `Deployed at:${deploymentDate.toUTCString()}\n` +
+            `Hash: ${hash}`;
             ext.setNotes(deploymentNode);
-        }
+            console.log(`Adding to deployment ${ext.name} - ${hash}`);
 
-        for (const ext of extensions) {
-            if (!ext.id) {
-                throw new Error('Extension has no id');
-            }
             const patchPayload = this.tealium.buildUpdatePayload(ext.id, {
                 name: ext.name,
                 code: ext.code,
-                deploymentNotes: 'Just a test',
+                deploymentNotes: 'GITUB/CICD ${deploymentMessage}',
                 extensionNotes: ext.getNotes(),
                 occurrence: ext.getOccurrence(),
                 status: ext.getStatus()
             });
 
+            console.log(`Deploying to ${this.currentProfile} - ${new Date().toUTCString()}`);
             const response = await this.tealium.deploy(patchPayload);
-            console.log(`Extension ${ext.name} deployed`, response);
+            console.log(`Extension '${ext.name}' deployed - ${new Date().toUTCString()}`, response);
         }
 
     }
