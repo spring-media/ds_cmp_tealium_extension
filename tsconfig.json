@@ -20,6 +20,6 @@
     "noEmit": true,
     "allowJs": true
   },
-  "include": ["tests/**/*", "extensions/**/*"],
+  "include": ["src/**/*","tests/**/*", "extensions/**/*"],
   "exclude": ["node_modules"]
 }

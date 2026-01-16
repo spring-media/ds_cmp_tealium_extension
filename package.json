@@ -4,7 +4,6 @@
   "engines": {
     "node": "24"
   },
-  "type": "module",
   "scripts": {
     "prepare": "husky install",
     "test": "jest",
@@ -13,9 +12,13 @@
     "format:check": "prettier --check .",
     "test:mutation": "stryker run",
     "test:mutation:watch": "stryker run --watch",
-    "test:mutation:incremental": "stryker run --incremental"
+    "test:mutation:incremental": "stryker run --incremental",
+    "deploy": "ts-node src/tealiumdeployment/main.ts"
   },
-  "dependencies": {},
+  "dependencies": {
+    "axios": "^1.13.2",
+    "terser": "^5.44.1"
+  },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
     "@stryker-mutator/core": "^9.4.0",
@@ -32,6 +35,7 @@
     "jest-environment-jsdom": "^29.7.0",
     "prettier": "^3.7.4",
     "ts-jest": "^29.4.5",
+    "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.48.0"
   },
