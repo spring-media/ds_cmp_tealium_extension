@@ -121,7 +121,7 @@ export class TealiumDeploymentPipeline {
         }
     }
 
-    reconceil(): Extension[] {
+    reconcile(): Extension[] {
         const diff = new TealiumExtensionDiff();
         diff.setLocalExtensions(this.localExtensions);
         diff.setRemoteExtensions(this.getRemoteExtensions());
@@ -171,7 +171,7 @@ export class TealiumDeploymentPipeline {
             const patchPayload = this.tealium.buildUpdatePayload(ext.id, {
                 name: ext.name,
                 code: ext.code,
-                deploymentNotes: 'GITUB/CICD ${deploymentMessage}',
+                deploymentNotes: 'GITHUB/CICD ${deploymentMessage}',
                 extensionNotes: ext.getNotes(),
                 occurrence: ext.getOccurrence(),
                 status: ext.getStatus()

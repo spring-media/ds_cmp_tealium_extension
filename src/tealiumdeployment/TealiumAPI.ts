@@ -77,11 +77,11 @@ export class TealiumAPI {
 
     public async getProfile(): Promise<TealiumProfilePayload | undefined> {
         if (!this.isConnected()) {
-            throw new Error('TealiumAPI not connected.A');
+            throw new Error('TealiumAPI not connected.');
         }
 
         try {
-            const url = `https://${this.host}/v3/tiq/accounts/${this.account}/profiles/${this.profile}??includes=loadRules&includes=extensions&includes=tags&includes=tags.template&includes=variables&includes=events&includes=versionIds`;
+            const url = `https://${this.host}/v3/tiq/accounts/${this.account}/profiles/${this.profile}?includes=loadRules&includes=extensions&includes=tags&includes=tags.template&includes=variables&includes=events&includes=versionIds`;
             const response = await axios.get(url, {
                 headers: {
                     'Authorization': `Bearer ${this.token}`,
@@ -221,7 +221,7 @@ export interface ExtensionUpdateParams {
 export interface TealiumExtension {
     id: number;
     extensionId: string;
-    extenstionType: string;
+    extensionType: string;
     name: string;
     notes: string;
     scope: string;

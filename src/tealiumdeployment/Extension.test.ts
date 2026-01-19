@@ -7,7 +7,7 @@ describe('Extension', () => {
             id: 7,
             name: 'test-extension',
             extensionId: '123',
-            extenstionType: 'Javascript Code',
+            extensionType: 'Javascript Code',
             notes: 'A test note',
             scope: 'After Load Rules',
             configuration: {

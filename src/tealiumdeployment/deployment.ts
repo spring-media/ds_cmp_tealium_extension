@@ -23,7 +23,7 @@ export const deployment = async (
     await pipeline.readLocalExtensions(deploymentConfiguration);
 
     // 4. Can I find all extensions and are remote extensions ok?
-    const extensionsToUpdate = pipeline.reconceil();
+    const extensionsToUpdate = pipeline.reconcile();
     if (extensionsToUpdate.length === 0) {
         console.log('Everything up to date');
         return;
