@@ -187,7 +187,13 @@ describe('TealiumDeploymentPipeline', () => {
             await pipeline.fetchProfile();
             expect(pipeline.getRemoteExtensions()).toEqual([{
                 'code': 'console.log("Hello!");',
-                'extensionId': undefined,
+                extensionId: undefined,
+                filepath: '',
+                id: undefined,
+                notes: undefined,
+                occurrence: 'Run Always',
+                scope: 'After Load Rules',
+                status: 'active',
                 'name': 'test-extension'
             }]);
         });
