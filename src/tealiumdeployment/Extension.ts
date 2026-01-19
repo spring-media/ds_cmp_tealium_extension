@@ -1,17 +1,23 @@
-import { Occurrence, Status, TealiumExtension, Scope } from './TealiumAPI';
+import { Occurrence, Status, TealiumExtension, Scope, ExtensionType } from './TealiumAPI';
 import crypto from 'node:crypto';
 
 export class Extension {
 
     static fromRemote(data: TealiumExtension): Extension {
         const code = data.configuration.code;
-        const extension = new Extension(data.name, code, data.id);
+        const extension = new Extension(data.name, ExtensionType.fromString(data.extensionType), code, data.id);
+        extension.setScope(Scope.fromString(data.scope));
+        extension.setOccurrence(Occurrence.fromString(data.occurrence));
+        extension.setStatus(Status.fromString(data.status));
         extension.setNotes(data.notes);
         return extension;
     }
 
-    static fromLocal(id: number, name: string, code: string) {
-        return new Extension(name, code, id);
+    /**
+     * Creates Javascript Code extension
+     */
+    static fromLocal(id: number, name: string, code: string, type = ExtensionType.JavascriptCode) {
+        return new Extension(name, type, code, id);
     }
 
     private filepath: string;
@@ -22,6 +28,7 @@ export class Extension {
 
     private constructor(
         public readonly name: string,
+        public readonly type: ExtensionType,
         public readonly code: string,
         public readonly id?: number
     ) {

@@ -2,7 +2,13 @@ import { TealiumDeploymentPipeline } from './TealiumDeploymentPipeline';
 import { TealiumAPI } from './TealiumAPI';
 import { config } from '../config';
 
-jest.mock('./TealiumAPI');
+jest.mock('./TealiumAPI', () => {
+    const actual = jest.requireActual('./TealiumAPI');
+    return {
+        ...actual,
+        TealiumAPI: jest.fn()
+    };
+});
 
 const mockTealiumAPI = (...methods: Partial<TealiumAPI>[]) => {
     const combinedMocks = Object.assign({}, ...methods);
@@ -176,7 +182,15 @@ describe('TealiumDeploymentPipeline', () => {
         });
 
         it('returns extensions object array', async () => {
-            const extensions = [{ name: 'test-extension', configuration: { code: 'console.log("Hello!");' } }];
+            const extensions = [{
+                id: 123,
+                name: 'test-extension',
+                notes: 'test',
+                extensionType: 'Javascript Code',
+                occurrence: 'Run Always',
+                scope: 'After Load Rules',
+                status: 'active',
+                configuration: { code: 'console.log("Hello!");' } }];
             const mockProfile = { account: 'test-account', profile: 'test-solutions2', extensions: extensions, version: 123 };
             mockTealiumAPI(
                 simulateConnectSuccess(),
@@ -187,14 +201,14 @@ describe('TealiumDeploymentPipeline', () => {
             await pipeline.fetchProfile();
             expect(pipeline.getRemoteExtensions()).toEqual([{
                 'code': 'console.log("Hello!");',
-                extensionId: undefined,
                 filepath: '',
-                id: undefined,
-                notes: undefined,
+                id: 123,
+                notes: 'test',
                 occurrence: 'Run Always',
                 scope: 'After Load Rules',
                 status: 'active',
-                'name': 'test-extension'
+                name: 'test-extension',
+                type: 'Javascript Code'
             }]);
         });
     });

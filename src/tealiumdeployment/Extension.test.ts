@@ -1,5 +1,5 @@
 import { Extension } from './Extension';
-import { Occurrence, Scope, Status, TealiumExtension } from './TealiumAPI';
+import { ExtensionType, Occurrence, Scope, Status, TealiumExtension } from './TealiumAPI';
 
 describe('Extension', () => {
     it('can be created from remote', () => {
@@ -9,13 +9,16 @@ describe('Extension', () => {
             extensionId: '123',
             extensionType: 'Javascript Code',
             notes: 'A test note',
+            status: 'active',
             scope: 'After Load Rules',
+            occurrence: 'Run Always',
             configuration: {
                 code: 'console.log("Hello World");'
             }
         };
         const extension = Extension.fromRemote(tealiumResponse);
         expect(extension.name).toBe('test-extension');
+        expect(extension.type).toBe(ExtensionType.JavascriptCode);
         expect(extension.id).toBe(7);
         expect(extension.code).toBe('console.log("Hello World");');
         expect(extension.getNotes()).toBe('A test note');

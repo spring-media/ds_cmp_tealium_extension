@@ -36,7 +36,7 @@ export class TealiumExtensionDiff {
 
         // find remote extension
         this.localExtensions.forEach((l) => {
-            const remoteExtension = this.remoteExtensions.find(r => r.id === l.id);
+            const remoteExtension = this.remoteExtensions.find(r => r.id === l.id && r.type === l.type);
             if (remoteExtension) {
 
                 if (l.code !== remoteExtension.code) {

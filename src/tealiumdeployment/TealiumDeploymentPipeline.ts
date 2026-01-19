@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import { minify } from 'terser';
 import { config } from '../config';
 import { Extension } from './Extension';
-import { Occurrence, Scope, Status, TealiumAPI, TealiumProfilePayload } from './TealiumAPI';
+import { ExtensionType, Occurrence, Scope, Status, TealiumAPI, TealiumProfilePayload } from './TealiumAPI';
 import { TealiumExtensionDiff } from './TealiumExtensionDiff';
 
 export interface DeploymentPipelineConfig {
@@ -30,7 +30,7 @@ export class TealiumDeploymentPipeline {
     private localExtensions: Extension[];
 
     constructor(deploymentConfig: DeploymentPipelineConfig) {
-        if (!['test-solutions2'].includes(deploymentConfig.profile)) {
+        if (!['welt', 'test-solutions2'].includes(deploymentConfig.profile)) {
             throw new Error(`Unknown Profile ${deploymentConfig.profile}`);
         }
 
@@ -74,7 +74,19 @@ export class TealiumDeploymentPipeline {
         if (!this.currentProfile) {
             throw new Error('Profile not loaded. Run fetchProfile first.');
         }
-        return this.currentProfile.extensions?.map(Extension.fromRemote) || [];
+        return this.currentProfile.extensions?.map((extension) => {
+            if (!ExtensionType.includes(extension.extensionType)) {
+                console.log(`Remote: ExtensionType ${extension.extensionType} not supported. ignored.`);
+                return null;
+            }
+
+            if (!Scope.includes(extension.scope)) {
+                console.log(`Remote: Scope ${extension.scope} not supported. ignored.`);
+                return null;
+            }
+
+            return Extension.fromRemote(extension);
+        }).filter(extension => extension != null) || [];
     }
 
     extensionCheck(): boolean {

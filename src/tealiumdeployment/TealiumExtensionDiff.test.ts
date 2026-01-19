@@ -1,5 +1,5 @@
 import { Extension } from './Extension';
-import { Occurrence, Status, Scope } from './TealiumAPI';
+import { Occurrence, Status, Scope, ExtensionType } from './TealiumAPI';
 import { TealiumExtensionDiff } from './TealiumExtensionDiff';
 
 describe('TealiumExtensionDiff', () => {
@@ -82,6 +82,19 @@ describe('TealiumExtensionDiff', () => {
 
         expect(diff.getExtensionsNotFound().length).toBe(0);
         expect(diff.getExtensionsToUpdate().length).toBe(1);
+    });
+
+    it('does not add extension for update if extension type is different', () => {
+        const extensionLocal: Extension = Extension.fromLocal(123, 'test-extension', '<code v1>', ExtensionType.JavascriptCode);
+        const extensionRemote: Extension = Extension.fromLocal(123, 'test-extension', '<code v2>', ExtensionType.AdvancedJavascriptCode);
+
+        const diff = new TealiumExtensionDiff();
+        diff.setLocalExtensions([extensionLocal]);
+        diff.setRemoteExtensions([extensionRemote]);
+        diff.diff();
+
+        expect(diff.getExtensionsNotFound().length).toBe(1);
+        expect(diff.getExtensionsToUpdate().length).toBe(0);
     });
 
     it('does not add extension for update if code and scope are same', () => {

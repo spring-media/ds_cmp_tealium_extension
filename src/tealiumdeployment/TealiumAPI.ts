@@ -1,10 +1,39 @@
 import axios from 'axios';
 
 // Enums
+
+export enum ExtensionType {
+    JavascriptCode = 'Javascript Code',
+    AdvancedJavascriptCode = 'Advanced Javascript Code'
+}
+
+export namespace ExtensionType {
+    export function includes(value: string): value is ExtensionType {
+        return Object.values(ExtensionType).includes(value as ExtensionType);
+    }
+
+    export function fromString(value: string): ExtensionType {
+        if (includes(value)) return value;
+        throw new Error(`'${value}' is not part of ExtensionType`);
+    }
+}
+
 export enum Scope {
+    PreLoader = 'Pre Loader',
     AfterLoadRules = 'After Load Rules',
     BeforeLoadRules = 'Before Load Rules',
     DOMReady = 'DOM Ready'
+}
+
+export namespace Scope {
+    export function includes(value: string): value is Scope {
+        return Object.values(Scope).includes(value as Scope);
+    }
+
+    export function fromString(value: string): Scope {
+        if (includes(value)) return value;
+        throw new Error(`'${value}' is not part of Scope`);
+    }
 }
 
 export enum Occurrence {
@@ -12,9 +41,31 @@ export enum Occurrence {
     RunOnce = 'Run Once'
 }
 
+export namespace Occurrence {
+    export function includes(value: string): value is Occurrence {
+        return Object.values(Occurrence).includes(value as Occurrence);
+    }
+
+    export function fromString(value: string): Occurrence {
+        if (includes(value)) return value;
+        throw new Error(`'${value}' is not part of Occurrence`);
+    }
+}
+
 export enum Status {
     Active = 'active',
     Inactive = 'inactive'
+}
+
+export namespace Status {
+    export function includes(value: string): value is Status {
+        return Object.values(Status).includes(value as Status);
+    }
+
+    export function fromString(value: string): Status {
+        if (includes(value)) return value;
+        throw new Error(`'${value}' is not part of ExtensionType`);
+    }
 }
 
 export class TealiumAPI {
@@ -225,6 +276,8 @@ export interface TealiumExtension {
     name: string;
     notes: string;
     scope: string;
+    occurrence: string;
+    status: string;
     configuration: {
         code: string
     };
