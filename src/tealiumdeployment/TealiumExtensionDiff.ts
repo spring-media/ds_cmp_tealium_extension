@@ -29,9 +29,9 @@ export class TealiumExtensionDiff {
 
     diff() {
         // Duplication validation
-        console.log('Validate no duplicate extionsion IDs in local extensions');
+        console.log('Validate no duplicate extension IDs in local extensions');
         this.validateNoDuplicateExtensionIds(this.localExtensions);
-        console.log('Validate no duplicate extionsion IDs in remote extensions');
+        console.log('Validate no duplicate extension IDs in remote extensions');
         this.validateNoDuplicateExtensionIds(this.remoteExtensions);
 
         // find remote extension
