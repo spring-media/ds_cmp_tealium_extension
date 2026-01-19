@@ -77,7 +77,7 @@ export class Extension {
             code: this.code,
             scope: this.scope,
             status: this.status,
-            occurrence: this.status
+            occurrence: this.occurrence
         };
         return crypto.createHash('sha256').update(JSON.stringify(content)).digest('hex');
     }
