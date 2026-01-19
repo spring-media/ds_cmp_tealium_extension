@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Logger } from 'winston';
 
 // Enums
 
@@ -70,6 +71,7 @@ export namespace Status {
 
 export class TealiumAPI {
 
+    private readonly logger: Logger;
     private readonly apiKey: string;
     private readonly username: string;
     private token: string | null;
@@ -77,7 +79,9 @@ export class TealiumAPI {
     private account: string | null;
     private profile: string | null;
 
-    constructor(username: string, apiKey: string) {
+
+    constructor(username: string, apiKey: string, logger: Logger) {
+        this.logger = logger;
         this.username = username;
         this.apiKey = apiKey;
         this.account = null;
@@ -143,7 +147,7 @@ export class TealiumAPI {
                 return response.data;
             }
         } catch (error: any) {
-            console.log(error);
+            this.logger.error(error);
             throw new Error(`GetProfile failed. ${error.message}`);
         }
     }

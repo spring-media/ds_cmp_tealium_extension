@@ -4,6 +4,7 @@ import { config } from '../config';
 import { Extension } from './Extension';
 import { ExtensionType, Occurrence, Scope, Status, TealiumAPI, TealiumProfilePayload } from './TealiumAPI';
 import { TealiumExtensionDiff } from './TealiumExtensionDiff';
+import { Logger } from 'winston';
 
 export interface DeploymentPipelineConfig {
     profile: string;
@@ -28,11 +29,14 @@ export class TealiumDeploymentPipeline {
     private tealium: TealiumAPI | null;
     private currentProfile: TealiumProfilePayload | null;
     private localExtensions: Extension[];
+    private logger: Logger;
 
-    constructor(deploymentConfig: DeploymentPipelineConfig) {
+    constructor(deploymentConfig: DeploymentPipelineConfig, logger: Logger) {
         if (!['welt', 'test-solutions2'].includes(deploymentConfig.profile)) {
             throw new Error(`Unknown Profile ${deploymentConfig.profile}`);
         }
+
+        this.logger = logger;
 
         this.account = config.tealium.account;
         this.profile = deploymentConfig.profile;
@@ -46,7 +50,7 @@ export class TealiumDeploymentPipeline {
         const username = config.tealium.user;
         const apiKey = config.tealium.apiKey;
 
-        this.tealium = new TealiumAPI(username, apiKey);
+        this.tealium = new TealiumAPI(username, apiKey, this.logger);
 
         try {
             await this.tealium.connect(this.account, this.profile);
@@ -74,14 +78,15 @@ export class TealiumDeploymentPipeline {
         if (!this.currentProfile) {
             throw new Error('Profile not loaded. Run fetchProfile first.');
         }
+
         return this.currentProfile.extensions?.map((extension) => {
             if (!ExtensionType.includes(extension.extensionType)) {
-                console.log(`Remote: ExtensionType ${extension.extensionType} not supported. ignored.`);
+                this.logger.info(`Remote: ExtensionType ${extension.extensionType} not supported. ignored.`);
                 return null;
             }
 
             if (!Scope.includes(extension.scope)) {
-                console.log(`Remote: Scope ${extension.scope} not supported. ignored.`);
+                this.logger.info(`Remote: Scope ${extension.scope} not supported. ignored.`);
                 return null;
             }
 
@@ -98,6 +103,7 @@ export class TealiumDeploymentPipeline {
             const jsCode = fs.readFileSync(path, 'utf-8');
             return jsCode;
         } catch (error: any) {
+            this.logger.error(error.message);
             throw Error(`Read File failed. ${path}`);
         }
     }
@@ -113,17 +119,15 @@ export class TealiumDeploymentPipeline {
                     mangle: false
                 });
 
-                let extension;
                 if (!minifyResult.code) {
-                    console.warn(`Minify failed ${extensionConfig.file}. Fallback to original.`);
-                    extension = Extension.fromLocal(extensionConfig.id, extensionConfig.name, code);
-                } else {
-                    extension = Extension.fromLocal(extensionConfig.id, extensionConfig.name, minifyResult.code);
+                    throw new Error(`Minify failed ${extensionConfig.file}. Fallback to original.`);
                 }
+                const extension = Extension.fromLocal(extensionConfig.id, extensionConfig.name, minifyResult.code);
+
                 extension.setFilePath(extensionConfig.file);
                 this.localExtensions.push(extension);
             } catch (error: any) {
-                console.log(error);
+                this.logger.error(error);
                 filesNotFound += 1;
             }
         }
@@ -134,7 +138,7 @@ export class TealiumDeploymentPipeline {
     }
 
     reconcile(): Extension[] {
-        const diff = new TealiumExtensionDiff();
+        const diff = new TealiumExtensionDiff(this.logger);
         diff.setLocalExtensions(this.localExtensions);
         diff.setRemoteExtensions(this.getRemoteExtensions());
         diff.diff();
@@ -144,13 +148,13 @@ export class TealiumDeploymentPipeline {
 
         if (extensionsForUpdate.length > 0) {
             for (const extension of extensionsForUpdate) {
-                console.log(`Extension '${extension.name}' (${extension.id}) will be updated. ${extension.getHash()}`);
+                this.logger.info(`Extension '${extension.name}' (${extension.id}) will be updated. ${extension.getHash()}`);
             }
         }
 
         if (extensionsNotFound.length > 0) {
             for (const extension of extensionsNotFound) {
-                console.log(`Remote extension ${extension.name} (${extension.id}) not found.`);
+                this.logger.info(`Remote extension ${extension.name} (${extension.id}) not found.`);
             }
             throw new Error('Not all extensions found in Tealium.');
         }
@@ -178,7 +182,7 @@ export class TealiumDeploymentPipeline {
             `Deployed at:${deploymentDate.toUTCString()}\n` +
             `Hash: ${hash}`;
             ext.setNotes(deploymentNode);
-            console.log(`Adding to deployment ${ext.name} - ${hash}`);
+            this.logger.info(`Adding to deployment ${ext.name} - ${hash}`);
 
             const patchPayload = this.tealium.buildUpdatePayload(ext.id, {
                 name: ext.name,
@@ -189,9 +193,9 @@ export class TealiumDeploymentPipeline {
                 status: ext.getStatus()
             });
 
-            console.log(`Deploying to ${this.profile} - ${new Date().toUTCString()}`);
+            this.logger.info(`Deploying to ${this.profile} - ${new Date().toUTCString()}`);
             const response = await this.tealium.deploy(patchPayload);
-            console.log(`Extension '${ext.name}' deployed - ${new Date().toUTCString()}`, response);
+            this.logger.info(`Extension '${ext.name}' deployed - ${new Date().toUTCString()}`, response);
         }
 
     }

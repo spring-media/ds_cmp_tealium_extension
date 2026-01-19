@@ -1,11 +1,23 @@
+import winston from 'winston';
 import { Extension } from './Extension';
 import { Occurrence, Status, Scope, ExtensionType } from './TealiumAPI';
 import { TealiumExtensionDiff } from './TealiumExtensionDiff';
 
 describe('TealiumExtensionDiff', () => {
 
+    const logger = winston.createLogger({
+        transports: [
+            new winston.transports.Console()
+        ]
+    });
+
+    let diff: TealiumExtensionDiff;
+    
+    beforeEach(() => {
+        diff = new TealiumExtensionDiff(logger);
+    });
+
     it('has no extensions to update or extension not found if no local extensions given', () => {
-        const diff = new TealiumExtensionDiff();
         diff.setLocalExtensions([]);
         diff.setRemoteExtensions([]);
         diff.diff();
@@ -17,7 +29,6 @@ describe('TealiumExtensionDiff', () => {
     it('returns extension as not found if it does not exist on remote', () => {
         const extension: Extension = Extension.fromLocal(123, 'test-extension', '<code>');
 
-        const diff = new TealiumExtensionDiff();
         diff.setLocalExtensions([extension]);
         diff.setRemoteExtensions([]);
         diff.diff();
@@ -30,7 +41,6 @@ describe('TealiumExtensionDiff', () => {
         const extensionLocal: Extension = Extension.fromLocal(123, 'test-extension', '<code v2>');
         const extensionRemote: Extension = Extension.fromLocal(123, 'test-extension', '<code v1>');
 
-        const diff = new TealiumExtensionDiff();
         diff.setLocalExtensions([extensionLocal]);
         diff.setRemoteExtensions([extensionRemote]);
         diff.diff();
@@ -45,7 +55,6 @@ describe('TealiumExtensionDiff', () => {
         extensionLocal.setScope(Scope.AfterLoadRules);
         extensionRemote.setScope(Scope.BeforeLoadRules);
 
-        const diff = new TealiumExtensionDiff();
         diff.setLocalExtensions([extensionLocal]);
         diff.setRemoteExtensions([extensionRemote]);
         diff.diff();
@@ -60,7 +69,6 @@ describe('TealiumExtensionDiff', () => {
         extensionLocal.setOccurrence(Occurrence.RunAlways);
         extensionRemote.setOccurrence(Occurrence.RunOnce);
 
-        const diff = new TealiumExtensionDiff();
         diff.setLocalExtensions([extensionLocal]);
         diff.setRemoteExtensions([extensionRemote]);
         diff.diff();
@@ -75,7 +83,6 @@ describe('TealiumExtensionDiff', () => {
         extensionLocal.setStatus(Status.Active);
         extensionRemote.setStatus(Status.Inactive);
 
-        const diff = new TealiumExtensionDiff();
         diff.setLocalExtensions([extensionLocal]);
         diff.setRemoteExtensions([extensionRemote]);
         diff.diff();
@@ -84,11 +91,10 @@ describe('TealiumExtensionDiff', () => {
         expect(diff.getExtensionsToUpdate().length).toBe(1);
     });
 
-    it('does not add extension for update if extension type is different', () => {
+    it('does not find extension for update if extension type is different', () => {
         const extensionLocal: Extension = Extension.fromLocal(123, 'test-extension', '<code v1>', ExtensionType.JavascriptCode);
         const extensionRemote: Extension = Extension.fromLocal(123, 'test-extension', '<code v2>', ExtensionType.AdvancedJavascriptCode);
 
-        const diff = new TealiumExtensionDiff();
         diff.setLocalExtensions([extensionLocal]);
         diff.setRemoteExtensions([extensionRemote]);
         diff.diff();
@@ -101,7 +107,6 @@ describe('TealiumExtensionDiff', () => {
         const extensionLocal: Extension = Extension.fromLocal(123, 'test-extension', '<code v1>');
         const extensionRemote: Extension = Extension.fromLocal(123, 'test-extension', '<code v1>');
 
-        const diff = new TealiumExtensionDiff();
         diff.setLocalExtensions([extensionLocal]);
         diff.setRemoteExtensions([extensionRemote]);
         diff.diff();
@@ -114,7 +119,6 @@ describe('TealiumExtensionDiff', () => {
         const extensionA: Extension = Extension.fromLocal(123, 'test-extension A', '<code v1>');
         const extensionB: Extension = Extension.fromLocal(456, 'test-extension B', '<code v1>');
 
-        const diff = new TealiumExtensionDiff();
         diff.setLocalExtensions([extensionA, extensionA, extensionB, extensionB]);
         diff.setRemoteExtensions([extensionB]);
         expect(() => { diff.diff(); })
@@ -125,7 +129,6 @@ describe('TealiumExtensionDiff', () => {
         const extensionA: Extension = Extension.fromLocal(123, 'test-extension A', '<code v1>');
         const extensionB: Extension = Extension.fromLocal(456, 'test-extension B', '<code v1>');
 
-        const diff = new TealiumExtensionDiff();
         diff.setLocalExtensions([extensionA]);
         diff.setRemoteExtensions([extensionA, extensionA, extensionB, extensionB]);
         expect(() => { diff.diff(); })

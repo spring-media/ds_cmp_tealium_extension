@@ -1,17 +1,33 @@
+import winston from 'winston';
 import { deployment } from './deployment';
 import { Occurrence, Status, Scope } from './TealiumAPI';
 import { DeploymentConfiguration } from './TealiumDeploymentPipeline';
 
 (async () => {
-    console.log('Start deployment to tealium');
+
+    const loggerFormat = winston.format.printf(({ level, message, timestamp }) => {
+        return `${timestamp} [${level}]: ${message}`;
+    });
+
+    const logger = winston.createLogger({
+        level: 'info',
+        format: winston.format.combine(
+            winston.format.timestamp(),
+            loggerFormat
+        ),
+        defaultMeta: { },
+        transports: [new winston.transports.Console()]
+    });
+
+    logger.info('Start deployment to tealium');
 
     // Parse command line arguments
     const commitMessage = process.argv[2];
 
     if (!commitMessage) {
-        console.error('Error: Commit message is required!');
-        console.log('Usage: npm run deploy -- "Your commit message"');
-        console.log('Example: npm run deploy -- "TICKET-123 - Update extensions"');
+        logger.error('Error: Commit message is required!');
+        logger.info('Usage: npm run deploy -- "Your commit message"');
+        logger.info('Example: npm run deploy -- "TICKET-123 - Update extensions"');
         process.exit(1);
     }
 
@@ -23,11 +39,11 @@ import { DeploymentConfiguration } from './TealiumDeploymentPipeline';
     };
 
     try {
-        await deployment('test-solutions2', deploymentConfig, commitMessage);
-        console.log('Deployment finished');
+        await deployment('test-solutions2', deploymentConfig, commitMessage, logger);
+        logger.info('Deployment finished');
     } catch (error: any) {
-        console.error(error.message);
-        console.log('Deployment aborted');
+        logger.error(error.message);
+        logger.info('Deployment aborted');
         process.exit(1);
     }
 })();

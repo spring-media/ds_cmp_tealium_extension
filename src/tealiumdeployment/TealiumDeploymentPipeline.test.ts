@@ -1,6 +1,7 @@
 import { TealiumDeploymentPipeline } from './TealiumDeploymentPipeline';
 import { TealiumAPI } from './TealiumAPI';
 import { config } from '../config';
+import winston from 'winston';
 
 jest.mock('./TealiumAPI', () => {
     const actual = jest.requireActual('./TealiumAPI');
@@ -41,6 +42,12 @@ const simulateGetProfileError = (error: Error) => {
     return { getProfile: mockGetProfile };
 };
 
+const logger = winston.createLogger({
+    transports: [
+        new winston.transports.Console()
+    ]
+});
+
 describe('TealiumDeploymentPipeline', () => {
 
     beforeEach(() => {
@@ -53,12 +60,12 @@ describe('TealiumDeploymentPipeline', () => {
     it('throws error for unknown profile', () => {
         expect(() => {
             // eslint-disable-next-line no-new
-            new TealiumDeploymentPipeline({ profile: 'unknown-profile' });
+            new TealiumDeploymentPipeline({ profile: 'unknown-profile' }, logger);
         }).toThrow('Unknown Profile unknown-profile');
     });
 
     it('accepts valid profile', () => {
-        const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' });
+        const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
         expect(pipeline).toBeDefined();
     });
 
@@ -68,7 +75,7 @@ describe('TealiumDeploymentPipeline', () => {
                 simulateConnectSuccess()
             );
 
-            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' });
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
             await pipeline.connect();
 
             expect(TealiumAPI).toHaveBeenCalledWith('test-user', 'test-key');
@@ -79,7 +86,7 @@ describe('TealiumDeploymentPipeline', () => {
             mockTealiumAPI(
                 simulateConnectFailed()
             );
-            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' });
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
 
             await expect(pipeline.connect()).rejects.toThrow('Tealium login failed');
         });
@@ -88,7 +95,7 @@ describe('TealiumDeploymentPipeline', () => {
             mockTealiumAPI(
                 simulateConnectError()
             );
-            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' });
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
 
             await expect(pipeline.connect()).rejects.toThrow('Network error');
         });
@@ -96,7 +103,7 @@ describe('TealiumDeploymentPipeline', () => {
 
     describe('fetchProfile', () => {
         it('throws error when not connected', async () => {
-            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' });
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
 
             await expect(pipeline.fetchProfile()).rejects.toThrow('Not connected');
         });
@@ -107,7 +114,7 @@ describe('TealiumDeploymentPipeline', () => {
                 simulateConnectSuccess(),
                 simulateGetProfileSuccess(mockProfile)
             );
-            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' });
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
             await pipeline.connect();
             await expect(pipeline.fetchProfile()).rejects.toThrow('Failed loading Profile');
         });
@@ -118,7 +125,7 @@ describe('TealiumDeploymentPipeline', () => {
                 simulateConnectSuccess(),
                 simulateGetProfileSuccess(mockProfile)
             );
-            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' });
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
             await pipeline.connect();
             await expect(pipeline.fetchProfile()).rejects.toThrow('Failed loading Profile');
         });
@@ -128,7 +135,7 @@ describe('TealiumDeploymentPipeline', () => {
                 simulateConnectSuccess(),
                 simulateGetProfileSuccess(undefined)
             );
-            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' });
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
             await pipeline.connect();
             await expect(pipeline.fetchProfile()).rejects.toThrow('Failed loading Profile');
         });
@@ -139,7 +146,7 @@ describe('TealiumDeploymentPipeline', () => {
                 simulateGetProfileError(new Error('Internal Error'))
             );
 
-            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' });
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
             await pipeline.connect();
 
             await expect(pipeline.fetchProfile()).rejects.toThrow('Internal Error');
@@ -152,7 +159,7 @@ describe('TealiumDeploymentPipeline', () => {
                 simulateGetProfileSuccess(mockProfile)
             );
 
-            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' });
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
             await pipeline.connect();
             const result = await pipeline.fetchProfile();
 
@@ -163,7 +170,7 @@ describe('TealiumDeploymentPipeline', () => {
 
     describe('getRemoteExtensions', () => {
         it('throws if current profile not loaded', () => {
-            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' });
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
             expect(() => {
                 pipeline.getRemoteExtensions();
             }).toThrow('Profile not loaded. Run fetchProfile first.');
@@ -175,7 +182,7 @@ describe('TealiumDeploymentPipeline', () => {
                 simulateConnectSuccess(),
                 simulateGetProfileSuccess(mockProfile)
             );
-            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' });
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
             await pipeline.connect();
             await pipeline.fetchProfile();
             expect(pipeline.getRemoteExtensions()).toEqual([]);
@@ -196,7 +203,7 @@ describe('TealiumDeploymentPipeline', () => {
                 simulateConnectSuccess(),
                 simulateGetProfileSuccess(mockProfile)
             );
-            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' });
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
             await pipeline.connect();
             await pipeline.fetchProfile();
             expect(pipeline.getRemoteExtensions()).toEqual([{

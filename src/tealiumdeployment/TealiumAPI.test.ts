@@ -1,10 +1,17 @@
 import axios from 'axios';
 import { Occurrence, Status, TealiumAPI, Scope } from './TealiumAPI';
+import winston from 'winston';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 const accountName = 'tealium-account';
 const profileName = 'test-profile';
+
+const logger = winston.createLogger({
+    transports: [
+        new winston.transports.Console()
+    ]
+});
 
 const simulateConnectionSucessful = () => {
     mockedAxios.post.mockImplementation((url) => {
@@ -117,13 +124,13 @@ describe('TealiumAPI', () => {
 
     describe('connecting', () => {
         it('is not connected by default', () => {
-            const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey);
+            const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey, logger);
             expect(tealium.isConnected()).toBe(false);
         });
 
         it('throws if login fails', async () => {
             simulateConntectionUnauthorized();
-            const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey);
+            const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey, logger);
             expect(async () => {
                 await tealium.connect(accountName, profileName);
             }).rejects.toThrow('Auth failed. Unauthorized');
@@ -131,7 +138,7 @@ describe('TealiumAPI', () => {
 
         it('is connected if connection is successful (200)', async () => {
             simulateConnectionSucessful();
-            const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey);
+            const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey, logger);
             const response = await tealium.connect(accountName, profileName);
             expect(response).toBe(true);
             expect(tealium.isConnected()).toBe(true);
@@ -140,7 +147,7 @@ describe('TealiumAPI', () => {
         it('is not connected if connection is only accepted (201)', async () => {
             /* Accepted (201) used to not trigger exception within axios */
             simulateConnectionAccepted();
-            const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey);
+            const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey, logger);
             const response = await tealium.connect(accountName, profileName);
             expect(response).toBe(false);
             expect(tealium.isConnected()).toBe(false);
@@ -148,7 +155,7 @@ describe('TealiumAPI', () => {
 
         it('sets connectionDetails if connection sucessful (200)', async () => {
             simulateConnectionSucessful();
-            const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey);
+            const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey, logger);
 
             expect(tealium.getConnectionDetails()).toEqual({
                 host: null,
@@ -170,7 +177,7 @@ describe('TealiumAPI', () => {
         it('not sets connectionDetails if connection only accepted (201)', async () => {
             /* Accepted (201) used to not trigger exception within axios */
             simulateConnectionAccepted();
-            const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey);
+            const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey, logger);
 
             expect(tealium.getConnectionDetails()).toEqual({
                 host: null,
@@ -193,7 +200,7 @@ describe('TealiumAPI', () => {
             it('uses correct host and header', async () => {
                 simulateConnectionSucessful();
 
-                const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey);
+                const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey, logger);
                 await tealium.connect('axelspringer', 'test-solutions2');
 
                 // Verify axios.post was called
@@ -224,7 +231,7 @@ describe('TealiumAPI', () => {
     describe('getExtensions', () => {
         it('throws if not connected', async () => {
             expect(async () => {
-                const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey);
+                const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey, logger);
                 await tealium.getProfile();
             }).rejects.toThrow('TealiumAPI not connected.');
         });
@@ -233,7 +240,7 @@ describe('TealiumAPI', () => {
             simulateConnectionSucessful();
             simulateGetProfileInternalError();
 
-            const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey);
+            const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey, logger);
             await tealium.connect('axelspringer', 'test-solutions2');
 
             expect(async () => {
@@ -246,7 +253,7 @@ describe('TealiumAPI', () => {
                 simulateConnectionSucessful();
                 simulateGetProfileSucessful();
 
-                const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey);
+                const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey, logger);
                 await tealium.connect(accountName, 'test-profile');
 
                 await tealium.getProfile();
@@ -274,7 +281,7 @@ describe('TealiumAPI', () => {
     describe('deploy', () => {
         it('throws if not connected', async () => {
             expect(async () => {
-                const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey);
+                const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey, logger);
                 const fakePayLoad = { thisIs: 'justAFake' };
                 await tealium.deploy(fakePayLoad);
             }).rejects.toThrow('TealiumAPI not connected.');
@@ -284,7 +291,7 @@ describe('TealiumAPI', () => {
             simulateConnectionSucessful();
             simulatePatchInternalError();
 
-            const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey);
+            const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey, logger);
             await tealium.connect('axelspringer', 'test-solutions2');
 
             expect(async () => {
@@ -297,7 +304,7 @@ describe('TealiumAPI', () => {
             simulateConnectionSucessful();
             simulatePatchSuccessful();
 
-            const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey);
+            const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey, logger);
             await tealium.connect('axelspringer', 'test-solutions2');
 
             const fakePayLoad = { thisIs: 'justAFake' };
@@ -311,7 +318,7 @@ describe('TealiumAPI', () => {
             simulateConnectionSucessful();
             simulatePatchAccepted();
 
-            const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey);
+            const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey, logger);
             await tealium.connect('axelspringer', 'test-solutions2');
 
             const fakePayLoad = { thisIs: 'justAFake' };
@@ -324,7 +331,7 @@ describe('TealiumAPI', () => {
             it('uses correct host and header', async () => {
                 simulateConnectionSucessful();
 
-                const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey);
+                const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey, logger);
                 await tealium.connect(accountName, 'test-profile');
 
 
@@ -354,7 +361,7 @@ describe('TealiumAPI', () => {
 
     describe('buildCreatePayload', () => {
         it('creates valid payload with minimal params', () => {
-            const tealium = new TealiumAPI(fakeUser, fakeApiKey);
+            const tealium = new TealiumAPI(fakeUser, fakeApiKey, logger);
 
             const payload = tealium.buildCreatePayload({
                 name: 'Test Extension',
@@ -371,7 +378,7 @@ describe('TealiumAPI', () => {
         });
 
         it('uses default values for optional params', () => {
-            const tealium = new TealiumAPI(fakeUser, fakeApiKey);
+            const tealium = new TealiumAPI(fakeUser, fakeApiKey, logger);
 
             const payload = tealium.buildCreatePayload({
                 name: 'Test Extension',
@@ -391,7 +398,7 @@ describe('TealiumAPI', () => {
         });
 
         it('respects custom scope and targets', () => {
-            const tealium = new TealiumAPI(fakeUser, fakeApiKey);
+            const tealium = new TealiumAPI(fakeUser, fakeApiKey, logger);
 
             const payload = tealium.buildCreatePayload({
                 name: 'Test Extension',
@@ -411,7 +418,7 @@ describe('TealiumAPI', () => {
         });
 
         it('includes custom notes and version title', () => {
-            const tealium = new TealiumAPI(fakeUser, fakeApiKey);
+            const tealium = new TealiumAPI(fakeUser, fakeApiKey, logger);
 
             const payload = tealium.buildCreatePayload({
                 name: 'Test Extension',
@@ -427,7 +434,7 @@ describe('TealiumAPI', () => {
         });
 
         it('generates timestamp-based version title if not provided', () => {
-            const tealium = new TealiumAPI(fakeUser, fakeApiKey);
+            const tealium = new TealiumAPI(fakeUser, fakeApiKey, logger);
 
             const payload = tealium.buildCreatePayload({
                 name: 'Test Extension',
@@ -442,7 +449,7 @@ describe('TealiumAPI', () => {
 
     describe('buildUpdatePayload', () => {
         it('creates valid update payload with extension ID', () => {
-            const tealium = new TealiumAPI(fakeUser, fakeApiKey);
+            const tealium = new TealiumAPI(fakeUser, fakeApiKey, logger);
 
             const payload = tealium.buildUpdatePayload(123, {
                 name: 'Updated Extension',
@@ -463,7 +470,7 @@ describe('TealiumAPI', () => {
         });
 
         it('uses default values for optional params', () => {
-            const tealium = new TealiumAPI(fakeUser, fakeApiKey);
+            const tealium = new TealiumAPI(fakeUser, fakeApiKey, logger);
 
             const payload = tealium.buildUpdatePayload(123, {
                 name: 'Updated Extension',
@@ -483,7 +490,7 @@ describe('TealiumAPI', () => {
         });
 
         it('respects custom scope and targets', () => {
-            const tealium = new TealiumAPI(fakeUser, fakeApiKey);
+            const tealium = new TealiumAPI(fakeUser, fakeApiKey, logger);
 
             const payload = tealium.buildUpdatePayload(123, {
                 name: 'Updated Extension',
@@ -505,7 +512,7 @@ describe('TealiumAPI', () => {
         });
 
         it('includes custom notes and version title', () => {
-            const tealium = new TealiumAPI(fakeUser, fakeApiKey);
+            const tealium = new TealiumAPI(fakeUser, fakeApiKey, logger);
 
             const payload = tealium.buildUpdatePayload(123, {
                 name: 'Updated Extension',
@@ -523,7 +530,7 @@ describe('TealiumAPI', () => {
         });
 
         it('generates timestamp-based version title if not provided', () => {
-            const tealium = new TealiumAPI(fakeUser, fakeApiKey);
+            const tealium = new TealiumAPI(fakeUser, fakeApiKey, logger);
 
             const payload = tealium.buildUpdatePayload(123, {
                 name: 'Updated Extension',
