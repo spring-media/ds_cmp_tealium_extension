@@ -23,13 +23,13 @@ export const deployment = async (
     await pipeline.readLocalExtensions(deploymentConfiguration);
 
     // 4. Can I find all extensions and are remote extensions ok?
-    const extensToUpdate = pipeline.reconceil();
-    if (extensToUpdate.length === 0) {
+    const extensionsToUpdate = pipeline.reconceil();
+    if (extensionsToUpdate.length === 0) {
         console.log('Everything up to date');
         return;
     }
 
     // 4. Compare extensions -> determine update or create
-    await pipeline.deployExtensions(extensToUpdate, deploymentMessage);
+    await pipeline.deployExtensions(extensionsToUpdate, deploymentMessage);
 
 };
