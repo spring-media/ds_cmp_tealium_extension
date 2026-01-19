@@ -75,7 +75,7 @@ describe('TealiumDeploymentPipeline', () => {
             );
             const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' });
 
-            await expect(pipeline.connect()).rejects.toThrow('Login failed');
+            await expect(pipeline.connect()).rejects.toThrow('Tealium login failed');
         });
 
         it('rethrows other errors', async () => {
