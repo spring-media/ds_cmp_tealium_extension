@@ -260,7 +260,7 @@ describe('TealiumAPI', () => {
                 const config = callArgs?.[1];
 
                 // Verify URL
-                expect(url).toBe('https://test.tealium.com/v3/tiq/accounts/tealium-account/profiles/test-profile??includes=loadRules&includes=extensions&includes=tags&includes=tags.template&includes=variables&includes=events&includes=versionIds');
+                expect(url).toBe('https://test.tealium.com/v3/tiq/accounts/tealium-account/profiles/test-profile?includes=loadRules&includes=extensions&includes=tags&includes=tags.template&includes=variables&includes=events&includes=versionIds');
 
                 // Verify headers
                 expect(config?.headers).toEqual({
