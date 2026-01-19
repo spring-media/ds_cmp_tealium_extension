@@ -182,7 +182,7 @@ export class TealiumAPI {
                         notes: params.extensionNotes || '',
                         type: 'Javascript Code',
                         scope: params.scope || Scope.AfterLoadRules,
-                        occurence: 'Run Always',
+                        occurrence: 'Run Always',
                         status: 'active',
                         selectedTargets: params.targets || {
                             dev: true,

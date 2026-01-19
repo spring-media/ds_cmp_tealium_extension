@@ -189,7 +189,7 @@ export class TealiumDeploymentPipeline {
                 status: ext.getStatus()
             });
 
-            console.log(`Deploying to ${this.currentProfile} - ${new Date().toUTCString()}`);
+            console.log(`Deploying to ${this.profile} - ${new Date().toUTCString()}`);
             const response = await this.tealium.deploy(patchPayload);
             console.log(`Extension '${ext.name}' deployed - ${new Date().toUTCString()}`, response);
         }

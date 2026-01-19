@@ -46,7 +46,7 @@ export class TealiumExtensionDiff {
                     // if scope different -> update
                     this.extensionUpdateList.push(l);
                 } else if (l.getOccurrence() !== remoteExtension.getOccurrence()) {
-                    // if occurance different -> update
+                    // if occurrence different -> update
                     this.extensionUpdateList.push(l);
                 } else if (l.getStatus() !== remoteExtension.getStatus()) {
                     // if status different -> update
