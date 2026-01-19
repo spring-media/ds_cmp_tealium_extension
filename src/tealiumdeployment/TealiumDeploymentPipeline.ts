@@ -171,7 +171,7 @@ export class TealiumDeploymentPipeline {
             const patchPayload = this.tealium.buildUpdatePayload(ext.id, {
                 name: ext.name,
                 code: ext.code,
-                deploymentNotes: 'GITHUB/CICD ${deploymentMessage}',
+                deploymentNotes: `GITHUB/CICD ${deploymentMessage}`,
                 extensionNotes: ext.getNotes(),
                 occurrence: ext.getOccurrence(),
                 status: ext.getStatus()
