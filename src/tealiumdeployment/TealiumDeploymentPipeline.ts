@@ -160,7 +160,7 @@ export class TealiumDeploymentPipeline {
 
             const hash = ext.getHash();
             const deploymentNode =
-            '⚠️ DEPLOYED BY GITHUB-CI/CD - DO NOT CHANGE MANUALY ⚠️\n' +
+            '⚠️ DEPLOYED BY GITHUB-CI/CD - DO NOT CHANGE MANUALLY ⚠️\n' +
             `Commit: ${deploymentMessage}\n` +
             `Src: ${ext.getFilepath()}\n` +
             `Deployed at:${deploymentDate.toUTCString()}\n` +
