@@ -26,4 +26,4 @@ jobs:
           TEALIUM_DEPLOY_ACCOUNT: ${{ secrets.TEALIUM_DEPLOY_ACCOUNT }}
           TEALIUM_DEPLOY_USER: ${{ secrets.TEALIUM_DEPLOY_USER }}
           TEALIUM_DEPLOY_API_KEY: ${{ secrets.TEALIUM_DEPLOY_API_KEY }}
-        run: yarn deploy -- "${{ github.sha }}: ${{ github.event.head_commit.message }}"
+        run: yarn deploy -- '${{ github.sha }}: ${{ github.event.head_commit.message }}'
