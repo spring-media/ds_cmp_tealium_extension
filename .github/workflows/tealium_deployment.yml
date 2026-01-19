@@ -1,10 +1,10 @@
-name: Mutation Test
+name: Tealium Deployment
 
 on:
   workflow_dispatch:
 
 jobs: 
-  mutation-testing:
+  tealium-deployment:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -19,6 +19,9 @@ jobs:
         run: yarn install
 
       - name: Run tests
+        run: yarn test
+
+      - name: Deploy to Tealium
         env:
           TEALIUM_DEPLOY_ACCOUNT: ${{ secrets.TEALIUM_DEPLOY_ACCOUNT }}
           TEALIUM_DEPLOY_USER: ${{ secrets.TEALIUM_DEPLOY_USER }}
