@@ -1,7 +1,9 @@
 name: Tealium Deployment
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - master
 
 jobs: 
   tealium-deployment:
@@ -27,4 +29,5 @@ jobs:
           TEALIUM_DEPLOY_USER: ${{ secrets.TEALIUM_DEPLOY_USER }}
           TEALIUM_DEPLOY_API_KEY: ${{ secrets.TEALIUM_DEPLOY_API_KEY }}
         run: |
-          yarn deploy -- "${{ github.sha }}: ${{ github.event.head_commit.message }}"
+          COMMIT_SHA=$(git rev-parse --short HEAD)
+          yarn deploy -- "$COMMIT_SHA: ${{ github.event.head_commit.message }}"
