@@ -1,0 +1,29 @@
+name: Tealium Deployment
+
+on:
+  workflow_dispatch:
+
+jobs: 
+  tealium-deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '24'
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run tests
+        run: yarn test
+
+      - name: Deploy to Tealium
+        env:
+          TEALIUM_DEPLOY_ACCOUNT: ${{ secrets.TEALIUM_DEPLOY_ACCOUNT }}
+          TEALIUM_DEPLOY_USER: ${{ secrets.TEALIUM_DEPLOY_USER }}
+          TEALIUM_DEPLOY_API_KEY: ${{ secrets.TEALIUM_DEPLOY_API_KEY }}
+        run: yarn deploy -- "${{ github.sha }}: ${{ github.event.head_commit.message }}"

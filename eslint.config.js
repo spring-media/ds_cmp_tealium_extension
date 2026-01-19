@@ -43,6 +43,10 @@ export default [
             '@typescript-eslint/no-unused-vars': ['warn'],
             // ersetzt "no-unused-vars": "off"
 
+            'no-redeclare': 'off',
+            '@typescript-eslint/no-redeclare': 'off',
+            // Erlaubt Enum + Namespace mit gleichem Namen (Declaration Merging)
+
             '@typescript-eslint/no-unused-expressions': 'error',
             // ersetzt "no-unused-expressions": 0
 
@@ -121,7 +125,7 @@ export default [
             'no-param-reassign': 'off',
             'no-process-env': 'error',
             'no-proto': 'error',
-            'no-redeclare': 'error',
+            // 'no-redeclare' ist oben deaktiviert, TypeScript übernimmt die Prüfung
             'no-return-assign': 'error',
             'no-script-url': 'error',
             'no-self-compare': 'error',
