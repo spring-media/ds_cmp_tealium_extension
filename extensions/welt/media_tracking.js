@@ -3,7 +3,7 @@
 /**
  * Media tracking interceptor that adds event40 for first 'pos' event per media_id
  */
-const installMediaTrackingInterceptor = function(alias, eventData) {
+const mediaTracking = function(alias, eventData) {
     if (!window.utag || !utag.link) return;
 
     if (!eventData || !eventData.event_data || !eventData.event_data.media_id) {
@@ -54,12 +54,12 @@ const installMediaTrackingInterceptor = function(alias, eventData) {
     }
 };
 
-// Execute in browser context
-if (typeof arguments !== 'undefined' && typeof window !== 'undefined') {
-    installMediaTrackingInterceptor(arguments[0], arguments[1]);
+// Export for testing
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = mediaTracking;
 }
 
-// Export for tests
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = { installMediaTrackingInterceptor };
+// Execute in Tealium environment
+if (typeof arguments !== 'undefined' && arguments.length >= 2) {
+    mediaTracking(arguments[0], arguments[1]);
 }

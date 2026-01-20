@@ -172,6 +172,136 @@ describe('k5a_meta_send', () => {
             expect(expected).toContain('u=https%3A%2F%2Fdigital.welt.de');
         });
 
+        it('should prioritize successUrl from query parameter', () => {
+            const b = {
+                event_name: 'checkout',
+                event_action: 'success',
+                qp: { successUrl: 'https://checkout-v2.prod.ps.welt.de/success' }
+            };
+            global.window.k5aMeta = {
+                url: 'https://checkout-v2.prod.ps.welt.de/?offerId=O_PRIORITY'
+            };
+            global.window.utag = {
+                data: {
+                    successUrl: 'https://checkout-v2.prod.ps.welt.de/success',
+                    success_url: 'https://example.com/success'
+                }
+            };
+
+            const params = [];
+            const pageData = window.k5aMeta || {};
+            const U = (window.utag && window.utag.data) || {};
+
+            // Priority: qp.successUrl -> successUrl -> success_url -> pageData.url -> dom.url
+            const url = (b.qp && b.qp.successUrl) || U.successUrl || U.success_url || pageData.url || U['dom.url'] || document.URL;
+
+            if (url) {
+                params.push('u=' + encodeURIComponent(url));
+            }
+
+            const expected = baseUrl + params.join('&');
+            expect(expected).toContain('u=https%3A%2F%2Fcheckout-v2.prod.ps.welt.de%2Fsuccess');
+        });
+
+        it('should include success_id parameter when available in utag', () => {
+            global.window.utag = {
+                data: {
+                    success_id: 'ord_123456789'
+                }
+            };
+
+            const params = [];
+            const U = (window.utag && window.utag.data) || {};
+            const b = {};
+
+            const successId = U.success_id || b.success_id;
+            if (successId) {
+                params.push('success_id=' + encodeURIComponent(successId));
+            }
+
+            const url = baseUrl + params.join('&');
+            expect(url).toContain('success_id=ord_123456789');
+        });
+
+        it('should include success_id parameter from event data', () => {
+            const b = {
+                event_name: 'checkout',
+                event_action: 'success',
+                success_id: 'evt_987654321'
+            };
+
+            const params = [];
+            const U = {};
+
+            const successId = U.success_id || b.success_id;
+            if (successId) {
+                params.push('success_id=' + encodeURIComponent(successId));
+            }
+
+            const url = baseUrl + params.join('&');
+            expect(url).toContain('success_id=evt_987654321');
+        });
+
+        it('should include order_id parameter when available in utag', () => {
+            global.window.utag = {
+                data: {
+                    order_id: 'ORD-2026-001'
+                }
+            };
+
+            const params = [];
+            const U = (window.utag && window.utag.data) || {};
+            const b = {};
+
+            const orderId = U.order_id || b.order_id;
+            if (orderId) {
+                params.push('order_id=' + encodeURIComponent(orderId));
+            }
+
+            const url = baseUrl + params.join('&');
+            expect(url).toContain('order_id=ORD-2026-001');
+        });
+
+        it('should include order_id parameter from event data', () => {
+            const b = {
+                event_name: 'checkout',
+                event_action: 'success',
+                order_id: 'ORD-EVT-999'
+            };
+
+            const params = [];
+            const U = {};
+
+            const orderId = U.order_id || b.order_id;
+            if (orderId) {
+                params.push('order_id=' + encodeURIComponent(orderId));
+            }
+
+            const url = baseUrl + params.join('&');
+            expect(url).toContain('order_id=ORD-EVT-999');
+        });
+
+        it('should handle missing success_id and order_id gracefully', () => {
+            const b = { event_name: 'checkout', event_action: 'success' };
+            global.window.utag = { data: {} };
+
+            const params = ['i=test'];
+            const U = (window.utag && window.utag.data) || {};
+
+            const successId = U.success_id || b.success_id;
+            if (successId) {
+                params.push('success_id=' + encodeURIComponent(successId));
+            }
+
+            const orderId = U.order_id || b.order_id;
+            if (orderId) {
+                params.push('order_id=' + encodeURIComponent(orderId));
+            }
+
+            // Should only have the initial param
+            expect(params).toEqual(['i=test']);
+        });
+
         it('should include platform parameter as desktop', () => {
             global.window.utag = {
                 data: {

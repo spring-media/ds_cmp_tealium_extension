@@ -46,9 +46,22 @@
                 params.push('_m=b'); // method=beacon
 
                 // REQUIRED: Add URL parameter (u=)
-                var url = pageData.url || U['dom.url'] || document.URL;
+                var successUrl = U['qp.successUrl'] || U.successUrl || b.success_url;
+                var url = successUrl || pageData.url || U['dom.url'] || document.URL;
                 if (url) {
                     params.push('u=' + encodeURIComponent(url));
+                }
+
+                // Add success_id from UDO if available
+                var successId = U.success_id || b.success_id;
+                if (successId) {
+                    params.push('success_id=' + encodeURIComponent(successId));
+                }
+
+                // Add order_id from UDO if available
+                var orderId = U.order_id || b.order_id;
+                if (orderId) {
+                    params.push('order_id=' + encodeURIComponent(orderId));
                 }
 
                 // Add channel/platform (c=desktop|mobile)

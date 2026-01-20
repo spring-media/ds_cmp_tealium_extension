@@ -22,16 +22,15 @@ function checkBrandstoryConditions() {
     const url = window.location.href.toLowerCase();
 
     // Check if consentedVendors contains adobe_analytics
-    const hasAdobeAnalytics =
-        data.consentedVendors && data.consentedVendors.includes('adobe_analytics');
+    const consentedVendors = data['cp.cmp_cv_list'] || data['cp.cm_cv_list'] || '';
+    const hasAdobeAnalytics = consentedVendors.includes('adobe_analytics');
 
     // Check if hasPurSubscription (from cookie) does not equal true
     const hasPurSubscriptionCookie = getCookieValue('hasPurSubscription');
     const noPurSubscription = hasPurSubscriptionCookie !== 'true';
 
     // Check if consentedVendors is defined
-    const consentedVendorsDefined =
-        data.consentedVendors !== undefined && data.consentedVendors !== null;
+    const consentedVendorsDefined = consentedVendors !== '';
 
     // Check if page_type equals article
     const isArticle = data.page_type && data.page_type === 'article';

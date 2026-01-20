@@ -3,7 +3,7 @@
  * Configures Tealium utag to enable view tracking on static.up.welt.de
  */
 
-const { configureStaticUpView } = require('../../extensions/welt/tealium-static-up-welt-view');
+const tealiumStaticUpWeltView = require('../../extensions/welt/tealium-static-up-welt-view');
 
 describe('Tealium Static UP WELT View Configuration', () => {
     let originalLocation;
@@ -31,7 +31,7 @@ describe('Tealium Static UP WELT View Configuration', () => {
         delete global.location;
         global.location = { hostname: 'static.up.welt.de' };
 
-        configureStaticUpView();
+        tealiumStaticUpWeltView();
 
         expect(window.utag_cfg_ovrd).toEqual({ noview: false });
     });
@@ -40,7 +40,7 @@ describe('Tealium Static UP WELT View Configuration', () => {
         delete global.location;
         global.location = { hostname: 'www.welt.de' };
 
-        configureStaticUpView();
+        tealiumStaticUpWeltView();
 
         expect(window.utag_cfg_ovrd).toBeUndefined();
     });
@@ -59,7 +59,7 @@ describe('Tealium Static UP WELT View Configuration', () => {
             }
         });
 
-        expect(() => configureStaticUpView()).not.toThrow();
+        expect(() => tealiumStaticUpWeltView()).not.toThrow();
     });
 
     it('should log errors to console', () => {
@@ -76,7 +76,7 @@ describe('Tealium Static UP WELT View Configuration', () => {
             }
         });
 
-        configureStaticUpView();
+        tealiumStaticUpWeltView();
 
         expect(mockConsole.error).toHaveBeenCalled();
         expect(mockConsole.error.mock.calls[0][0]).toContain('[TEALIUM STATIC UP] Error:');

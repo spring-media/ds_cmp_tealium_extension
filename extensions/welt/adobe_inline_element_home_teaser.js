@@ -4,7 +4,7 @@
  * Adobe inline element home teaser tracking for WELT
  * Tracks inline element clicks on home page (escenicId 5)
  */
-const processAdobeInlineElement = function(a, b) {
+const adobeInlineElementHomeTeaser = function(a, b) {
     // Only process link events with Inline Element tracking
     if (
         a !== 'link' ||
@@ -33,12 +33,12 @@ const processAdobeInlineElement = function(a, b) {
     }
 };
 
-// Execute in browser context
-if (typeof a !== 'undefined' && typeof b !== 'undefined') {
-    processAdobeInlineElement(a, b);
+// Export for testing
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = adobeInlineElementHomeTeaser;
 }
 
-// Export for tests
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = { processAdobeInlineElement };
+// Execute in Tealium environment
+if (typeof a !== 'undefined' && typeof b !== 'undefined') {
+    adobeInlineElementHomeTeaser(a, b);
 }

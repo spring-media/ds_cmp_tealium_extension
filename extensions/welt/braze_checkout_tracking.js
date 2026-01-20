@@ -36,7 +36,7 @@ const checkIsSubscriber = () => {
 /**
  * Track checkout success event to Braze
  */
-function trackBrazeCheckout() {
+const trackBrazeCheckout = () => {
     if (typeof braze != 'undefined') {
         braze.logCustomEvent('Checkout Success', {
             content_type: utag.data.page_document_type || '',
@@ -46,12 +46,12 @@ function trackBrazeCheckout() {
             offerId: utag.data['qp.offerId'] || ''
         });
     }
-}
+};
 
 /**
  * Retry checking for Braze library with exponential backoff
  */
-function retryBrazeCheck(retryCount = 0, maxRetries = 10) {
+const retryBrazeCheck = (retryCount = 0, maxRetries = 10) => {
     if (typeof braze !== 'undefined') {
         trackBrazeCheckout();
     } else if (retryCount < maxRetries) {
@@ -60,12 +60,12 @@ function retryBrazeCheck(retryCount = 0, maxRetries = 10) {
     } else {
         console.error('braze: Failed to load after maximum retries.');
     }
-}
+};
 
 /**
  * Initialize braze checkout tracking if conditions are met
  */
-const initBrazeCheckoutTracking = () => {
+const brazeCheckoutTracking = () => {
     const consentGiven = checkConsentGiven();
     const fromCheckout = checkFromCheckout();
     const isSubscriber = checkIsSubscriber();
@@ -75,19 +75,19 @@ const initBrazeCheckoutTracking = () => {
     }
 };
 
-// Execute in browser context
-if (typeof window !== 'undefined' && typeof utag !== 'undefined') {
-    initBrazeCheckoutTracking();
-}
-
-// Export for tests
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+// Export for testing
+if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
         checkConsentGiven,
         checkFromCheckout,
         checkIsSubscriber,
         trackBrazeCheckout,
         retryBrazeCheck,
-        initBrazeCheckoutTracking
+        brazeCheckoutTracking
     };
+}
+
+// Execute in Tealium environment
+if (typeof utag !== 'undefined' && typeof document !== 'undefined') {
+    brazeCheckoutTracking();
 }

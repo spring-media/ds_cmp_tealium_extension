@@ -2,7 +2,7 @@
  * Tealium Configuration Override for static.up.welt.de
  * Enables view tracking on static.up.welt.de domain
  */
-const configureStaticUpView = function() {
+const tealiumStaticUpWeltView = function() {
     if (location.hostname !== 'static.up.welt.de') {
         return;
     }
@@ -16,12 +16,12 @@ const configureStaticUpView = function() {
     }
 };
 
-// Execute in browser context
-if (typeof window !== 'undefined' && typeof location !== 'undefined') {
-    configureStaticUpView();
+// Export for testing
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = tealiumStaticUpWeltView;
 }
 
-// Export for tests
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = { configureStaticUpView };
+// Execute in Tealium environment
+if (typeof location !== 'undefined') {
+    tealiumStaticUpWeltView();
 }

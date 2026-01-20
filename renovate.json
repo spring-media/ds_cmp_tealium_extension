@@ -1,27 +1,77 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended"
+    "config:recommended",
+    ":dependencyDashboard",
+    ":semanticCommits"
   ],
-  "prBodyColumns": [
-    "Package",
-    "Type",
-    "Update",
-    "Change",
-    "Pending"
+  "labels": [
+    "renovate"
   ],
-  "prBodyDefinitions": {
-    "Change": "{{#if displayFrom}}`{{{displayFrom}}}` -> {{else}}{{#if currentValue}}`{{{currentValue}}}` -> {{/if}}{{/if}}{{#if displayTo}}`{{{displayTo}}}`{{else}}`{{{newValue}}}`{{/if}}"
+  "groupName": null,
+  "separateMajorMinor": true,
+  "separateMultipleMajor": true,
+  "separateMinorPatch": true,
+  "commitMessage": {
+    "prefix": "{{{semanticPrefix}}}",
+    "action": "update dependency",
+    "subject": "{{depName}} from {{currentVersion}} to {{#if isPinDigest}}{{{newDigestShort}}}{{else}}{{#if isMajor}}{{prettyNewMajor}}{{else}}{{#if isSingleVersion}}{{prettyNewVersion}}{{else}}{{#if newValue}}{{{newValue}}}{{else}}{{{newDigest}}}{{/if}}{{/if}}{{/if}}{{/if}}"
   },
-  "prBodyNotes": [
-    "{{#if hasReleaseNotes}}{{#each releases}}",
-    "",
-    "---",
-    "",
-    "### {{title}}",
-    "",
-    "{{#if releaseNotes}}{{releaseNotes}}{{/if}}{{/each}}{{/if}}"
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "labels": [
+      "security",
+      "high-priority"
+    ]
+  },
+  "packageRules": [
+    {
+      "description": "Security patches - immediate updates, never grouped",
+      "matchPackageNames": [
+        "*"
+      ],
+      "isVulnerabilityAlert": true,
+      "groupName": null,
+      "labels": [
+        "security",
+        "cve"
+      ]
+    },
+    {
+      "description": "Major version updates - manual review required, never grouped",
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "groupName": null,
+      "labels": [
+        "dependencies",
+        "major-update"
+      ]
+    },
+    {
+      "description": "Patch updates - auto-merge candidates, never grouped",
+      "matchUpdateTypes": [
+        "patch"
+      ],
+      "groupName": null,
+      "labels": [
+        "dependencies",
+        "patch-update"
+      ]
+    },
+    {
+      "description": "Minor updates - never grouped",
+      "matchUpdateTypes": [
+        "minor"
+      ],
+      "groupName": null,
+      "labels": [
+        "dependencies",
+        "minor-update"
+      ]
+    }
   ],
+  "prBodyTemplate": "{{#if hasReleaseNotes}}\n## Release Notes\n{{{releaseNotes}}}\n{{/if}}\n\n{{#if isSecurityUpdate}}\n🚨 **Security Update** - This update addresses security vulnerabilities.\n\n@claude - Please review this security update.\n{{/if}}\n\n---\n\n- [ ] Review changelog and breaking changes\n- [ ] Verify tests pass\n- [ ] Check for any configuration updates needed\n\n*This PR was generated automatically by Renovate.*",
   "fetchChangeLogs": "pr",
   "forkProcessing": "disabled"
 }

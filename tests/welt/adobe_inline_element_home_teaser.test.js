@@ -3,9 +3,7 @@
  * Adobe inline element home teaser tracking for WELT
  */
 
-const {
-    processAdobeInlineElement
-} = require('../../extensions/welt/adobe_inline_element_home_teaser');
+const adobeInlineElementHomeTeaser = require('../../extensions/welt/adobe_inline_element_home_teaser');
 
 describe('Adobe Inline Element Home Teaser Tracking', () => {
     let mockUtag;
@@ -44,7 +42,7 @@ describe('Adobe Inline Element Home Teaser Tracking', () => {
             }
         };
 
-        processAdobeInlineElement('link', eventData);
+        adobeInlineElementHomeTeaser('link', eventData);
 
         expect(mockUtag.loader.SC).toHaveBeenCalledTimes(2);
         expect(mockUtag.loader.SC).toHaveBeenCalledWith(
@@ -70,7 +68,7 @@ describe('Adobe Inline Element Home Teaser Tracking', () => {
             }
         };
 
-        processAdobeInlineElement('view', eventData);
+        adobeInlineElementHomeTeaser('view', eventData);
 
         expect(mockUtag.loader.SC).not.toHaveBeenCalled();
     });
@@ -86,7 +84,7 @@ describe('Adobe Inline Element Home Teaser Tracking', () => {
             }
         };
 
-        processAdobeInlineElement('link', eventData);
+        adobeInlineElementHomeTeaser('link', eventData);
 
         expect(mockUtag.loader.SC).not.toHaveBeenCalled();
     });
@@ -102,7 +100,7 @@ describe('Adobe Inline Element Home Teaser Tracking', () => {
             }
         };
 
-        processAdobeInlineElement('link', eventData);
+        adobeInlineElementHomeTeaser('link', eventData);
 
         expect(mockUtag.loader.SC).not.toHaveBeenCalled();
     });
@@ -115,7 +113,7 @@ describe('Adobe Inline Element Home Teaser Tracking', () => {
             event_data: null // This will cause error when accessing .target
         };
 
-        expect(() => processAdobeInlineElement('link', eventData)).not.toThrow();
+        expect(() => adobeInlineElementHomeTeaser('link', eventData)).not.toThrow();
         expect(mockUtag.loader.SC).not.toHaveBeenCalled();
     });
 
@@ -127,7 +125,7 @@ describe('Adobe Inline Element Home Teaser Tracking', () => {
             event_data: null
         };
 
-        processAdobeInlineElement('link', eventData);
+        adobeInlineElementHomeTeaser('link', eventData);
 
         expect(mockConsole.error).toHaveBeenCalled();
         expect(mockConsole.error.mock.calls[0][0]).toContain('[ADOBE INLINE ELEMENT] Error:');
