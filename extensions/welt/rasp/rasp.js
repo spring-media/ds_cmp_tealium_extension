@@ -67,10 +67,7 @@ const RaspTracking = {
                 outbrainModel: utag.data.page_outbrain_model || '',
                 isLoggedIn: utag.data.user_isLoggedIn2 || '',
                 pageContainsVideo: utag.data.page_has_video || '',
-                cmpFirstPageview:
-                    utag.data.cmp_event_status === 'cmpuishown'
-                        ? 'cmp_first_pv'
-                        : '',
+                cmpFirstPageview: utag.data.cmp_event_status === 'cmpuishown' ? 'cmp_first_pv' : '',
                 ac1: utag.data['cp.utag_main_ac'] || '' // eVar241
             };
 
@@ -83,17 +80,13 @@ const RaspTracking = {
                     },
                     publication_structure: {
                         root: 'welt',
-                        path: window.location.pathname
-                            .split('/')
-                            .slice(1, -1)
-                            .join('/')
+                        path: window.location.pathname.split('/').slice(1, -1).join('/')
                     }
                 },
                 content: {
                     type: utag.data.page_type || 'no pageType',
                     publication: {
-                        premium:
-                            utag.data.page_isPremium?.toLowerCase() === 'true'
+                        premium: utag.data.page_isPremium?.toLowerCase() === 'true'
                     },
                     source: {
                         system: 'BFF',
@@ -115,10 +108,8 @@ const RaspTracking = {
             // runs with click at "alle akzeptieren"
             if (this.hasRaspConsent(document.cookie)) {
                 window.dlApi = window.dlApi != null ? window.dlApi : {};
-                window.dlApi.kropka =
-                    window.dlApi.kropka != null ? window.dlApi.kropka : {};
-                window.dlApi.kropka.DX =
-                    'PV_4,welt_de,' + utag.data.page_escenicId + ',1';
+                window.dlApi.kropka = window.dlApi.kropka != null ? window.dlApi.kropka : {};
+                window.dlApi.kropka.DX = 'PV_4,welt_de,' + utag.data.page_escenicId + ',1';
 
                 const script = document.createElement('script');
                 script.src =
@@ -127,25 +118,18 @@ const RaspTracking = {
                 document.head.appendChild(script);
 
                 window.addEventListener('simetra-load', () =>
-                    window.__tcfapi(
-                        'addEventListener',
-                        2,
-                        (tcData, success) => {
-                            if (success) {
-                                setTimeout(() => {
-                                    // if next if is activated it loads js already before consent but it sets (acc_segment* cookie which are not allowed)
-                                    window.EventsApi.start();
-                                }, 1000);
-                            }
+                    window.__tcfapi('addEventListener', 2, (tcData, success) => {
+                        if (success) {
+                            setTimeout(() => {
+                                // if next if is activated it loads js already before consent but it sets (acc_segment* cookie which are not allowed)
+                                window.EventsApi.start();
+                            }, 1000);
                         }
-                    )
+                    })
                 );
             }
         } catch (e) {
-            console.error(
-                '[TEALIUM RASP] Error initializing Rasp tracking:',
-                e
-            );
+            console.error('[TEALIUM RASP] Error initializing Rasp tracking:', e);
         }
     }
 };

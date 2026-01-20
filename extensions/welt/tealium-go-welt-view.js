@@ -8,7 +8,7 @@
  * Note: This extension runs unconditionally in the Pre Loader scope
  */
 
-const configureGoWeltView = function () {
+const configureGoWeltView = function() {
     if (!location.hostname.includes('go.welt.de')) {
         return;
     }

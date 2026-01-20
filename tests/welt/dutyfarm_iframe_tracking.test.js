@@ -1,9 +1,7 @@
 /**
  * Tests for dutyfarm_iframe_tracking.js
- * Tests iframe click monitoring and tracking for game pages
+ * Dutyfarm iframe interaction tracking for WELT
  */
-
-/* global utag */
 
 const { monitorIframeClick } = require('../../extensions/welt/dutyfarm_iframe_tracking');
 
@@ -21,7 +19,7 @@ describe('Dutyfarm Iframe Tracking Extension', () => {
 
         // Mock setInterval to capture callback
         intervalId = 123;
-        mockSetInterval = jest.fn((callback, delay) => {
+        mockSetInterval = jest.fn((callback) => {
             intervalCallback = callback;
             return intervalId;
         });

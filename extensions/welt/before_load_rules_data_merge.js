@@ -11,7 +11,7 @@
 
 /* global utag, a, b */
 
-const beforeLoadRulesDataMerge = function () {
+const beforeLoadRulesDataMerge = function() {
     try {
         // Merge b object into utag.data
         if (typeof b !== 'undefined' && typeof utag !== 'undefined' && utag.ut) {

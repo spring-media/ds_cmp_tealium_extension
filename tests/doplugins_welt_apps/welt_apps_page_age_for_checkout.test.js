@@ -7,8 +7,7 @@ describe('_setPageAgeForCheckout', () => {
     beforeEach(() => {
         // Create a fresh window mock for each test.
         const windowMock = createWindowMock();
-        jest.spyOn(global, 'window', 'get')
-            .mockImplementation(() => (windowMock));
+        jest.spyOn(global, 'window', 'get').mockImplementation(() => windowMock);
 
         // Provide a fresh copy of the s-object for each test.
         s = { ...sObject };
@@ -26,7 +25,9 @@ describe('_setPageAgeForCheckout', () => {
 
         s._setPageAgeForCheckout();
 
-        expect(window.utag.loader.SC).toHaveBeenCalledWith('utag_main', { 'pa': window.utag.data.screen_agePublication + ';exp-session' });
+        expect(window.utag.loader.SC).toHaveBeenCalledWith('utag_main', {
+            pa: window.utag.data.screen_agePublication + ';exp-session'
+        });
         expect(window.utag.data['cp.utag_main_pa']).toBe(window.utag.data.screen_agePublication);
     });
 });

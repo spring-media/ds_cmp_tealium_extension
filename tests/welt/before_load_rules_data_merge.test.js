@@ -3,8 +3,6 @@
  * Tests data merging and environment setup for Before Load Rules
  */
 
-/* global utag, a, b */
-
 const { beforeLoadRulesDataMerge } = require('../../extensions/welt/before_load_rules_data_merge');
 
 describe('Before Load Rules Data Merge', () => {

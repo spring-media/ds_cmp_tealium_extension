@@ -7,13 +7,11 @@ describe('s.doPlugins()', () => {
     beforeEach(() => {
         // Create a fresh window mock for each test.
         const windowMock = createWindowMock();
-        jest.spyOn(global, 'window', 'get')
-            .mockImplementation(() => (windowMock));
+        jest.spyOn(global, 'window', 'get').mockImplementation(() => windowMock);
 
         // Provide a fresh copy of the s-object for each test.
         s = { ...sObject };
         jest.spyOn(s, 'getPreviousValue').mockImplementation(jest.fn());
-
     });
 
     afterEach(() => {
@@ -39,7 +37,6 @@ describe('s.doPlugins()', () => {
         expect(s.prop61).toBe('test_value');
         expect(s.eVar33).toBe('test_value');
         expect(typeof s.prop65).toBe('number');
-
     });
 
     it('should call s._bildAppsPageNameObj.setAppsPageName()', () => {
@@ -73,5 +70,4 @@ describe('s.doPlugins()', () => {
 
         expect(setPageCmsPathWithoutBildMock).toHaveBeenCalledWith(s);
     });
-
 });

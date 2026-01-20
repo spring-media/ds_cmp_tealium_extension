@@ -1,9 +1,7 @@
 /**
  * Tests for kameleoon_peter_id.js
- * Tests setting Peter ID in Kameleoon custom data
+ * Kameleoon Peter ID integration for WELT
  */
-
-/* global utag */
 
 const { setKameleoonPeterId } = require('../../extensions/welt/kameleoon_peter_id');
 

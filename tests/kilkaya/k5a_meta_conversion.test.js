@@ -305,5 +305,4 @@ describe('k5a_meta_conversion', () => {
 
         expect(window.k5aMeta.cntTag).toContain('offer_special-offer_123@test');
     });
-
 });

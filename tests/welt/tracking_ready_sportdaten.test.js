@@ -3,9 +3,7 @@
  * Tests the dispatch of tracking-ready custom event
  */
 
-const {
-    dispatchTrackingReady
-} = require('../../extensions/welt/tracking_ready_sportdaten');
+const { dispatchTrackingReady } = require('../../extensions/welt/tracking_ready_sportdaten');
 
 describe('Tracking Ready Event', () => {
     let mockDispatchEvent;

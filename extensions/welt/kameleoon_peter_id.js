@@ -8,7 +8,7 @@
  * Scope: After Tags / DOM Ready
  */
 
-/* global utag, Kameleoon */
+/* global utag */
 
 /**
  * Set Peter ID in Kameleoon

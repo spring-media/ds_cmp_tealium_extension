@@ -6,7 +6,7 @@
  * - Sets revolver_type when revolverload action occurs on EndScreen
  * - Clears revolver_type on cancel action or non-video events
  */
-const processRevolverTypeTracking = function () {
+const processRevolverTypeTracking = function() {
     // Early return if utag or utag.data is not available
     if (typeof utag === 'undefined' || !utag.data) {
         return;

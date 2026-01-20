@@ -42,7 +42,7 @@ This extension:
 // Tealium Environment Switcher: MUST BE FIRST. DO NOT MOVE
 
 // Update "profile" var to the name of the current tealium profile
-(function () {
+(function() {
     'use strict';
     try {
         if (

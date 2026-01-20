@@ -11,14 +11,16 @@ describe('s.doPlugins()', () => {
     beforeEach(() => {
         // Create a fresh window mock for each test.
         const windowMock = createWindowMock();
-        jest.spyOn(global, 'window', 'get')
-            .mockImplementation(() => (windowMock));
+        jest.spyOn(global, 'window', 'get').mockImplementation(() => windowMock);
 
         // Provide a fresh copy of the s-object for each test.
         s = { ...sObject };
         setEventsPropertyMock = jest.spyOn(s._eventsObj, 'setEventsProperty');
         setScrollDepthPropertiesMock = jest.spyOn(s._scrollDepthObj, 'setScrollDepthProperties');
-        firstPageViewMock = jest.spyOn(s._utils, 'isFirstPageView').mockImplementation().mockReturnValue(false);
+        firstPageViewMock = jest
+            .spyOn(s._utils, 'isFirstPageView')
+            .mockImplementation()
+            .mockReturnValue(false);
         setKameleoonTrackingMock = jest.spyOn(s, '_setKameleoonTracking').mockImplementation();
     });
 

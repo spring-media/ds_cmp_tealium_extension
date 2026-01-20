@@ -3,7 +3,9 @@
  * Video Event Label Cleanup - deletes event_label for specific video event actions
  */
 
-const { processVideoEventLabelCleanup } = require('../../extensions/welt/video_event_label_cleanup');
+const {
+    processVideoEventLabelCleanup
+} = require('../../extensions/welt/video_event_label_cleanup');
 
 describe('Video Event Label Cleanup', () => {
     let mockUtag;

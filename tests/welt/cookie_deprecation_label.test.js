@@ -62,7 +62,7 @@ describe('Cookie Deprecation Label Tracking', () => {
     });
 
     describe('Label Value Handling', () => {
-        it('should store label value in utag.data.sandbox', async () => {
+        it('should store label value in utag.data.sandbox', async() => {
             const mockLabel = 'test_label_123';
             const mockNav = {
                 cookieDeprecationLabel: {
@@ -78,7 +78,7 @@ describe('Cookie Deprecation Label Tracking', () => {
             expect(mockConsole.log).toHaveBeenCalledWith(mockLabel);
         });
 
-        it('should store empty string when label is null', async () => {
+        it('should store empty string when label is null', async() => {
             const mockNav = {
                 cookieDeprecationLabel: {
                     getValue: jest.fn().mockResolvedValue(null)
@@ -93,7 +93,7 @@ describe('Cookie Deprecation Label Tracking', () => {
             expect(mockConsole.log).toHaveBeenCalledWith(null);
         });
 
-        it('should store empty string when label is empty string', async () => {
+        it('should store empty string when label is empty string', async() => {
             const mockNav = {
                 cookieDeprecationLabel: {
                     getValue: jest.fn().mockResolvedValue('')
@@ -107,7 +107,7 @@ describe('Cookie Deprecation Label Tracking', () => {
             expect(mockUtag.data.sandbox).toBe('');
         });
 
-        it('should store empty string when label is undefined', async () => {
+        it('should store empty string when label is undefined', async() => {
             const mockNav = {
                 cookieDeprecationLabel: {
                     getValue: jest.fn().mockResolvedValue(undefined)
@@ -123,7 +123,7 @@ describe('Cookie Deprecation Label Tracking', () => {
     });
 
     describe('Error Handling', () => {
-        it('should handle promise rejection gracefully', async () => {
+        it('should handle promise rejection gracefully', async() => {
             const mockNav = {
                 cookieDeprecationLabel: {
                     getValue: jest.fn().mockRejectedValue(new Error('Promise rejected'))
@@ -140,7 +140,7 @@ describe('Cookie Deprecation Label Tracking', () => {
             );
         });
 
-        it('should handle missing utag object gracefully', async () => {
+        it('should handle missing utag object gracefully', async() => {
             delete global.utag;
             const mockLabel = 'example_label_1';
             const mockNav = {
@@ -158,7 +158,7 @@ describe('Cookie Deprecation Label Tracking', () => {
             expect(mockConsole.log).not.toHaveBeenCalled();
         });
 
-        it('should handle missing utag.data gracefully', async () => {
+        it('should handle missing utag.data gracefully', async() => {
             delete mockUtag.data;
             const mockLabel = 'example_label_1';
             const mockNav = {
@@ -178,7 +178,7 @@ describe('Cookie Deprecation Label Tracking', () => {
     });
 
     describe('Integration Scenarios', () => {
-        it('should handle multiple sequential calls', async () => {
+        it('should handle multiple sequential calls', async() => {
             const mockLabel1 = 'label_1';
             const mockLabel2 = 'label_2';
 

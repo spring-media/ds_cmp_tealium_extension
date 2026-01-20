@@ -3,8 +3,6 @@
  * Adobe inline element home teaser tracking for WELT
  */
 
-/* global utag */
-
 const {
     processAdobeInlineElement
 } = require('../../extensions/welt/adobe_inline_element_home_teaser');

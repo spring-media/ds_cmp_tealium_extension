@@ -1,5 +1,5 @@
 /* eslint-disable prefer-const */
-/* eslint-disable curly */
+
 /* eslint-disable no-var */
 /* eslint-disable no-nested-ternary */
 
@@ -9,49 +9,48 @@
     const SUB_DOMAINS = ['sportbild.bild.de', 'shop.welt.de', 'bildplusshop.bild.de'];
     const CLUB_DOMAIN = ['club'];
 
-    const NEW_STORAGE_KEY = (CLUB_DOMAIN.some(domain => window.location.hostname.includes(domain))) ?
-        'cmp_cv_list_club' :
-        (SUB_DOMAINS.some(domain => window.location.hostname.includes(domain)) ?
-            'cm_cv_list' :
-            'cmp_cv_list'
-        );
+    const NEW_STORAGE_KEY = CLUB_DOMAIN.some(domain => window.location.hostname.includes(domain))
+        ? 'cmp_cv_list_club'
+        : SUB_DOMAINS.some(domain => window.location.hostname.includes(domain))
+            ? 'cm_cv_list'
+            : 'cmp_cv_list';
 
     // Vendor Array for Bild and Welt
     const vendorArray = [
-        { 'name': '1plusX', 'id': '92' },
-        { 'name': 'ad_alliance_ip', 'id': '789' },
-        { 'name': 'adobe_analytics', 'id': '5ed7a9a9e0e22001da9d52ad' },
-        { 'name': 'adobe_cmp', 'id': '5ef9ba4992c0a20a247f2d87' },
-        { 'name': 'adup', 'id': '5ed6aeb2b8e05c4a1160fe92' },
-        { 'name': 'adsense', 'id': '5e74df5ff443bb795772df9c' },
-        { 'name': 'adwords', 'id': '5e74df5ff443bb795772df9c' },
-        { 'name': 'appnexus', 'id': '5e542b3a4cd8884eb41b5a6c' },
-        { 'name': 'awin', 'id': '5e7f6927b8e05c48537f6074' },
-        { 'name': 'bingads', 'id': '5e7786abf443bb795772efee' }, // old 20240731
-        { 'name': 'bingads', 'id': '62a312aa293cdf1b5e6a2509' },
-        { 'name': 'braze', 'id': '62963427cdae8508f684c053' },
-        { 'name': 'chartbeat', 'id': '5ea172e36ede87504f7b4590' },
-        { 'name': 'exactag', 'id': '5ebee9f5b8e05c43d547d7d1' },
-        { 'name': 'fb_ca', 'id': '5ee91b9593fc094b59242e26' },
-        { 'name': 'fb_cp', 'id': '5ee91b9593fc094b59242e27' },
-        { 'name': 'floodlight', 'id': '755' },
-        { 'name': 'google_analytics', 'id': '5e542b3a4cd8884eb41b5a72' },
-        { 'name': 'google_fallback', 'id': '5f1aada6b8e05c306c0597d7' },
-        { 'name': 'google_firebase', 'id': '5ee9e9b4182da52f42468bb8' },
-        { 'name': 'kameleoon', 'id': '5f48d229b8e05c60a307ad97' },
-        { 'name': 'outbrain', 'id': '5e7ced57b8e05c485246ccde' },
-        { 'name': 'outbrain_iab', 'id': '164' },
-        { 'name': 'piano_alt', 'id': '5f7701fb3d44b8023188fba6' },
-        { 'name': 'piano_n', 'id': '5eec8924b8e05c699567f398' },
-        { 'name': 'piano_o', 'id': '5ea797944e5aa15059ff5a28' },
-        { 'name': 'rasp', 'id': '670675dca377c206052d456b' },
-        { 'name': 'sociomantic', 'id': '5ebcb4a92fcde131e4d1a92a' },
-        { 'name': 'taboola', 'id': '5e37fc3e56a5e6615502f9c4' },
-        { 'name': 'tealium_collect', 'id': '5ef5f18f50fefa143f611d21' },
-        { 'name': 'xandr', 'id': '5e7ced57b8e05c4854221bba' },
-        { 'name': 'snowplow', 'id': '5eaaa739a55a2d743f32f7c3' },
-        { 'name': 'cmmrclly', 'id': '632d7b3af8efe104ae62dc45' },
-        { 'name': 'kilkaya', 'id': '6155654a60e90105b791536a' }
+        { name: '1plusX', id: '92' },
+        { name: 'ad_alliance_ip', id: '789' },
+        { name: 'adobe_analytics', id: '5ed7a9a9e0e22001da9d52ad' },
+        { name: 'adobe_cmp', id: '5ef9ba4992c0a20a247f2d87' },
+        { name: 'adup', id: '5ed6aeb2b8e05c4a1160fe92' },
+        { name: 'adsense', id: '5e74df5ff443bb795772df9c' },
+        { name: 'adwords', id: '5e74df5ff443bb795772df9c' },
+        { name: 'appnexus', id: '5e542b3a4cd8884eb41b5a6c' },
+        { name: 'awin', id: '5e7f6927b8e05c48537f6074' },
+        { name: 'bingads', id: '5e7786abf443bb795772efee' }, // old 20240731
+        { name: 'bingads', id: '62a312aa293cdf1b5e6a2509' },
+        { name: 'braze', id: '62963427cdae8508f684c053' },
+        { name: 'chartbeat', id: '5ea172e36ede87504f7b4590' },
+        { name: 'exactag', id: '5ebee9f5b8e05c43d547d7d1' },
+        { name: 'fb_ca', id: '5ee91b9593fc094b59242e26' },
+        { name: 'fb_cp', id: '5ee91b9593fc094b59242e27' },
+        { name: 'floodlight', id: '755' },
+        { name: 'google_analytics', id: '5e542b3a4cd8884eb41b5a72' },
+        { name: 'google_fallback', id: '5f1aada6b8e05c306c0597d7' },
+        { name: 'google_firebase', id: '5ee9e9b4182da52f42468bb8' },
+        { name: 'kameleoon', id: '5f48d229b8e05c60a307ad97' },
+        { name: 'outbrain', id: '5e7ced57b8e05c485246ccde' },
+        { name: 'outbrain_iab', id: '164' },
+        { name: 'piano_alt', id: '5f7701fb3d44b8023188fba6' },
+        { name: 'piano_n', id: '5eec8924b8e05c699567f398' },
+        { name: 'piano_o', id: '5ea797944e5aa15059ff5a28' },
+        { name: 'rasp', id: '670675dca377c206052d456b' },
+        { name: 'sociomantic', id: '5ebcb4a92fcde131e4d1a92a' },
+        { name: 'taboola', id: '5e37fc3e56a5e6615502f9c4' },
+        { name: 'tealium_collect', id: '5ef5f18f50fefa143f611d21' },
+        { name: 'xandr', id: '5e7ced57b8e05c4854221bba' },
+        { name: 'snowplow', id: '5eaaa739a55a2d743f32f7c3' },
+        { name: 'cmmrclly', id: '632d7b3af8efe104ae62dc45' },
+        { name: 'kilkaya', id: '6155654a60e90105b791536a' }
     ];
 
     /* Tealium tag values for different vendors for bild and welt.
@@ -122,10 +121,8 @@
         var cookies = document.cookie.split(';');
         for (var i = 0; i < cookies.length; i++) {
             var c = cookies[i];
-            while (c.charAt(0) === ' ')
-                c = c.substring(1, c.length);
-            if (c.indexOf(cName) === 0)
-                return c.substring(cName.length, c.length);
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(cName) === 0) return c.substring(cName.length, c.length);
         }
         return null;
     }
@@ -134,10 +131,16 @@
         var expires = '';
         if (days) {
             let date = new Date();
-            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
             expires = '; expires=' + date.toUTCString();
         }
-        document.cookie = name + '=' + (value || '') + expires + '; path=/; secure; domain=.' + window.location.hostname.split('.').reverse().splice(0, 2).reverse().join('.');
+        document.cookie =
+            name +
+            '=' +
+            (value || '') +
+            expires +
+            '; path=/; secure; domain=.' +
+            window.location.hostname.split('.').reverse().splice(0, 2).reverse().join('.');
         deleteCookie(OLD_STORAGE_KEY);
     }
 
@@ -168,13 +171,21 @@
                 return;
             }
             vendorArray.forEach(function(vendor) {
-                if (data && data.grants && data.grants[vendor.id] && data.grants[vendor.id].vendorGrant) {
+                if (
+                    data &&
+                    data.grants &&
+                    data.grants[vendor.id] &&
+                    data.grants[vendor.id].vendorGrant
+                ) {
                     cmp_customvendor += vendor.name + ',';
                 }
             });
             setCookie(NEW_STORAGE_KEY, cmp_customvendor, 30);
             if (cb) {
-                cb(cmp_customvendor, cmp_customvendor.length && (currentGrants === null || currentGrants === ''));
+                cb(
+                    cmp_customvendor,
+                    cmp_customvendor.length && (currentGrants === null || currentGrants === '')
+                );
             }
         });
     };
@@ -184,58 +195,88 @@
             window.__utag_view_fired = true;
             var cmp_cv_listCookie = document.cookie.match(/cmp_cv_list=([a-zA-z0-9_,-]*)/);
             var cm_cv_listCookie = document.cookie.match(/cm_cv_list=([a-zA-z0-9_,-]*)/);
-            var existingCookie = NEW_STORAGE_KEY === 'cm_cv_list' ? cm_cv_listCookie : cmp_cv_listCookie;
-            var existingFallbackCookie = document.cookie.match(/__utag_cmp_vendor_list=([a-zA-z0-9_,-]*)/);
+            var existingCookie =
+                NEW_STORAGE_KEY === 'cm_cv_list' ? cm_cv_listCookie : cmp_cv_listCookie;
+            var existingFallbackCookie = document.cookie.match(
+                /__utag_cmp_vendor_list=([a-zA-z0-9_,-]*)/
+            );
 
             // Adobe adobe club run only for Bild
             if (window.location.hostname.includes('bild.de')) {
-                if ((existingCookie && existingCookie[0].indexOf('adobe_analytics') >= 0)
-                    || (existingFallbackCookie && existingFallbackCookie[0].indexOf('adobe_analytics') >= 0)
+                if (
+                    (existingCookie && existingCookie[0].indexOf('adobe_analytics') >= 0) ||
+                    (existingFallbackCookie &&
+                        existingFallbackCookie[0].indexOf('adobe_analytics') >= 0)
                 ) {
-
                     // adobe club
-                    if ((window.location.hostname && window.location.hostname.includes('club')) && window.utag.data['cp.utag_main_cmp_after'] == 'true') {
+                    if (
+                        window.location.hostname &&
+                        window.location.hostname.includes('club') &&
+                        window.utag.data['cp.utag_main_cmp_after'] == 'true'
+                    ) {
                         window.utag.view(window.utag.data, null, domainTagValues.adobeClub.bild);
                     }
                 }
             }
 
             // cxense/piano
-            if (((existingCookie && existingCookie[0].indexOf('piano') >= 0)
-                || (existingFallbackCookie && existingFallbackCookie[0].indexOf('piano') >= 0))
-                && !!getDomainTagValue(window.location.hostname, 'piano')) {
-
-                window.utag.view(window.utag.data, null, getDomainTagValue(window.location.hostname, 'piano'));
+            if (
+                ((existingCookie && existingCookie[0].indexOf('piano') >= 0) ||
+                    (existingFallbackCookie && existingFallbackCookie[0].indexOf('piano') >= 0)) &&
+                !!getDomainTagValue(window.location.hostname, 'piano')
+            ) {
+                window.utag.view(
+                    window.utag.data,
+                    null,
+                    getDomainTagValue(window.location.hostname, 'piano')
+                );
             }
 
             // google ads
-            if (((existingCookie && existingCookie[0].indexOf('google_fallback') >= 0)
-                || (existingFallbackCookie && existingFallbackCookie[0].indexOf('google_fallback') >= 0))
-                && !!getDomainTagValue(window.location.hostname, 'googleAds')) {
-
-                window.utag.view(window.utag.data, null, getDomainTagValue(window.location.hostname, 'googleAds'));
+            if (
+                ((existingCookie && existingCookie[0].indexOf('google_fallback') >= 0) ||
+                    (existingFallbackCookie &&
+                        existingFallbackCookie[0].indexOf('google_fallback') >= 0)) &&
+                !!getDomainTagValue(window.location.hostname, 'googleAds')
+            ) {
+                window.utag.view(
+                    window.utag.data,
+                    null,
+                    getDomainTagValue(window.location.hostname, 'googleAds')
+                );
             }
 
             // kameleoon
-            if (((existingCookie && existingCookie[0].indexOf('kameleoon') >= 0)
-                || (existingFallbackCookie && existingFallbackCookie[0].indexOf('kameleoon') >= 0)
-                && (window.utag.data.user_hasPurSubscription2 === 'false'
-                || (!window.utag.data['cp._cpauthhint']
-                || !(window.utag.data['cp._cpauthhint']?.includes('1')))))
-                && !!getDomainTagValue(window.location.hostname, 'kameleoon')) {
-
-                window.utag.view(window.utag.data, null, getDomainTagValue(window.location.hostname, 'kameleoon'));
+            if (
+                ((existingCookie && existingCookie[0].indexOf('kameleoon') >= 0) ||
+                    (existingFallbackCookie &&
+                        existingFallbackCookie[0].indexOf('kameleoon') >= 0 &&
+                        (window.utag.data.user_hasPurSubscription2 === 'false' ||
+                            !window.utag.data['cp._cpauthhint'] ||
+                            !window.utag.data['cp._cpauthhint']?.includes('1')))) &&
+                !!getDomainTagValue(window.location.hostname, 'kameleoon')
+            ) {
+                window.utag.view(
+                    window.utag.data,
+                    null,
+                    getDomainTagValue(window.location.hostname, 'kameleoon')
+                );
             }
 
             // kilkaya
             if (
                 ((existingCookie && existingCookie[0].indexOf('kilkaya') >= 0) ||
-               (existingFallbackCookie && existingFallbackCookie[0].indexOf('kilkaya') >= 0)) &&
-              !!getDomainTagValue(window.location.hostname, 'kilkaya')
+                    (existingFallbackCookie &&
+                        existingFallbackCookie[0].indexOf('kilkaya') >= 0)) &&
+                !!getDomainTagValue(window.location.hostname, 'kilkaya')
             ) {
                 window.k5aMeta = window.k5aMeta || {};
                 window.k5aMeta.consent = 1; // consent granted for Kilkaya
-                window.utag.view(window.utag.data, null, getDomainTagValue(window.location.hostname, 'kilkaya'));
+                window.utag.view(
+                    window.utag.data,
+                    null,
+                    getDomainTagValue(window.location.hostname, 'kilkaya')
+                );
             }
         }
     };

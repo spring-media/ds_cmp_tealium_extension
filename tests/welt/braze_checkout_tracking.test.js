@@ -3,7 +3,7 @@
  * Braze checkout success tracking for WELT
  */
 
-/* global utag, braze */
+/* global utag */
 
 const {
     checkConsentGiven,
@@ -187,8 +187,6 @@ describe('Braze Checkout Tracking', () => {
 
     describe('retryBrazeCheck', () => {
         it('should call trackBrazeCheckout immediately when braze is available', () => {
-            const trackSpy = jest.spyOn({ trackBrazeCheckout }, 'trackBrazeCheckout');
-
             retryBrazeCheck();
 
             expect(mockBraze.logCustomEvent).toHaveBeenCalled();

@@ -13,7 +13,7 @@
  * Generates a random ID by concatenating three random numbers
  * @returns {string} Random ID string
  */
-const generateRandomId = function () {
+const generateRandomId = function() {
     return (
         Math.random() * 89999999999999999 +
         '' +
@@ -27,7 +27,7 @@ const generateRandomId = function () {
  * Sets the global event ID on window object
  * @param {string} randomId - The random ID to set
  */
-const setGlobalEventId = function (randomId) {
+const setGlobalEventId = function(randomId) {
     if (typeof window !== 'undefined') {
         window.global_event_id = randomId;
     }
@@ -37,7 +37,7 @@ const setGlobalEventId = function (randomId) {
  * Assigns the random ID to appropriate utag.data property based on page type
  * @param {string} randomId - The random ID to assign
  */
-const assignRandomIdToUtagData = function (randomId) {
+const assignRandomIdToUtagData = function(randomId) {
     if (typeof utag === 'undefined' || !utag.data) {
         return;
     }
@@ -54,7 +54,7 @@ const assignRandomIdToUtagData = function (randomId) {
 /**
  * Main initialization function that generates and assigns random ID
  */
-const initRandomId = function () {
+const initRandomId = function() {
     const randomId = generateRandomId();
 
     // Log the generated ID for debugging

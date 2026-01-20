@@ -4,7 +4,7 @@
  * LSA (Lesen Sie Auch) tracking for inline teaser clicks
  * Tracks "Read Also" inline teaser interactions and sets session storage
  */
-const processLsaTracking = function (a, b) {
+const processLsaTracking = function(a, b) {
     // Check if event data exists
     if (!b || typeof b !== 'object') {
         return;

@@ -3,6 +3,7 @@ import pluginImport from 'eslint-plugin-import';
 import tseslint from 'typescript-eslint';
 import stylistic from '@stylistic/eslint-plugin';
 import globals from 'globals';
+import prettierConfig from 'eslint-config-prettier';
 
 export default [
     {
@@ -163,6 +164,10 @@ export default [
             'func-names': 'off',
             'key-spacing': ['error', { beforeColon: false, afterColon: true }],
             'capitalized-comments': 'off',
+            'max-len': [
+                'warn',
+                { code: 100, ignoreUrls: true, ignoreStrings: true, ignoreTemplateLiterals: true }
+            ],
             'max-nested-callbacks': 'off',
             'new-cap': 'off',
             'new-parens': 'error',
@@ -190,7 +195,7 @@ export default [
             'sort-vars': 'off',
             'keyword-spacing': 'error',
             'space-before-blocks': ['error', 'always'],
-            'space-before-function-paren': 'off', // Disabled to avoid conflict with Prettier
+            'space-before-function-paren': ['error', 'never'], // Aligned with Prettier
             // 'space-in-brackets' wurde in neueren ESLint-Versionen entfernt,
             // ersetzt durch 'object-curly-spacing' und 'array-bracket-spacing'
             // wir setzen es auf 'off', um Konflikte zu vermeiden.
@@ -199,6 +204,16 @@ export default [
             'space-unary-ops': 'error',
             'spaced-comment': ['warn', 'always', { markers: [','] }],
             'wrap-regex': 'off'
+        }
+    },
+    // Prettier config disables conflicting formatting rules
+    prettierConfig,
+    // Override specific rules that Prettier doesn't handle but we want to enforce
+    {
+        files: ['**/*.js', '**/*.ts'],
+        rules: {
+            // Re-enable space-before-function-paren as Prettier doesn't handle this
+            'space-before-function-paren': ['error', 'never']
         }
     }
 ];

@@ -4,7 +4,7 @@
  * Video Event Label Cleanup
  * Deletes event_label for specific video event actions
  */
-const processVideoEventLabelCleanup = function () {
+const processVideoEventLabelCleanup = function() {
     // Early return if utag or utag.data is not available
     if (typeof utag === 'undefined' || !utag.data) {
         return;

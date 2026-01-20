@@ -4,11 +4,9 @@ const { createWindowMock } = require('../mocks/browserMocks');
 describe('directOrderObj', () => {
     let s;
     beforeEach(() => {
-
         // Create a fresh window mock for each test.
         const windowMock = createWindowMock();
-        jest.spyOn(global, 'window', 'get')
-            .mockImplementation(() => (windowMock));
+        jest.spyOn(global, 'window', 'get').mockImplementation(() => windowMock);
 
         s = {
             ...sObject
@@ -33,14 +31,18 @@ describe('directOrderObj', () => {
             anyCookieObj[anyCookieName] = anyCookieValue + ';exp-session';
 
             s._directOrderObj.saveToCookie(anyCookieObj);
-            expect(window.utag.loader.SC).toHaveBeenCalledWith('utag_main', { 'otb': 'any-otb;exp-session' });
+            expect(window.utag.loader.SC).toHaveBeenCalledWith('utag_main', {
+                otb: 'any-otb;exp-session'
+            });
         });
     });
 
     describe('deleteFromCookieOtb()', function() {
         it('should delete the adobe campaign value of article recommendations in utag_main cookie', function() {
             s._directOrderObj.deleteFromCookieOtb();
-            expect(window.utag.loader.SC).toHaveBeenCalledWith('utag_main', { 'otb': ';exp-session' });
+            expect(window.utag.loader.SC).toHaveBeenCalledWith('utag_main', {
+                otb: ';exp-session'
+            });
         });
     });
 
@@ -75,7 +77,9 @@ describe('directOrderObj', () => {
 
         beforeEach(() => {
             saveToCookieMock = jest.spyOn(s._directOrderObj, 'saveToCookie').mockImplementation();
-            deleteFromCookieMockOtb = jest.spyOn(s._directOrderObj, 'deleteFromCookieOtb').mockImplementation();
+            deleteFromCookieMockOtb = jest
+                .spyOn(s._directOrderObj, 'deleteFromCookieOtb')
+                .mockImplementation();
             // deleteFromCookieMockAco = jest.spyOn(s._directOrderObj, 'deleteFromCookieAco').mockImplementation();
         });
 
@@ -88,7 +92,9 @@ describe('directOrderObj', () => {
             s._utils.getDocType.mockReturnValue('any-type');
             s._articleViewTypeObj.isFromArticleWithReco.mockReturnValue('true');
             s._directOrderObj.isPaywall.mockReturnValue('true');
-            s._campaignObj.getAdobeCampaign.mockReturnValue('cid=kooperation.article.outbrain.A_23');
+            s._campaignObj.getAdobeCampaign.mockReturnValue(
+                'cid=kooperation.article.outbrain.A_23'
+            );
             s._directOrderObj.setDirectOrderValues(s);
             expect(s.eVar113).toBeUndefined();
             expect(s.eVar235).toBeUndefined();
@@ -98,7 +104,9 @@ describe('directOrderObj', () => {
             s._utils.getDocType.mockReturnValue('article');
             s._directOrderObj.isPaywall.mockReturnValue('true');
             s._articleViewTypeObj.isFromArticleWithReco.mockReturnValue('true');
-            s._campaignObj.getAdobeCampaign.mockReturnValue('cid=kooperation.article.outbrain.A_23');
+            s._campaignObj.getAdobeCampaign.mockReturnValue(
+                'cid=kooperation.article.outbrain.A_23'
+            );
             s._directOrderObj.setDirectOrderValues(s);
             expect(s.eVar113).toEqual('cid=kooperation.article.outbrain.A_23');
         });
@@ -107,7 +115,9 @@ describe('directOrderObj', () => {
             s._utils.getDocType.mockReturnValue('article');
             s._articleViewTypeObj.isFromArticleWithReco.mockReturnValue('true');
             s._directOrderObj.isPaywall.mockReturnValue('true');
-            s._campaignObj.getAdobeCampaign.mockReturnValue('cid=kooperation.article.outbrain.A_23');
+            s._campaignObj.getAdobeCampaign.mockReturnValue(
+                'cid=kooperation.article.outbrain.A_23'
+            );
             s._directOrderObj.setDirectOrderValues(s);
             const cookieName = 'otb';
             const cookieValue = 'cid=kooperation.article.outbrain.A_23';
@@ -119,7 +129,9 @@ describe('directOrderObj', () => {
         it('should NOT store adobe campaign value in utag_main cookie on plus article pages when content of page is shown', function() {
             s._utils.getDocType.mockReturnValue('article');
             s._directOrderObj.isPaywall.mockReturnValue('false');
-            s._campaignObj.getAdobeCampaign.mockReturnValue('cid=kooperation.article.outbrain.A_23');
+            s._campaignObj.getAdobeCampaign.mockReturnValue(
+                'cid=kooperation.article.outbrain.A_23'
+            );
             s._directOrderObj.setDirectOrderValues(s);
             expect(saveToCookieMock).not.toHaveBeenCalled();
         });
@@ -128,7 +140,9 @@ describe('directOrderObj', () => {
             s._utils.getDocType.mockReturnValue('any-type');
             s._articleViewTypeObj.isFromArticleWithReco.mockReturnValue('true');
             s._directOrderObj.isPaywall.mockReturnValue('true');
-            s._campaignObj.getAdobeCampaign.mockReturnValue('cid=kooperation.article.outbrain.A_23');
+            s._campaignObj.getAdobeCampaign.mockReturnValue(
+                'cid=kooperation.article.outbrain.A_23'
+            );
             s._directOrderObj.setDirectOrderValues(s);
             expect(saveToCookieMock).not.toHaveBeenCalled();
         });

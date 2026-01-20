@@ -1,9 +1,7 @@
 /**
  * Tests for lsa_tracking.js
- * LSA (Lesen Sie Auch) tracking for inline teaser clicks
+ * LSA (Local Storage Attribute) tracking for WELT
  */
-
-/* global utag */
 
 const { processLsaTracking } = require('../../extensions/welt/lsa_tracking');
 
@@ -45,11 +43,7 @@ describe('LSA (Lesen Sie Auch) Tracking', () => {
             processLsaTracking('link', eventData);
 
             // Should set LSA session storage to '1'
-            expect(mockUtag.loader.SC).toHaveBeenCalledWith(
-                'utag_main',
-                { lsa: '1' },
-                'session'
-            );
+            expect(mockUtag.loader.SC).toHaveBeenCalledWith('utag_main', { lsa: '1' }, 'session');
 
             // Should fire utag.link with modified event
             expect(mockUtag.link).toHaveBeenCalledTimes(1);
@@ -133,11 +127,7 @@ describe('LSA (Lesen Sie Auch) Tracking', () => {
 
             processLsaTracking('view', eventData);
 
-            expect(mockUtag.loader.SC).toHaveBeenCalledWith(
-                'utag_main',
-                { lsa: '0' },
-                'session'
-            );
+            expect(mockUtag.loader.SC).toHaveBeenCalledWith('utag_main', { lsa: '0' }, 'session');
             expect(mockUtag.link).not.toHaveBeenCalled();
         });
 
@@ -148,11 +138,7 @@ describe('LSA (Lesen Sie Auch) Tracking', () => {
 
             processLsaTracking('impression', eventData);
 
-            expect(mockUtag.loader.SC).toHaveBeenCalledWith(
-                'utag_main',
-                { lsa: '0' },
-                'session'
-            );
+            expect(mockUtag.loader.SC).toHaveBeenCalledWith('utag_main', { lsa: '0' }, 'session');
             expect(mockUtag.link).not.toHaveBeenCalled();
         });
     });
@@ -229,11 +215,7 @@ describe('LSA (Lesen Sie Auch) Tracking', () => {
 
             // Process link event
             processLsaTracking('link', linkEventData);
-            expect(mockUtag.loader.SC).toHaveBeenCalledWith(
-                'utag_main',
-                { lsa: '1' },
-                'session'
-            );
+            expect(mockUtag.loader.SC).toHaveBeenCalledWith('utag_main', { lsa: '1' }, 'session');
             expect(mockUtag.link).toHaveBeenCalledTimes(1);
 
             // Reset mocks
@@ -242,11 +224,7 @@ describe('LSA (Lesen Sie Auch) Tracking', () => {
 
             // Process view event
             processLsaTracking('view', viewEventData);
-            expect(mockUtag.loader.SC).toHaveBeenCalledWith(
-                'utag_main',
-                { lsa: '0' },
-                'session'
-            );
+            expect(mockUtag.loader.SC).toHaveBeenCalledWith('utag_main', { lsa: '0' }, 'session');
             expect(mockUtag.link).not.toHaveBeenCalled();
         });
     });

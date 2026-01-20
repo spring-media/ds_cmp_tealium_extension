@@ -1,4 +1,7 @@
-const { getCookie, getDomainTagValue } = require('../../extensions/brandstory/brandstory_scrolldepth');
+const {
+    getCookie,
+    getDomainTagValue
+} = require('../../extensions/brandstory/brandstory_scrolldepth');
 
 beforeEach(() => {
     // Mock document.cookie
@@ -24,7 +27,6 @@ afterEach(() => {
 });
 
 describe('getCookie', () => {
-
     test('returns the value from the cookie', () => {
         document.cookie = 'testCookie=someValue,value2;secure';
         expect(getCookie('testCookie')).toBe('value2');
@@ -51,7 +53,6 @@ describe('getDomainTagValue', () => {
 });
 
 describe('scroll event listener', () => {
-
     beforeEach(() => {
         jest.clearAllMocks();
 
@@ -100,4 +101,3 @@ describe('scroll event listener', () => {
         expect(window.utag.link).not.toHaveBeenCalled();
     });
 });
-

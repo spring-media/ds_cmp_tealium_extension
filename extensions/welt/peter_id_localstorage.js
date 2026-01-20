@@ -15,7 +15,7 @@ const DEFAULT_PETER_ID = 'false';
 /**
  * Initialize Peter ID from localStorage
  */
-const initPeterId = function () {
+const initPeterId = function() {
     try {
         // Initialize utag.data if not exists
         utag.data = utag.data || {};

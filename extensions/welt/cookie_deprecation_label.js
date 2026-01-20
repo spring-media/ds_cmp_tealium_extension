@@ -4,7 +4,7 @@
  * Cookie Deprecation Label tracking
  * Detects and stores Chrome's Privacy Sandbox cookie deprecation label
  */
-const processCookieDeprecationLabel = function (nav) {
+const processCookieDeprecationLabel = function(nav) {
     // Use provided navigator or global navigator
     const navigatorObj = nav || (typeof navigator === 'undefined' ? null : navigator);
 
@@ -15,6 +15,7 @@ const processCookieDeprecationLabel = function (nav) {
             .getValue()
             .then(label => {
                 if (utag && utag.data) {
+                    console.log(label);
                     utag.data.sandbox = label || '';
                 }
             })

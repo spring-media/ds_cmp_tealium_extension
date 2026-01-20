@@ -18,7 +18,7 @@ describe('k5a_meta_send', () => {
             setItem: jest.fn((key, value) => {
                 mockLocalStorage.data[key] = value;
             }),
-            getItem: jest.fn((key) => mockLocalStorage.data[key] || null),
+            getItem: jest.fn(key => mockLocalStorage.data[key] || null),
             clear: jest.fn(() => {
                 mockLocalStorage.data = {};
             })
@@ -70,8 +70,8 @@ describe('k5a_meta_send', () => {
             ];
 
             testCases.forEach(b => {
-                const shouldRun = String(b.event_name) === 'checkout' &&
-                                 String(b.event_action) === 'success';
+                const shouldRun =
+                    String(b.event_name) === 'checkout' && String(b.event_action) === 'success';
                 expect(shouldRun).toBe(false);
             });
         });
@@ -184,7 +184,7 @@ describe('k5a_meta_send', () => {
             const platform = U.page_platform || U['cp.utag_main_page_platform'] || '';
 
             if (platform) {
-                const channel = (platform.toLowerCase() === 'mobile') ? 'mobile' : 'desktop';
+                const channel = platform.toLowerCase() === 'mobile' ? 'mobile' : 'desktop';
                 params.push('c=' + encodeURIComponent(channel));
             }
 
@@ -204,7 +204,7 @@ describe('k5a_meta_send', () => {
             const platform = U.page_platform || U['cp.utag_main_page_platform'] || '';
 
             if (platform) {
-                const channel = (platform.toLowerCase() === 'mobile') ? 'mobile' : 'desktop';
+                const channel = platform.toLowerCase() === 'mobile' ? 'mobile' : 'desktop';
                 params.push('c=' + encodeURIComponent(channel));
             }
 
@@ -224,7 +224,7 @@ describe('k5a_meta_send', () => {
             const platform = U.page_platform || U['cp.utag_main_page_platform'] || '';
 
             if (platform) {
-                const channel = (platform.toLowerCase() === 'mobile') ? 'mobile' : 'desktop';
+                const channel = platform.toLowerCase() === 'mobile' ? 'mobile' : 'desktop';
                 params.push('c=' + encodeURIComponent(channel));
             }
 
@@ -383,11 +383,14 @@ describe('k5a_meta_send', () => {
         it('should handle critical errors', () => {
             const error = new Error('Critical error');
             try {
-                localStorage.setItem('k5a_send_log', JSON.stringify({
-                    timestamp: new Date().toISOString(),
-                    message: '✗ CRITICAL ERROR',
-                    data: { error: error.message, stack: error.stack }
-                }));
+                localStorage.setItem(
+                    'k5a_send_log',
+                    JSON.stringify({
+                        timestamp: new Date().toISOString(),
+                        message: '✗ CRITICAL ERROR',
+                        data: { error: error.message, stack: error.stack }
+                    })
+                );
             } catch (storageErr) {
                 console.error('[K5A SEND] Error:', error);
             }
@@ -413,12 +416,7 @@ describe('k5a_meta_send', () => {
             expect(String(b.event_action)).toBe('success');
 
             // Build URL
-            const params = [
-                'i=68ee5be64709bd7f4b3e3bf2',
-                'cs=1',
-                'cv=1',
-                'cntt=offer_123'
-            ];
+            const params = ['i=68ee5be64709bd7f4b3e3bf2', 'cs=1', 'cv=1', 'cntt=offer_123'];
             const expected = baseUrl + params.join('&');
 
             // Send beacon

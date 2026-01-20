@@ -45,7 +45,7 @@ function monitorIframeClick(documentObj, utagObj, setIntervalFn, clearIntervalFn
         }
 
         // Monitor for iframe clicks
-        const monitor = setIntervalFn(function () {
+        const monitor = setIntervalFn(function() {
             const elem = documentObj.activeElement;
             if (elem && elem.tagName === 'IFRAME') {
                 // Send tracking event

@@ -37,10 +37,7 @@ const RaspHelpers = {
         }
         const teaserBrand = this.getTeaserBrandFromCID();
         return (
-            teaserBrand ||
-            window.utag.data['cp.utag_main_hti'] ||
-            window.utag.data['qp.dtp'] ||
-            ''
+            teaserBrand || window.utag.data['cp.utag_main_hti'] || window.utag.data['qp.dtp'] || ''
         );
     },
 
@@ -53,10 +50,7 @@ const RaspHelpers = {
         if (!window.utag || !window.utag.data) {
             return '';
         }
-        const teaserBlock =
-            window.utag.data['cp.utag_main_tb'] ||
-            window.utag.data['qp.tbl'] ||
-            '';
+        const teaserBlock = window.utag.data['cp.utag_main_tb'] || window.utag.data['qp.tbl'] || '';
         return teaserBlock.split('_')[0];
     },
 
@@ -69,9 +63,7 @@ const RaspHelpers = {
         if (!window.utag || !window.utag.data) {
             return '';
         }
-        return (
-            window.utag.data.page_id || window.utag.data.page_escenicId || ''
-        );
+        return window.utag.data.page_id || window.utag.data.page_escenicId || '';
     },
 
     /**
@@ -123,8 +115,7 @@ const RaspHelpers = {
             trackingValue: trackingValue,
             blockValue: blockValue,
             pageId: pageId,
-            teaserPositionPage:
-                trackingValue && pageId ? `${trackingValue}|${pageId}` : ''
+            teaserPositionPage: trackingValue && pageId ? `${trackingValue}|${pageId}` : ''
         };
     },
 
@@ -139,7 +130,7 @@ const RaspHelpers = {
                 window.performance.getEntriesByType &&
                 window.performance
                     .getEntriesByType('navigation')
-                    .map((nav) => nav.type)
+                    .map(nav => nav.type)
                     .toString()) ||
             ''
         );
@@ -154,10 +145,7 @@ const RaspHelpers = {
         const branch = window.ASCDP?.pageSet?.branch || 'noAdlib';
         try {
             const lsKey = 'asadTls';
-            if (
-                typeof localStorage !== 'undefined' &&
-                localStorage.getItem(lsKey)
-            ) {
+            if (typeof localStorage !== 'undefined' && localStorage.getItem(lsKey)) {
                 const asadTlsStr = localStorage.getItem(lsKey);
                 const asadTls = JSON.parse(asadTlsStr);
                 if (asadTls?.springUGAdobe) {

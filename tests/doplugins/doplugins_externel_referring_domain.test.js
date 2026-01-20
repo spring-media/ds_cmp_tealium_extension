@@ -9,16 +9,18 @@ describe('External referring domains', () => {
     beforeEach(() => {
         // Create a fresh window mock for each test.
         const windowMock = createWindowMock();
-        jest.spyOn(global, 'window', 'get')
-            .mockImplementation(() => (windowMock));
+        jest.spyOn(global, 'window', 'get').mockImplementation(() => windowMock);
         // Provide a fresh copy of the s-object for each test.
         s = { ...sObject };
         addEventMock = jest.spyOn(s._eventsObj, 'addEvent').mockImplementation();
         getReferrerMock = jest.spyOn(s._utils, 'getReferrer').mockImplementation();
         jest.spyOn(s._utils, 'isArticlePage').mockImplementation().mockReturnValue(true);
-        jest.spyOn(s._articleViewTypeObj, 'isOtherTrackingValue').mockImplementation().mockReturnValue(false);
-        jest.spyOn(s._articleViewTypeObj, 'isFromInternal').mockImplementation().mockReturnValue(false);
-
+        jest.spyOn(s._articleViewTypeObj, 'isOtherTrackingValue')
+            .mockImplementation()
+            .mockReturnValue(false);
+        jest.spyOn(s._articleViewTypeObj, 'isFromInternal')
+            .mockImplementation()
+            .mockReturnValue(false);
     });
 
     afterEach(() => {

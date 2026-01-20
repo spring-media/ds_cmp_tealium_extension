@@ -4,7 +4,7 @@
  * Adobe inline element home teaser tracking for WELT
  * Tracks inline element clicks on home page (escenicId 5)
  */
-const processAdobeInlineElement = function (a, b) {
+const processAdobeInlineElement = function(a, b) {
     // Only process link events with Inline Element tracking
     if (
         a !== 'link' ||

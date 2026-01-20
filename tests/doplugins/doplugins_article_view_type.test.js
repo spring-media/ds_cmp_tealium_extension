@@ -6,8 +6,7 @@ describe('articleViewType()', () => {
     beforeEach(() => {
         // Create a fresh window mock for each test.
         const windowMock = createWindowMock();
-        jest.spyOn(global, 'window', 'get')
-            .mockImplementation(() => (windowMock));
+        jest.spyOn(global, 'window', 'get').mockImplementation(() => windowMock);
 
         // Provide a fresh copy of the s-object for each test.
         s = { ...sObject };
@@ -34,9 +33,25 @@ describe('articleViewType()', () => {
 
     describe('isFromSearch()', () => {
         it('should return TRUE if referrer is a search engine', function() {
-            const searchDomains = ['google.', 'bing.com', 'ecosia.org', 'duckduckgo.com', 'amp-welt-de.cdn.ampproject.org', 'qwant.com', 'suche.t-online.de', '.yandex.', 'yahoo.com', 'googleapis.com', 'nortonsafe.search.ask.com', 'wikipedia.org', 'googleadservices.com', 'search.myway.com', 'lycos.de'];
+            const searchDomains = [
+                'google.',
+                'bing.com',
+                'ecosia.org',
+                'duckduckgo.com',
+                'amp-welt-de.cdn.ampproject.org',
+                'qwant.com',
+                'suche.t-online.de',
+                '.yandex.',
+                'yahoo.com',
+                'googleapis.com',
+                'nortonsafe.search.ask.com',
+                'wikipedia.org',
+                'googleadservices.com',
+                'search.myway.com',
+                'lycos.de'
+            ];
 
-            searchDomains.forEach((domain) => {
+            searchDomains.forEach(domain => {
                 const result = s._articleViewTypeObj.isFromSearch(domain);
                 expect(result).toBe(true);
             });
@@ -51,9 +66,34 @@ describe('articleViewType()', () => {
 
     describe('isFromSocial()', () => {
         it('should return TRUE if referrer is a search engine', function() {
-            const socialDomains = ['facebook.com', 'xing.com', 'instagram.com', 'youtube.com', 't.co', 'www.linkedin.com', 'away.vk.com', 'www.pinterest.de', 'linkedin.android', 'ok.ru', 'mobile.ok.ru', 'www.yammer.com', 'twitter.com', 'www.netvibes.com', 'pinterest.com', 'wordpress.com', 'blogspot.com', 'lnkd.in', 'xing.android', 'vk.com', 'com.twitter.android', 'm.ok.ru', 'welt.de/instagram', 'linkin.bio'];
+            const socialDomains = [
+                'facebook.com',
+                'xing.com',
+                'instagram.com',
+                'youtube.com',
+                't.co',
+                'www.linkedin.com',
+                'away.vk.com',
+                'www.pinterest.de',
+                'linkedin.android',
+                'ok.ru',
+                'mobile.ok.ru',
+                'www.yammer.com',
+                'twitter.com',
+                'www.netvibes.com',
+                'pinterest.com',
+                'wordpress.com',
+                'blogspot.com',
+                'lnkd.in',
+                'xing.android',
+                'vk.com',
+                'com.twitter.android',
+                'm.ok.ru',
+                'welt.de/instagram',
+                'linkin.bio'
+            ];
 
-            socialDomains.forEach((item) => {
+            socialDomains.forEach(item => {
                 const referrer = `https://${item}/any-path`;
                 const result = s._articleViewTypeObj.isFromSocial(referrer);
                 expect(result).toBe(true);
@@ -70,8 +110,10 @@ describe('articleViewType()', () => {
     describe('isOtherTrackingValue()', () => {
         it('should return TRUE if trackingChannel is from the list of other', function() {
             const trackingChannel = ['social.', 'upday', 'kooperation'];
-            trackingChannel.forEach((item) => {
-                const trackingValue = jest.spyOn(s._articleViewTypeObj, 'getTrackingValue').mockReturnValue(item);
+            trackingChannel.forEach(item => {
+                const trackingValue = jest
+                    .spyOn(s._articleViewTypeObj, 'getTrackingValue')
+                    .mockReturnValue(item);
                 const result = s._articleViewTypeObj.isOtherTrackingValue(trackingValue);
                 expect(result).toBe(true);
             });
@@ -86,9 +128,23 @@ describe('articleViewType()', () => {
 
     describe('isPaidMarketing()', () => {
         it('should return TRUE if trackingChannel is paid', function() {
-            const trackingChannel = ['email.', 'onsite.', 'inapp.', 'push.', 'sea.', 'affiliate.', 'social_paid.', 'app.', 'display.', 'career.', 'print.'];
-            trackingChannel.forEach((item) => {
-                const trackingValue = jest.spyOn(s._articleViewTypeObj, 'getTrackingValue').mockReturnValue(item);
+            const trackingChannel = [
+                'email.',
+                'onsite.',
+                'inapp.',
+                'push.',
+                'sea.',
+                'affiliate.',
+                'social_paid.',
+                'app.',
+                'display.',
+                'career.',
+                'print.'
+            ];
+            trackingChannel.forEach(item => {
+                const trackingValue = jest
+                    .spyOn(s._articleViewTypeObj, 'getTrackingValue')
+                    .mockReturnValue(item);
                 const result = s._articleViewTypeObj.isPaidMarketing(trackingValue);
                 expect(result).toBe(true);
             });
@@ -106,7 +162,9 @@ describe('articleViewType()', () => {
         let getDomainFromURLStringMock;
 
         beforeEach(() => {
-            getDomainFromURLStringMock = jest.spyOn(s._utils, 'getDomainFromURLString').mockReturnValue('');
+            getDomainFromURLStringMock = jest
+                .spyOn(s._utils, 'getDomainFromURLString')
+                .mockReturnValue('');
         });
 
         it('should call s._utils.getDomainFromURLString(referrer)', function() {
@@ -180,7 +238,9 @@ describe('articleViewType()', () => {
         let getDomainFromURLStringMock;
 
         beforeEach(() => {
-            getDomainFromURLStringMock = jest.spyOn(s._utils, 'getDomainFromURLString').mockReturnValue('');
+            getDomainFromURLStringMock = jest
+                .spyOn(s._utils, 'getDomainFromURLString')
+                .mockReturnValue('');
         });
 
         it('should return TRUE if referrer is from secure mypass (login/register)', function() {
@@ -204,7 +264,9 @@ describe('articleViewType()', () => {
         let getDomainFromURLStringMock;
 
         beforeEach(() => {
-            getDomainFromURLStringMock = jest.spyOn(s._utils, 'getDomainFromURLString').mockReturnValue('');
+            getDomainFromURLStringMock = jest
+                .spyOn(s._utils, 'getDomainFromURLString')
+                .mockReturnValue('');
         });
 
         it('should return TRUE if referrer is from paypal (came back after payment)', function() {
@@ -228,7 +290,9 @@ describe('articleViewType()', () => {
         let getDomainFromURLStringMock;
 
         beforeEach(() => {
-            getDomainFromURLStringMock = jest.spyOn(s._utils, 'getDomainFromURLString').mockReturnValue('');
+            getDomainFromURLStringMock = jest
+                .spyOn(s._utils, 'getDomainFromURLString')
+                .mockReturnValue('');
         });
 
         it('should return TRUE if referrer is from internal Domain (except bild.de but like from fitbook.de)', function() {
@@ -272,13 +336,14 @@ describe('articleViewType()', () => {
                 expect(result).toBe(false);
             });
         });
-
     });
 
     describe('isFromHome', () => {
         let cleanUpReferrerMock;
         beforeEach(() => {
-            cleanUpReferrerMock = jest.spyOn(s._articleViewTypeObj, 'cleanUpReferrer').mockImplementation();
+            cleanUpReferrerMock = jest
+                .spyOn(s._articleViewTypeObj, 'cleanUpReferrer')
+                .mockImplementation();
         });
 
         it('should return TRUE if referrer is from homepage (no location.pathname)', function() {
@@ -419,7 +484,6 @@ describe('articleViewType()', () => {
     });
 
     describe('isNavigated', () => {
-
         beforeEach(() => {
             window.performance = {
                 getEntriesByType: jest.fn().mockReturnValue([])
@@ -450,12 +514,15 @@ describe('articleViewType()', () => {
             [true, 'search : 245145230'],
             [false, 'article : 245145230']
         ];
-        it.each(testData)('should return true for previousPage: "search : 245145230" ', function(exected, _ppvPreviousPage) {
-            Object.assign(sObject, { _ppvPreviousPage });
+        it.each(testData)(
+            'should return true for previousPage: "search : 245145230" ',
+            function(exected, _ppvPreviousPage) {
+                Object.assign(sObject, { _ppvPreviousPage });
 
-            const result = s._articleViewTypeObj.isFromOnsiteSearch();
-            expect(result).toBe(exected);
-        });
+                const result = s._articleViewTypeObj.isFromOnsiteSearch();
+                expect(result).toBe(exected);
+            }
+        );
     });
 
     describe('isSelfRedirect', () => {
@@ -466,12 +533,15 @@ describe('articleViewType()', () => {
             [false, 'home : 5', 'article : 245145230'],
             [true, 'article : false : 245145230 : vermischtes', 'article : 245145230']
         ];
-        it.each(testData)('should return %s for previousPage: "%s" and pageName "%s"', function(exected, _ppvPreviousPage, pageName) {
-            Object.assign(sObject, { _ppvPreviousPage, pageName });
+        it.each(testData)(
+            'should return %s for previousPage: "%s" and pageName "%s"',
+            function(exected, _ppvPreviousPage, pageName) {
+                Object.assign(sObject, { _ppvPreviousPage, pageName });
 
-            const result = s._articleViewTypeObj.isSelfRedirect();
-            expect(result).toBe(exected);
-        });
+                const result = s._articleViewTypeObj.isSelfRedirect();
+                expect(result).toBe(exected);
+            }
+        );
     });
 
     describe('isFromLesenSieAuch', () => {
@@ -486,7 +556,6 @@ describe('articleViewType()', () => {
             const result = s._articleViewTypeObj.isFromLesenSieAuch();
             expect(result).toBe(false);
         });
-
     });
 
     describe('getInternalType()', () => {
@@ -500,13 +569,22 @@ describe('articleViewType()', () => {
 
         beforeEach(() => {
             isFromHomeMock = jest.spyOn(s._articleViewTypeObj, 'isFromHome').mockReturnValue(false);
-            isSamePageRedirectMock = jest.spyOn(s._articleViewTypeObj, 'isSamePageRedirect').mockReturnValue(false);
-            isNavigatedMock = jest.spyOn(s._articleViewTypeObj, 'isNavigated').mockReturnValue(false);
-            isSelfRedirectMock = jest.spyOn(s._articleViewTypeObj, 'isSelfRedirect').mockReturnValue(false);
-            isFromOnsiteSearchMock = jest.spyOn(s._articleViewTypeObj, 'isFromOnsiteSearch').mockReturnValue(false);
-            isFromLesenSieAuchMock = jest.spyOn(s._articleViewTypeObj, 'isFromLesenSieAuch').mockReturnValue(false);
+            isSamePageRedirectMock = jest
+                .spyOn(s._articleViewTypeObj, 'isSamePageRedirect')
+                .mockReturnValue(false);
+            isNavigatedMock = jest
+                .spyOn(s._articleViewTypeObj, 'isNavigated')
+                .mockReturnValue(false);
+            isSelfRedirectMock = jest
+                .spyOn(s._articleViewTypeObj, 'isSelfRedirect')
+                .mockReturnValue(false);
+            isFromOnsiteSearchMock = jest
+                .spyOn(s._articleViewTypeObj, 'isFromOnsiteSearch')
+                .mockReturnValue(false);
+            isFromLesenSieAuchMock = jest
+                .spyOn(s._articleViewTypeObj, 'isFromLesenSieAuch')
+                .mockReturnValue(false);
             isNewVisitMock = jest.spyOn(s._articleViewTypeObj, 'isNewVisit').mockReturnValue(false);
-
         });
 
         it('should return event207 if referrer is set and it is a new Visit', function() {
@@ -554,19 +632,30 @@ describe('articleViewType()', () => {
 
         beforeEach(() => {
             jest.spyOn(s._utils, 'getDomainFromURLString').mockReturnValue(anyReferrerDomain);
-            isFromSearchMock = jest.spyOn(s._articleViewTypeObj, 'isFromSearch').mockReturnValue(false);
-            isFromSocialMock = jest.spyOn(s._articleViewTypeObj, 'isFromSocial').mockReturnValue(false);
+            isFromSearchMock = jest
+                .spyOn(s._articleViewTypeObj, 'isFromSearch')
+                .mockReturnValue(false);
+            isFromSocialMock = jest
+                .spyOn(s._articleViewTypeObj, 'isFromSocial')
+                .mockReturnValue(false);
             isFromBildMock = jest.spyOn(s._articleViewTypeObj, 'isFromBild').mockReturnValue(false);
-            isFromBildMobileMock = jest.spyOn(s._articleViewTypeObj, 'isFromBildMobile').mockReturnValue(false);
+            isFromBildMobileMock = jest
+                .spyOn(s._articleViewTypeObj, 'isFromBildMobile')
+                .mockReturnValue(false);
             isFromHomeMock = jest.spyOn(s._articleViewTypeObj, 'isFromHome').mockReturnValue(false);
-            isFromPremiumServiceMock = jest.spyOn(s._articleViewTypeObj, 'isFromPremiumService').mockReturnValue(false);
-            isFromAsDomainMock = jest.spyOn(s._articleViewTypeObj, 'isFromAsDomain').mockReturnValue(false);
-            isFromPaypalMock = jest.spyOn(s._articleViewTypeObj, 'isFromPaypal').mockReturnValue(false);
+            isFromPremiumServiceMock = jest
+                .spyOn(s._articleViewTypeObj, 'isFromPremiumService')
+                .mockReturnValue(false);
+            isFromAsDomainMock = jest
+                .spyOn(s._articleViewTypeObj, 'isFromAsDomain')
+                .mockReturnValue(false);
+            isFromPaypalMock = jest
+                .spyOn(s._articleViewTypeObj, 'isFromPaypal')
+                .mockReturnValue(false);
             isNewVisitMock = jest.spyOn(s._articleViewTypeObj, 'isNewVisit').mockReturnValue(false);
             isReloadedMock = jest.spyOn(s._articleViewTypeObj, 'isReloaded').mockReturnValue(false);
             isHomepageMock = jest.spyOn(s._utils, 'isHomepage').mockReturnValue(false);
             jest.spyOn(s._utils, 'isArticlePage').mockReturnValue(true);
-
         });
 
         it('should return event24, event209 if referrer is from search engine and page is Homepage', function() {
@@ -662,11 +751,21 @@ describe('articleViewType()', () => {
 
         beforeEach(() => {
             isFromHomeMock = jest.spyOn(s._articleViewTypeObj, 'isFromHome').mockReturnValue(false);
-            isSamePageRedirectMock = jest.spyOn(s._articleViewTypeObj, 'isSamePageRedirect').mockReturnValue(false);
-            isNavigatedMock = jest.spyOn(s._articleViewTypeObj, 'isNavigated').mockReturnValue(false);
-            isSelfRedirectMock = jest.spyOn(s._articleViewTypeObj, 'isSelfRedirect').mockReturnValue(false);
-            isFromOnsiteSearchMock = jest.spyOn(s._articleViewTypeObj, 'isFromOnsiteSearch').mockReturnValue(false);
-            isFromLesenSieAuchMock = jest.spyOn(s._articleViewTypeObj, 'isFromLesenSieAuch').mockReturnValue(false);
+            isSamePageRedirectMock = jest
+                .spyOn(s._articleViewTypeObj, 'isSamePageRedirect')
+                .mockReturnValue(false);
+            isNavigatedMock = jest
+                .spyOn(s._articleViewTypeObj, 'isNavigated')
+                .mockReturnValue(false);
+            isSelfRedirectMock = jest
+                .spyOn(s._articleViewTypeObj, 'isSelfRedirect')
+                .mockReturnValue(false);
+            isFromOnsiteSearchMock = jest
+                .spyOn(s._articleViewTypeObj, 'isFromOnsiteSearch')
+                .mockReturnValue(false);
+            isFromLesenSieAuchMock = jest
+                .spyOn(s._articleViewTypeObj, 'isFromLesenSieAuch')
+                .mockReturnValue(false);
             isNewVisitMock = jest.spyOn(s._articleViewTypeObj, 'isNewVisit').mockReturnValue(false);
         });
 
@@ -697,7 +796,7 @@ describe('articleViewType()', () => {
         });
 
         it('should return event23,event201 for internal fallback case', () => {
-        // Alle Mocks bleiben auf false → Default-Zweig greift
+            // Alle Mocks bleiben auf false → Default-Zweig greift
             const result = s._articleViewTypeObj.getInternalType('https://www.bild.de');
             expect(result.pageViewEvent).toBe('event23,event201');
             expect(result.channel).toBe('');
@@ -711,7 +810,7 @@ describe('articleViewType()', () => {
         });
 
         it('should prioritize event207 and not override it with fallback', () => {
-        // Spezialfall, um zu prüfen, dass kein weiteres Event gesetzt wird
+            // Spezialfall, um zu prüfen, dass kein weiteres Event gesetzt wird
             isSamePageRedirectMock.mockReturnValue(true);
             isNewVisitMock.mockReturnValue(true);
             isFromHomeMock.mockReturnValue(true); // wäre sonst Home
@@ -732,7 +831,9 @@ describe('articleViewType()', () => {
         beforeEach(() => {
             isArticlePageMock = jest.spyOn(s._utils, 'isArticlePage').mockReturnValue(false);
             isNewVisitMock = jest.spyOn(s._articleViewTypeObj, 'isNewVisit').mockReturnValue(false);
-            isNavigatedMock = jest.spyOn(s._articleViewTypeObj, 'isNavigated').mockReturnValue(false);
+            isNavigatedMock = jest
+                .spyOn(s._articleViewTypeObj, 'isNavigated')
+                .mockReturnValue(false);
             isReloadedMock = jest.spyOn(s._articleViewTypeObj, 'isReloaded').mockReturnValue(false);
         });
 
@@ -790,7 +891,7 @@ describe('articleViewType()', () => {
         });
 
         it('should return undefined values when no conditions match', () => {
-        // Alle Mocks bleiben auf false
+            // Alle Mocks bleiben auf false
 
             const result = s._articleViewTypeObj.noReferrerType();
             expect(result.pageViewEvent).toBeUndefined();
@@ -798,7 +899,6 @@ describe('articleViewType()', () => {
             expect(result.mkt_channel_detail).toBeUndefined();
         });
     });
-
 
     describe('getViewTypeByReferrer()', () => {
         let getReferrerMock;
@@ -809,10 +909,18 @@ describe('articleViewType()', () => {
 
         beforeEach(() => {
             getReferrerMock = jest.spyOn(s._utils, 'getReferrer').mockReturnValue('');
-            isFromInternalMock = jest.spyOn(s._articleViewTypeObj, 'isFromInternal').mockReturnValue(false);
-            getInternalTypeMock = jest.spyOn(s._articleViewTypeObj, 'getInternalType').mockReturnValue({});
-            getExternalTypeMock = jest.spyOn(s._articleViewTypeObj, 'getExternalType').mockReturnValue({});
-            noReferrerTypeMock = jest.spyOn(s._articleViewTypeObj, 'noReferrerType').mockReturnValue({});
+            isFromInternalMock = jest
+                .spyOn(s._articleViewTypeObj, 'isFromInternal')
+                .mockReturnValue(false);
+            getInternalTypeMock = jest
+                .spyOn(s._articleViewTypeObj, 'getInternalType')
+                .mockReturnValue({});
+            getExternalTypeMock = jest
+                .spyOn(s._articleViewTypeObj, 'getExternalType')
+                .mockReturnValue({});
+            noReferrerTypeMock = jest
+                .spyOn(s._articleViewTypeObj, 'noReferrerType')
+                .mockReturnValue({});
         });
 
         afterEach(() => {
@@ -913,9 +1021,13 @@ describe('articleViewType()', () => {
         let isPageOneInSessionMock;
 
         beforeEach(() => {
-            getTrackingValueMock = jest.spyOn(s._articleViewTypeObj, 'getTrackingValue').mockReturnValue('');
+            getTrackingValueMock = jest
+                .spyOn(s._articleViewTypeObj, 'getTrackingValue')
+                .mockReturnValue('');
             jest.spyOn(s._articleViewTypeObj, 'isPaidMarketing').mockReturnValue(true);
-            isPageOneInSessionMock = jest.spyOn(s._utils, 'isPageOneInSession').mockImplementation();
+            isPageOneInSessionMock = jest
+                .spyOn(s._utils, 'isPageOneInSession')
+                .mockImplementation();
         });
 
         afterEach(() => {
@@ -951,31 +1063,26 @@ describe('articleViewType()', () => {
             isPageOneInSessionMock.mockReturnValue(true);
             const result = s._articleViewTypeObj.getViewTypeByTrackingProperty();
             expect(result.pageViewEvent).toBe('event102,event230,event232');
-
         });
         it('it should return the right event name if tracking value is of type: Outbrain Desktop Home Recommendation', () => {
             getTrackingValueMock.mockReturnValue('kooperation.home.outbrain.ff.desktop.');
             const result = s._articleViewTypeObj.getViewTypeByTrackingProperty();
             expect(result.pageViewEvent).toBe('event76,event230,event231');
-
         });
         it('it should return the right event name if tracking value is of type: Outbrain Mobile Home Recommendation', () => {
             getTrackingValueMock.mockReturnValue('kooperation.home.outbrain.ff.mobile.');
             const result = s._articleViewTypeObj.getViewTypeByTrackingProperty();
             expect(result.pageViewEvent).toBe('event77,event230,event231');
-
         });
         it('it should return the right event name if tracking value is of type: Outbrain ', () => {
             getTrackingValueMock.mockReturnValue('kooperation.any-value.outbrain.');
             const result = s._articleViewTypeObj.getViewTypeByTrackingProperty();
             expect(result.pageViewEvent).toBe('event23,event201');
-
         });
         it('it should return the right event name if tracking value is Paid Marketing like email. as one example', () => {
             getTrackingValueMock.mockReturnValue('email.');
             const result = s._articleViewTypeObj.getViewTypeByTrackingProperty();
             expect(result.pageViewEvent).toBe('event206');
-
         });
         it('it should return event204 if the trackingValue equals upday', () => {
             getTrackingValueMock.mockReturnValue('upday');
@@ -1002,7 +1109,9 @@ describe('articleViewType()', () => {
             s._articleViewType = 'any-view-type';
             s._articleViewTypeObj.setPageSourceAndAgeForCheckout(s);
 
-            expect(window.utag.loader.SC).toHaveBeenCalledWith('utag_main', { 'articleview': s._articleViewType + ';exp-session' });
+            expect(window.utag.loader.SC).toHaveBeenCalledWith('utag_main', {
+                articleview: s._articleViewType + ';exp-session'
+            });
             expect(window.utag.data['cp.utag_main_articleview']).toBe(s._articleViewType);
         });
 
@@ -1010,7 +1119,9 @@ describe('articleViewType()', () => {
             window.utag.data.page_age = 'any-publication-age';
             s._articleViewTypeObj.setPageSourceAndAgeForCheckout(s);
 
-            expect(window.utag.loader.SC).toHaveBeenCalledWith('utag_main', { 'pa': window.utag.data.page_age + ';exp-session' });
+            expect(window.utag.loader.SC).toHaveBeenCalledWith('utag_main', {
+                pa: window.utag.data.page_age + ';exp-session'
+            });
             expect(window.utag.data['cp.utag_main_pa']).toBe(window.utag.data.page_age);
         });
 
@@ -1018,16 +1129,24 @@ describe('articleViewType()', () => {
             window.utag.data.page_datePublication_age = 'any-publication-age';
             s._articleViewTypeObj.setPageSourceAndAgeForCheckout(s);
 
-            expect(window.utag.loader.SC).toHaveBeenCalledWith('utag_main', { 'pa': window.utag.data.page_datePublication_age + ';exp-session' });
-            expect(window.utag.data['cp.utag_main_pa']).toBe(window.utag.data.page_datePublication_age);
+            expect(window.utag.loader.SC).toHaveBeenCalledWith('utag_main', {
+                pa: window.utag.data.page_datePublication_age + ';exp-session'
+            });
+            expect(window.utag.data['cp.utag_main_pa']).toBe(
+                window.utag.data.page_datePublication_age
+            );
         });
 
         it('should store the publication age (utag.data.screen_agePublication) in the utag_main cookie', () => {
             window.utag.data.screen_agePublication = 'any-publication-age';
             s._articleViewTypeObj.setPageSourceAndAgeForCheckout(s);
 
-            expect(window.utag.loader.SC).toHaveBeenCalledWith('utag_main', { 'pa': window.utag.data.screen_agePublication + ';exp-session' });
-            expect(window.utag.data['cp.utag_main_pa']).toBe(window.utag.data.screen_agePublication);
+            expect(window.utag.loader.SC).toHaveBeenCalledWith('utag_main', {
+                pa: window.utag.data.screen_agePublication + ';exp-session'
+            });
+            expect(window.utag.data['cp.utag_main_pa']).toBe(
+                window.utag.data.screen_agePublication
+            );
         });
     });
 
@@ -1066,14 +1185,26 @@ describe('articleViewType()', () => {
 
         beforeEach(() => {
             isArticlePageMock = jest.spyOn(s._utils, 'isArticlePage');
-            getViewTypeByReferrerMock = jest.spyOn(s._articleViewTypeObj, 'getViewTypeByReferrer').mockImplementation();
-            getViewTypeByTrackingPropertyMock = jest.spyOn(s._articleViewTypeObj, 'getViewTypeByTrackingProperty').mockImplementation();
-            setPageSourceAndAgeForCheckoutMock = jest.spyOn(s._articleViewTypeObj, 'setPageSourceAndAgeForCheckout').mockImplementation();
+            getViewTypeByReferrerMock = jest
+                .spyOn(s._articleViewTypeObj, 'getViewTypeByReferrer')
+                .mockImplementation();
+            getViewTypeByTrackingPropertyMock = jest
+                .spyOn(s._articleViewTypeObj, 'getViewTypeByTrackingProperty')
+                .mockImplementation();
+            setPageSourceAndAgeForCheckoutMock = jest
+                .spyOn(s._articleViewTypeObj, 'setPageSourceAndAgeForCheckout')
+                .mockImplementation();
             addEventMock = jest.spyOn(s._eventsObj, 'addEvent').mockImplementation();
-            isPageViewFromHomeMock = jest.spyOn(s._articleViewTypeObj, 'isPageViewFromHome').mockImplementation();
-            setHomeTeaserPropertiesMock = jest.spyOn(s._homeTeaserTrackingObj, 'setHomeTeaserProperties').mockImplementation();
+            isPageViewFromHomeMock = jest
+                .spyOn(s._articleViewTypeObj, 'isPageViewFromHome')
+                .mockImplementation();
+            setHomeTeaserPropertiesMock = jest
+                .spyOn(s._homeTeaserTrackingObj, 'setHomeTeaserProperties')
+                .mockImplementation();
             isAdWallMock = jest.spyOn(s._utils, 'isAdWall').mockImplementation();
-            isOtherTrackingValueMock = jest.spyOn(s._articleViewTypeObj, 'isOtherTrackingValue').mockReturnValue(true);
+            isOtherTrackingValueMock = jest
+                .spyOn(s._articleViewTypeObj, 'isOtherTrackingValue')
+                .mockReturnValue(true);
         });
 
         afterEach(() => {
@@ -1204,7 +1335,6 @@ describe('articleViewType()', () => {
 
             expect(setHomeTeaserPropertiesMock).not.toHaveBeenCalled();
         });
-
     });
 
     describe('setExtraViewTypes()', () => {
@@ -1213,9 +1343,15 @@ describe('articleViewType()', () => {
         let setTrackingValueEventsMock;
 
         beforeEach(() => {
-            isOtherTrackingValueMock = jest.spyOn(s._articleViewTypeObj, 'isOtherTrackingValue').mockReturnValue('email.cid-test');
-            setExternalReferringDomainEventsMock = jest.spyOn(s, '_setExternalReferringDomainEvents').mockImplementation();
-            setTrackingValueEventsMock = jest.spyOn(s, '_setTrackingValueEvents').mockImplementation();
+            isOtherTrackingValueMock = jest
+                .spyOn(s._articleViewTypeObj, 'isOtherTrackingValue')
+                .mockReturnValue('email.cid-test');
+            setExternalReferringDomainEventsMock = jest
+                .spyOn(s, '_setExternalReferringDomainEvents')
+                .mockImplementation();
+            setTrackingValueEventsMock = jest
+                .spyOn(s, '_setTrackingValueEvents')
+                .mockImplementation();
         });
 
         afterEach(() => {
@@ -1235,5 +1371,4 @@ describe('articleViewType()', () => {
             expect(setExternalReferringDomainEventsMock).toHaveBeenCalledWith(s);
         });
     });
-
 });

@@ -98,7 +98,7 @@ let triggered75 = false;
 let triggered100 = false;
 
 // Scroll event listener
-window.addEventListener('scroll', function () {
+window.addEventListener('scroll', function() {
     // Check if conditions are met
     if (!checkBrandstoryConditions()) {
         return;

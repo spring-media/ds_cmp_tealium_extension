@@ -6,8 +6,7 @@ describe('_homeTeaserTrackingObj', () => {
     beforeEach(() => {
         // Create a fresh window mock for each test.
         const windowMock = createWindowMock();
-        jest.spyOn(global, 'window', 'get')
-            .mockImplementation(() => (windowMock));
+        jest.spyOn(global, 'window', 'get').mockImplementation(() => windowMock);
 
         // Provide a fresh copy of the s-object for each test.
         s = { ...sObject };
@@ -15,13 +14,13 @@ describe('_homeTeaserTrackingObj', () => {
 
     afterEach(() => {
         jest.restoreAllMocks();
-
     });
 
     describe('getTeaserBrandFromCID', () => {
         it('should return the brand segment of the CID string', function() {
             const brandSegment = 'any-brand';
-            window.utag.data['qp.cid'] = 'kooperation.reco.outbrain.free.welt.desktop.AR_2.' + brandSegment;
+            window.utag.data['qp.cid'] =
+                'kooperation.reco.outbrain.free.welt.desktop.AR_2.' + brandSegment;
             const result = s._homeTeaserTrackingObj.getTeaserBrandFromCID();
             expect(result).toBe(brandSegment);
         });
@@ -41,7 +40,9 @@ describe('_homeTeaserTrackingObj', () => {
 
         it('should return the teaser brand segment from CID URL query parameter if available', function() {
             const anyTeaserBrand = 'any-brand';
-            jest.spyOn(s._homeTeaserTrackingObj, 'getTrackingValue').mockImplementation().mockReturnValue(anyTeaserBrand);
+            jest.spyOn(s._homeTeaserTrackingObj, 'getTrackingValue')
+                .mockImplementation()
+                .mockReturnValue(anyTeaserBrand);
             const result = s._homeTeaserTrackingObj.getTrackingValue();
             expect(result).toBe(anyTeaserBrand);
         });
@@ -87,9 +88,7 @@ describe('_homeTeaserTrackingObj', () => {
 
             expect(value).toBe(window.utag.data.page_escenicId);
         });
-
     });
-
 
     describe('setEvars', () => {
         it('should assign teaser tracking values to certain eVars', function() {
@@ -97,9 +96,15 @@ describe('_homeTeaserTrackingObj', () => {
             const anyBlockValue = 'any-block-value';
             const anyPageId = '123456';
             window.utag.data.page_id = anyPageId;
-            jest.spyOn(s._homeTeaserTrackingObj, 'getTrackingValue').mockImplementation().mockReturnValue(anyTrackingValue);
-            jest.spyOn(s._homeTeaserTrackingObj, 'getBlockValue').mockImplementation().mockReturnValue(anyBlockValue);
-            jest.spyOn(s._homeTeaserTrackingObj, 'getPageId').mockImplementation().mockReturnValue(anyPageId);
+            jest.spyOn(s._homeTeaserTrackingObj, 'getTrackingValue')
+                .mockImplementation()
+                .mockReturnValue(anyTrackingValue);
+            jest.spyOn(s._homeTeaserTrackingObj, 'getBlockValue')
+                .mockImplementation()
+                .mockReturnValue(anyBlockValue);
+            jest.spyOn(s._homeTeaserTrackingObj, 'getPageId')
+                .mockImplementation()
+                .mockReturnValue(anyPageId);
             s._homeTeaserTrackingObj.setEvars(s);
             expect(s.eVar66).toBe(anyTrackingValue);
             expect(s.eVar92).toBe(anyTrackingValue + '|' + anyPageId);
@@ -111,8 +116,12 @@ describe('_homeTeaserTrackingObj', () => {
         it('should delete the hti and tb values of the utag_main cookie', function() {
             window.utag.loader.SC = jest.fn();
             s._homeTeaserTrackingObj.deleteTrackingValuesFromCookie();
-            expect(window.utag.loader.SC).toHaveBeenNthCalledWith(1, 'utag_main', { 'hti': ';exp-session' });
-            expect(window.utag.loader.SC).toHaveBeenNthCalledWith(2, 'utag_main', { 'tb': ';exp-session' });
+            expect(window.utag.loader.SC).toHaveBeenNthCalledWith(1, 'utag_main', {
+                hti: ';exp-session'
+            });
+            expect(window.utag.loader.SC).toHaveBeenNthCalledWith(2, 'utag_main', {
+                tb: ';exp-session'
+            });
         });
     });
 
@@ -122,7 +131,9 @@ describe('_homeTeaserTrackingObj', () => {
 
         beforeEach(() => {
             setEvarsMock = jest.spyOn(s._homeTeaserTrackingObj, 'setEvars').mockImplementation();
-            deleteTrackingValuesFromCookieMock = jest.spyOn(s._homeTeaserTrackingObj, 'deleteTrackingValuesFromCookie').mockImplementation();
+            deleteTrackingValuesFromCookieMock = jest
+                .spyOn(s._homeTeaserTrackingObj, 'deleteTrackingValuesFromCookie')
+                .mockImplementation();
         });
 
         it('should call this.setEvars(s) and this.deleteTrackingValuesFromCookie()', function() {

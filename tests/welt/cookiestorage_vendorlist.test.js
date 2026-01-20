@@ -3,9 +3,7 @@
  * Tests cookie reading and consentedVendors variable setting in Before Load Rules scope
  */
 
-const {
-    setCookieStorageVendorList
-} = require('../../extensions/welt/cookiestorage_vendorlist');
+const { setCookieStorageVendorList } = require('../../extensions/welt/cookiestorage_vendorlist');
 
 describe('CookieStorage VendorList', () => {
     let mockB;
@@ -36,8 +34,7 @@ describe('CookieStorage VendorList', () => {
     });
 
     it('should set consentedVendors from cmp_cv_list cookie with multiple cookies', () => {
-        document.cookie =
-            'other_cookie=value; cmp_cv_list=vendor4,vendor5; another_cookie=value2';
+        document.cookie = 'other_cookie=value; cmp_cv_list=vendor4,vendor5; another_cookie=value2';
 
         setCookieStorageVendorList(mockB, document);
 
@@ -93,9 +90,7 @@ describe('CookieStorage VendorList', () => {
             }
         };
 
-        expect(() =>
-            setCookieStorageVendorList(mockB, mockDocument)
-        ).not.toThrow();
+        expect(() => setCookieStorageVendorList(mockB, mockDocument)).not.toThrow();
         expect(console.error).toHaveBeenCalled();
         expect(mockB['consentedVendors']).toBe('');
     });

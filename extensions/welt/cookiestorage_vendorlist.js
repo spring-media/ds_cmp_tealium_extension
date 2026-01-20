@@ -22,18 +22,14 @@ function setCookieStorageVendorList(bObject, documentObj) {
     try {
         // Check if b object exists
         if (typeof bObject === 'undefined') {
-            console.warn(
-                '[TEALIUM COOKIESTORAGE VENDORLIST] b object is not defined'
-            );
+            console.warn('[TEALIUM COOKIESTORAGE VENDORLIST] b object is not defined');
             return;
         }
 
         // Check if the cookie includes 'cmp_cv_list'
         if (documentObj.cookie.includes('cmp_cv_list')) {
             // Extract the cookie value using regex
-            const match = documentObj.cookie.match(
-                '(^|;)\\s*cmp_cv_list\\s*=\\s*([^;]+)'
-            );
+            const match = documentObj.cookie.match('(^|;)\\s*cmp_cv_list\\s*=\\s*([^;]+)');
             if (match && match[2]) {
                 bObject['consentedVendors'] = match[2];
             } else {
