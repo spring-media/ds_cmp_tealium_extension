@@ -108,18 +108,17 @@ export class TealiumDeploymentPipeline {
             try {
                 const code = this.readFile(extensionConfig.file);
 
-                const minifyResult = await minify(code, {
-                    compress: true,
-                    mangle: false
-                });
+                // const minifyResult = await minify(code, {
+                //     compress: true,
+                //     mangle: false
+                // });
 
-                let extension;
-                if (!minifyResult.code) {
-                    console.warn(`Minify failed ${extensionConfig.file}. Fallback to original.`);
-                    extension = Extension.fromLocal(extensionConfig.id, extensionConfig.name, code);
-                } else {
-                    extension = Extension.fromLocal(extensionConfig.id, extensionConfig.name, minifyResult.code);
-                }
+                // //if (!minifyResult.code) {
+                //     console.warn(`Minify failed ${extensionConfig.file}. Fallback to original.`);
+                //     extension = Extension.fromLocal(extensionConfig.id, extensionConfig.name, code);
+                // } else {
+                const extension = Extension.fromLocal(extensionConfig.id, extensionConfig.name, code);
+                // }
                 extension.setFilePath(extensionConfig.file);
                 this.localExtensions.push(extension);
             } catch (error: any) {

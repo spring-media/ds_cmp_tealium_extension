@@ -17,13 +17,13 @@ import { DeploymentConfiguration } from './TealiumDeploymentPipeline';
 
     const deploymentConfig: DeploymentConfiguration = {
         extensions: [
-            { name: 'Kilkaya init k5aMeta', id: 7, file: './extensions/kilkaya/k5a_meta_init.js', scope: Scope.PreLoader, occurrence: Occurrence.RunOnce, status: Status.Active },
-            { name: 'Kilkaya build k5aMeta', id: 8, file: './extensions/kilkaya/k5a_meta_populate.js', scope: Scope.AfterLoadRules, occurrence: Occurrence.RunAlways, status: Status.Active }
+            { name: 'Kilkaya init k5aMeta', id: 623, file: './extensions/kilkaya/k5a_meta_init.js', scope: Scope.PreLoader, occurrence: Occurrence.RunOnce, status: Status.Active },
+            { name: 'Kilkaya build k5aMeta', id: 624, file: './extensions/kilkaya/k5a_meta_populate.js', scope: Scope.AfterLoadRules, occurrence: Occurrence.RunAlways, status: Status.Active }
         ]
     };
 
     try {
-        await deployment('test-solutions2', deploymentConfig, commitMessage);
+        await deployment('welt', deploymentConfig, commitMessage);
         console.log('Deployment finished');
     } catch (error: any) {
         console.error(error.message);
