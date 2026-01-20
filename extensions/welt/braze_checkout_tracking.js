@@ -73,6 +73,15 @@ const brazeCheckoutTracking = () => {
     if (consentGiven && fromCheckout && isSubscriber) {
         retryBrazeCheck();
     }
+
+    // Return object for testing purposes
+    return {
+        consentGiven,
+        fromCheckout,
+        isSubscriber,
+        trackBrazeCheckout,
+        retryBrazeCheck
+    };
 };
 
 // Export for testing

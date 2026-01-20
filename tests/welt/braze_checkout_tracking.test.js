@@ -322,13 +322,8 @@ describe('Braze Checkout Tracking', () => {
 
             const result = brazeCheckoutTracking();
 
-            // Call retryBrazeCheck 10 times
-            for (let i = 0; i < 10; i++) {
-                result.retryBrazeCheck();
-            }
-
-            // 11th call should trigger error
-            result.retryBrazeCheck();
+            // Call retryBrazeCheck with retryCount = 10 (at max)
+            result.retryBrazeCheck(10, 10);
 
             expect(mockConsole.error).toHaveBeenCalledWith(
                 'braze: Failed to load after maximum retries.'
