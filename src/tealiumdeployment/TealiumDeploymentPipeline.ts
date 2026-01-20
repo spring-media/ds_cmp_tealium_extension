@@ -12,6 +12,7 @@ export interface DeploymentPipelineConfig {
 }
 
 export type DeploymentConfiguration = {
+    profile: string,
     extensions: {
         name: string,
         id: number,
@@ -19,6 +20,7 @@ export type DeploymentConfiguration = {
         scope: Scope,
         occurrence: Occurrence,
         status: Status,
+        useMinify?: boolean
      }[]
 }
 
@@ -104,22 +106,31 @@ export class TealiumDeploymentPipeline {
         }
     }
 
+    private async readCode(filepath: string, useMinify?: boolean): Promise<string> {
+        const code = this.readFile(filepath);
+        if (useMinify !== true) {
+            return code;
+        }
+        const minifyResult = await minify(code, {
+            compress: true,
+            mangle: false
+        });
+
+        if (!minifyResult.code) {
+            throw new Error(`Minify failed ${filepath}. Fallback to original.`);
+        }
+        return minifyResult.code;
+    }
+
     async readLocalExtensions(deploymentConfiguration: DeploymentConfiguration) {
         let filesNotFound = 0;
         for (const extensionConfig of deploymentConfiguration.extensions) {
             try {
-                const code = this.readFile(extensionConfig.file);
-
-                const minifyResult = await minify(code, {
-                    compress: true,
-                    mangle: false
-                });
-
-                if (!minifyResult.code) {
-                    throw new Error(`Minify failed ${extensionConfig.file}. Fallback to original.`);
-                }
-                const extension = Extension.fromLocal(extensionConfig.id, extensionConfig.name, minifyResult.code);
-
+                const code = await this.readCode(extensionConfig.file, extensionConfig.useMinify);
+                const extension = Extension.fromLocal(extensionConfig.id, extensionConfig.name, code);
+                extension.setScope(Scope.fromString(extensionConfig.scope));
+                extension.setOccurrence(Occurrence.fromString(extensionConfig.occurrence));
+                extension.setStatus(Status.fromString(extensionConfig.status));
                 extension.setFilePath(extensionConfig.file);
                 this.localExtensions.push(extension);
             } catch (error: any) {
@@ -131,6 +142,7 @@ export class TealiumDeploymentPipeline {
         if (filesNotFound > 0) {
             throw new Error('Not all extensions found');
         }
+        return [...this.localExtensions];
     }
 
     reconcile(): Extension[] {
@@ -184,6 +196,7 @@ export class TealiumDeploymentPipeline {
             const operation = this.tealium.buildOperationPayload(ext.id, {
                 name: ext.name,
                 code: ext.code,
+                scope: ext.getScope(),
                 deploymentNotes: `GITHUB/CICD ${deploymentMessage}`,
                 extensionNotes: ext.getNotes(),
                 occurrence: ext.getOccurrence(),

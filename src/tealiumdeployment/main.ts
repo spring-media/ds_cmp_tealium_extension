@@ -1,7 +1,6 @@
 import winston from 'winston';
 import { deployment } from './deployment';
-import { Occurrence, Status, Scope } from './TealiumAPI';
-import { DeploymentConfiguration } from './TealiumDeploymentPipeline';
+import { WeltDeploymentConfig } from './deploymentConfigurations';
 
 (async () => {
 
@@ -31,15 +30,8 @@ import { DeploymentConfiguration } from './TealiumDeploymentPipeline';
         process.exit(1);
     }
 
-    const deploymentConfig: DeploymentConfiguration = {
-        extensions: [
-            { name: 'Kilkaya init k5aMeta', id: 7, file: './extensions/kilkaya/k5a_meta_init.js', scope: Scope.PreLoader, occurrence: Occurrence.RunOnce, status: Status.Active },
-            { name: 'Kilkaya build k5aMeta', id: 8, file: './extensions/kilkaya/k5a_meta_populate.js', scope: Scope.AfterLoadRules, occurrence: Occurrence.RunAlways, status: Status.Active }
-        ]
-    };
-
     try {
-        await deployment('test-solutions2', deploymentConfig, commitMessage, logger);
+        await deployment(WeltDeploymentConfig.profile, WeltDeploymentConfig, commitMessage, logger);
         logger.info('Deployment finished');
     } catch (error: any) {
         logger.error(error.message);

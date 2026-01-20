@@ -1,7 +1,10 @@
 import { TealiumDeploymentPipeline } from './TealiumDeploymentPipeline';
-import { TealiumAPI } from './TealiumAPI';
+import { Occurrence, Scope, Status, TealiumAPI } from './TealiumAPI';
 import { config } from '../config';
 import winston from 'winston';
+import * as fs from 'fs';
+
+jest.mock('fs');
 
 jest.mock('./TealiumAPI', () => {
     const actual = jest.requireActual('./TealiumAPI');
@@ -217,6 +220,55 @@ describe('TealiumDeploymentPipeline', () => {
                 name: 'test-extension',
                 type: 'Javascript Code'
             }]);
+        });
+    });
+
+    describe('getLocalExtension', () => {
+        it('applies configuration to extension', async () => {
+            const mockedFileReadSync = fs.readFileSync as jest.MockedFunction<typeof fs.readFileSync>;
+            mockedFileReadSync.mockReturnValue('(() => {const a = window.utag.getconst(); a += 1; console.log(a+""); })();');
+
+            mockTealiumAPI(
+                simulateConnectSuccess()
+            );
+
+            const testDeplyoment = { profile: 'test',
+                extensions: [{
+                    name: 'Kilkaya init k5aMeta',
+                    id: 623,
+                    file: './extensions/kilkaya/k5a_meta_init.js',
+                    scope: Scope.PreLoader, occurrence: Occurrence.RunOnce,
+                    status: Status.Inactive,
+                    useMinify: false
+                },
+                {
+                    name: 'Kilkaya build k5aMeta',
+                    id: 624,
+                    file: './extensions/kilkaya/k5a_meta_populate.js',
+                    scope: Scope.AfterLoadRules,
+                    occurrence: Occurrence.RunAlways,
+                    status: Status.Active,
+                    useMinify: true
+                }]
+            };
+
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
+            await pipeline.connect();
+            const localExtensions = await pipeline.readLocalExtensions(testDeplyoment);
+            expect(localExtensions.length).toBe(2);
+            expect(localExtensions[0]!.name).toBe('Kilkaya init k5aMeta');
+            expect(localExtensions[0]!.id).toBe(623);
+            expect(localExtensions[0]!.code).toBe('(() => {const a = window.utag.getconst(); a += 1; console.log(a+""); })();');
+            expect(localExtensions[0]!.getScope()).toBe(Scope.PreLoader);
+            expect(localExtensions[0]!.getOccurrence()).toBe(Occurrence.RunOnce);
+            expect(localExtensions[0]!.getStatus()).toBe(Status.Inactive);
+
+            expect(localExtensions[1]!.name).toBe('Kilkaya build k5aMeta');
+            expect(localExtensions[1]!.id).toBe(624);
+            expect(localExtensions[1]!.code).toBe('(()=>{const a=window.utag.getconst();a+=1,console.log(a+"")})();');
+            expect(localExtensions[1]!.getScope()).toBe(Scope.AfterLoadRules);
+            expect(localExtensions[1]!.getOccurrence()).toBe(Occurrence.RunAlways);
+            expect(localExtensions[1]!.getStatus()).toBe(Status.Active);
         });
     });
 });
