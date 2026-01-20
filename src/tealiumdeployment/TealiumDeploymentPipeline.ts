@@ -94,17 +94,13 @@ export class TealiumDeploymentPipeline {
         }).filter(extension => extension != null) || [];
     }
 
-    extensionCheck(): boolean {
-        return false;
-    }
-
     private readFile(path: string): string {
         try {
             const jsCode = fs.readFileSync(path, 'utf-8');
             return jsCode;
         } catch (error: any) {
             this.logger.error(error.message);
-            throw Error(`Read File failed. ${path}`);
+            throw Error(`Read File failed. ${path}: ${error.message}`);
         }
     }
 
@@ -168,6 +164,7 @@ export class TealiumDeploymentPipeline {
         }
 
         // Create deployment messages
+        const operations = [];
         const deploymentDate = new Date();
         for (const ext of extensions) {
             if (!ext.id) {
@@ -184,7 +181,7 @@ export class TealiumDeploymentPipeline {
             ext.setNotes(deploymentNode);
             this.logger.info(`Adding to deployment ${ext.name} - ${hash}`);
 
-            const patchPayload = this.tealium.buildUpdatePayload(ext.id, {
+            const operation = this.tealium.buildOperationPayload(ext.id, {
                 name: ext.name,
                 code: ext.code,
                 deploymentNotes: `GITHUB/CICD ${deploymentMessage}`,
@@ -193,10 +190,12 @@ export class TealiumDeploymentPipeline {
                 status: ext.getStatus()
             });
 
-            this.logger.info(`Deploying to ${this.profile} - ${new Date().toUTCString()}`);
-            const response = await this.tealium.deploy(patchPayload);
-            this.logger.info(`Extension '${ext.name}' deployed - ${new Date().toUTCString()}`, response);
+            operations.push(operation);
         }
 
+        const patchPayload = this.tealium.buildUpdatePayload(operations, `GITHUB/CICD ${deploymentMessage}`);
+        this.logger.info(`Deploying to ${this.profile} - ${new Date().toUTCString()}`);
+        const response = await this.tealium.deploy(patchPayload);
+        this.logger.info(`Extensions deployed - ${new Date().toUTCString()}`, response);
     }
 }

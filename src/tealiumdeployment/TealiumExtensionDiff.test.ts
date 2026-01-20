@@ -12,7 +12,7 @@ describe('TealiumExtensionDiff', () => {
     });
 
     let diff: TealiumExtensionDiff;
-    
+
     beforeEach(() => {
         diff = new TealiumExtensionDiff(logger);
     });

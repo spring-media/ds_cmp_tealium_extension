@@ -78,7 +78,7 @@ describe('TealiumDeploymentPipeline', () => {
             const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
             await pipeline.connect();
 
-            expect(TealiumAPI).toHaveBeenCalledWith('test-user', 'test-key');
+            expect(TealiumAPI).toHaveBeenCalledWith('test-user', 'test-key', logger);
             expect(mocked.connect).toHaveBeenCalledWith('test-account', 'test-solutions2');
         });
 

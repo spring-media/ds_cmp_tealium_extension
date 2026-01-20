@@ -42,6 +42,7 @@
   },
   "jest": {
     "testEnvironment": "@stryker-mutator/jest-runner/jest-env/jsdom",
-    "preset": "ts-jest"
+    "preset": "ts-jest",
+    "setupFilesAfterEnv": ["<rootDir>/jest.setup.js"]
   }
 }

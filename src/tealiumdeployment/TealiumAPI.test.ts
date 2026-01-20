@@ -451,13 +451,15 @@ describe('TealiumAPI', () => {
         it('creates valid update payload with extension ID', () => {
             const tealium = new TealiumAPI(fakeUser, fakeApiKey, logger);
 
-            const payload = tealium.buildUpdatePayload(123, {
+            const operation = tealium.buildOperationPayload(123, {
                 name: 'Updated Extension',
                 code: 'console.log("updated");',
                 deploymentNotes: 'just a test',
                 occurrence: Occurrence.RunAlways,
                 status: Status.Inactive
             });
+
+            const payload = tealium.buildUpdatePayload([operation], 'just a test');
 
             expect(payload.saveType).toBe('saveAs');
             expect(payload.operationList).toHaveLength(1);
@@ -472,13 +474,15 @@ describe('TealiumAPI', () => {
         it('uses default values for optional params', () => {
             const tealium = new TealiumAPI(fakeUser, fakeApiKey, logger);
 
-            const payload = tealium.buildUpdatePayload(123, {
+            const operation = tealium.buildOperationPayload(123, {
                 name: 'Updated Extension',
                 code: 'console.log("updated");',
                 deploymentNotes: 'just a test',
                 occurrence: Occurrence.RunOnce,
                 status: Status.Inactive
             });
+
+            const payload = tealium.buildUpdatePayload([operation], 'just a test');
 
             const extension = payload.operationList[0]!.value;
             expect(extension.scope).toBe('After Load Rules');
@@ -492,7 +496,7 @@ describe('TealiumAPI', () => {
         it('respects custom scope and targets', () => {
             const tealium = new TealiumAPI(fakeUser, fakeApiKey, logger);
 
-            const payload = tealium.buildUpdatePayload(123, {
+            const operation = tealium.buildOperationPayload(123, {
                 name: 'Updated Extension',
                 code: 'console.log("updated");',
                 scope: Scope.DOMReady,
@@ -501,6 +505,8 @@ describe('TealiumAPI', () => {
                 status: Status.Inactive,
                 targets: { dev: false, qa: true, prod: true }
             });
+
+            const payload = tealium.buildUpdatePayload([operation], 'just a test');
 
             const extension = payload.operationList[0]!.value;
             expect(extension.scope).toBe('DOM Ready');
@@ -514,7 +520,7 @@ describe('TealiumAPI', () => {
         it('includes custom notes and version title', () => {
             const tealium = new TealiumAPI(fakeUser, fakeApiKey, logger);
 
-            const payload = tealium.buildUpdatePayload(123, {
+            const operation = tealium.buildOperationPayload(123, {
                 name: 'Updated Extension',
                 code: 'console.log("updated");',
                 extensionNotes: 'PR #42 by user@example.com',
@@ -524,7 +530,8 @@ describe('TealiumAPI', () => {
                 status: Status.Inactive
             });
 
-            expect(payload.versionTitle).toBe('v2.0.0');
+            const payload = tealium.buildUpdatePayload([operation], 'Hotfix deployment');
+
             expect(payload.notes).toBe('Hotfix deployment');
             expect(payload.operationList[0]!.value.notes).toBe('PR #42 by user@example.com');
         });
@@ -532,13 +539,15 @@ describe('TealiumAPI', () => {
         it('generates timestamp-based version title if not provided', () => {
             const tealium = new TealiumAPI(fakeUser, fakeApiKey, logger);
 
-            const payload = tealium.buildUpdatePayload(123, {
+            const operation = tealium.buildOperationPayload(123, {
                 name: 'Updated Extension',
                 code: 'console.log("updated");',
                 deploymentNotes: 'just a test',
                 occurrence: Occurrence.RunOnce,
                 status: Status.Inactive
             });
+
+            const payload = tealium.buildUpdatePayload([operation], 'just a test');
 
             expect(payload.versionTitle).toContain('Update');
             expect(payload.versionTitle).toMatch(/\d{4}-\d{2}-\d{2}/);

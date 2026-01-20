@@ -206,38 +206,40 @@ export class TealiumAPI {
         };
     }
 
-    public buildUpdatePayload(id: number, params: ExtensionUpdateParams): TealiumDeployPayload {
+    public buildUpdatePayload(operations: TealiumOperationPayload[], deploymentNotes: string): TealiumDeployPayload {
         return {
-            versionTitle: params.versionTitle || `Update ${new Date().toISOString()}`,
+            versionTitle: `Update ${new Date().toISOString()}`,
             saveType: 'saveAs',
-            notes: params.deploymentNotes,
-            operationList: [
-                {
-                    op: 'replace',
-                    path: `/extensions/${id}`,
-                    value: {
-                        object: 'extension',
-                        name: '[A] ' + params.name,
-                        notes: params.extensionNotes || '',
-                        type: 'Javascript Code',
-                        scope: params.scope || Scope.AfterLoadRules,
-                        occurrence: params.occurrence,
-                        status: params.status,
-                        selectedTargets: params.targets || {
-                            dev: true,
-                            qa: true,
-                            prod: true
-                        },
-                        conditions: [[]],
-                        configuration: [
-                            {
-                                name: 'code',
-                                value: params.code
-                            }
-                        ]
+            notes: deploymentNotes,
+            operationList: operations
+        };
+    }
+
+    public buildOperationPayload(id: number, params: ExtensionUpdateParams): TealiumOperationPayload {
+        return {
+            op: 'replace',
+            path: `/extensions/${id}`,
+            value: {
+                object: 'extension',
+                name: '[A] ' + params.name,
+                notes: params.extensionNotes || '',
+                type: 'Javascript Code',
+                scope: params.scope || Scope.AfterLoadRules,
+                occurrence: params.occurrence,
+                status: params.status,
+                selectedTargets: params.targets || {
+                    dev: true,
+                    qa: true,
+                    prod: true
+                },
+                conditions: [[]],
+                configuration: [
+                    {
+                        name: 'code',
+                        value: params.code
                     }
-                }
-            ]
+                ]
+            }
         };
     }
 }
@@ -293,13 +295,15 @@ export interface TealiumProfilePayload {
     extensions: TealiumExtension[] | null
 }
 
+export interface TealiumOperationPayload {
+    op: 'add' | 'replace' | 'remove';
+    path: string;
+    value?: any;
+}
+
 export interface TealiumDeployPayload {
     versionTitle: string;
     saveType: 'saveAs' | 'save';
     notes: string;
-    operationList: Array<{
-        op: 'add' | 'replace' | 'remove';
-        path: string;
-        value?: any;
-    }>;
+    operationList: Array<TealiumOperationPayload>;
 }
