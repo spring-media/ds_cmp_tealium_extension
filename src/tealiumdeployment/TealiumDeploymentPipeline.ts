@@ -132,6 +132,7 @@ export class TealiumDeploymentPipeline {
                 extension.setScope(Scope.fromString(extensionConfig.scope));
                 extension.setOccurrence(Occurrence.fromString(extensionConfig.occurrence));
                 extension.setStatus(Status.fromString(extensionConfig.status));
+
                 extension.setFilePath(extensionConfig.file);
                 extension.setNotes(extensionConfig.notes ?? '');
                 this.localExtensions.push(extension);
