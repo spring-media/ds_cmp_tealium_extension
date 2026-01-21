@@ -10,7 +10,8 @@ export const WeltDeploymentConfig: DeploymentConfiguration = {
             file: './extensions/kilkaya/k5a_meta_init.js',
             scope: Scope.PreLoader, occurrence: Occurrence.RunOnce,
             status: Status.Active,
-            useMinify: false
+            useMinify: false,
+            notes: 'A test note'
         },
         {
             name: 'Kilkaya build k5aMeta',

@@ -552,5 +552,35 @@ describe('TealiumAPI', () => {
             expect(payload.versionTitle).toContain('Update');
             expect(payload.versionTitle).toMatch(/\d{4}-\d{2}-\d{2}/);
         });
+
+        it('cannot set occurence for preload scope', () => {
+            const tealium = new TealiumAPI(fakeUser, fakeApiKey, logger);
+
+            const operation = tealium.buildOperationPayload(123, {
+                name: 'Updated Extension',
+                code: 'console.log("updated");',
+                deploymentNotes: 'just a test',
+                scope: Scope.PreLoader,
+                occurrence: Occurrence.RunOnce,
+                status: Status.Inactive
+            });
+
+            expect(operation.value.occurrence).toBeUndefined();
+        });
+
+        it('cannot set conditions for pre loader scope', () => {
+            const tealium = new TealiumAPI(fakeUser, fakeApiKey, logger);
+
+            const operation = tealium.buildOperationPayload(123, {
+                name: 'Updated Extension',
+                code: 'console.log("updated");',
+                deploymentNotes: 'just a test',
+                scope: Scope.PreLoader,
+                occurrence: Occurrence.RunOnce,
+                status: Status.Inactive
+            });
+
+            expect(operation.value.conditions).toBeUndefined();
+        });
     });
 });

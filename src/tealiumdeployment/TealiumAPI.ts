@@ -216,7 +216,7 @@ export class TealiumAPI {
     }
 
     public buildOperationPayload(id: number, params: ExtensionUpdateParams): TealiumOperationPayload {
-        return {
+        const operation: TealiumOperationPayload = {
             op: 'replace',
             path: `/extensions/${id}`,
             value: {
@@ -241,6 +241,13 @@ export class TealiumAPI {
                 ]
             }
         };
+
+        if (params.scope === Scope.PreLoader) {
+            delete (operation.value as any).occurrence;
+            delete (operation.value as any).conditions;
+        }
+
+        return operation;
     }
 }
 

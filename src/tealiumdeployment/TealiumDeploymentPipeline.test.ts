@@ -221,6 +221,84 @@ describe('TealiumDeploymentPipeline', () => {
                 type: 'Javascript Code'
             }]);
         });
+
+        it('filters out extensions with unsupported extensionType', async () => {
+            const extensions = [
+                {
+                    id: 123,
+                    name: 'supported-extension',
+                    notes: 'test',
+                    extensionType: 'Javascript Code',
+                    occurrence: 'Run Always',
+                    scope: 'After Load Rules',
+                    status: 'active',
+                    configuration: { code: 'console.log("Supported");' }
+                },
+                {
+                    id: 124,
+                    name: 'unsupported-extension',
+                    notes: 'test',
+                    extensionType: 'Unsupported Type',
+                    occurrence: 'Run Always',
+                    scope: 'After Load Rules',
+                    status: 'active',
+                    configuration: { code: 'console.log("Unsupported");' }
+                }
+            ];
+            const mockProfile = { account: 'test-account', profile: 'test-solutions2', extensions, version: 123 };
+            mockTealiumAPI(
+                simulateConnectSuccess(),
+                simulateGetProfileSuccess(mockProfile)
+            );
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
+            await pipeline.connect();
+            await pipeline.fetchProfile();
+
+            const result = pipeline.getRemoteExtensions();
+
+            expect(result).toHaveLength(1);
+            expect(result[0]!.name).toBe('supported-extension');
+            expect(result[0]!.type).toBe('Javascript Code');
+        });
+
+        it('filters out extensions with unsupported scope', async () => {
+            const extensions = [
+                {
+                    id: 125,
+                    name: 'supported-scope-extension',
+                    notes: 'test',
+                    extensionType: 'Javascript Code',
+                    occurrence: 'Run Always',
+                    scope: 'DOM Ready',
+                    status: 'active',
+                    configuration: { code: 'console.log("Supported scope");' }
+                },
+                {
+                    id: 126,
+                    name: 'unsupported-scope-extension',
+                    notes: 'test',
+                    extensionType: 'Javascript Code',
+                    occurrence: 'Run Always',
+                    scope: 'Unsupported Scope',
+                    status: 'active',
+                    configuration: { code: 'console.log("Unsupported scope");' }
+                }
+            ];
+            const mockProfile = { account: 'test-account', profile: 'test-solutions2', extensions, version: 123 };
+            mockTealiumAPI(
+                simulateConnectSuccess(),
+                simulateGetProfileSuccess(mockProfile)
+            );
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
+            await pipeline.connect();
+            await pipeline.fetchProfile();
+
+            const result = pipeline.getRemoteExtensions();
+
+            expect(result).toHaveLength(1);
+            expect(result[0]!.name).toBe('supported-scope-extension');
+            expect(result[0]!.getScope()).toBe('DOM Ready');
+        });
     });
 
     describe('getLocalExtension', () => {

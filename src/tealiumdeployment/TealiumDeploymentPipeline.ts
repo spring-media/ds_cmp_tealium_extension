@@ -20,6 +20,7 @@ export type DeploymentConfiguration = {
         scope: Scope,
         occurrence: Occurrence,
         status: Status,
+        notes?: string,
         useMinify?: boolean
      }[]
 }
@@ -132,6 +133,7 @@ export class TealiumDeploymentPipeline {
                 extension.setOccurrence(Occurrence.fromString(extensionConfig.occurrence));
                 extension.setStatus(Status.fromString(extensionConfig.status));
                 extension.setFilePath(extensionConfig.file);
+                extension.setNotes(extensionConfig.notes ?? '');
                 this.localExtensions.push(extension);
             } catch (error: any) {
                 this.logger.error(error);
@@ -184,12 +186,16 @@ export class TealiumDeploymentPipeline {
             }
 
             const hash = ext.getHash();
-            const deploymentNode =
+            let deploymentNode =
             '⚠️ DEPLOYED BY GITHUB-CI/CD - DO NOT CHANGE MANUALLY ⚠️\n' +
             `Commit: ${deploymentMessage}\n` +
             `Src: ${ext.getFilepath()}\n` +
             `Deployed at:${deploymentDate.toUTCString()}\n` +
             `Hash: ${hash}`;
+
+            if (ext.getNotes()) {
+                deploymentNode += '\n\n' + ext.getNotes();
+            }
             ext.setNotes(deploymentNode);
             this.logger.info(`Adding to deployment ${ext.name} - ${hash}`);
 
