@@ -131,7 +131,7 @@ describe('TealiumAPI', () => {
         it('throws if login fails', async() => {
             simulateConntectionUnauthorized();
             const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey, logger);
-            expect(async () => {
+            expect(async() => {
                 await tealium.connect(accountName, profileName);
             }).rejects.toThrow('Auth failed. Unauthorized');
         });
@@ -229,8 +229,8 @@ describe('TealiumAPI', () => {
     });
 
     describe('getExtensions', () => {
-        it('throws if not connected', async () => {
-            expect(async () => {
+        it('throws if not connected', async() => {
+            expect(async() => {
                 const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey, logger);
                 await tealium.getProfile();
             }).rejects.toThrow('TealiumAPI not connected.');
@@ -279,8 +279,8 @@ describe('TealiumAPI', () => {
     });
 
     describe('deploy', () => {
-        it('throws if not connected', async () => {
-            expect(async () => {
+        it('throws if not connected', async() => {
+            expect(async() => {
                 const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey, logger);
                 const fakePayLoad = { thisIs: 'justAFake' };
                 await tealium.deploy(fakePayLoad);

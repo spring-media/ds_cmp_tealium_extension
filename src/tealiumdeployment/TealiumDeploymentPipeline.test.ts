@@ -105,7 +105,7 @@ describe('TealiumDeploymentPipeline', () => {
     });
 
     describe('fetchProfile', () => {
-        it('throws error when not connected', async () => {
+        it('throws error when not connected', async() => {
             const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
 
             await expect(pipeline.fetchProfile()).rejects.toThrow('Not connected');
@@ -222,7 +222,7 @@ describe('TealiumDeploymentPipeline', () => {
             }]);
         });
 
-        it('filters out extensions with unsupported extensionType', async () => {
+        it('filters out extensions with unsupported extensionType', async() => {
             const extensions = [
                 {
                     id: 123,
@@ -261,7 +261,7 @@ describe('TealiumDeploymentPipeline', () => {
             expect(result[0]!.type).toBe('Javascript Code');
         });
 
-        it('filters out extensions with unsupported scope', async () => {
+        it('filters out extensions with unsupported scope', async() => {
             const extensions = [
                 {
                     id: 125,
@@ -302,7 +302,7 @@ describe('TealiumDeploymentPipeline', () => {
     });
 
     describe('getLocalExtension', () => {
-        it('applies configuration to extension', async () => {
+        it('applies configuration to extension', async() => {
             const mockedFileReadSync = fs.readFileSync as jest.MockedFunction<typeof fs.readFileSync>;
             mockedFileReadSync.mockReturnValue('(() => {const a = window.utag.getconst(); a += 1; console.log(a+""); })();');
 

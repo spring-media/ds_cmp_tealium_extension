@@ -199,7 +199,7 @@ export default [
             'sort-vars': 'off',
             'keyword-spacing': 'error',
             'space-before-blocks': ['error', 'always'],
-            'space-before-function-paren': ['error', 'never'], // Aligned with Prettier
+            'space-before-function-paren': ['warn', 'never'], // Aligned with Prettier
             // 'space-in-brackets' wurde in neueren ESLint-Versionen entfernt,
             // ersetzt durch 'object-curly-spacing' und 'array-bracket-spacing'
             // wir setzen es auf 'off', um Konflikte zu vermeiden.
@@ -217,7 +217,7 @@ export default [
         files: ['**/*.js', '**/*.ts'],
         rules: {
             // Re-enable space-before-function-paren as Prettier doesn't handle this
-            'space-before-function-paren': ['error', 'never']
+            'space-before-function-paren': ['warn', 'never']
         }
     },
     // Disable max-len for test files
