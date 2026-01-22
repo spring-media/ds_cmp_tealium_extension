@@ -117,6 +117,7 @@ git checkout 6aa516b^ -- backup/
 Or view specific backup files:
 ```sh
 git show 6aa516b^:backup/[path-to-file]
+```
 
 ## Extensions
 
