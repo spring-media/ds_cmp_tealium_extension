@@ -19,7 +19,7 @@ describe('Dutyfarm Iframe Tracking Extension', () => {
 
         // Mock setInterval to capture callback
         intervalId = 123;
-        mockSetInterval = jest.fn((callback) => {
+        mockSetInterval = jest.fn(callback => {
             intervalCallback = callback;
             return intervalId;
         });
@@ -47,12 +47,7 @@ describe('Dutyfarm Iframe Tracking Extension', () => {
         it('should start monitoring when URL contains "sudoku"', () => {
             mockDocument.URL = 'https://example.com/spiele/sudoku.html';
 
-            const result = monitorIframeClick(
-                mockDocument,
-                mockUtag,
-                mockSetInterval,
-                mockClearInterval
-            );
+            const result = monitorIframeClick(mockDocument, mockUtag, mockSetInterval, mockClearInterval);
 
             expect(result).toBe(intervalId);
             expect(mockSetInterval).toHaveBeenCalledWith(expect.any(Function), 100);
@@ -61,12 +56,7 @@ describe('Dutyfarm Iframe Tracking Extension', () => {
         it('should start monitoring when URL contains "Sudoku" (case insensitive)', () => {
             mockDocument.URL = 'https://example.com/spiele/Sudoku.html';
 
-            const result = monitorIframeClick(
-                mockDocument,
-                mockUtag,
-                mockSetInterval,
-                mockClearInterval
-            );
+            const result = monitorIframeClick(mockDocument, mockUtag, mockSetInterval, mockClearInterval);
 
             expect(result).toBe(intervalId);
             expect(mockSetInterval).toHaveBeenCalledWith(expect.any(Function), 100);
@@ -75,12 +65,7 @@ describe('Dutyfarm Iframe Tracking Extension', () => {
         it('should start monitoring when URL contains "kreuzwortraetsel"', () => {
             mockDocument.URL = 'https://example.com/spiele/kreuzwortraetsel.html';
 
-            const result = monitorIframeClick(
-                mockDocument,
-                mockUtag,
-                mockSetInterval,
-                mockClearInterval
-            );
+            const result = monitorIframeClick(mockDocument, mockUtag, mockSetInterval, mockClearInterval);
 
             expect(result).toBe(intervalId);
             expect(mockSetInterval).toHaveBeenCalledWith(expect.any(Function), 100);
@@ -89,12 +74,7 @@ describe('Dutyfarm Iframe Tracking Extension', () => {
         it('should start monitoring when URL contains "Kreuzwortraetsel" (case insensitive)', () => {
             mockDocument.URL = 'https://example.com/spiele/Kreuzwortraetsel.html';
 
-            const result = monitorIframeClick(
-                mockDocument,
-                mockUtag,
-                mockSetInterval,
-                mockClearInterval
-            );
+            const result = monitorIframeClick(mockDocument, mockUtag, mockSetInterval, mockClearInterval);
 
             expect(result).toBe(intervalId);
             expect(mockSetInterval).toHaveBeenCalledWith(expect.any(Function), 100);
@@ -103,12 +83,7 @@ describe('Dutyfarm Iframe Tracking Extension', () => {
         it('should not start monitoring when URL does not contain required keywords', () => {
             mockDocument.URL = 'https://example.com/article.html';
 
-            const result = monitorIframeClick(
-                mockDocument,
-                mockUtag,
-                mockSetInterval,
-                mockClearInterval
-            );
+            const result = monitorIframeClick(mockDocument, mockUtag, mockSetInterval, mockClearInterval);
 
             expect(result).toBe(null);
             expect(mockSetInterval).not.toHaveBeenCalled();
@@ -117,12 +92,7 @@ describe('Dutyfarm Iframe Tracking Extension', () => {
         it('should not start monitoring on other game pages', () => {
             mockDocument.URL = 'https://example.com/spiele/solitaire.html';
 
-            const result = monitorIframeClick(
-                mockDocument,
-                mockUtag,
-                mockSetInterval,
-                mockClearInterval
-            );
+            const result = monitorIframeClick(mockDocument, mockUtag, mockSetInterval, mockClearInterval);
 
             expect(result).toBe(null);
             expect(mockSetInterval).not.toHaveBeenCalled();
@@ -278,13 +248,8 @@ describe('Dutyfarm Iframe Tracking Extension', () => {
                 }
             };
 
-            expect(() =>
-                monitorIframeClick(mockDocument, mockUtag, mockSetInterval, mockClearInterval)
-            ).not.toThrow();
-            expect(console.error).toHaveBeenCalledWith(
-                '[TEALIUM DUTYFARM IFRAME TRACKING] Error:',
-                expect.any(Error)
-            );
+            expect(() => monitorIframeClick(mockDocument, mockUtag, mockSetInterval, mockClearInterval)).not.toThrow();
+            expect(console.error).toHaveBeenCalledWith('[TEALIUM DUTYFARM IFRAME TRACKING] Error:', expect.any(Error));
         });
 
         it('should handle case-sensitive tagName comparison', () => {
@@ -308,12 +273,7 @@ describe('Dutyfarm Iframe Tracking Extension', () => {
         it('should handle empty URL', () => {
             mockDocument.URL = '';
 
-            const result = monitorIframeClick(
-                mockDocument,
-                mockUtag,
-                mockSetInterval,
-                mockClearInterval
-            );
+            const result = monitorIframeClick(mockDocument, mockUtag, mockSetInterval, mockClearInterval);
 
             expect(result).toBe(null);
             expect(mockSetInterval).not.toHaveBeenCalled();

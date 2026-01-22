@@ -73,7 +73,9 @@
                 }
 
                 // Add conversion-specific data
-                if (pageData.conversion) params.push('cv=' + pageData.conversion);
+                if (pageData.conversion) {
+                    params.push('cv=' + pageData.conversion);
+                }
                 if (
                     pageData.cntTag &&
                     Array.isArray(pageData.cntTag) &&

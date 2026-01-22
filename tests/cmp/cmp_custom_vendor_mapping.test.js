@@ -148,11 +148,7 @@ describe('CMP Custom Vendor Mapping', () => {
             window.location.hostname = 'club.bild.de';
             cmpCustomVendorMapping.processUtag();
 
-            expect(window.utag.view).toHaveBeenCalledWith(
-                window.utag.data,
-                null,
-                global.domainTagValues.adobeClub.bild
-            );
+            expect(window.utag.view).toHaveBeenCalledWith(window.utag.data, null, global.domainTagValues.adobeClub.bild);
         });
 
         test('calls utag.view for piano vendor on bild.de', () => {

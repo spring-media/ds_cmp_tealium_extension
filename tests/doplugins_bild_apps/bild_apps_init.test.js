@@ -29,8 +29,7 @@ describe('s._bildAppsInit()', () => {
     it('should set eVar94 to the iPhone screen size', () => {
         const anyScreenSize = 111;
         window.screen.width = window.screen.height = anyScreenSize;
-        window.navigator.userAgent =
-            'Mozilla/5.0 (iPhone; CPU iPhone OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148';
+        window.navigator.userAgent = 'Mozilla/5.0 (iPhone; CPU iPhone OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148';
 
         s._bildAppsInit(s);
 

@@ -34,10 +34,7 @@ describe('Tracking Ready Event', () => {
         });
 
         expect(() => dispatchTrackingReady(document)).not.toThrow();
-        expect(console.error).toHaveBeenCalledWith(
-            '[TEALIUM TRACKING READY] Error:',
-            expect.any(Error)
-        );
+        expect(console.error).toHaveBeenCalledWith('[TEALIUM TRACKING READY] Error:', expect.any(Error));
     });
 
     it('should handle missing document.body gracefully', () => {

@@ -62,54 +62,42 @@ describe('Braze Checkout Tracking', () => {
     describe('Consent checking', () => {
         it('should detect consent when braze is in cmp_cv_list cookie', () => {
             document.cookie = 'cmp_cv_list=vendor1,braze,vendor2;';
-            const consentGiven = /(^|;)\s*cmp_cv_list\s*=\s*[^;]*braze[^;]*(;|$)/.test(
-                document.cookie
-            );
+            const consentGiven = /(^|;)\s*cmp_cv_list\s*=\s*[^;]*braze[^;]*(;|$)/.test(document.cookie);
 
             expect(consentGiven).toBe(true);
         });
 
         it('should detect consent when braze is at start of cookie', () => {
             document.cookie = 'cmp_cv_list=braze,vendor1;';
-            const consentGiven = /(^|;)\s*cmp_cv_list\s*=\s*[^;]*braze[^;]*(;|$)/.test(
-                document.cookie
-            );
+            const consentGiven = /(^|;)\s*cmp_cv_list\s*=\s*[^;]*braze[^;]*(;|$)/.test(document.cookie);
 
             expect(consentGiven).toBe(true);
         });
 
         it('should detect consent when braze is at end of cookie', () => {
             document.cookie = 'cmp_cv_list=vendor1,braze;';
-            const consentGiven = /(^|;)\s*cmp_cv_list\s*=\s*[^;]*braze[^;]*(;|$)/.test(
-                document.cookie
-            );
+            const consentGiven = /(^|;)\s*cmp_cv_list\s*=\s*[^;]*braze[^;]*(;|$)/.test(document.cookie);
 
             expect(consentGiven).toBe(true);
         });
 
         it('should not detect consent when braze is not in cookie', () => {
             document.cookie = 'cmp_cv_list=vendor1,vendor2;';
-            const consentGiven = /(^|;)\s*cmp_cv_list\s*=\s*[^;]*braze[^;]*(;|$)/.test(
-                document.cookie
-            );
+            const consentGiven = /(^|;)\s*cmp_cv_list\s*=\s*[^;]*braze[^;]*(;|$)/.test(document.cookie);
 
             expect(consentGiven).toBe(false);
         });
 
         it('should not detect consent when cmp_cv_list cookie is missing', () => {
             document.cookie = 'other_cookie=value;';
-            const consentGiven = /(^|;)\s*cmp_cv_list\s*=\s*[^;]*braze[^;]*(;|$)/.test(
-                document.cookie
-            );
+            const consentGiven = /(^|;)\s*cmp_cv_list\s*=\s*[^;]*braze[^;]*(;|$)/.test(document.cookie);
 
             expect(consentGiven).toBe(false);
         });
 
         it('should handle empty cookie', () => {
             document.cookie = '';
-            const consentGiven = /(^|;)\s*cmp_cv_list\s*=\s*[^;]*braze[^;]*(;|$)/.test(
-                document.cookie
-            );
+            const consentGiven = /(^|;)\s*cmp_cv_list\s*=\s*[^;]*braze[^;]*(;|$)/.test(document.cookie);
 
             expect(consentGiven).toBe(false);
         });
@@ -119,9 +107,7 @@ describe('Braze Checkout Tracking', () => {
         it('should detect checkout from PayPal referrer', () => {
             utag.data['dom.referrer'] = 'https://www.paypal.com/checkout';
 
-            const fromCheckout =
-                typeof utag.data['dom.referrer'] != 'undefined' &&
-                utag.data['dom.referrer'].toString().indexOf('paypal.com') > -1;
+            const fromCheckout = typeof utag.data['dom.referrer'] != 'undefined' && utag.data['dom.referrer'].toString().indexOf('paypal.com') > -1;
 
             expect(fromCheckout).toBe(true);
         });
@@ -129,9 +115,7 @@ describe('Braze Checkout Tracking', () => {
         it('should detect checkout from checkout-v2 in dom.referrer', () => {
             utag.data['dom.referrer'] = 'https://checkout-v2.prod.ps.welt.de/success';
 
-            const fromCheckout =
-                typeof utag.data['dom.referrer'] != 'undefined' &&
-                utag.data['dom.referrer'].toString().indexOf('checkout-v2.prod.ps.welt.de') > -1;
+            const fromCheckout = typeof utag.data['dom.referrer'] != 'undefined' && utag.data['dom.referrer'].toString().indexOf('checkout-v2.prod.ps.welt.de') > -1;
 
             expect(fromCheckout).toBe(true);
         });
@@ -140,9 +124,7 @@ describe('Braze Checkout Tracking', () => {
             utag.data['dom.referrer'] = undefined;
             utag.data['qp.t_ref'] = 'https://checkout-v2.prod.ps.welt.de/';
 
-            const fromCheckout =
-                typeof utag.data['qp.t_ref'] != 'undefined' &&
-                utag.data['qp.t_ref'].toString().indexOf('checkout-v2.prod.ps.welt.de') > -1;
+            const fromCheckout = typeof utag.data['qp.t_ref'] != 'undefined' && utag.data['qp.t_ref'].toString().indexOf('checkout-v2.prod.ps.welt.de') > -1;
 
             expect(fromCheckout).toBe(true);
         });
@@ -151,12 +133,7 @@ describe('Braze Checkout Tracking', () => {
             utag.data['dom.referrer'] = 'https://www.google.com';
             utag.data['qp.t_ref'] = undefined;
 
-            const fromCheckout =
-                (typeof utag.data['dom.referrer'] != 'undefined' &&
-                    utag.data['dom.referrer'].toString().indexOf('paypal.com') > -1) ||
-                (typeof utag.data['dom.referrer'] != 'undefined' &&
-                    utag.data['dom.referrer'].toString().indexOf('checkout-v2.prod.ps.welt.de') >
-                        -1);
+            const fromCheckout = (typeof utag.data['dom.referrer'] != 'undefined' && utag.data['dom.referrer'].toString().indexOf('paypal.com') > -1) || (typeof utag.data['dom.referrer'] != 'undefined' && utag.data['dom.referrer'].toString().indexOf('checkout-v2.prod.ps.welt.de') > -1);
 
             expect(fromCheckout).toBe(false);
         });
@@ -165,9 +142,7 @@ describe('Braze Checkout Tracking', () => {
             utag.data['dom.referrer'] = undefined;
             utag.data['qp.t_ref'] = undefined;
 
-            const fromCheckout =
-                typeof utag.data['dom.referrer'] != 'undefined' &&
-                utag.data['dom.referrer'].toString().indexOf('paypal.com') > -1;
+            const fromCheckout = typeof utag.data['dom.referrer'] != 'undefined' && utag.data['dom.referrer'].toString().indexOf('paypal.com') > -1;
 
             expect(fromCheckout).toBe(false);
         });
@@ -325,9 +300,7 @@ describe('Braze Checkout Tracking', () => {
             // Call retryBrazeCheck with retryCount = 10 (at max)
             result.retryBrazeCheck(10, 10);
 
-            expect(mockConsole.error).toHaveBeenCalledWith(
-                'braze: Failed to load after maximum retries.'
-            );
+            expect(mockConsole.error).toHaveBeenCalledWith('braze: Failed to load after maximum retries.');
         });
 
         it('should use 100ms delay for retries', () => {

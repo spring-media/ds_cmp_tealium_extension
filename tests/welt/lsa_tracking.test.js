@@ -168,9 +168,7 @@ describe('LSA (Lesen Sie Auch) Tracking', () => {
 
             expect(() => processLsaTracking('view', eventData)).not.toThrow();
             expect(mockConsole.error).toHaveBeenCalled();
-            expect(mockConsole.error.mock.calls[0][0]).toContain(
-                '[LSA TRACKING] Error resetting LSA:'
-            );
+            expect(mockConsole.error.mock.calls[0][0]).toContain('[LSA TRACKING] Error resetting LSA:');
         });
 
         it('should handle missing utag object gracefully', () => {

@@ -18,11 +18,7 @@ describe('s._utils', () => {
 
     describe('isDocTypeArticle', () => {
         it('should return true if any of the possible document types is article', () => {
-            const PROPERTY_NAMES = [
-                'mapped_page_document_type',
-                'mapped_page_doc_type',
-                'mapped_document_type'
-            ];
+            const PROPERTY_NAMES = ['mapped_page_document_type', 'mapped_page_doc_type', 'mapped_document_type'];
 
             PROPERTY_NAMES.forEach(propertyName => {
                 window.utag.data[propertyName] = 'article';

@@ -27,8 +27,7 @@ describe('Tealium Environment Switcher WELT', () => {
                 if (tagName === 'script') {
                     return [
                         {
-                            outerHTML:
-                                '<script src="//ast.welt.de/v1/welt/main/prod/utag.js"></script>'
+                            outerHTML: '<script src="//ast.welt.de/v1/welt/main/prod/utag.js"></script>'
                         }
                     ];
                 }
@@ -340,12 +339,9 @@ describe('Tealium Environment Switcher WELT', () => {
 
         it('should format clear cookie correctly', () => {
             const profile = 'main';
-            const clearCookie =
-                'utag_env_' + '_' + profile + '=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT';
+            const clearCookie = 'utag_env_' + '_' + profile + '=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT';
 
-            expect(clearCookie).toBe(
-                'utag_env__main=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT'
-            );
+            expect(clearCookie).toBe('utag_env__main=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT');
         });
     });
 
@@ -360,14 +356,10 @@ describe('Tealium Environment Switcher WELT', () => {
 
         it('should log profile change', () => {
             if (window.console) {
-                window.console.log(
-                    "tealium profile = 'newprofile'' and will change after page refresh"
-                );
+                window.console.log("tealium profile = 'newprofile'' and will change after page refresh");
             }
 
-            expect(mockConsole.log).toHaveBeenCalledWith(
-                "tealium profile = 'newprofile'' and will change after page refresh"
-            );
+            expect(mockConsole.log).toHaveBeenCalledWith("tealium profile = 'newprofile'' and will change after page refresh");
         });
 
         it('should log cachebuster status', () => {
@@ -380,14 +372,10 @@ describe('Tealium Environment Switcher WELT', () => {
 
         it('should log clear action', () => {
             if (window.console) {
-                window.console.log(
-                    'Custom Tealium environment CLEARED. Default environment for this page will be used.'
-                );
+                window.console.log('Custom Tealium environment CLEARED. Default environment for this page will be used.');
             }
 
-            expect(mockConsole.log).toHaveBeenCalledWith(
-                'Custom Tealium environment CLEARED. Default environment for this page will be used.'
-            );
+            expect(mockConsole.log).toHaveBeenCalledWith('Custom Tealium environment CLEARED. Default environment for this page will be used.');
         });
     });
 
@@ -488,10 +476,7 @@ describe('Tealium Environment Switcher WELT', () => {
 
         it('should not execute without query string parameters', () => {
             location.search = '';
-            const hasParams =
-                location.search &&
-                (location.search.indexOf('tealium_env=') > -1 ||
-                    location.search.indexOf('tealium_profile') > -1);
+            const hasParams = location.search && (location.search.indexOf('tealium_env=') > -1 || location.search.indexOf('tealium_profile') > -1);
 
             expect(hasParams).toBeFalsy();
         });
@@ -500,11 +485,7 @@ describe('Tealium Environment Switcher WELT', () => {
             location.search = '?tealium_env=dev';
             window.utag_condload_env = true;
 
-            const shouldExecute =
-                location.search &&
-                (location.search.indexOf('tealium_env=') > -1 ||
-                    location.search.indexOf('tealium_profile') > -1) &&
-                !window.utag_condload_env;
+            const shouldExecute = location.search && (location.search.indexOf('tealium_env=') > -1 || location.search.indexOf('tealium_profile') > -1) && !window.utag_condload_env;
 
             expect(shouldExecute).toBe(false);
         });
@@ -513,11 +494,7 @@ describe('Tealium Environment Switcher WELT', () => {
             location.search = '?tealium_env=dev';
             window.utag_condload_env = undefined;
 
-            const shouldExecute =
-                location.search &&
-                (location.search.indexOf('tealium_env=') > -1 ||
-                    location.search.indexOf('tealium_profile') > -1) &&
-                !window.utag_condload_env;
+            const shouldExecute = location.search && (location.search.indexOf('tealium_env=') > -1 || location.search.indexOf('tealium_profile') > -1) && !window.utag_condload_env;
 
             expect(shouldExecute).toBe(true);
         });

@@ -121,8 +121,12 @@
         var cookies = document.cookie.split(';');
         for (var i = 0; i < cookies.length; i++) {
             var c = cookies[i];
-            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-            if (c.indexOf(cName) === 0) return c.substring(cName.length, c.length);
+            while (c.charAt(0) === ' ') {
+                c = c.substring(1, c.length);
+            }
+            if (c.indexOf(cName) === 0) {
+                return c.substring(cName.length, c.length);
+            }
         }
         return null;
     }

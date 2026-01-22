@@ -4,7 +4,9 @@
  * Media tracking interceptor that adds event40 for first 'pos' event per media_id
  */
 const mediaTracking = function(alias, eventData) {
-    if (!window.utag || !utag.link) return;
+    if (!window.utag || !utag.link) {
+        return;
+    }
 
     if (!eventData || !eventData.event_data || !eventData.event_data.media_id) {
         return;

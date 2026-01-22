@@ -235,10 +235,7 @@ describe('k5a_meta_conversion', () => {
 
         require('../../extensions/kilkaya/k5a_meta_conversion.js');
 
-        expect(console.error).toHaveBeenCalledWith(
-            expect.stringContaining('[K5A CONVERSION] Error:'),
-            expect.any(Error)
-        );
+        expect(console.error).toHaveBeenCalledWith(expect.stringContaining('[K5A CONVERSION] Error:'), expect.any(Error));
 
         // Clean up the read-only property
         delete window.k5aMeta;

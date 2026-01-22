@@ -59,9 +59,7 @@ describe('Revolver Type Tracking', () => {
             processRevolverTypeTracking();
 
             expect(mockUtag.data.event_data['revolver_type']).toBe('revolverload_auto');
-            expect(mockConsole.log).toHaveBeenCalledWith(
-                "utag.data.event_data['revolver_type'] set event_revolverType revolverload_auto"
-            );
+            expect(mockConsole.log).toHaveBeenCalledWith("utag.data.event_data['revolver_type'] set event_revolverType revolverload_auto");
         });
 
         it('should not set revolver_type when media_placement is not EndScreen', () => {
@@ -126,9 +124,7 @@ describe('Revolver Type Tracking', () => {
             processRevolverTypeTracking();
 
             expect(mockUtag.data.event_data['revolver_type']).toBe('');
-            expect(mockConsole.log).toHaveBeenCalledWith(
-                "utag.data.event_data['revolver_type'] delete "
-            );
+            expect(mockConsole.log).toHaveBeenCalledWith("utag.data.event_data['revolver_type'] delete ");
         });
 
         it('should not attempt to clear revolver_type when it does not exist', () => {

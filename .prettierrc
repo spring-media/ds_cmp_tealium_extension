@@ -7,11 +7,18 @@
     "useTabs": false,
     "arrowParens": "avoid",
     "endOfLine": "lf",
+    "bracketSameLine": true,
     "overrides": [
         {
             "files": "*.js",
             "options": {
                 "parser": "babel"
+            }
+        },
+        {
+            "files": "*.test.js",
+            "options": {
+                "printWidth": 9999
             }
         }
     ]

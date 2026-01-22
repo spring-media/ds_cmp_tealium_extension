@@ -5,12 +5,7 @@
 
 /* global utag */
 
-const {
-    generateRandomId,
-    setGlobalEventId,
-    assignRandomIdToUtagData,
-    initRandomId
-} = require('../../extensions/welt/random_id');
+const { generateRandomId, setGlobalEventId, assignRandomIdToUtagData, initRandomId } = require('../../extensions/welt/random_id');
 
 describe('Random ID Generator', () => {
     beforeEach(() => {

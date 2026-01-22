@@ -5,11 +5,7 @@
 
 /* global utag */
 
-const {
-    initPeterId,
-    STORAGE_KEY,
-    DEFAULT_PETER_ID
-} = require('../../extensions/welt/peter_id_localstorage');
+const { initPeterId, STORAGE_KEY, DEFAULT_PETER_ID } = require('../../extensions/welt/peter_id_localstorage');
 
 describe('Peter ID LocalStorage', () => {
     beforeEach(() => {

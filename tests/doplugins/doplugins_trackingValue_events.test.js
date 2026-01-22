@@ -14,13 +14,9 @@ describe('_setTrackingValueEvents (URL Parameter like cid)', () => {
         // Provide a fresh copy of the s-object for each test.
         s = { ...sObject };
         addEventMock = jest.spyOn(s._eventsObj, 'addEvent').mockImplementation();
-        getTrackingValueMock = jest
-            .spyOn(s._articleViewTypeObj, 'getTrackingValue')
-            .mockImplementation();
+        getTrackingValueMock = jest.spyOn(s._articleViewTypeObj, 'getTrackingValue').mockImplementation();
         jest.spyOn(s._utils, 'isArticlePage').mockImplementation().mockReturnValue(true);
-        isSocialTrackingParameterMock = jest
-            .spyOn(s._articleViewTypeObj, 'isTrackingValueOrganicSocial')
-            .mockImplementation();
+        isSocialTrackingParameterMock = jest.spyOn(s._articleViewTypeObj, 'isTrackingValueOrganicSocial').mockImplementation();
     });
 
     afterEach(() => {

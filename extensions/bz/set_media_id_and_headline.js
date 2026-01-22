@@ -35,7 +35,9 @@
     if (!mediaID) {
         let cid = utag.data.contentID;
 
-        if (!cid || typeof cid !== 'string') return;
+        if (!cid || typeof cid !== 'string') {
+            return;
+        }
 
         cid = cid.trim().replace(/^\"+|\"+$/g, '');
 
@@ -45,7 +47,9 @@
             mediaID = cid.split('/')[3] || '';
         }
 
-        if (!mediaID) return;
+        if (!mediaID) {
+            return;
+        }
     }
 
     // --- 4) MEDIA HEADLINE for non-Xymatic: only if present on the event object ---

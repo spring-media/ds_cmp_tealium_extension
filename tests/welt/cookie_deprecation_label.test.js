@@ -135,9 +135,7 @@ describe('Cookie Deprecation Label Tracking', () => {
             await new Promise(resolve => setTimeout(resolve, 10));
 
             expect(mockConsole.error).toHaveBeenCalled();
-            expect(mockConsole.error.mock.calls[0][0]).toContain(
-                '[COOKIE DEPRECATION LABEL] Error:'
-            );
+            expect(mockConsole.error.mock.calls[0][0]).toContain('[COOKIE DEPRECATION LABEL] Error:');
         });
 
         it('should handle missing utag object gracefully', async() => {
@@ -184,10 +182,7 @@ describe('Cookie Deprecation Label Tracking', () => {
 
             const mockNav = {
                 cookieDeprecationLabel: {
-                    getValue: jest
-                        .fn()
-                        .mockResolvedValueOnce(mockLabel1)
-                        .mockResolvedValueOnce(mockLabel2)
+                    getValue: jest.fn().mockResolvedValueOnce(mockLabel1).mockResolvedValueOnce(mockLabel2)
                 }
             };
 

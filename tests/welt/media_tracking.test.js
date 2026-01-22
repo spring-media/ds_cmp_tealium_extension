@@ -137,10 +137,7 @@ describe('Media Tracking', () => {
             utag.link(eventData);
 
             expect(window._customEventRegistry.firedFlags['event40_media_123']).toBe(true);
-            expect(console.log).toHaveBeenCalledWith(
-                'Adding event40 to pos event for media_id:',
-                'media_123'
-            );
+            expect(console.log).toHaveBeenCalledWith('Adding event40 to pos event for media_id:', 'media_123');
             expect(originalUtagLink).toHaveBeenCalledWith(
                 expect.objectContaining({
                     event_action: 'pos',

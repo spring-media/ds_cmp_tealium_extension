@@ -17,10 +17,7 @@ describe('s.doPlugins()', () => {
         s = { ...sObject };
         setEventsPropertyMock = jest.spyOn(s._eventsObj, 'setEventsProperty');
         setScrollDepthPropertiesMock = jest.spyOn(s._scrollDepthObj, 'setScrollDepthProperties');
-        firstPageViewMock = jest
-            .spyOn(s._utils, 'isFirstPageView')
-            .mockImplementation()
-            .mockReturnValue(false);
+        firstPageViewMock = jest.spyOn(s._utils, 'isFirstPageView').mockImplementation().mockReturnValue(false);
         setKameleoonTrackingMock = jest.spyOn(s, '_setKameleoonTracking').mockImplementation();
     });
 

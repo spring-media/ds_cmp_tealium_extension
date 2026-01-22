@@ -175,14 +175,10 @@ describe('_scrollDepthObj', () => {
             jest.spyOn(s._utils, 'getDocType').mockReturnValue('test_docType');
             jest.spyOn(s._scrollDepthObj, 'getPageId').mockReturnValue('test_pageId');
             jest.spyOn(s._scrollDepthObj, 'getPageChannel').mockReturnValue('test_pageChannel');
-            jest.spyOn(s._scrollDepthObj, 'getPagePremiumStatus').mockReturnValue(
-                'test_is_page_premium_yes : '
-            );
+            jest.spyOn(s._scrollDepthObj, 'getPagePremiumStatus').mockReturnValue('test_is_page_premium_yes : ');
             s._scrollDepthObj.setPreviousPage(s);
 
-            expect(s._prevPage).toBe(
-                'test_docType : test_is_page_premium_yes : test_pageId : test_pageChannel'
-            );
+            expect(s._prevPage).toBe('test_docType : test_is_page_premium_yes : test_pageId : test_pageChannel');
         });
     });
 

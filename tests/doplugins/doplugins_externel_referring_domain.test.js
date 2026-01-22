@@ -15,12 +15,8 @@ describe('External referring domains', () => {
         addEventMock = jest.spyOn(s._eventsObj, 'addEvent').mockImplementation();
         getReferrerMock = jest.spyOn(s._utils, 'getReferrer').mockImplementation();
         jest.spyOn(s._utils, 'isArticlePage').mockImplementation().mockReturnValue(true);
-        jest.spyOn(s._articleViewTypeObj, 'isOtherTrackingValue')
-            .mockImplementation()
-            .mockReturnValue(false);
-        jest.spyOn(s._articleViewTypeObj, 'isFromInternal')
-            .mockImplementation()
-            .mockReturnValue(false);
+        jest.spyOn(s._articleViewTypeObj, 'isOtherTrackingValue').mockImplementation().mockReturnValue(false);
+        jest.spyOn(s._articleViewTypeObj, 'isFromInternal').mockImplementation().mockReturnValue(false);
     });
 
     afterEach(() => {

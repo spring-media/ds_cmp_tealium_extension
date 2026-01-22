@@ -80,13 +80,7 @@ describe('s_utils', () => {
         });
 
         it('should return the document type from various sources', () => {
-            const PROPERTY_NAMES = [
-                'page_type',
-                'page_document_type',
-                'adobe_docType',
-                'ad_page_document_type',
-                'page_mapped_doctype_for_pagename'
-            ];
+            const PROPERTY_NAMES = ['page_type', 'page_document_type', 'adobe_docType', 'ad_page_document_type', 'page_mapped_doctype_for_pagename'];
 
             PROPERTY_NAMES.forEach(propertyName => {
                 window.utag.data[propertyName] = 'any-' + propertyName;
@@ -133,19 +127,7 @@ describe('s_utils', () => {
         });
 
         it('should be true when page is of type article', () => {
-            const ARTICLE_TYPES = [
-                'article',
-                'artikel',
-                'live',
-                'gallery',
-                'video',
-                'post',
-                'media',
-                'sportdaten',
-                'live-sport',
-                'channelizer-kaufberater',
-                'scrubby'
-            ];
+            const ARTICLE_TYPES = ['article', 'artikel', 'live', 'gallery', 'video', 'post', 'media', 'sportdaten', 'live-sport', 'channelizer-kaufberater', 'scrubby'];
 
             ARTICLE_TYPES.forEach(articleType => {
                 getDocTypeMock.mockReturnValue(articleType);

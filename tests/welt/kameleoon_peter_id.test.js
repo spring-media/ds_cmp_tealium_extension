@@ -133,10 +133,7 @@ describe('Kameleoon Peter ID Extension', () => {
         };
 
         expect(() => setKameleoonPeterId(errorWindow, mockUtag)).not.toThrow();
-        expect(console.error).toHaveBeenCalledWith(
-            '[TEALIUM KAMELEOON PETER ID] Error:',
-            expect.any(Error)
-        );
+        expect(console.error).toHaveBeenCalledWith('[TEALIUM KAMELEOON PETER ID] Error:', expect.any(Error));
     });
 
     it('should work with valid numeric peterId', () => {

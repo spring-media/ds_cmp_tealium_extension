@@ -242,11 +242,7 @@ describe('mehr_zum_thema - Mehr zum Thema Link Tracking', () => {
             });
 
             // Assert: First parameter should always be 'utag_main'
-            expect(mockUtagLoader.SC).toHaveBeenCalledWith(
-                'utag_main',
-                expect.any(Object),
-                'session'
-            );
+            expect(mockUtagLoader.SC).toHaveBeenCalledWith('utag_main', expect.any(Object), 'session');
         });
 
         it('should always use "session" as the storage type', () => {
@@ -260,11 +256,7 @@ describe('mehr_zum_thema - Mehr zum Thema Link Tracking', () => {
             });
 
             // Assert: Third parameter should always be 'session'
-            expect(mockUtagLoader.SC).toHaveBeenCalledWith(
-                'utag_main',
-                expect.any(Object),
-                'session'
-            );
+            expect(mockUtagLoader.SC).toHaveBeenCalledWith('utag_main', expect.any(Object), 'session');
         });
     });
 });

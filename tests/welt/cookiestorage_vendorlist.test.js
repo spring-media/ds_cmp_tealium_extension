@@ -76,9 +76,7 @@ describe('CookieStorage VendorList', () => {
     it('should warn and return early when b object is undefined', () => {
         setCookieStorageVendorList(undefined, document);
 
-        expect(console.warn).toHaveBeenCalledWith(
-            '[TEALIUM COOKIESTORAGE VENDORLIST] b object is not defined'
-        );
+        expect(console.warn).toHaveBeenCalledWith('[TEALIUM COOKIESTORAGE VENDORLIST] b object is not defined');
     });
 
     it('should handle errors gracefully and set empty string', () => {

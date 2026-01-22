@@ -219,5 +219,12 @@ export default [
             // Re-enable space-before-function-paren as Prettier doesn't handle this
             'space-before-function-paren': ['error', 'never']
         }
+    },
+    // Disable max-len for test files
+    {
+        files: ['**/*.test.js'],
+        rules: {
+            'max-len': 'off'
+        }
     }
 ];

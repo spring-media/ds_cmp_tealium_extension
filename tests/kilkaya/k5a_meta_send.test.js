@@ -70,8 +70,7 @@ describe('k5a_meta_send', () => {
             ];
 
             testCases.forEach(b => {
-                const shouldRun =
-                    String(b.event_name) === 'checkout' && String(b.event_action) === 'success';
+                const shouldRun = String(b.event_name) === 'checkout' && String(b.event_action) === 'success';
                 expect(shouldRun).toBe(false);
             });
         });
@@ -90,10 +89,7 @@ describe('k5a_meta_send', () => {
             };
             localStorage.setItem('k5a_send_log', JSON.stringify(log));
 
-            expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
-                'k5a_send_log',
-                expect.stringContaining(message)
-            );
+            expect(mockLocalStorage.setItem).toHaveBeenCalledWith('k5a_send_log', expect.stringContaining(message));
 
             const savedLog = JSON.parse(localStorage.getItem('k5a_send_log'));
             expect(savedLog.message).toBe(message);
@@ -479,11 +475,7 @@ describe('k5a_meta_send', () => {
             window.kilkaya.logger.fireNow('pageView', logData, 'conversion');
 
             expect(mockKilkaya.pageData.getDefaultData).toHaveBeenCalled();
-            expect(mockKilkaya.logger.fireNow).toHaveBeenCalledWith(
-                'pageView',
-                expect.objectContaining({ cs: 1 }),
-                'conversion'
-            );
+            expect(mockKilkaya.logger.fireNow).toHaveBeenCalledWith('pageView', expect.objectContaining({ cs: 1 }), 'conversion');
         });
 
         it('should use image pixel as last resort', () => {

@@ -1,7 +1,4 @@
-const {
-    getCookie,
-    getDomainTagValue
-} = require('../../extensions/brandstory/brandstory_scrolldepth');
+const { getCookie, getDomainTagValue } = require('../../extensions/brandstory/brandstory_scrolldepth');
 
 beforeEach(() => {
     // Mock document.cookie
