@@ -36,7 +36,6 @@ window.onload = function setMilestones() {
 
     milestones.forEach(milestone => {
         setTimeout(() => {
-
             // full utag.data
             const eventData = { ...window.utag.data };
 
@@ -46,7 +45,6 @@ window.onload = function setMilestones() {
 
             // Send utag.link event with data and tag number
             window.utag.link(eventData, null, tagNumber);
-
         }, milestone.time);
     });
 };

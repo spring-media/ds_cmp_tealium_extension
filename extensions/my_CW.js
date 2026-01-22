@@ -1,5 +1,4 @@
 const _myCW = {
-
     // Add a leading zero to numbers less than 10
     leadingZero: function(num) {
         return num < 10 ? '0' + num : num.toString();
@@ -31,11 +30,17 @@ const _myCW = {
         const firstDOW = this.getDayOfWeek(currentDate, 1); // Monday
         const lastDOW = this.getDayOfWeek(currentDate, 7); // Sunday
 
-        return 'CW ' +
-            this.getWeek(currentDate) + ' ' +
-            firstDOW.getFullYear() + '.' +
-            this.getMonthDay(firstDOW) + ' - ' +
-            this.getMonthDay(lastDOW) + '.';
+        return (
+            'CW ' +
+            this.getWeek(currentDate) +
+            ' ' +
+            firstDOW.getFullYear() +
+            '.' +
+            this.getMonthDay(firstDOW) +
+            ' - ' +
+            this.getMonthDay(lastDOW) +
+            '.'
+        );
     },
 
     // Initialize and set the myCW property on window.utag.data

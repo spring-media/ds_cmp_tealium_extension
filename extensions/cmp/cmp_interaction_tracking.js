@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 (function() {
-
     const CONSENT_MESSAGE_EVENTS = {
         11: 'cm_accept_all',
         12: 'cm_show_privacy_manager',
@@ -34,12 +33,12 @@
         'bild-techbook.de': 68,
         'bild-travelbook.de': 34,
         'bild-offer': 24,
-        'bild': 386,
+        bild: 386,
         'bz-bz-berlin.de': 6,
         'cbo-computerbild.de': 25,
         'shop.bild': 181,
         'spring-premium': 135,
-        'welt': 155,
+        welt: 155,
         'welt-shop.welt.de': 28
     };
 
@@ -72,9 +71,7 @@
 
     function getABTestingProperties() {
         if (cmp_ab_id || cmp_ab_desc || cmp_ab_bucket) {
-            return cmp_ab_id + ' '
-                + cmp_ab_desc + ' '
-                + cmp_ab_bucket;
+            return cmp_ab_id + ' ' + cmp_ab_desc + ' ' + cmp_ab_bucket;
         } else {
             return null;
         }
@@ -91,7 +88,9 @@
     // Alternative way of setting AB-Testing properties through global variable.
     function initABTestingProperties() {
         if (window.__cmp_interaction_data && window.__cmp_interaction_data.onMessageReceiveData) {
-            exportedFunctions.setABTestingProperties(window.__cmp_interaction_data.onMessageReceiveData);
+            exportedFunctions.setABTestingProperties(
+                window.__cmp_interaction_data.onMessageReceiveData
+            );
         }
     }
 
@@ -102,11 +101,19 @@
     // User can jump over different subdomains with different layers
     // Cookie utag_main_cmp_after support to differ between them
     function isAfterCMP() {
-        const hasCMPAfterCookie = window.utag.data['cp.utag_main_cmp_after'] ? (window.utag.data['cp.utag_main_cmp_after'] === 'true') : false;
-        const hasCMPAfterCookie_subdomain = window.utag.data['cp.utag_main_cmp_after_sub'] ? (window.utag.data['cp.utag_main_cmp_after_sub'] === 'true') : false;
+        const hasCMPAfterCookie = window.utag.data['cp.utag_main_cmp_after']
+            ? window.utag.data['cp.utag_main_cmp_after'] === 'true'
+            : false;
+        const hasCMPAfterCookie_subdomain = window.utag.data['cp.utag_main_cmp_after_sub']
+            ? window.utag.data['cp.utag_main_cmp_after_sub'] === 'true'
+            : false;
         const defaultVendorList = 'adobe_cmp,';
-        const hasVendors = !!window.utag.data['cp.cmp_cv_list'] && window.utag.data['cp.cmp_cv_list'] !== defaultVendorList;
-        const hasVendors_subdomain = !!window.utag.data['cp.cm_cv_list'] && window.utag.data['cp.cm_cv_list'] !== defaultVendorList;
+        const hasVendors =
+            !!window.utag.data['cp.cmp_cv_list'] &&
+            window.utag.data['cp.cmp_cv_list'] !== defaultVendorList;
+        const hasVendors_subdomain =
+            !!window.utag.data['cp.cm_cv_list'] &&
+            window.utag.data['cp.cm_cv_list'] !== defaultVendorList;
 
         // sportbild.bild.de needs special treatment because of sub-domain issues.
         // subdomains sometimes use different layer
@@ -121,7 +128,10 @@
             'digital.welt.de'
         ];
         // sportbild.bild.de, shop.bild.de, offerpages needs special treatment because of sub-domain issues/different layers.
-        if ((window.utag.data['dom.domain']) && subdomains.indexOf(window.utag.data['dom.domain']) !== -1) {
+        if (
+            window.utag.data['dom.domain'] &&
+            subdomains.indexOf(window.utag.data['dom.domain']) !== -1
+        ) {
             // hasCMPAfterCookie cannot be used here because it shares cookie with base domain
             return hasCMPAfterCookie_subdomain || hasVendors_subdomain;
         } else {
@@ -130,7 +140,8 @@
     }
 
     function hasUserAlreadyConsentGranted() {
-        const consentedVendors = window.utag.data['cp.cmp_cv_list'] || window.utag.data['cp.cm_cv_list'] || '';
+        const consentedVendors =
+            window.utag.data['cp.cmp_cv_list'] || window.utag.data['cp.cm_cv_list'] || '';
         const hasUserGivenConsent = consentedVendors.includes('adobe_analytics');
         const isAfterCMP = exportedFunctions.isAfterCMP();
 
@@ -140,10 +151,10 @@
     function sendLinkEvent(label) {
         if (!exportedFunctions.hasUserAlreadyConsentGranted() && exportedFunctions.notPurUser()) {
             window.utag.link({
-                'event_name': 'cmp_interactions',
-                'event_action': 'click',
-                'event_label': label,
-                'event_data': getABTestingProperties()
+                event_name: 'cmp_interactions',
+                event_action: 'click',
+                event_label: label,
+                event_data: getABTestingProperties()
             });
         }
     }
@@ -170,11 +181,15 @@
             window.utag.data['cmp_events'] = CONSENT_MESSAGE_EVENTS[eventType];
             exportedFunctions.sendLinkEvent(CONSENT_MESSAGE_EVENTS[eventType]);
 
-            if (eventType === 11 && window.utag.data['dom.domain'] && window.utag.data['dom.domain'].includes('sportbild.bild.de')) {
-                window.utag.loader.SC('utag_main', { 'cmp_after_sub': 'true' });
+            if (
+                eventType === 11 &&
+                window.utag.data['dom.domain'] &&
+                window.utag.data['dom.domain'].includes('sportbild.bild.de')
+            ) {
+                window.utag.loader.SC('utag_main', { cmp_after_sub: 'true' });
                 window.utag.data['cp.utag_main_cmp_after_sub'] = 'true';
             } else if (eventType === 11) {
-                window.utag.loader.SC('utag_main', { 'cmp_after': 'true' });
+                window.utag.loader.SC('utag_main', { cmp_after: 'true' });
                 window.utag.data['cp.utag_main_cmp_after'] = 'true';
             }
 
@@ -189,11 +204,15 @@
             window.utag.data['cmp_events'] = PRIVACY_MANAGER_EVENTS[eventType];
             exportedFunctions.sendLinkEvent(PRIVACY_MANAGER_EVENTS[eventType]);
             // Set cookie for first page view tracking.
-            if ((eventType === 1 || eventType === 11) && window.utag.data['dom.domain'] && window.utag.data['dom.domain'].includes('sportbild.bild.de')) {
-                window.utag.loader.SC('utag_main', { 'cmp_after_sub': 'true' });
+            if (
+                (eventType === 1 || eventType === 11) &&
+                window.utag.data['dom.domain'] &&
+                window.utag.data['dom.domain'].includes('sportbild.bild.de')
+            ) {
+                window.utag.loader.SC('utag_main', { cmp_after_sub: 'true' });
                 window.utag.data['cp.utag_main_cmp_after_sub'] = 'true';
             } else if (eventType === 1 || eventType === 11) {
-                window.utag.loader.SC('utag_main', { 'cmp_after': 'true' });
+                window.utag.loader.SC('utag_main', { cmp_after: 'true' });
                 window.utag.data['cp.utag_main_cmp_after'] = 'true';
             }
             if (eventType === 1 || eventType === 11) {
@@ -223,7 +242,10 @@
     // user is PUR subscriber, we are not allowed to track
     // if WHOAMI then user_hasPurSubscription2, if Aubi/Cobi/BOOKs Cookie _cpauthhint
     function notPurUser() {
-        if (window.utag.data.user_hasPurSubscription2 === 'true' || window.utag.data['cp._cpauthhint'] === '1') {
+        if (
+            window.utag.data.user_hasPurSubscription2 === 'true' ||
+            window.utag.data['cp._cpauthhint'] === '1'
+        ) {
             return false;
         }
         return true;
@@ -279,5 +301,4 @@
         // Call entry point in browser context.
         init();
     }
-
 })();

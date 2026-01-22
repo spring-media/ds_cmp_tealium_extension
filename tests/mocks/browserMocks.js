@@ -2,7 +2,7 @@ function localStorageMock() {
     let store = {};
 
     return {
-        getItem: jest.fn().mockImplementation((key) => {
+        getItem: jest.fn().mockImplementation(key => {
             return store[key] || null;
         }),
         setItem: jest.fn().mockImplementation((key, value) => {
@@ -15,14 +15,14 @@ function localStorageMock() {
 }
 
 /**
-   * Erstellt ein konfigurierbares window-Mock-Objekt für Tests.
-   * @param {Object} options
-   * @param {string} options.hostname - Der Hostname (z.B. 'www.welt.de')
-   * @param {string[]} options.candidates - Kandidaten-Segment-IDs (z.B. ['8n4...'])
-   * @param {string[]} options.shortIds - Optionale shortIds für jedes Segment
-   * @param {boolean} options.simulateTimeout - Wenn true, wird getSegments nie aufgerufen
-   * @returns {object} Mock für window
-   */
+ * Erstellt ein konfigurierbares window-Mock-Objekt für Tests.
+ * @param {Object} options
+ * @param {string} options.hostname - Der Hostname (z.B. 'www.welt.de')
+ * @param {string[]} options.candidates - Kandidaten-Segment-IDs (z.B. ['8n4...'])
+ * @param {string[]} options.shortIds - Optionale shortIds für jedes Segment
+ * @param {boolean} options.simulateTimeout - Wenn true, wird getSegments nie aufgerufen
+ * @returns {object} Mock für window
+ */
 function createWindowMock({
     hostname = 'localhost',
     candidates = [],
@@ -60,7 +60,9 @@ function createWindowMock({
         cX: {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             getSegments: jest.fn((params, _) => {
-                if (simulateTimeout) { return; }
+                if (simulateTimeout) {
+                    return;
+                }
                 setTimeout(() => {
                     const data = candidates.map((id, i) => ({
                         id,

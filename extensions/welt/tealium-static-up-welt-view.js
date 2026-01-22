@@ -1,4 +1,8 @@
-const tealiumStaticUpWeltView = function () {
+/**
+ * Tealium Configuration Override for static.up.welt.de
+ * Enables view tracking on static.up.welt.de domain
+ */
+const tealiumStaticUpWeltView = function() {
     if (location.hostname !== 'static.up.welt.de') {
         return;
     }

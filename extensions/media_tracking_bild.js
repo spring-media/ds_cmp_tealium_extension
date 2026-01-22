@@ -91,7 +91,8 @@
         if (
             newData.event_action === 'on_playing' &&
             newData.playback_initiated_by === 'autoplay-muted' &&
-            (newData.page_id === 'wDmWJyqHFeqhJHmeuqfN' || newData.page_id === '22P2NufXQ03Ny17A6vwi')
+            (newData.page_id === 'wDmWJyqHFeqhJHmeuqfN' ||
+                newData.page_id === '22P2NufXQ03Ny17A6vwi')
         ) {
             window.utag.data.is_media_event = 'false';
         }
@@ -116,10 +117,10 @@
         // Media start was initiated 'from home' == Video was clicked on the homepage
         if (
             document.referrer === 'https://www.bild.de/' ||
-            document.referrer === 'https://m.bild.de/' &&
-            typeof window.s._ppvPreviousPage !== 'undefined' &&
-            window.s._ppvPreviousPage.indexOf('home') === 0 &&
-            newData.event_action === 'on_playing'
+            (document.referrer === 'https://m.bild.de/' &&
+                typeof window.s._ppvPreviousPage !== 'undefined' &&
+                window.s._ppvPreviousPage.indexOf('home') === 0 &&
+                newData.event_action === 'on_playing')
         ) {
             newData.video_start_from_home = 'true';
         }

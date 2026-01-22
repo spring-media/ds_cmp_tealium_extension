@@ -1,7 +1,12 @@
 /* global utag, arguments */
 
-const mediaTracking = function (alias, eventData) {
-    if (!window.utag || !utag.link) return;
+/**
+ * Media tracking interceptor that adds event40 for first 'pos' event per media_id
+ */
+const mediaTracking = function(alias, eventData) {
+    if (!window.utag || !utag.link) {
+        return;
+    }
 
     if (!eventData || !eventData.event_data || !eventData.event_data.media_id) {
         return;
@@ -16,7 +21,7 @@ const mediaTracking = function (alias, eventData) {
     if (!window._customEventRegistry.interceptorInstalled) {
         window._customEventRegistry.originalUtagLink = utag.link;
 
-        utag.link = function (data) {
+        utag.link = function(data) {
             try {
                 const modifiedData = { ...data };
 

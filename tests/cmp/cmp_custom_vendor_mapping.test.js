@@ -1,13 +1,12 @@
 const cmpCustomVendorMapping = require('../../extensions/cmp/cmp_custom_vendor_mapping');
 
-
 describe('CMP Custom Vendor Mapping', () => {
     beforeEach(() => {
         // Mock document.cookie
         let cookies = '';
         Object.defineProperty(document, 'cookie', {
             get: () => cookies,
-            set: (value) => {
+            set: value => {
                 const parts = value.split(';');
                 const cookieName = parts[0].split('=')[0].trim();
                 if (parts.some(part => part.trim().startsWith('expires='))) {
@@ -81,13 +80,13 @@ describe('CMP Custom Vendor Mapping', () => {
     });
 
     describe('fetchConsentData', () => {
-        test('resolves with data when __tcfapi succeeds', async () => {
-            const mockData = { grants: { '92': { vendorGrant: true } } };
+        test('resolves with data when __tcfapi succeeds', async() => {
+            const mockData = { grants: { 92: { vendorGrant: true } } };
             window.__tcfapi.mockImplementation((cmd, ver, cb) => cb(mockData, true));
             await expect(cmpCustomVendorMapping.fetchConsentData()).resolves.toEqual(mockData);
         });
 
-        test('rejects when __tcfapi fails', async () => {
+        test('rejects when __tcfapi fails', async() => {
             window.__tcfapi.mockImplementation((cmd, ver, cb) => cb(null, false));
             await expect(cmpCustomVendorMapping.fetchConsentData()).rejects.toBeUndefined();
         });
@@ -106,7 +105,6 @@ describe('CMP Custom Vendor Mapping', () => {
     });
 
     describe.only('processUtag', () => {
-
         beforeEach(() => {
             // Reset the __utag_view_fired flag before each test
             window.__utag_view_fired = false;
@@ -149,8 +147,8 @@ describe('CMP Custom Vendor Mapping', () => {
             document.cookie = 'cmp_cv_list=adobe_analytics;secure';
             window.location.hostname = 'club.bild.de';
             cmpCustomVendorMapping.processUtag();
-            // eslint-disable-next-line no-undef
-            expect(window.utag.view).toHaveBeenCalledWith(window.utag.data, null, domainTagValues.adobeClub.bild);
+
+            expect(window.utag.view).toHaveBeenCalledWith(window.utag.data, null, global.domainTagValues.adobeClub.bild);
         });
 
         test('calls utag.view for piano vendor on bild.de', () => {

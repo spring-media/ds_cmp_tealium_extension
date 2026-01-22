@@ -2,7 +2,6 @@
 var isLoggingEnabled = true;
 var whoamiCookieName = 'asinfo';
 
-
 // remove logs if no issues , messages not needed
 function _whoamiSnipped_log(message) {
     if (isLoggingEnabled && console !== undefined && console.log !== undefined) {
@@ -10,8 +9,7 @@ function _whoamiSnipped_log(message) {
     }
 }
 
-
-! function() {
+!(function () {
     function _whoamiSnipped_getAsInfo() {
         try {
             var cookieString = document.cookie;
@@ -50,11 +48,17 @@ function _whoamiSnipped_log(message) {
         if (matchingDomain) {
             const config = subscriptionsConfig[matchingDomain];
 
-            const isPur = config.pur.some(element => window.utag.data.user_entitlements2.includes(element));
-            window.utag.data.user_hasPurSubscription2 = window.utag.data.user_entitlements2 && isPur ? 'true' : 'false';
+            const isPur = config.pur.some(element =>
+                window.utag.data.user_entitlements2.includes(element)
+            );
+            window.utag.data.user_hasPurSubscription2 =
+                window.utag.data.user_entitlements2 && isPur ? 'true' : 'false';
 
-            const isSubscriber = config.subscriptions.some(element => window.utag.data.user_entitlements2.includes(element));
-            window.utag.data.user_hasPlusSubscription2 = window.utag.data.user_entitlements2 && isSubscriber ? 'true' : 'false';
+            const isSubscriber = config.subscriptions.some(element =>
+                window.utag.data.user_entitlements2.includes(element)
+            );
+            window.utag.data.user_hasPlusSubscription2 =
+                window.utag.data.user_entitlements2 && isSubscriber ? 'true' : 'false';
         }
     }
 
@@ -66,7 +70,6 @@ function _whoamiSnipped_log(message) {
         window.utag.data.user_hasPlusSubscription2 = 'false';
         window.utag.data.user_jaId2 = 'false';
         window.utag.data.user_entitlements2 = 'false';
-
     }
 
     if (isLoggedIn) {
@@ -77,6 +80,5 @@ function _whoamiSnipped_log(message) {
         window.utag.data.user_entitlements2 = unsafePurchaseData.entitlements || [];
 
         updateUserSubscriptionsStatus(window.location.host);
-       
     }
-}();
+})();

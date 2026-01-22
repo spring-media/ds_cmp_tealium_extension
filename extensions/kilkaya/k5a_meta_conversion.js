@@ -22,7 +22,6 @@
         if (b.offer_id) {
             window.k5aMeta.cntTag.push('offer_' + String(b.offer_id));
         }
-
     } catch (e) {
         // Silent error handling - conversion tracking should not break page functionality
         console.error('[K5A CONVERSION] Error:', e);

@@ -4,9 +4,9 @@ const isAdobeConsentGiven = existingCookie.includes('adobe_analytics');
 
 if (
     isAdobeConsentGiven &&
-    (window.utag.data.user_hasPurSubscription?.includes('false')
-        || !window.utag.data['cp._cpauthhint']
-        || !(window.utag.data['cp._cpauthhint']?.includes('1')))
+    (window.utag.data.user_hasPurSubscription?.includes('false') ||
+        !window.utag.data['cp._cpauthhint'] ||
+        !window.utag.data['cp._cpauthhint']?.includes('1'))
 ) {
     window.addEventListener('load', () => {
         sessionStorage.removeItem('bounce_over_5_sec');
@@ -20,8 +20,12 @@ if (
 
     window.addEventListener('unload', () => {
         const bounceOver5Sec = sessionStorage.getItem('bounce_over_5_sec') === 'true';
-        const isArticle = window.utag.data.page_type?.includes('article') || window.utag.data.page_document_type?.includes('article');
-        const isMedia = window.utag.data.page_type?.includes('video') || window.utag.data.page_document_type?.includes('media');
+        const isArticle =
+            window.utag.data.page_type?.includes('article') ||
+            window.utag.data.page_document_type?.includes('article');
+        const isMedia =
+            window.utag.data.page_type?.includes('video') ||
+            window.utag.data.page_document_type?.includes('media');
 
         if (bounceOver5Sec) {
             if (isArticle || isMedia) {

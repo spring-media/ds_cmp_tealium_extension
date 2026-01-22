@@ -6,8 +6,7 @@ describe('_bildPageNameObj', () => {
     beforeEach(() => {
         // Create a fresh window mock for each test.
         const windowMock = createWindowMock();
-        jest.spyOn(global, 'window', 'get')
-            .mockImplementation(() => (windowMock));
+        jest.spyOn(global, 'window', 'get').mockImplementation(() => windowMock);
 
         // Provide a fresh copy of the s-object for each test.
         s = { ...sObject };
@@ -38,7 +37,6 @@ describe('_bildPageNameObj', () => {
             const returnValue = s._bildPageNameObj.isHome();
             expect(returnValue).toBe(true);
         });
-
     });
 
     describe('isLive', () => {
@@ -77,7 +75,6 @@ describe('_bildPageNameObj', () => {
             const returnValue = s._bildPageNameObj.isSportDatencenterTyp(s);
             expect(returnValue).toBe('sportdaten');
         });
-
     });
 
     describe('isAdWall', () => {
@@ -173,7 +170,6 @@ describe('_bildPageNameObj', () => {
 
             expect(window.utag.data.page_document_type).toBe('any-doctype');
             expect(s.pageName).toBe('any-doctype : ' + '12345678');
-
         });
 
         it('should set relevant data if isHome is true', () => {

@@ -1,7 +1,7 @@
 import { Logger } from 'winston';
 import { DeploymentConfiguration, TealiumDeploymentPipeline } from './TealiumDeploymentPipeline';
 
-export const deployment = async (
+export const deployment = async(
     profile: string,
     deploymentConfiguration: DeploymentConfiguration,
     deploymentMessage: string,

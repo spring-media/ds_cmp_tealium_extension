@@ -7,8 +7,7 @@ describe('s._weltAppsInit()', () => {
     beforeEach(() => {
         // Create a fresh window mock for each test.
         const windowMock = createWindowMock();
-        jest.spyOn(global, 'window', 'get')
-            .mockImplementation(() => (windowMock));
+        jest.spyOn(global, 'window', 'get').mockImplementation(() => windowMock);
 
         // Provide a fresh copy of the s-object for each test.
         s = { ...sObject };
@@ -45,5 +44,4 @@ describe('s._weltAppsInit()', () => {
 
         expect(setPageAgeForCheckoutMock).toHaveBeenCalled();
     });
-
 });

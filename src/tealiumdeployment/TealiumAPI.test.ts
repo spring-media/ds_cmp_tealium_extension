@@ -128,15 +128,15 @@ describe('TealiumAPI', () => {
             expect(tealium.isConnected()).toBe(false);
         });
 
-        it('throws if login fails', async () => {
+        it('throws if login fails', async() => {
             simulateConntectionUnauthorized();
             const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey, logger);
-            expect(async () => {
+            expect(async() => {
                 await tealium.connect(accountName, profileName);
             }).rejects.toThrow('Auth failed. Unauthorized');
         });
 
-        it('is connected if connection is successful (200)', async () => {
+        it('is connected if connection is successful (200)', async() => {
             simulateConnectionSucessful();
             const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey, logger);
             const response = await tealium.connect(accountName, profileName);
@@ -144,7 +144,7 @@ describe('TealiumAPI', () => {
             expect(tealium.isConnected()).toBe(true);
         });
 
-        it('is not connected if connection is only accepted (201)', async () => {
+        it('is not connected if connection is only accepted (201)', async() => {
             /* Accepted (201) used to not trigger exception within axios */
             simulateConnectionAccepted();
             const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey, logger);
@@ -153,7 +153,7 @@ describe('TealiumAPI', () => {
             expect(tealium.isConnected()).toBe(false);
         });
 
-        it('sets connectionDetails if connection sucessful (200)', async () => {
+        it('sets connectionDetails if connection sucessful (200)', async() => {
             simulateConnectionSucessful();
             const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey, logger);
 
@@ -174,7 +174,7 @@ describe('TealiumAPI', () => {
             });
         });
 
-        it('not sets connectionDetails if connection only accepted (201)', async () => {
+        it('not sets connectionDetails if connection only accepted (201)', async() => {
             /* Accepted (201) used to not trigger exception within axios */
             simulateConnectionAccepted();
             const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey, logger);
@@ -197,7 +197,7 @@ describe('TealiumAPI', () => {
         });
 
         describe('request details', () => {
-            it('uses correct host and header', async () => {
+            it('uses correct host and header', async() => {
                 simulateConnectionSucessful();
 
                 const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey, logger);
@@ -229,27 +229,27 @@ describe('TealiumAPI', () => {
     });
 
     describe('getExtensions', () => {
-        it('throws if not connected', async () => {
-            expect(async () => {
+        it('throws if not connected', async() => {
+            expect(async() => {
                 const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey, logger);
                 await tealium.getProfile();
             }).rejects.toThrow('TealiumAPI not connected.');
         });
 
-        it('it throws if connected and response failed', async () => {
+        it('it throws if connected and response failed', async() => {
             simulateConnectionSucessful();
             simulateGetProfileInternalError();
 
             const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey, logger);
             await tealium.connect('axelspringer', 'test-solutions2');
 
-            expect(async () => {
+            expect(async() => {
                 await tealium.getProfile();
             }).rejects.toThrow('GetProfile failed. Internal Error');
         });
 
         describe('request details', () => {
-            it('uses correct host and header', async () => {
+            it('uses correct host and header', async() => {
                 simulateConnectionSucessful();
                 simulateGetProfileSucessful();
 
@@ -279,28 +279,28 @@ describe('TealiumAPI', () => {
     });
 
     describe('deploy', () => {
-        it('throws if not connected', async () => {
-            expect(async () => {
+        it('throws if not connected', async() => {
+            expect(async() => {
                 const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey, logger);
                 const fakePayLoad = { thisIs: 'justAFake' };
                 await tealium.deploy(fakePayLoad);
             }).rejects.toThrow('TealiumAPI not connected.');
         });
 
-        it('it throws if connected and response failed', async () => {
+        it('it throws if connected and response failed', async() => {
             simulateConnectionSucessful();
             simulatePatchInternalError();
 
             const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey, logger);
             await tealium.connect('axelspringer', 'test-solutions2');
 
-            expect(async () => {
+            expect(async() => {
                 const fakePayLoad = { thisIs: 'justAFake' };
                 await tealium.deploy(fakePayLoad);
             }).rejects.toThrow('Deploy failed. Internal Error');
         });
 
-        it('succeeds if patch respondes with 200', async () => {
+        it('succeeds if patch respondes with 200', async() => {
             simulateConnectionSucessful();
             simulatePatchSuccessful();
 
@@ -313,7 +313,7 @@ describe('TealiumAPI', () => {
         });
 
 
-        it('fails if patch receives something else than 200', async () => {
+        it('fails if patch receives something else than 200', async() => {
             /* Accepted (201) used to not trigger exception within axios */
             simulateConnectionSucessful();
             simulatePatchAccepted();
@@ -328,7 +328,7 @@ describe('TealiumAPI', () => {
 
 
         describe('request details', () => {
-            it('uses correct host and header', async () => {
+            it('uses correct host and header', async() => {
                 simulateConnectionSucessful();
 
                 const tealium: TealiumAPI = new TealiumAPI(fakeUser, fakeApiKey, logger);

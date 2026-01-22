@@ -6,8 +6,7 @@ describe('_homeTeaserTrackingObj', () => {
     beforeEach(() => {
         // Create a fresh window mock for each test.
         const windowMock = createWindowMock();
-        jest.spyOn(global, 'window', 'get')
-            .mockImplementation(() => (windowMock));
+        jest.spyOn(global, 'window', 'get').mockImplementation(() => windowMock);
 
         // Provide a fresh copy of the s-object for each test.
         s = { ...sObject };
@@ -15,7 +14,6 @@ describe('_homeTeaserTrackingObj', () => {
 
     afterEach(() => {
         jest.restoreAllMocks();
-
     });
 
     describe('getTeaserBrandFromCID', () => {
@@ -87,9 +85,7 @@ describe('_homeTeaserTrackingObj', () => {
 
             expect(value).toBe(window.utag.data.page_escenicId);
         });
-
     });
-
 
     describe('setEvars', () => {
         it('should assign teaser tracking values to certain eVars', function() {
@@ -111,8 +107,12 @@ describe('_homeTeaserTrackingObj', () => {
         it('should delete the hti and tb values of the utag_main cookie', function() {
             window.utag.loader.SC = jest.fn();
             s._homeTeaserTrackingObj.deleteTrackingValuesFromCookie();
-            expect(window.utag.loader.SC).toHaveBeenNthCalledWith(1, 'utag_main', { 'hti': ';exp-session' });
-            expect(window.utag.loader.SC).toHaveBeenNthCalledWith(2, 'utag_main', { 'tb': ';exp-session' });
+            expect(window.utag.loader.SC).toHaveBeenNthCalledWith(1, 'utag_main', {
+                hti: ';exp-session'
+            });
+            expect(window.utag.loader.SC).toHaveBeenNthCalledWith(2, 'utag_main', {
+                tb: ';exp-session'
+            });
         });
     });
 

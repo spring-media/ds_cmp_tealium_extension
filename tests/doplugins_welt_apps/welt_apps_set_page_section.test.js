@@ -7,8 +7,7 @@ describe('_setPageAgeForCheckout', () => {
     beforeEach(() => {
         // Create a fresh window mock for each test.
         const windowMock = createWindowMock();
-        jest.spyOn(global, 'window', 'get')
-            .mockImplementation(() => (windowMock));
+        jest.spyOn(global, 'window', 'get').mockImplementation(() => windowMock);
 
         // Provide a fresh copy of the s-object for each test.
         s = { ...sObject };
@@ -28,7 +27,6 @@ describe('_setPageAgeForCheckout', () => {
         expect(s.eVar5).toBeUndefined();
         expect(s.prop5).toBeUndefined();
         expect(s.channel).toBeUndefined();
-
     });
 
     it('should set correct data if pagename contains home : home', () => {
@@ -39,7 +37,6 @@ describe('_setPageAgeForCheckout', () => {
         expect(s.eVar5).toBe('home');
         expect(s.prop5).toBe('home');
         expect(s.channel).toBe('home');
-
     });
 
     it('should set correct data if pagename contains section : Titelseite', () => {
@@ -50,6 +47,5 @@ describe('_setPageAgeForCheckout', () => {
         expect(s.eVar5).toBe('section');
         expect(s.prop5).toBe('section');
         expect(s.channel).toBe('section');
-
     });
 });

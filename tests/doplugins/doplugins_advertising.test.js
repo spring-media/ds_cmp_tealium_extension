@@ -11,7 +11,7 @@ describe('setAdvertingBranch', () => {
                 branch: ''
             }
         };
-        jest.spyOn(global, 'window', 'get').mockImplementation(() => (windowMock));
+        jest.spyOn(global, 'window', 'get').mockImplementation(() => windowMock);
 
         // Provide a fresh copy of the s-object for each test.
         s = { ...sObject };
@@ -24,7 +24,6 @@ describe('setAdvertingBranch', () => {
         s._setAdvertisingBranch(s);
 
         expect(s.eVar219).toBe('noAdlib');
-
     });
 
     it('should set eVar219 to ASCDP branch if it is defined', () => {
@@ -32,6 +31,5 @@ describe('setAdvertingBranch', () => {
         s._setAdvertisingBranch(s);
 
         expect(s.eVar219).toBe(window.ASCDP.pageSet.branch);
-
     });
 });

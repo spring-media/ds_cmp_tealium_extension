@@ -100,15 +100,15 @@ describe('deployment', () => {
         mockedAxios.patch.mockClear();
     });
 
-    it('Profile not found', async () => {
-        expect(async () => {
+    it('Profile not found', async() => {
+        expect(async() => {
             const logger = winston.createLogger();
             const testDeployment = { profile: 'test-profile', extensions: [] };
             await deployment(testDeployment.profile, testDeployment, 'test-commit', logger);
         }).rejects.toThrow('Unknown Profile test-profile');
     });
 
-    it('Takes login credentials from config', async () => {
+    it('Takes login credentials from config', async() => {
         const logger = winston.createLogger();
         const testDeployment = { profile: 'test-solutions2', extensions: [] };
         simulateConnectionSucessful();
@@ -131,7 +131,7 @@ describe('deployment', () => {
         expect(body.get('key')).toBe('fake-api-key');
     });
 
-    it('deployes javascript extension', async () => {
+    it('deployes javascript extension', async() => {
         const mockedFileReadSync = fs.readFileSync as jest.MockedFunction<typeof fs.readFileSync>;
         mockedFileReadSync.mockReturnValue('(() => {const a = window.utag.getconst(); a += 1; console.log(a+""); })();');
         const logger = winston.createLogger();
@@ -184,20 +184,20 @@ describe('deployment', () => {
         expect(notes.includes('Hash:')).toBe(true);
     });
 
-    it('throws if login failed', async () => {
+    it('throws if login failed', async() => {
         const logger = winston.createLogger();
         const testDeployment = { profile: 'test-solutions2', extensions: [] };
         simulateConntectionUnauthorized();
-        expect(async () => await deployment(testDeployment.profile, testDeployment, 'test-commit', logger))
+        expect(async() => await deployment(testDeployment.profile, testDeployment, 'test-commit', logger))
             .rejects.toThrow('Tealium login failed');
     });
 
-    it('Get Profile failed', async () => {
+    it('Get Profile failed', async() => {
         const logger = winston.createLogger();
         const testDeployment = { profile: 'test-solutions2', extensions: [] };
         simulateConnectionSucessful();
         simulateGetProfileInternalError();
-        expect(async () => await deployment(testDeployment.profile, testDeployment, 'test-commit', logger))
+        expect(async() => await deployment(testDeployment.profile, testDeployment, 'test-commit', logger))
             .rejects.toThrow('GetProfile failed. Internal Error');
     });
 });

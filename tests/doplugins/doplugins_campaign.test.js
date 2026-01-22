@@ -6,8 +6,7 @@ describe('campaign', () => {
     beforeEach(() => {
         // Create a fresh window mock for each test.
         const windowMock = createWindowMock();
-        jest.spyOn(global, 'window', 'get')
-            .mockImplementation(() => (windowMock));
+        jest.spyOn(global, 'window', 'get').mockImplementation(() => windowMock);
 
         // Provide a fresh copy of the s-object for each test.
         s = { ...sObject };
@@ -18,7 +17,6 @@ describe('campaign', () => {
     });
 
     describe('getAdobeCampaign()', () => {
-
         it('should return cid as adobe_campaign if it is present', () => {
             window.utag.data = {
                 'qp.cid': 'cid.test',
@@ -29,7 +27,6 @@ describe('campaign', () => {
 
             const adobe_campaign = s._campaignObj.getAdobeCampaign();
             expect(adobe_campaign).toBe('cid=' + window.utag.data['qp.cid']);
-
         });
         it('should return wtrid as adobe_campaign if it is present and cid is not defined', () => {
             window.utag.data = {
@@ -40,7 +37,6 @@ describe('campaign', () => {
 
             const adobe_campaign = s._campaignObj.getAdobeCampaign();
             expect(adobe_campaign).toBe('wtrid=' + window.utag.data['qp.wtrid']);
-
         });
         it('should return wtmc as adobe_campaign if it is present and cid and wtrid are not defined', () => {
             window.utag.data = {
@@ -50,7 +46,6 @@ describe('campaign', () => {
 
             const adobe_campaign = s._campaignObj.getAdobeCampaign();
             expect(adobe_campaign).toBe('wtmc=' + window.utag.data['qp.wtmc']);
-
         });
         it('should return wt_mc as adobe_campaign if it is present and cid, wtrid and wtmc are not defined', () => {
             window.utag.data = {
@@ -59,13 +54,11 @@ describe('campaign', () => {
 
             const adobe_campaign = s._campaignObj.getAdobeCampaign();
             expect(adobe_campaign).toBe('wt_mc=' + window.utag.data['qp.wt_mc']);
-
         });
 
         it('should return empty string if no campaign is defined', () => {
             const adobe_campaign = s._campaignObj.getAdobeCampaign();
             expect(adobe_campaign).toBe('');
-
         });
     });
 

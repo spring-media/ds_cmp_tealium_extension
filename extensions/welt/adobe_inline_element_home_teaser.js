@@ -1,6 +1,10 @@
 /* global a, b, utag */
 
-const adobeInlineElementHomeTeaser = function (a, b) {
+/**
+ * Adobe inline element home teaser tracking for WELT
+ * Tracks inline element clicks on home page (escenicId 5)
+ */
+const adobeInlineElementHomeTeaser = function(a, b) {
     // Only process link events with Inline Element tracking
     if (
         a !== 'link' ||

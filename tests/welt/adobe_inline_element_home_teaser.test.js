@@ -3,8 +3,6 @@
  * Adobe inline element home teaser tracking for WELT
  */
 
-/* global utag */
-
 const adobeInlineElementHomeTeaser = require('../../extensions/welt/adobe_inline_element_home_teaser');
 
 describe('Adobe Inline Element Home Teaser Tracking', () => {
@@ -47,16 +45,8 @@ describe('Adobe Inline Element Home Teaser Tracking', () => {
         adobeInlineElementHomeTeaser('link', eventData);
 
         expect(mockUtag.loader.SC).toHaveBeenCalledTimes(2);
-        expect(mockUtag.loader.SC).toHaveBeenCalledWith(
-            'utag_main',
-            { hti: 'teaser-label|target-value|source-value' },
-            'session'
-        );
-        expect(mockUtag.loader.SC).toHaveBeenCalledWith(
-            'utag_main',
-            { tb: 'teaser-label' },
-            'session'
-        );
+        expect(mockUtag.loader.SC).toHaveBeenCalledWith('utag_main', { hti: 'teaser-label|target-value|source-value' }, 'session');
+        expect(mockUtag.loader.SC).toHaveBeenCalledWith('utag_main', { tb: 'teaser-label' }, 'session');
     });
 
     it('should not process view events', () => {

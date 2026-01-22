@@ -60,11 +60,7 @@ describe('mehr_zum_thema - Mehr zum Thema Link Tracking', () => {
 
             // Assert: Verify that SC was called with correct parameters
             expect(mockUtagLoader.SC).toHaveBeenCalledTimes(1);
-            expect(mockUtagLoader.SC).toHaveBeenCalledWith(
-                'utag_main',
-                { 'mzt': '1' },
-                'session'
-            );
+            expect(mockUtagLoader.SC).toHaveBeenCalledWith('utag_main', { mzt: '1' }, 'session');
         });
 
         it('should set mzt flag to "1" even with additional properties in event data', () => {
@@ -83,11 +79,7 @@ describe('mehr_zum_thema - Mehr zum Thema Link Tracking', () => {
             });
 
             // Assert
-            expect(mockUtagLoader.SC).toHaveBeenCalledWith(
-                'utag_main',
-                { 'mzt': '1' },
-                'session'
-            );
+            expect(mockUtagLoader.SC).toHaveBeenCalledWith('utag_main', { mzt: '1' }, 'session');
         });
     });
 
@@ -106,11 +98,7 @@ describe('mehr_zum_thema - Mehr zum Thema Link Tracking', () => {
 
             // Assert
             expect(mockUtagLoader.SC).toHaveBeenCalledTimes(1);
-            expect(mockUtagLoader.SC).toHaveBeenCalledWith(
-                'utag_main',
-                { 'mzt': '0' },
-                'session'
-            );
+            expect(mockUtagLoader.SC).toHaveBeenCalledWith('utag_main', { mzt: '0' }, 'session');
         });
 
         it('should set mzt flag to "0" for custom events', () => {
@@ -126,11 +114,7 @@ describe('mehr_zum_thema - Mehr zum Thema Link Tracking', () => {
             });
 
             // Assert
-            expect(mockUtagLoader.SC).toHaveBeenCalledWith(
-                'utag_main',
-                { 'mzt': '0' },
-                'session'
-            );
+            expect(mockUtagLoader.SC).toHaveBeenCalledWith('utag_main', { mzt: '0' }, 'session');
         });
 
         it('should set mzt flag to "0" even when b is undefined', () => {
@@ -144,11 +128,7 @@ describe('mehr_zum_thema - Mehr zum Thema Link Tracking', () => {
             });
 
             // Assert
-            expect(mockUtagLoader.SC).toHaveBeenCalledWith(
-                'utag_main',
-                { 'mzt': '0' },
-                'session'
-            );
+            expect(mockUtagLoader.SC).toHaveBeenCalledWith('utag_main', { mzt: '0' }, 'session');
         });
     });
 
@@ -230,11 +210,7 @@ describe('mehr_zum_thema - Mehr zum Thema Link Tracking', () => {
             });
 
             // Assert: Should set mzt to 0 because 'Link' !== 'link'
-            expect(mockUtagLoader.SC).toHaveBeenCalledWith(
-                'utag_main',
-                { 'mzt': '0' },
-                'session'
-            );
+            expect(mockUtagLoader.SC).toHaveBeenCalledWith('utag_main', { mzt: '0' }, 'session');
         });
 
         it('should handle event_name with extra whitespace', () => {
@@ -266,11 +242,7 @@ describe('mehr_zum_thema - Mehr zum Thema Link Tracking', () => {
             });
 
             // Assert: First parameter should always be 'utag_main'
-            expect(mockUtagLoader.SC).toHaveBeenCalledWith(
-                'utag_main',
-                expect.any(Object),
-                'session'
-            );
+            expect(mockUtagLoader.SC).toHaveBeenCalledWith('utag_main', expect.any(Object), 'session');
         });
 
         it('should always use "session" as the storage type', () => {
@@ -284,11 +256,7 @@ describe('mehr_zum_thema - Mehr zum Thema Link Tracking', () => {
             });
 
             // Assert: Third parameter should always be 'session'
-            expect(mockUtagLoader.SC).toHaveBeenCalledWith(
-                'utag_main',
-                expect.any(Object),
-                'session'
-            );
+            expect(mockUtagLoader.SC).toHaveBeenCalledWith('utag_main', expect.any(Object), 'session');
         });
     });
 });

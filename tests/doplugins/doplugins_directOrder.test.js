@@ -4,11 +4,9 @@ const { createWindowMock } = require('../mocks/browserMocks');
 describe('directOrderObj', () => {
     let s;
     beforeEach(() => {
-
         // Create a fresh window mock for each test.
         const windowMock = createWindowMock();
-        jest.spyOn(global, 'window', 'get')
-            .mockImplementation(() => (windowMock));
+        jest.spyOn(global, 'window', 'get').mockImplementation(() => windowMock);
 
         s = {
             ...sObject
@@ -33,14 +31,18 @@ describe('directOrderObj', () => {
             anyCookieObj[anyCookieName] = anyCookieValue + ';exp-session';
 
             s._directOrderObj.saveToCookie(anyCookieObj);
-            expect(window.utag.loader.SC).toHaveBeenCalledWith('utag_main', { 'otb': 'any-otb;exp-session' });
+            expect(window.utag.loader.SC).toHaveBeenCalledWith('utag_main', {
+                otb: 'any-otb;exp-session'
+            });
         });
     });
 
     describe('deleteFromCookieOtb()', function() {
         it('should delete the adobe campaign value of article recommendations in utag_main cookie', function() {
             s._directOrderObj.deleteFromCookieOtb();
-            expect(window.utag.loader.SC).toHaveBeenCalledWith('utag_main', { 'otb': ';exp-session' });
+            expect(window.utag.loader.SC).toHaveBeenCalledWith('utag_main', {
+                otb: ';exp-session'
+            });
         });
     });
 

@@ -7,17 +7,14 @@ describe('CW time format: CW {week} {year} {first DOW} - {last DOW}', () => {
 
     beforeEach(() => {
         const windowMock = createWindowMock();
-        jest.spyOn(global, 'window', 'get')
-            .mockImplementation(() => (windowMock));
+        jest.spyOn(global, 'window', 'get').mockImplementation(() => windowMock);
     });
 
     afterEach(() => {
         jest.restoreAllMocks();
-
     });
 
     describe('leadingZero', () => {
-
         it('should add a 0 before one-digit numbers', () => {
             const date1 = 3;
             const date2 = 13;
@@ -31,7 +28,6 @@ describe('CW time format: CW {week} {year} {first DOW} - {last DOW}', () => {
     });
 
     describe('getWeek', () => {
-
         it('should return correct week of the year', () => {
             const mockDate1 = new Date(2022, 0, 1);
             leadingZeroMock = jest.spyOn(cw, 'leadingZero');
@@ -51,7 +47,6 @@ describe('CW time format: CW {week} {year} {first DOW} - {last DOW}', () => {
     });
 
     describe('getMonthDay', () => {
-
         it('should return mm.dd from a given date', () => {
             const mockDate = new Date(2022, 0, 1);
             leadingZeroMock = jest.spyOn(cw, 'leadingZero');
@@ -71,21 +66,15 @@ describe('CW time format: CW {week} {year} {first DOW} - {last DOW}', () => {
     });
 
     describe('getDayOfWeek', () => {
-
         it('should return the date of first DOW based on given date', () => {
             const mockDate = new Date(2022, 0, 1);
             const expectedDate = new Date(2021, 11, 27);
 
             expect(cw.getDayOfWeek(mockDate, 1).toString()).toBe(expectedDate.toString());
-
         });
-
     });
 
-
-
     describe('getCW', () => {
-
         it('should return the CW date format', () => {
             const mockDate = new Date(2022, 0, 1);
             const mockDate1 = new Date(2021, 11, 27);
@@ -104,19 +93,16 @@ describe('CW time format: CW {week} {year} {first DOW} - {last DOW}', () => {
             expect(getWeekMock).toHaveBeenCalledWith(mockDate);
             expect(getMonthDayMock).toHaveBeenNthCalledWith(1, mockDate1);
             expect(getMonthDayMock).toHaveBeenNthCalledWith(2, mockDate2);
-
         });
     });
 
     describe('init', () => {
-
         it('should set window.utag.data.myCW to the result of _myCW.getCW()', () => {
             const returnValue = 'any-value';
             jest.spyOn(cw, 'getCW').mockImplementation().mockReturnValue(returnValue);
             cw.init();
 
             expect(window.utag.data.myCW).toBe(returnValue);
-
         });
     });
 });

@@ -73,7 +73,7 @@ describe('TealiumDeploymentPipeline', () => {
     });
 
     describe('connect', () => {
-        it('connects successfully', async () => {
+        it('connects successfully', async() => {
             const mocked = mockTealiumAPI(
                 simulateConnectSuccess()
             );
@@ -85,7 +85,7 @@ describe('TealiumDeploymentPipeline', () => {
             expect(mocked.connect).toHaveBeenCalledWith('test-account', 'test-solutions2');
         });
 
-        it('throws "Login failed" on Unauthorized', async () => {
+        it('throws "Login failed" on Unauthorized', async() => {
             mockTealiumAPI(
                 simulateConnectFailed()
             );
@@ -94,7 +94,7 @@ describe('TealiumDeploymentPipeline', () => {
             await expect(pipeline.connect()).rejects.toThrow('Tealium login failed');
         });
 
-        it('rethrows other errors', async () => {
+        it('rethrows other errors', async() => {
             mockTealiumAPI(
                 simulateConnectError()
             );
@@ -105,13 +105,13 @@ describe('TealiumDeploymentPipeline', () => {
     });
 
     describe('fetchProfile', () => {
-        it('throws error when not connected', async () => {
+        it('throws error when not connected', async() => {
             const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
 
             await expect(pipeline.fetchProfile()).rejects.toThrow('Not connected');
         });
 
-        it('throws error when not account not matching profile account', async () => {
+        it('throws error when not account not matching profile account', async() => {
             const mockProfile = { account: 'another-account', profile: 'test-profile', extensions: [], version: 123 };
             mockTealiumAPI(
                 simulateConnectSuccess(),
@@ -122,7 +122,7 @@ describe('TealiumDeploymentPipeline', () => {
             await expect(pipeline.fetchProfile()).rejects.toThrow('Failed loading Profile');
         });
 
-        it('throws error when not account not matching profile account', async () => {
+        it('throws error when not account not matching profile account', async() => {
             const mockProfile = { account: 'test-account', profile: 'another-profile', extensions: [], version: 123 };
             mockTealiumAPI(
                 simulateConnectSuccess(),
@@ -133,7 +133,7 @@ describe('TealiumDeploymentPipeline', () => {
             await expect(pipeline.fetchProfile()).rejects.toThrow('Failed loading Profile');
         });
 
-        it('throws error when not profile undefined', async () => {
+        it('throws error when not profile undefined', async() => {
             mockTealiumAPI(
                 simulateConnectSuccess(),
                 simulateGetProfileSuccess(undefined)
@@ -143,7 +143,7 @@ describe('TealiumDeploymentPipeline', () => {
             await expect(pipeline.fetchProfile()).rejects.toThrow('Failed loading Profile');
         });
 
-        it('throws error when getProfile fails', async () => {
+        it('throws error when getProfile fails', async() => {
             mockTealiumAPI(
                 simulateConnectSuccess(),
                 simulateGetProfileError(new Error('Internal Error'))
@@ -155,7 +155,7 @@ describe('TealiumDeploymentPipeline', () => {
             await expect(pipeline.fetchProfile()).rejects.toThrow('Internal Error');
         });
 
-        it('fetches profile successfully', async () => {
+        it('fetches profile successfully', async() => {
             const mockProfile = { account: 'test-account', profile: 'test-solutions2', extensions: [], version: 123 };
             const mocked = mockTealiumAPI(
                 simulateConnectSuccess(),
@@ -179,7 +179,7 @@ describe('TealiumDeploymentPipeline', () => {
             }).toThrow('Profile not loaded. Run fetchProfile first.');
         });
 
-        it('returns empty array if profile has no extensions', async () => {
+        it('returns empty array if profile has no extensions', async() => {
             const mockProfile = { account: 'test-account', profile: 'test-solutions2', extensions: null, version: 123 };
             mockTealiumAPI(
                 simulateConnectSuccess(),
@@ -191,7 +191,7 @@ describe('TealiumDeploymentPipeline', () => {
             expect(pipeline.getRemoteExtensions()).toEqual([]);
         });
 
-        it('returns extensions object array', async () => {
+        it('returns extensions object array', async() => {
             const extensions = [{
                 id: 123,
                 name: 'test-extension',
@@ -222,7 +222,7 @@ describe('TealiumDeploymentPipeline', () => {
             }]);
         });
 
-        it('filters out extensions with unsupported extensionType', async () => {
+        it('filters out extensions with unsupported extensionType', async() => {
             const extensions = [
                 {
                     id: 123,
@@ -261,7 +261,7 @@ describe('TealiumDeploymentPipeline', () => {
             expect(result[0]!.type).toBe('Javascript Code');
         });
 
-        it('filters out extensions with unsupported scope', async () => {
+        it('filters out extensions with unsupported scope', async() => {
             const extensions = [
                 {
                     id: 125,
@@ -302,7 +302,7 @@ describe('TealiumDeploymentPipeline', () => {
     });
 
     describe('getLocalExtension', () => {
-        it('applies configuration to extension', async () => {
+        it('applies configuration to extension', async() => {
             const mockedFileReadSync = fs.readFileSync as jest.MockedFunction<typeof fs.readFileSync>;
             mockedFileReadSync.mockReturnValue('(() => {const a = window.utag.getconst(); a += 1; console.log(a+""); })();');
 

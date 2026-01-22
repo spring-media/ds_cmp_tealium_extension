@@ -68,13 +68,19 @@
                 var platform = U.page_platform || U['cp.utag_main_page_platform'] || '';
                 if (platform) {
                     // Normalize platform value to desktop or mobile
-                    var channel = (platform.toLowerCase() === 'mobile') ? 'mobile' : 'desktop';
+                    var channel = platform.toLowerCase() === 'mobile' ? 'mobile' : 'desktop';
                     params.push('c=' + encodeURIComponent(channel));
                 }
 
                 // Add conversion-specific data
-                if (pageData.conversion) params.push('cv=' + pageData.conversion);
-                if (pageData.cntTag && Array.isArray(pageData.cntTag) && pageData.cntTag.length > 0) {
+                if (pageData.conversion) {
+                    params.push('cv=' + pageData.conversion);
+                }
+                if (
+                    pageData.cntTag &&
+                    Array.isArray(pageData.cntTag) &&
+                    pageData.cntTag.length > 0
+                ) {
                     params.push('cntt=' + encodeURIComponent(pageData.cntTag.join(',')));
                 }
 
@@ -96,27 +102,33 @@
                 }
 
                 // Fallback: try kilkaya API if available
-                if (window.kilkaya && window.kilkaya.logger &&
-                    typeof window.kilkaya.logger.fireNow === 'function') {
-
+                if (
+                    window.kilkaya &&
+                    window.kilkaya.logger &&
+                    typeof window.kilkaya.logger.fireNow === 'function'
+                ) {
                     var logData = window.kilkaya.pageData.getDefaultData();
                     logData.cs = 1; // conversion
                     window.kilkaya.logger.fireNow('pageView', logData, 'conversion');
-                    persistLog('✓ SUCCESS: Sent via Kilkaya API', { method: 'kilkaya.logger.fireNow' });
+                    persistLog('✓ SUCCESS: Sent via Kilkaya API', {
+                        method: 'kilkaya.logger.fireNow'
+                    });
                     return;
                 }
             } catch (err) {
                 persistLog('✗ ERROR sending conversion', { error: err.message, stack: err.stack });
             }
         }, 150); // Small delay to ensure k5aMeta.conversion is set
-
     } catch (e) {
         try {
-            localStorage.setItem('k5a_send_log', JSON.stringify({
-                timestamp: new Date().toISOString(),
-                message: '✗ CRITICAL ERROR',
-                data: { error: e.message, stack: e.stack }
-            }));
+            localStorage.setItem(
+                'k5a_send_log',
+                JSON.stringify({
+                    timestamp: new Date().toISOString(),
+                    message: '✗ CRITICAL ERROR',
+                    data: { error: e.message, stack: e.stack }
+                })
+            );
         } catch (storageErr) {
             console.error('[K5A SEND] Error:', e);
         }

@@ -60,7 +60,7 @@ describe('Rasp Tracking Integration', () => {
 
         // Set performance after window is assigned
         mockWindow.performance = {
-            getEntriesByType: jest.fn((type) => {
+            getEntriesByType: jest.fn(type => {
                 if (type === 'navigation') {
                     return [{ type: 'navigate' }];
                 }
@@ -156,9 +156,7 @@ describe('Rasp Tracking Integration', () => {
 
             expect(document.createElement).toHaveBeenCalledWith('script');
             const scriptCall = mockDocument.createElement.mock.results[0].value;
-            expect(scriptCall.src).toBe(
-                'https://simetra.tracking.ringieraxelspringer.tech/EA-3734738/simetra.boot.js?domain=welt.de'
-            );
+            expect(scriptCall.src).toBe('https://simetra.tracking.ringieraxelspringer.tech/EA-3734738/simetra.boot.js?domain=welt.de');
             expect(scriptCall.async).toBe(true);
             expect(mockDocument.head.appendChild).toHaveBeenCalled();
         });
@@ -185,10 +183,7 @@ describe('Rasp Tracking Integration', () => {
 
             RaspTracking.initialize();
 
-            expect(window.addEventListener).toHaveBeenCalledWith(
-                'simetra-load',
-                expect.any(Function)
-            );
+            expect(window.addEventListener).toHaveBeenCalledWith('simetra-load', expect.any(Function));
         });
     });
 
@@ -205,10 +200,7 @@ describe('Rasp Tracking Integration', () => {
             RaspTracking.initialize();
 
             // Get the simetra-load event handler
-            const simetraLoadHandler =
-                window.addEventListener.mock.calls.find(
-                    (call) => call[0] === 'simetra-load'
-                )[1];
+            const simetraLoadHandler = window.addEventListener.mock.calls.find(call => call[0] === 'simetra-load')[1];
 
             // Mock __tcfapi to call the callback
             window.__tcfapi = jest.fn((command, version, callback) => {
@@ -218,11 +210,7 @@ describe('Rasp Tracking Integration', () => {
             // Trigger the simetra-load event
             simetraLoadHandler();
 
-            expect(window.__tcfapi).toHaveBeenCalledWith(
-                'addEventListener',
-                2,
-                expect.any(Function)
-            );
+            expect(window.__tcfapi).toHaveBeenCalledWith('addEventListener', 2, expect.any(Function));
 
             jest.advanceTimersByTime(1000);
             expect(window.EventsApi.start).toHaveBeenCalled();
@@ -241,10 +229,7 @@ describe('Rasp Tracking Integration', () => {
 
             RaspTracking.initialize();
 
-            const simetraLoadHandler =
-                window.addEventListener.mock.calls.find(
-                    (call) => call[0] === 'simetra-load'
-                )[1];
+            const simetraLoadHandler = window.addEventListener.mock.calls.find(call => call[0] === 'simetra-load')[1];
 
             window.__tcfapi = jest.fn((command, version, callback) => {
                 callback({ tcString: 'test' }, false);
@@ -266,10 +251,7 @@ describe('Rasp Tracking Integration', () => {
 
             RaspTracking.initialize();
 
-            expect(console.error).toHaveBeenCalledWith(
-                '[TEALIUM RASP] Error initializing Rasp tracking:',
-                expect.any(Error)
-            );
+            expect(console.error).toHaveBeenCalledWith('[TEALIUM RASP] Error initializing Rasp tracking:', expect.any(Error));
         });
     });
 
@@ -279,9 +261,7 @@ describe('Rasp Tracking Integration', () => {
 
             RaspTracking.initialize();
 
-            expect(window.ringDataLayer.context.publication_structure.path).toBe(
-                'section/subsection/article'
-            );
+            expect(window.ringDataLayer.context.publication_structure.path).toBe('section/subsection/article');
         });
 
         it('should handle root path', () => {
@@ -289,9 +269,7 @@ describe('Rasp Tracking Integration', () => {
 
             RaspTracking.initialize();
 
-            expect(window.ringDataLayer.context.publication_structure.path).toBe(
-                ''
-            );
+            expect(window.ringDataLayer.context.publication_structure.path).toBe('');
         });
 
         it('should handle path without trailing slash', () => {
@@ -299,9 +277,7 @@ describe('Rasp Tracking Integration', () => {
 
             RaspTracking.initialize();
 
-            expect(window.ringDataLayer.context.publication_structure.path).toBe(
-                'section'
-            );
+            expect(window.ringDataLayer.context.publication_structure.path).toBe('section');
         });
     });
 

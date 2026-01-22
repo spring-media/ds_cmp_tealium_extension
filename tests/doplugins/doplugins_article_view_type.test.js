@@ -6,8 +6,7 @@ describe('articleViewType()', () => {
     beforeEach(() => {
         // Create a fresh window mock for each test.
         const windowMock = createWindowMock();
-        jest.spyOn(global, 'window', 'get')
-            .mockImplementation(() => (windowMock));
+        jest.spyOn(global, 'window', 'get').mockImplementation(() => windowMock);
 
         // Provide a fresh copy of the s-object for each test.
         s = { ...sObject };
@@ -36,7 +35,7 @@ describe('articleViewType()', () => {
         it('should return TRUE if referrer is a search engine', function() {
             const searchDomains = ['google.', 'bing.com', 'ecosia.org', 'duckduckgo.com', 'amp-welt-de.cdn.ampproject.org', 'qwant.com', 'suche.t-online.de', '.yandex.', 'yahoo.com', 'googleapis.com', 'nortonsafe.search.ask.com', 'wikipedia.org', 'googleadservices.com', 'search.myway.com', 'lycos.de'];
 
-            searchDomains.forEach((domain) => {
+            searchDomains.forEach(domain => {
                 const result = s._articleViewTypeObj.isFromSearch(domain);
                 expect(result).toBe(true);
             });
@@ -53,7 +52,7 @@ describe('articleViewType()', () => {
         it('should return TRUE if referrer is a search engine', function() {
             const socialDomains = ['facebook.com', 'xing.com', 'instagram.com', 'youtube.com', 't.co', 'www.linkedin.com', 'away.vk.com', 'www.pinterest.de', 'linkedin.android', 'ok.ru', 'mobile.ok.ru', 'www.yammer.com', 'twitter.com', 'www.netvibes.com', 'pinterest.com', 'wordpress.com', 'blogspot.com', 'lnkd.in', 'xing.android', 'vk.com', 'com.twitter.android', 'm.ok.ru', 'welt.de/instagram', 'linkin.bio'];
 
-            socialDomains.forEach((item) => {
+            socialDomains.forEach(item => {
                 const referrer = `https://${item}/any-path`;
                 const result = s._articleViewTypeObj.isFromSocial(referrer);
                 expect(result).toBe(true);
@@ -70,7 +69,7 @@ describe('articleViewType()', () => {
     describe('isOtherTrackingValue()', () => {
         it('should return TRUE if trackingChannel is from the list of other', function() {
             const trackingChannel = ['social.', 'upday', 'kooperation'];
-            trackingChannel.forEach((item) => {
+            trackingChannel.forEach(item => {
                 const trackingValue = jest.spyOn(s._articleViewTypeObj, 'getTrackingValue').mockReturnValue(item);
                 const result = s._articleViewTypeObj.isOtherTrackingValue(trackingValue);
                 expect(result).toBe(true);
@@ -87,7 +86,7 @@ describe('articleViewType()', () => {
     describe('isPaidMarketing()', () => {
         it('should return TRUE if trackingChannel is paid', function() {
             const trackingChannel = ['email.', 'onsite.', 'inapp.', 'push.', 'sea.', 'affiliate.', 'social_paid.', 'app.', 'display.', 'career.', 'print.'];
-            trackingChannel.forEach((item) => {
+            trackingChannel.forEach(item => {
                 const trackingValue = jest.spyOn(s._articleViewTypeObj, 'getTrackingValue').mockReturnValue(item);
                 const result = s._articleViewTypeObj.isPaidMarketing(trackingValue);
                 expect(result).toBe(true);
@@ -246,12 +245,7 @@ describe('articleViewType()', () => {
 
     describe('isHomepageSubdomain()', () => {
         it('it should return TRUE for sub domains which can be considered as home pages', () => {
-            const homepageSubDomains = [
-                'www.anydomain.de',
-                'm.anydomain.de',
-                'sportbild.anydomain.de',
-                'm.sportbild.anydomain.de'
-            ];
+            const homepageSubDomains = ['www.anydomain.de', 'm.anydomain.de', 'sportbild.anydomain.de', 'm.sportbild.anydomain.de'];
 
             homepageSubDomains.forEach(domain => {
                 const result = s._articleViewTypeObj.isHomepageSubdomain(domain);
@@ -260,19 +254,13 @@ describe('articleViewType()', () => {
         });
 
         it('it should return false for sub domains which should NOT be considered as home pages', () => {
-            const homepageSubDomains = [
-                'anydomain.de',
-                'anysubdomain.anydomain.de',
-                'sport.bild.de',
-                'online.welt.de'
-            ];
+            const homepageSubDomains = ['anydomain.de', 'anysubdomain.anydomain.de', 'sport.bild.de', 'online.welt.de'];
 
             homepageSubDomains.forEach(domain => {
                 const result = s._articleViewTypeObj.isHomepageSubdomain(domain);
                 expect(result).toBe(false);
             });
         });
-
     });
 
     describe('isFromHome', () => {
@@ -419,7 +407,6 @@ describe('articleViewType()', () => {
     });
 
     describe('isNavigated', () => {
-
         beforeEach(() => {
             window.performance = {
                 getEntriesByType: jest.fn().mockReturnValue([])
@@ -486,7 +473,6 @@ describe('articleViewType()', () => {
             const result = s._articleViewTypeObj.isFromLesenSieAuch();
             expect(result).toBe(false);
         });
-
     });
 
     describe('getInternalType()', () => {
@@ -506,7 +492,6 @@ describe('articleViewType()', () => {
             isFromOnsiteSearchMock = jest.spyOn(s._articleViewTypeObj, 'isFromOnsiteSearch').mockReturnValue(false);
             isFromLesenSieAuchMock = jest.spyOn(s._articleViewTypeObj, 'isFromLesenSieAuch').mockReturnValue(false);
             isNewVisitMock = jest.spyOn(s._articleViewTypeObj, 'isNewVisit').mockReturnValue(false);
-
         });
 
         it('should return event207 if referrer is set and it is a new Visit', function() {
@@ -566,7 +551,6 @@ describe('articleViewType()', () => {
             isReloadedMock = jest.spyOn(s._articleViewTypeObj, 'isReloaded').mockReturnValue(false);
             isHomepageMock = jest.spyOn(s._utils, 'isHomepage').mockReturnValue(false);
             jest.spyOn(s._utils, 'isArticlePage').mockReturnValue(true);
-
         });
 
         it('should return event24, event209 if referrer is from search engine and page is Homepage', function() {
@@ -697,7 +681,7 @@ describe('articleViewType()', () => {
         });
 
         it('should return event23,event201 for internal fallback case', () => {
-        // Alle Mocks bleiben auf false → Default-Zweig greift
+            // Alle Mocks bleiben auf false → Default-Zweig greift
             const result = s._articleViewTypeObj.getInternalType('https://www.bild.de');
             expect(result.pageViewEvent).toBe('event23,event201');
             expect(result.channel).toBe('');
@@ -711,7 +695,7 @@ describe('articleViewType()', () => {
         });
 
         it('should prioritize event207 and not override it with fallback', () => {
-        // Spezialfall, um zu prüfen, dass kein weiteres Event gesetzt wird
+            // Spezialfall, um zu prüfen, dass kein weiteres Event gesetzt wird
             isSamePageRedirectMock.mockReturnValue(true);
             isNewVisitMock.mockReturnValue(true);
             isFromHomeMock.mockReturnValue(true); // wäre sonst Home
@@ -790,7 +774,7 @@ describe('articleViewType()', () => {
         });
 
         it('should return undefined values when no conditions match', () => {
-        // Alle Mocks bleiben auf false
+            // Alle Mocks bleiben auf false
 
             const result = s._articleViewTypeObj.noReferrerType();
             expect(result.pageViewEvent).toBeUndefined();
@@ -798,7 +782,6 @@ describe('articleViewType()', () => {
             expect(result.mkt_channel_detail).toBeUndefined();
         });
     });
-
 
     describe('getViewTypeByReferrer()', () => {
         let getReferrerMock;
@@ -951,31 +934,26 @@ describe('articleViewType()', () => {
             isPageOneInSessionMock.mockReturnValue(true);
             const result = s._articleViewTypeObj.getViewTypeByTrackingProperty();
             expect(result.pageViewEvent).toBe('event102,event230,event232');
-
         });
         it('it should return the right event name if tracking value is of type: Outbrain Desktop Home Recommendation', () => {
             getTrackingValueMock.mockReturnValue('kooperation.home.outbrain.ff.desktop.');
             const result = s._articleViewTypeObj.getViewTypeByTrackingProperty();
             expect(result.pageViewEvent).toBe('event76,event230,event231');
-
         });
         it('it should return the right event name if tracking value is of type: Outbrain Mobile Home Recommendation', () => {
             getTrackingValueMock.mockReturnValue('kooperation.home.outbrain.ff.mobile.');
             const result = s._articleViewTypeObj.getViewTypeByTrackingProperty();
             expect(result.pageViewEvent).toBe('event77,event230,event231');
-
         });
         it('it should return the right event name if tracking value is of type: Outbrain ', () => {
             getTrackingValueMock.mockReturnValue('kooperation.any-value.outbrain.');
             const result = s._articleViewTypeObj.getViewTypeByTrackingProperty();
             expect(result.pageViewEvent).toBe('event23,event201');
-
         });
         it('it should return the right event name if tracking value is Paid Marketing like email. as one example', () => {
             getTrackingValueMock.mockReturnValue('email.');
             const result = s._articleViewTypeObj.getViewTypeByTrackingProperty();
             expect(result.pageViewEvent).toBe('event206');
-
         });
         it('it should return event204 if the trackingValue equals upday', () => {
             getTrackingValueMock.mockReturnValue('upday');
@@ -1002,7 +980,9 @@ describe('articleViewType()', () => {
             s._articleViewType = 'any-view-type';
             s._articleViewTypeObj.setPageSourceAndAgeForCheckout(s);
 
-            expect(window.utag.loader.SC).toHaveBeenCalledWith('utag_main', { 'articleview': s._articleViewType + ';exp-session' });
+            expect(window.utag.loader.SC).toHaveBeenCalledWith('utag_main', {
+                articleview: s._articleViewType + ';exp-session'
+            });
             expect(window.utag.data['cp.utag_main_articleview']).toBe(s._articleViewType);
         });
 
@@ -1010,7 +990,9 @@ describe('articleViewType()', () => {
             window.utag.data.page_age = 'any-publication-age';
             s._articleViewTypeObj.setPageSourceAndAgeForCheckout(s);
 
-            expect(window.utag.loader.SC).toHaveBeenCalledWith('utag_main', { 'pa': window.utag.data.page_age + ';exp-session' });
+            expect(window.utag.loader.SC).toHaveBeenCalledWith('utag_main', {
+                pa: window.utag.data.page_age + ';exp-session'
+            });
             expect(window.utag.data['cp.utag_main_pa']).toBe(window.utag.data.page_age);
         });
 
@@ -1018,7 +1000,9 @@ describe('articleViewType()', () => {
             window.utag.data.page_datePublication_age = 'any-publication-age';
             s._articleViewTypeObj.setPageSourceAndAgeForCheckout(s);
 
-            expect(window.utag.loader.SC).toHaveBeenCalledWith('utag_main', { 'pa': window.utag.data.page_datePublication_age + ';exp-session' });
+            expect(window.utag.loader.SC).toHaveBeenCalledWith('utag_main', {
+                pa: window.utag.data.page_datePublication_age + ';exp-session'
+            });
             expect(window.utag.data['cp.utag_main_pa']).toBe(window.utag.data.page_datePublication_age);
         });
 
@@ -1026,7 +1010,9 @@ describe('articleViewType()', () => {
             window.utag.data.screen_agePublication = 'any-publication-age';
             s._articleViewTypeObj.setPageSourceAndAgeForCheckout(s);
 
-            expect(window.utag.loader.SC).toHaveBeenCalledWith('utag_main', { 'pa': window.utag.data.screen_agePublication + ';exp-session' });
+            expect(window.utag.loader.SC).toHaveBeenCalledWith('utag_main', {
+                pa: window.utag.data.screen_agePublication + ';exp-session'
+            });
             expect(window.utag.data['cp.utag_main_pa']).toBe(window.utag.data.screen_agePublication);
         });
     });
@@ -1204,7 +1190,6 @@ describe('articleViewType()', () => {
 
             expect(setHomeTeaserPropertiesMock).not.toHaveBeenCalled();
         });
-
     });
 
     describe('setExtraViewTypes()', () => {
@@ -1235,5 +1220,4 @@ describe('articleViewType()', () => {
             expect(setExternalReferringDomainEventsMock).toHaveBeenCalledWith(s);
         });
     });
-
 });

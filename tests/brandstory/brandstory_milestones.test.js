@@ -72,15 +72,19 @@ describe('setMilestones', () => {
         milestones.forEach(milestone => {
             jest.advanceTimersByTime(milestone.time);
 
-            expect(window.utag.link).toHaveBeenCalledWith({
-                event_name: 'article_milestone',
-                event_label: milestone.label,
-                adobe_pageName: 'testPageName',
-                page_escenicId: 'testEscenicId',
-                page_platform: 'testPlatform',
-                page_type: 'testType',
-                page_sectionPath: 'testSectionPath'
-            }, null, tagNumber);
+            expect(window.utag.link).toHaveBeenCalledWith(
+                {
+                    event_name: 'article_milestone',
+                    event_label: milestone.label,
+                    adobe_pageName: 'testPageName',
+                    page_escenicId: 'testEscenicId',
+                    page_platform: 'testPlatform',
+                    page_type: 'testType',
+                    page_sectionPath: 'testSectionPath'
+                },
+                null,
+                tagNumber
+            );
         });
 
         // Restore real timers

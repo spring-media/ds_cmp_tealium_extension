@@ -2,7 +2,7 @@ import winston from 'winston';
 import { deployment } from './deployment';
 import { WeltDeploymentConfig } from './deploymentConfigurations';
 
-(async () => {
+(async() => {
 
     const loggerFormat = winston.format.printf(({ level, message, timestamp }) => {
         return `${timestamp} [${level}]: ${message}`;

@@ -30,7 +30,6 @@ describe('_eventsObj', () => {
         let aplMock;
         beforeEach(() => {
             aplMock = jest.spyOn(s, 'apl').mockImplementation();
-
         });
 
         it('should set s.events property by calling s.apl() plugin', function() {

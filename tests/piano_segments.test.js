@@ -2,7 +2,7 @@ const { getSegmentsWithTimeout, handlePianoSegments, pianoConfig } = require('..
 const { createWindowMock } = require('./mocks/browserMocks');
 
 describe('getSegmentsWithTimeout', () => {
-    test('should resolve if callback is called with result', async () => {
+    test('should resolve if callback is called with result', async() => {
         const windowLike = createWindowMock({
             candidates: ['test-id'],
             shortIds: ['abc']
@@ -12,19 +12,15 @@ describe('getSegmentsWithTimeout', () => {
         expect(result).toEqual([{ id: 'test-id', shortId: 'abc' }]);
     });
 
-    test('should timeout if callback never fires', async () => {
+    test('should timeout if callback never fires', async() => {
         const windowLike = createWindowMock({ simulateTimeout: true });
 
-        await expect(
-            getSegmentsWithTimeout('query-id', ['123'], 100, windowLike)
-        ).rejects.toMatch('Timeout: getSegments did not respond in time');
+        await expect(getSegmentsWithTimeout('query-id', ['123'], 100, windowLike)).rejects.toMatch('Timeout: getSegments did not respond in time');
     });
 
-    test('should reject if cX is not defined', async () => {
+    test('should reject if cX is not defined', async() => {
         const windowLike = {}; // no cX
-        await expect(
-            getSegmentsWithTimeout('query-id', ['123'], 100, windowLike)
-        ).rejects.toMatch('cX or cX.getSegments not available');
+        await expect(getSegmentsWithTimeout('query-id', ['123'], 100, windowLike)).rejects.toMatch('cX or cX.getSegments not available');
     });
 });
 
@@ -57,35 +53,19 @@ describe('handlePianoSegments', () => {
         });
     });
 
-    test('should populate utag.data and call gtag/fbq - WELT', async () => {
+    test('should populate utag.data and call gtag/fbq - WELT', async() => {
         await handlePianoSegments(windowMockWelt);
 
         expect(windowMockWelt.utag.data.piano_candidates_short).toBe('abc');
-        expect(windowMockWelt.gtag).toHaveBeenCalledWith(
-            'event',
-            'piano_short',
-            expect.objectContaining({ piano_short: '.abc.' })
-        );
-        expect(windowMockWelt.fbq).toHaveBeenCalledWith(
-            'trackCustom',
-            'piano_short',
-            expect.objectContaining({ piano_short: 'abc' })
-        );
+        expect(windowMockWelt.gtag).toHaveBeenCalledWith('event', 'piano_short', expect.objectContaining({ piano_short: '.abc.' }));
+        expect(windowMockWelt.fbq).toHaveBeenCalledWith('trackCustom', 'piano_short', expect.objectContaining({ piano_short: 'abc' }));
     });
 
-    test('should populate utag.data and call gtag/fbq - BILD', async () => {
+    test('should populate utag.data and call gtag/fbq - BILD', async() => {
         await handlePianoSegments(windowMockBILD);
 
         expect(windowMockBILD.utag.data.piano_candidates_short).toBe('abc');
-        expect(windowMockBILD.gtag).toHaveBeenCalledWith(
-            'event',
-            'piano_short',
-            expect.objectContaining({ piano_short: '.abc.' })
-        );
-        expect(windowMockBILD.fbq).toHaveBeenCalledWith(
-            'trackCustom',
-            'piano_short',
-            expect.objectContaining({ piano_short: 'abc' })
-        );
+        expect(windowMockBILD.gtag).toHaveBeenCalledWith('event', 'piano_short', expect.objectContaining({ piano_short: '.abc.' }));
+        expect(windowMockBILD.fbq).toHaveBeenCalledWith('trackCustom', 'piano_short', expect.objectContaining({ piano_short: 'abc' }));
     });
 });

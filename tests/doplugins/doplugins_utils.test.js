@@ -6,8 +6,7 @@ describe('s_utils', () => {
     beforeEach(() => {
         // Create a fresh window mock for each test.
         const windowMock = createWindowMock();
-        jest.spyOn(global, 'window', 'get')
-            .mockImplementation(() => (windowMock));
+        jest.spyOn(global, 'window', 'get').mockImplementation(() => windowMock);
 
         // Provide a fresh copy of the s-object for each test.
         s = { ...sObject };
@@ -26,31 +25,31 @@ describe('s_utils', () => {
             anyProperty: 'any-property'
         };
 
-        it('should return the Adobe object when it has the name \'s\'', () => {
+        it("should return the Adobe object when it has the name 's'", () => {
             window.s = validAdobeObject;
             const result = s._utils.getAdobeObject();
             expect(result).toBe(validAdobeObject);
         });
 
-        it('should return an empty object when something else is assigned to the global variable with name \'s\'', () => {
+        it("should return an empty object when something else is assigned to the global variable with name 's'", () => {
             window.s = invalidAdobeObject;
             const result = s._utils.getAdobeObject();
             expect(result).toEqual({});
         });
 
-        it('should return the Adobe object when it has the name \'cmp\'', () => {
+        it("should return the Adobe object when it has the name 'cmp'", () => {
             window.cmp = validAdobeObject;
             const result = s._utils.getAdobeObject();
             expect(result).toBe(validAdobeObject);
         });
 
-        it('should return an empty object when something else is assigned to the global variable with name \'cmp\'', () => {
+        it("should return an empty object when something else is assigned to the global variable with name 'cmp'", () => {
             window.cmp = invalidAdobeObject;
             const result = s._utils.getAdobeObject();
             expect(result).toEqual({});
         });
 
-        it('should return an empty object when something else is assigned to the global variables \'s\' and \'cmp\' ', () => {
+        it("should return an empty object when something else is assigned to the global variables 's' and 'cmp' ", () => {
             window.s = invalidAdobeObject;
             window.cmp = invalidAdobeObject;
             const result = s._utils.getAdobeObject();
@@ -81,13 +80,7 @@ describe('s_utils', () => {
         });
 
         it('should return the document type from various sources', () => {
-
-            const PROPERTY_NAMES = [
-                'page_type',
-                'page_document_type',
-                'adobe_docType',
-                'ad_page_document_type',
-                'page_mapped_doctype_for_pagename'];
+            const PROPERTY_NAMES = ['page_type', 'page_document_type', 'adobe_docType', 'ad_page_document_type', 'page_mapped_doctype_for_pagename'];
 
             PROPERTY_NAMES.forEach(propertyName => {
                 window.utag.data[propertyName] = 'any-' + propertyName;
@@ -95,7 +88,6 @@ describe('s_utils', () => {
                 expect(result).toBe('any-' + propertyName);
                 delete window.utag.data[propertyName];
             });
-
         });
     });
 
@@ -111,7 +103,6 @@ describe('s_utils', () => {
             const value = s._utils.isAdWall(s);
 
             expect(value).toBe(true);
-
         });
 
         it('should return true if window.location value is correct', () => {
@@ -119,10 +110,8 @@ describe('s_utils', () => {
             const value = s._utils.isAdWall(s);
 
             expect(value).toBe(true);
-
         });
     });
-
 
     describe('isArticlePage()', () => {
         let getDocTypeMock;
@@ -138,19 +127,7 @@ describe('s_utils', () => {
         });
 
         it('should be true when page is of type article', () => {
-            const ARTICLE_TYPES = [
-                'article',
-                'artikel',
-                'live',
-                'gallery',
-                'video',
-                'post',
-                'media',
-                'sportdaten',
-                'live-sport',
-                'channelizer-kaufberater',
-                'scrubby'
-            ];
+            const ARTICLE_TYPES = ['article', 'artikel', 'live', 'gallery', 'video', 'post', 'media', 'sportdaten', 'live-sport', 'channelizer-kaufberater', 'scrubby'];
 
             ARTICLE_TYPES.forEach(articleType => {
                 getDocTypeMock.mockReturnValue(articleType);
@@ -175,7 +152,6 @@ describe('s_utils', () => {
             expect(result).toBe(false);
         });
     });
-
 
     describe('isValidURL', () => {
         it('should return true if passed string is URL', () => {
@@ -232,7 +208,6 @@ describe('s_utils', () => {
     });
 
     describe('getPageReloadStatus()', () => {
-
         beforeEach(() => {
             window.performance = {
                 getEntriesByType: jest.fn().mockReturnValue([])
@@ -245,8 +220,5 @@ describe('s_utils', () => {
             const result = s._utils.getPageReloadStatus();
             expect(result).toBe('any-type');
         });
-
     });
-
 });
-

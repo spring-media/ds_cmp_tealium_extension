@@ -6,7 +6,6 @@
 // - Non-Xymatic: extracts media_id from contentID and media_headline from event object
 
 (function(a, b) {
-
     // Only run on link events where event_name === "video"
     if (a !== 'link' || !b || b.event_name !== 'video') {
         return;
@@ -16,12 +15,11 @@
     let mediaHeadline = '';
 
     // --- 1) Access event_data safely ---
-    const ed = (b.event_data && typeof b.event_data === 'object') ? b.event_data : {};
+    const ed = b.event_data && typeof b.event_data === 'object' ? b.event_data : {};
     const player = String(ed.media_player || '').toLowerCase();
 
     // --- 2) Xymatic: take mediaID + headline directly from data ---
     if (player === 'xymatic') {
-
         // media_id from event_data
         if (ed.media_id) {
             mediaID = ed.media_id;
@@ -37,7 +35,9 @@
     if (!mediaID) {
         let cid = utag.data.contentID;
 
-        if (!cid || typeof cid !== 'string') return;
+        if (!cid || typeof cid !== 'string') {
+            return;
+        }
 
         cid = cid.trim().replace(/^\"+|\"+$/g, '');
 
@@ -47,7 +47,9 @@
             mediaID = cid.split('/')[3] || '';
         }
 
-        if (!mediaID) return;
+        if (!mediaID) {
+            return;
+        }
     }
 
     // --- 4) MEDIA HEADLINE for non-Xymatic: only if present on the event object ---
@@ -69,5 +71,4 @@
         utag.data.media_headline = mediaHeadline;
         b.media_headline = mediaHeadline;
     }
-
 })(a, b);

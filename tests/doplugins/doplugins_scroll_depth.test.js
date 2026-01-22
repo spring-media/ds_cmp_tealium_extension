@@ -6,8 +6,7 @@ describe('_scrollDepthObj', () => {
     beforeEach(() => {
         // Create a fresh window mock for each test.
         const windowMock = createWindowMock();
-        jest.spyOn(global, 'window', 'get')
-            .mockImplementation(() => (windowMock));
+        jest.spyOn(global, 'window', 'get').mockImplementation(() => windowMock);
 
         // Provide a fresh copy of the s-object for each test.
         s = { ...sObject };
@@ -18,7 +17,6 @@ describe('_scrollDepthObj', () => {
     });
 
     describe('isArticlePage', () => {
-
         it('should return false if doc_type is not defined', () => {
             const result = s._utils.isArticlePage(s);
 
@@ -52,7 +50,6 @@ describe('_scrollDepthObj', () => {
 
             expect(result).toBe(true);
         });
-
     });
 
     describe('getPageId', () => {
@@ -89,11 +86,9 @@ describe('_scrollDepthObj', () => {
 
             expect(value).toBe(window.utag.data.page_escenicId);
         });
-
     });
 
     describe('getPageChannel', () => {
-
         it('should return empty string if no page channel is present', () => {
             const value = s._scrollDepthObj.getPageChannel();
 
@@ -134,11 +129,9 @@ describe('_scrollDepthObj', () => {
 
             expect(value).toBe(window.utag.data.page_sectionPath1);
         });
-
     });
 
     describe('getPagePremiumStatus', () => {
-
         it('should return empty string if no page premium status is present', () => {
             const value = s._scrollDepthObj.getPagePremiumStatus();
 
@@ -165,11 +158,9 @@ describe('_scrollDepthObj', () => {
 
             expect(value).toBe(window.utag.data.screen_isPremium + ' : ');
         });
-
     });
 
     describe('setPreviousPage', () => {
-
         it('should set the right _prevPage if docType is not article or video', () => {
             s.pageName = 'test_pageName';
             jest.spyOn(s._utils, 'isArticlePage').mockReturnValue(false);
@@ -189,11 +180,9 @@ describe('_scrollDepthObj', () => {
 
             expect(s._prevPage).toBe('test_docType : test_is_page_premium_yes : test_pageId : test_pageChannel');
         });
-
     });
 
     describe('setScrollDepthProperties', () => {
-
         afterEach(() => {
             s._scrollDepthObj.isFirstRun = true;
         });
