@@ -93,6 +93,31 @@ Check code quality with ESLint:
 yarn lint
 ```
 
+## Backup Extensions
+
+### Historical Note
+
+In commit `6aa516b` (December 10, 2025), backup extension files were removed from the repository to keep it clean and maintainable. These backup files included profile-specific extensions that were consolidated into generalized versions.
+
+**Removed backup files included:**
+- CMP Interaction Tracking extensions (various profiles: bild, welt, autobild, computerbild, lib_books, etc.)
+- Brandstory milestones and scrolldepth extensions (bild, welt)
+- CMP Custom Vendor Mapping extensions (bild, welt)
+- Superbounce extensions (bild, welt)
+- Cxense/Piano extensions
+- WHOAMI extensions
+- myCW extensions
+
+**To restore backup files if needed:**
+You can retrieve these files from git history using:
+```sh
+git checkout 6aa516b^ -- backup/
+```
+
+Or view specific backup files:
+```sh
+git show 6aa516b^:backup/[path-to-file]
+
 ## Extensions
 
 ### CMP Interaction Tracking Extension
