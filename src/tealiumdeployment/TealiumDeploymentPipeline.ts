@@ -4,6 +4,7 @@ import { config } from '../config';
 import { Extension } from './Extension';
 import { ExtensionType, Occurrence, Scope, Status, TealiumAPI, TealiumProfilePayload } from './TealiumAPI';
 import { TealiumExtensionDiff } from './TealiumExtensionDiff';
+import { Logger } from 'winston';
 
 export interface DeploymentPipelineConfig {
     profile: string;
@@ -11,6 +12,7 @@ export interface DeploymentPipelineConfig {
 }
 
 export type DeploymentConfiguration = {
+    profile: string,
     extensions: {
         name: string,
         id: number,
@@ -18,6 +20,8 @@ export type DeploymentConfiguration = {
         scope: Scope,
         occurrence: Occurrence,
         status: Status,
+        notes?: string,
+        useMinify?: boolean
      }[]
 }
 
@@ -28,11 +32,14 @@ export class TealiumDeploymentPipeline {
     private tealium: TealiumAPI | null;
     private currentProfile: TealiumProfilePayload | null;
     private localExtensions: Extension[];
+    private logger: Logger;
 
-    constructor(deploymentConfig: DeploymentPipelineConfig) {
+    constructor(deploymentConfig: DeploymentPipelineConfig, logger: Logger) {
         if (!['welt', 'test-solutions2'].includes(deploymentConfig.profile)) {
             throw new Error(`Unknown Profile ${deploymentConfig.profile}`);
         }
+
+        this.logger = logger;
 
         this.account = config.tealium.account;
         this.profile = deploymentConfig.profile;
@@ -46,7 +53,7 @@ export class TealiumDeploymentPipeline {
         const username = config.tealium.user;
         const apiKey = config.tealium.apiKey;
 
-        this.tealium = new TealiumAPI(username, apiKey);
+        this.tealium = new TealiumAPI(username, apiKey, this.logger);
 
         try {
             await this.tealium.connect(this.account, this.profile);
@@ -74,14 +81,15 @@ export class TealiumDeploymentPipeline {
         if (!this.currentProfile) {
             throw new Error('Profile not loaded. Run fetchProfile first.');
         }
+
         return this.currentProfile.extensions?.map((extension) => {
             if (!ExtensionType.includes(extension.extensionType)) {
-                console.log(`Remote: ExtensionType ${extension.extensionType} not supported. ignored.`);
+                this.logger.info(`Remote: ExtensionType ${extension.extensionType} not supported. ignored.`);
                 return null;
             }
 
             if (!Scope.includes(extension.scope)) {
-                console.log(`Remote: Scope ${extension.scope} not supported. ignored.`);
+                this.logger.info(`Remote: Scope ${extension.scope} not supported. ignored.`);
                 return null;
             }
 
@@ -89,40 +97,47 @@ export class TealiumDeploymentPipeline {
         }).filter(extension => extension != null) || [];
     }
 
-    extensionCheck(): boolean {
-        return false;
-    }
-
     private readFile(path: string): string {
         try {
             const jsCode = fs.readFileSync(path, 'utf-8');
             return jsCode;
         } catch (error: any) {
-            throw Error(`Read File failed. ${path}`);
+            this.logger.error(error.message);
+            throw Error(`Read File failed. ${path}: ${error.message}`);
         }
+    }
+
+    private async readCode(filepath: string, useMinify?: boolean): Promise<string> {
+        const code = this.readFile(filepath);
+        if (useMinify !== true) {
+            return code;
+        }
+        const minifyResult = await minify(code, {
+            compress: true,
+            mangle: false
+        });
+
+        if (!minifyResult.code) {
+            throw new Error(`Minify failed ${filepath}. Fallback to original.`);
+        }
+        return minifyResult.code;
     }
 
     async readLocalExtensions(deploymentConfiguration: DeploymentConfiguration) {
         let filesNotFound = 0;
         for (const extensionConfig of deploymentConfiguration.extensions) {
             try {
-                const code = this.readFile(extensionConfig.file);
-
-                // const minifyResult = await minify(code, {
-                //     compress: true,
-                //     mangle: false
-                // });
-
-                // //if (!minifyResult.code) {
-                //     console.warn(`Minify failed ${extensionConfig.file}. Fallback to original.`);
-                //     extension = Extension.fromLocal(extensionConfig.id, extensionConfig.name, code);
-                // } else {
+                const code = await this.readCode(extensionConfig.file, extensionConfig.useMinify);
                 const extension = Extension.fromLocal(extensionConfig.id, extensionConfig.name, code);
-                // }
+                extension.setScope(Scope.fromString(extensionConfig.scope));
+                extension.setOccurrence(Occurrence.fromString(extensionConfig.occurrence));
+                extension.setStatus(Status.fromString(extensionConfig.status));
+
                 extension.setFilePath(extensionConfig.file);
+                extension.setNotes(extensionConfig.notes ?? '');
                 this.localExtensions.push(extension);
             } catch (error: any) {
-                console.log(error);
+                this.logger.error(error);
                 filesNotFound += 1;
             }
         }
@@ -130,10 +145,11 @@ export class TealiumDeploymentPipeline {
         if (filesNotFound > 0) {
             throw new Error('Not all extensions found');
         }
+        return [...this.localExtensions];
     }
 
     reconcile(): Extension[] {
-        const diff = new TealiumExtensionDiff();
+        const diff = new TealiumExtensionDiff(this.logger);
         diff.setLocalExtensions(this.localExtensions);
         diff.setRemoteExtensions(this.getRemoteExtensions());
         diff.diff();
@@ -143,13 +159,13 @@ export class TealiumDeploymentPipeline {
 
         if (extensionsForUpdate.length > 0) {
             for (const extension of extensionsForUpdate) {
-                console.log(`Extension '${extension.name}' (${extension.id}) will be updated. ${extension.getHash()}`);
+                this.logger.info(`Extension '${extension.name}' (${extension.id}) will be updated. ${extension.getHash()}`);
             }
         }
 
         if (extensionsNotFound.length > 0) {
             for (const extension of extensionsNotFound) {
-                console.log(`Remote extension ${extension.name} (${extension.id}) not found.`);
+                this.logger.info(`Remote extension ${extension.name} (${extension.id}) not found.`);
             }
             throw new Error('Not all extensions found in Tealium.');
         }
@@ -163,6 +179,7 @@ export class TealiumDeploymentPipeline {
         }
 
         // Create deployment messages
+        const operations = [];
         const deploymentDate = new Date();
         for (const ext of extensions) {
             if (!ext.id) {
@@ -170,28 +187,35 @@ export class TealiumDeploymentPipeline {
             }
 
             const hash = ext.getHash();
-            const deploymentNode =
+            let deploymentNode =
             '⚠️ DEPLOYED BY GITHUB-CI/CD - DO NOT CHANGE MANUALLY ⚠️\n' +
             `Commit: ${deploymentMessage}\n` +
             `Src: ${ext.getFilepath()}\n` +
             `Deployed at:${deploymentDate.toUTCString()}\n` +
             `Hash: ${hash}`;
-            ext.setNotes(deploymentNode);
-            console.log(`Adding to deployment ${ext.name} - ${hash}`);
 
-            const patchPayload = this.tealium.buildUpdatePayload(ext.id, {
+            if (ext.getNotes()) {
+                deploymentNode += '\n\n' + ext.getNotes();
+            }
+            ext.setNotes(deploymentNode);
+            this.logger.info(`Adding to deployment ${ext.name} - ${hash}`);
+
+            const operation = this.tealium.buildOperationPayload(ext.id, {
                 name: ext.name,
                 code: ext.code,
+                scope: ext.getScope(),
                 deploymentNotes: `GITHUB/CICD ${deploymentMessage}`,
                 extensionNotes: ext.getNotes(),
                 occurrence: ext.getOccurrence(),
                 status: ext.getStatus()
             });
 
-            console.log(`Deploying to ${this.profile} - ${new Date().toUTCString()}`);
-            const response = await this.tealium.deploy(patchPayload);
-            console.log(`Extension '${ext.name}' deployed - ${new Date().toUTCString()}`, response);
+            operations.push(operation);
         }
 
+        const patchPayload = this.tealium.buildUpdatePayload(operations, `GITHUB/CICD ${deploymentMessage}`);
+        this.logger.info(`Deploying to ${this.profile} - ${new Date().toUTCString()}`);
+        const response = await this.tealium.deploy(patchPayload);
+        this.logger.info(`Extensions deployed - ${new Date().toUTCString()}`, response);
     }
 }

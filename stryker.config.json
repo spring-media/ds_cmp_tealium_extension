@@ -20,7 +20,7 @@
   "thresholds": {
     "high": 80,
     "low": 60,
-    "break": 35
+    "break": 40
   },
   "timeoutMS": 60000,
   "timeoutFactor": 2,
