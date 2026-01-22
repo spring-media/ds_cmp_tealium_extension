@@ -1,12 +1,15 @@
+import { Logger } from 'winston';
 import { Extension } from './Extension';
 
 export class TealiumExtensionDiff {
+    private readonly logger: Logger;
     private localExtensions: Extension[];
     private remoteExtensions: Extension[];
     private extensionNotFoundList: Extension[];
     private extensionUpdateList: Extension[];
 
-    constructor() {
+    constructor(logger: Logger) {
+        this.logger = logger;
         this.localExtensions = [];
         this.remoteExtensions = [];
         this.extensionNotFoundList = [];
@@ -29,9 +32,9 @@ export class TealiumExtensionDiff {
 
     diff() {
         // Duplication validation
-        console.log('Validate no duplicate extension IDs in local extensions');
+        this.logger.info('Validate no duplicate extension IDs in local extensions');
         this.validateNoDuplicateExtensionIds(this.localExtensions);
-        console.log('Validate no duplicate extension IDs in remote extensions');
+        this.logger.info('Validate no duplicate extension IDs in remote extensions');
         this.validateNoDuplicateExtensionIds(this.remoteExtensions);
 
         // find remote extension

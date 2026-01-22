@@ -1,9 +1,11 @@
+import { Logger } from 'winston';
 import { DeploymentConfiguration, TealiumDeploymentPipeline } from './TealiumDeploymentPipeline';
 
 export const deployment = async(
     profile: string,
     deploymentConfiguration: DeploymentConfiguration,
-    deploymentMessage: string
+    deploymentMessage: string,
+    logger: Logger
 ): Promise<void> => {
 
     const pipelineConfig = {
@@ -11,10 +13,10 @@ export const deployment = async(
     };
 
     // 1. Try to connect
-    const pipeline = new TealiumDeploymentPipeline(pipelineConfig);
-    console.log('Connecting to Tealium API');
+    const pipeline = new TealiumDeploymentPipeline(pipelineConfig, logger);
+    logger.info('Connecting to Tealium API');
     await pipeline.connect();
-    console.log('Connected to Tealium API');
+    logger.info('Connected to Tealium API');
 
     // 2. Load profile
     await pipeline.fetchProfile();
@@ -25,7 +27,7 @@ export const deployment = async(
     // 4. Can I find all extensions and are remote extensions ok?
     const extensionsToUpdate = pipeline.reconcile();
     if (extensionsToUpdate.length === 0) {
-        console.log('Everything up to date');
+        logger.info('Everything up to date');
         return;
     }
 

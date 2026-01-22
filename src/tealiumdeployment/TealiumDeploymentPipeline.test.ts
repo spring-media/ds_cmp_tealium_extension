@@ -1,6 +1,10 @@
 import { TealiumDeploymentPipeline } from './TealiumDeploymentPipeline';
-import { TealiumAPI } from './TealiumAPI';
+import { Occurrence, Scope, Status, TealiumAPI } from './TealiumAPI';
 import { config } from '../config';
+import winston from 'winston';
+import * as fs from 'fs';
+
+jest.mock('fs');
 
 jest.mock('./TealiumAPI', () => {
     const actual = jest.requireActual('./TealiumAPI');
@@ -41,6 +45,12 @@ const simulateGetProfileError = (error: Error) => {
     return { getProfile: mockGetProfile };
 };
 
+const logger = winston.createLogger({
+    transports: [
+        new winston.transports.Console()
+    ]
+});
+
 describe('TealiumDeploymentPipeline', () => {
 
     beforeEach(() => {
@@ -53,12 +63,12 @@ describe('TealiumDeploymentPipeline', () => {
     it('throws error for unknown profile', () => {
         expect(() => {
             // eslint-disable-next-line no-new
-            new TealiumDeploymentPipeline({ profile: 'unknown-profile' });
+            new TealiumDeploymentPipeline({ profile: 'unknown-profile' }, logger);
         }).toThrow('Unknown Profile unknown-profile');
     });
 
     it('accepts valid profile', () => {
-        const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' });
+        const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
         expect(pipeline).toBeDefined();
     });
 
@@ -68,10 +78,10 @@ describe('TealiumDeploymentPipeline', () => {
                 simulateConnectSuccess()
             );
 
-            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' });
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
             await pipeline.connect();
 
-            expect(TealiumAPI).toHaveBeenCalledWith('test-user', 'test-key');
+            expect(TealiumAPI).toHaveBeenCalledWith('test-user', 'test-key', logger);
             expect(mocked.connect).toHaveBeenCalledWith('test-account', 'test-solutions2');
         });
 
@@ -79,7 +89,7 @@ describe('TealiumDeploymentPipeline', () => {
             mockTealiumAPI(
                 simulateConnectFailed()
             );
-            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' });
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
 
             await expect(pipeline.connect()).rejects.toThrow('Tealium login failed');
         });
@@ -88,15 +98,15 @@ describe('TealiumDeploymentPipeline', () => {
             mockTealiumAPI(
                 simulateConnectError()
             );
-            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' });
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
 
             await expect(pipeline.connect()).rejects.toThrow('Network error');
         });
     });
 
     describe('fetchProfile', () => {
-        it('throws error when not connected', async() => {
-            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' });
+        it('throws error when not connected', async () => {
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
 
             await expect(pipeline.fetchProfile()).rejects.toThrow('Not connected');
         });
@@ -107,7 +117,7 @@ describe('TealiumDeploymentPipeline', () => {
                 simulateConnectSuccess(),
                 simulateGetProfileSuccess(mockProfile)
             );
-            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' });
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
             await pipeline.connect();
             await expect(pipeline.fetchProfile()).rejects.toThrow('Failed loading Profile');
         });
@@ -118,7 +128,7 @@ describe('TealiumDeploymentPipeline', () => {
                 simulateConnectSuccess(),
                 simulateGetProfileSuccess(mockProfile)
             );
-            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' });
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
             await pipeline.connect();
             await expect(pipeline.fetchProfile()).rejects.toThrow('Failed loading Profile');
         });
@@ -128,7 +138,7 @@ describe('TealiumDeploymentPipeline', () => {
                 simulateConnectSuccess(),
                 simulateGetProfileSuccess(undefined)
             );
-            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' });
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
             await pipeline.connect();
             await expect(pipeline.fetchProfile()).rejects.toThrow('Failed loading Profile');
         });
@@ -139,7 +149,7 @@ describe('TealiumDeploymentPipeline', () => {
                 simulateGetProfileError(new Error('Internal Error'))
             );
 
-            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' });
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
             await pipeline.connect();
 
             await expect(pipeline.fetchProfile()).rejects.toThrow('Internal Error');
@@ -152,7 +162,7 @@ describe('TealiumDeploymentPipeline', () => {
                 simulateGetProfileSuccess(mockProfile)
             );
 
-            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' });
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
             await pipeline.connect();
             const result = await pipeline.fetchProfile();
 
@@ -163,7 +173,7 @@ describe('TealiumDeploymentPipeline', () => {
 
     describe('getRemoteExtensions', () => {
         it('throws if current profile not loaded', () => {
-            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' });
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
             expect(() => {
                 pipeline.getRemoteExtensions();
             }).toThrow('Profile not loaded. Run fetchProfile first.');
@@ -175,7 +185,7 @@ describe('TealiumDeploymentPipeline', () => {
                 simulateConnectSuccess(),
                 simulateGetProfileSuccess(mockProfile)
             );
-            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' });
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
             await pipeline.connect();
             await pipeline.fetchProfile();
             expect(pipeline.getRemoteExtensions()).toEqual([]);
@@ -196,7 +206,7 @@ describe('TealiumDeploymentPipeline', () => {
                 simulateConnectSuccess(),
                 simulateGetProfileSuccess(mockProfile)
             );
-            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' });
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
             await pipeline.connect();
             await pipeline.fetchProfile();
             expect(pipeline.getRemoteExtensions()).toEqual([{
@@ -210,6 +220,133 @@ describe('TealiumDeploymentPipeline', () => {
                 name: 'test-extension',
                 type: 'Javascript Code'
             }]);
+        });
+
+        it('filters out extensions with unsupported extensionType', async () => {
+            const extensions = [
+                {
+                    id: 123,
+                    name: 'supported-extension',
+                    notes: 'test',
+                    extensionType: 'Javascript Code',
+                    occurrence: 'Run Always',
+                    scope: 'After Load Rules',
+                    status: 'active',
+                    configuration: { code: 'console.log("Supported");' }
+                },
+                {
+                    id: 124,
+                    name: 'unsupported-extension',
+                    notes: 'test',
+                    extensionType: 'Unsupported Type',
+                    occurrence: 'Run Always',
+                    scope: 'After Load Rules',
+                    status: 'active',
+                    configuration: { code: 'console.log("Unsupported");' }
+                }
+            ];
+            const mockProfile = { account: 'test-account', profile: 'test-solutions2', extensions, version: 123 };
+            mockTealiumAPI(
+                simulateConnectSuccess(),
+                simulateGetProfileSuccess(mockProfile)
+            );
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
+            await pipeline.connect();
+            await pipeline.fetchProfile();
+
+            const result = pipeline.getRemoteExtensions();
+
+            expect(result).toHaveLength(1);
+            expect(result[0]!.name).toBe('supported-extension');
+            expect(result[0]!.type).toBe('Javascript Code');
+        });
+
+        it('filters out extensions with unsupported scope', async () => {
+            const extensions = [
+                {
+                    id: 125,
+                    name: 'supported-scope-extension',
+                    notes: 'test',
+                    extensionType: 'Javascript Code',
+                    occurrence: 'Run Always',
+                    scope: 'DOM Ready',
+                    status: 'active',
+                    configuration: { code: 'console.log("Supported scope");' }
+                },
+                {
+                    id: 126,
+                    name: 'unsupported-scope-extension',
+                    notes: 'test',
+                    extensionType: 'Javascript Code',
+                    occurrence: 'Run Always',
+                    scope: 'Unsupported Scope',
+                    status: 'active',
+                    configuration: { code: 'console.log("Unsupported scope");' }
+                }
+            ];
+            const mockProfile = { account: 'test-account', profile: 'test-solutions2', extensions, version: 123 };
+            mockTealiumAPI(
+                simulateConnectSuccess(),
+                simulateGetProfileSuccess(mockProfile)
+            );
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
+            await pipeline.connect();
+            await pipeline.fetchProfile();
+
+            const result = pipeline.getRemoteExtensions();
+
+            expect(result).toHaveLength(1);
+            expect(result[0]!.name).toBe('supported-scope-extension');
+            expect(result[0]!.getScope()).toBe('DOM Ready');
+        });
+    });
+
+    describe('getLocalExtension', () => {
+        it('applies configuration to extension', async () => {
+            const mockedFileReadSync = fs.readFileSync as jest.MockedFunction<typeof fs.readFileSync>;
+            mockedFileReadSync.mockReturnValue('(() => {const a = window.utag.getconst(); a += 1; console.log(a+""); })();');
+
+            mockTealiumAPI(
+                simulateConnectSuccess()
+            );
+
+            const testDeplyoment = { profile: 'test',
+                extensions: [{
+                    name: 'Kilkaya init k5aMeta',
+                    id: 623,
+                    file: './extensions/kilkaya/k5a_meta_init.js',
+                    scope: Scope.PreLoader, occurrence: Occurrence.RunOnce,
+                    status: Status.Inactive,
+                    useMinify: false
+                },
+                {
+                    name: 'Kilkaya build k5aMeta',
+                    id: 624,
+                    file: './extensions/kilkaya/k5a_meta_populate.js',
+                    scope: Scope.AfterLoadRules,
+                    occurrence: Occurrence.RunAlways,
+                    status: Status.Active,
+                    useMinify: true
+                }]
+            };
+
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
+            await pipeline.connect();
+            const localExtensions = await pipeline.readLocalExtensions(testDeplyoment);
+            expect(localExtensions.length).toBe(2);
+            expect(localExtensions[0]!.name).toBe('Kilkaya init k5aMeta');
+            expect(localExtensions[0]!.id).toBe(623);
+            expect(localExtensions[0]!.code).toBe('(() => {const a = window.utag.getconst(); a += 1; console.log(a+""); })();');
+            expect(localExtensions[0]!.getScope()).toBe(Scope.PreLoader);
+            expect(localExtensions[0]!.getOccurrence()).toBe(Occurrence.RunOnce);
+            expect(localExtensions[0]!.getStatus()).toBe(Status.Inactive);
+
+            expect(localExtensions[1]!.name).toBe('Kilkaya build k5aMeta');
+            expect(localExtensions[1]!.id).toBe(624);
+            expect(localExtensions[1]!.code).toBe('(()=>{const a=window.utag.getconst();a+=1,console.log(a+"")})();');
+            expect(localExtensions[1]!.getScope()).toBe(Scope.AfterLoadRules);
+            expect(localExtensions[1]!.getOccurrence()).toBe(Occurrence.RunAlways);
+            expect(localExtensions[1]!.getStatus()).toBe(Status.Active);
         });
     });
 });
