@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* Based on SET DATA VALUE Copy Google Prop has_purchased 346 */
 /* global utag, a, b */
 (function(a, b) {

@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* Based on SET DATA VALUE ADOBE : set event_data (link) Inline stats 320 */
 /* global utag, a, b */
 (function(a, b) {

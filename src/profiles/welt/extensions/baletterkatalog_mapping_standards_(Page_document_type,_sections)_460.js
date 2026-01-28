@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* Based on SET DATA VALUE baletterkatalog mapping standards (Page_document_type, sections) 460 */
 /* global utag, a, b */
 (function(a, b) {

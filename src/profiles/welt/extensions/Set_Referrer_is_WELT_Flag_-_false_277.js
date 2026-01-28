@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* Based on SET DATA VALUE Set Referrer is WELT Flag - false 277 */
 /* global utag, a, b */
 (function(a, b) {

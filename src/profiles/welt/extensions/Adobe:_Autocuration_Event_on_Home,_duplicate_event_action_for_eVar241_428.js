@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* Based on SET DATA VALUE Adobe: Autocuration Event on Home, duplicate event_action for eVar241 428 */
 /* global utag, a, b */
 (function(a, b) {

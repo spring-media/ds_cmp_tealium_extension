@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* Based on SET DATA VALUE Set CB authors - Free 38 */
 /* global utag, a, b */
 (function(a, b) {

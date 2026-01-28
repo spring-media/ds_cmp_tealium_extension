@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* Based on SET DATA VALUE asbs.welt.de Platform Mobile 551 */
 /* global utag, a, b */
 (function(a, b) {

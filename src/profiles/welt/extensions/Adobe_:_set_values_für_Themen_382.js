@@ -1,8 +1,9 @@
+/* eslint-disable */
 /* Based on SET DATA VALUE Adobe : set values für Themen 382 */
 /* global utag, a, b */
 (function(a, b) {
     try {
-        if (/^/themen//.test(b['dom.pathname'])) {
+        if (/^themen/.test(b['dom.pathname'])) {
              b['page_type'] = 'themen';
             try {
                 b['page_escenicId'] = b.page_escenicId == undefined && adSSetup != undefined ? adSSetup.pid : b.page_escenicId;

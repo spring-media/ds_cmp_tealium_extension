@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* Based on SET DATA VALUE ADOBE : set : referrer für referrer first 183 */
 /* global utag, a, b */
 (function(a, b) {

@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* Based on SET DATA VALUE Read IVW Code from ioam2018 Cookie 522 */
 /* global utag, a, b */
 (function(a, b) {

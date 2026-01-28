@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* Based on SET DATA VALUE ADOBE : join Inline stats /newsticker/ elements 416 */
 /* global utag, a, b */
 (function(a, b) {

@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* Based on SET DATA VALUE Chartbeat Image Testing  463 */
 /* global utag, a, b */
 (function(a, b) {

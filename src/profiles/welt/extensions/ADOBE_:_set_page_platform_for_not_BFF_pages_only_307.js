@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* Based on SET DATA VALUE ADOBE : set page_platform for not BFF pages only 307 */
 /* global utag, a, b */
 (function(a, b) {

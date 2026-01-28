@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* Based on SET DATA VALUE set page_premium_visibility 524 */
 /* global utag, a, b */
 (function(a, b) {

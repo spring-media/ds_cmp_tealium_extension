@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* Based on SET DATA VALUE Event data 430 */
 /* global utag, a, b */
 (function(a, b) {

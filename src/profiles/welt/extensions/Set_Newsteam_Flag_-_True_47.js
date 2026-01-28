@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* Based on SET DATA VALUE Set Newsteam Flag - True 47 */
 /* global utag, a, b */
 (function(a, b) {

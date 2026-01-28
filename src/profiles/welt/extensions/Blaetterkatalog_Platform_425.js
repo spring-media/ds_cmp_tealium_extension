@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* Based on SET DATA VALUE Blaetterkatalog Platform 425 */
 /* global utag, a, b */
 (function(a, b) {

@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* Based on SET DATA VALUE ADOBE : set event_data (not video, not audio) 505 */
 /* global utag, a, b */
 (function(a, b) {

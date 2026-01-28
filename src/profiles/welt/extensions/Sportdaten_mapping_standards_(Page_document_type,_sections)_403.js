@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* Based on SET DATA VALUE Sportdaten mapping standards (Page_document_type, sections) 403 */
 /* global utag, a, b */
 (function(a, b) {

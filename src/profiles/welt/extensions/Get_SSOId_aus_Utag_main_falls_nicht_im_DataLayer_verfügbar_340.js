@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* Based on SET DATA VALUE Get SSOId aus Utag_main falls nicht im DataLayer verfügbar 340 */
 /* global utag, a, b */
 (function(a, b) {

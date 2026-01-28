@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* Based on SET DATA VALUE Adobe : Outbrain Event renaming for paywall user 418 */
 /* global utag, a, b */
 (function(a, b) {

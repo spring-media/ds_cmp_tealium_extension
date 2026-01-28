@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* Based on SET DATA VALUE ADOBE : test link_name 300 */
 /* global utag, a, b */
 (function(a, b) {

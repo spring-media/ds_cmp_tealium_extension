@@ -1,8 +1,9 @@
+/* eslint-disable */
 /* Based on SET DATA VALUE Section Path Vergleich 376 */
 /* global utag, a, b */
 (function(a, b) {
     try {
-        if (/^/vergleich//.test(b['dom.pathname'])) {
+        if (/^vergleich/.test(b['dom.pathname'])) {
             try {
                 b['page_channel1'] = (b['dom.pathname'].split("/")[1] !== undefined) ? b['dom.pathname'].split("/")[1] : "";
             } catch (e) {}

@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* Based on SET DATA VALUE epaper mapping standards (Page_document_type, sections) 404 */
 /* global utag, a, b */
 (function(a, b) {

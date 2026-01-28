@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* Based on SET DATA VALUE Split sectionPath 36 */
 /* global utag, a, b */
 (function(a, b) {

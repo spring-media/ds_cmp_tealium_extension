@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* Based on SET DATA VALUE Adobe: Outbrain eVar113 for paywall event 475 */
 /* global utag, a, b */
 (function(a, b) {
