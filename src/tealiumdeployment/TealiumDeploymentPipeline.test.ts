@@ -348,5 +348,356 @@ describe('TealiumDeploymentPipeline', () => {
             expect(localExtensions[1]!.getOccurrence()).toBe(Occurrence.RunAlways);
             expect(localExtensions[1]!.getStatus()).toBe(Status.Active);
         });
+
+        it('accepts tag-scoped extensions with numeric scope', async() => {
+            const mockedFileReadSync = fs.readFileSync as jest.MockedFunction<typeof fs.readFileSync>;
+            mockedFileReadSync.mockReturnValue('console.log("tag-scoped");');
+
+            mockTealiumAPI(
+                simulateConnectSuccess()
+            );
+
+            const testDeployment = { profile: 'test',
+                extensions: [{
+                    name: 'Tag Scoped Extension',
+                    id: 523,
+                    file: './extensions/test/tag_scoped.js',
+                    scope: '210',  // Tag-scoped
+                    occurrence: Occurrence.RunAlways,
+                    status: Status.Active,
+                    useMinify: false
+                }]
+            };
+
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
+            await pipeline.connect();
+            const localExtensions = await pipeline.readLocalExtensions(testDeployment);
+            
+            expect(localExtensions.length).toBe(1);
+            expect(localExtensions[0]!.name).toBe('Tag Scoped Extension');
+            expect(localExtensions[0]!.getScope()).toBe('210');
+        });
+
+        it('accepts tag-scoped extensions with multiple tag IDs', async() => {
+            const mockedFileReadSync = fs.readFileSync as jest.MockedFunction<typeof fs.readFileSync>;
+            mockedFileReadSync.mockReturnValue('console.log("multi-tag");');
+
+            mockTealiumAPI(
+                simulateConnectSuccess()
+            );
+
+            const testDeployment = { profile: 'test',
+                extensions: [{
+                    name: 'Multi Tag Extension',
+                    id: 524,
+                    file: './extensions/test/multi_tag.js',
+                    scope: '210,233,155',  // Multiple tag IDs
+                    occurrence: Occurrence.RunAlways,
+                    status: Status.Active,
+                    useMinify: false
+                }]
+            };
+
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
+            await pipeline.connect();
+            const localExtensions = await pipeline.readLocalExtensions(testDeployment);
+            
+            expect(localExtensions.length).toBe(1);
+            expect(localExtensions[0]!.getScope()).toBe('210,233,155');
+        });
+    });
+
+    describe('validateTagScopedExtensions', () => {
+        it('throws if profile not loaded', () => {
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
+            expect(() => {
+                pipeline.validateTagScopedExtensions();
+            }).toThrow('Profile not loaded. Run fetchProfile first.');
+        });
+
+        it('passes validation when no tag-scoped extensions', async() => {
+            const mockedFileReadSync = fs.readFileSync as jest.MockedFunction<typeof fs.readFileSync>;
+            mockedFileReadSync.mockReturnValue('console.log("test");');
+
+            const mockProfile = { 
+                account: 'test-account', 
+                profile: 'test-solutions2', 
+                extensions: [], 
+                tags: [
+                    { id: 210, tagId: 'tag-210', title: 'Adobe Analytics', type: 'tag', status: 'active' }
+                ]
+            };
+
+            mockTealiumAPI(
+                simulateConnectSuccess(),
+                simulateGetProfileSuccess(mockProfile)
+            );
+
+            const testDeployment = { profile: 'test',
+                extensions: [{
+                    name: 'Standard Extension',
+                    id: 100,
+                    file: './extensions/test/standard.js',
+                    scope: Scope.AfterLoadRules,
+                    occurrence: Occurrence.RunAlways,
+                    status: Status.Active,
+                    useMinify: false
+                }]
+            };
+
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
+            await pipeline.connect();
+            await pipeline.fetchProfile();
+            await pipeline.readLocalExtensions(testDeployment);
+
+            expect(() => {
+                pipeline.validateTagScopedExtensions();
+            }).not.toThrow();
+        });
+
+        it('passes validation when tag IDs exist in profile', async() => {
+            const mockedFileReadSync = fs.readFileSync as jest.MockedFunction<typeof fs.readFileSync>;
+            mockedFileReadSync.mockReturnValue('console.log("tag-scoped");');
+
+            const mockProfile = { 
+                account: 'test-account', 
+                profile: 'test-solutions2', 
+                extensions: [], 
+                tags: [
+                    { id: 210, tagId: 'tag-210', title: 'Adobe Analytics', type: 'tag', status: 'active' },
+                    { id: 233, tagId: 'tag-233', title: 'Google Analytics', type: 'tag', status: 'active' }
+                ]
+            };
+
+            mockTealiumAPI(
+                simulateConnectSuccess(),
+                simulateGetProfileSuccess(mockProfile)
+            );
+
+            const testDeployment = { profile: 'test',
+                extensions: [{
+                    name: 'Tag Scoped Extension',
+                    id: 523,
+                    file: './extensions/test/tag_scoped.js',
+                    scope: '210',
+                    occurrence: Occurrence.RunAlways,
+                    status: Status.Active,
+                    useMinify: false
+                }]
+            };
+
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
+            await pipeline.connect();
+            await pipeline.fetchProfile();
+            await pipeline.readLocalExtensions(testDeployment);
+
+            expect(() => {
+                pipeline.validateTagScopedExtensions();
+            }).not.toThrow();
+        });
+
+        it('passes validation with multiple valid tag IDs', async() => {
+            const mockedFileReadSync = fs.readFileSync as jest.MockedFunction<typeof fs.readFileSync>;
+            mockedFileReadSync.mockReturnValue('console.log("multi-tag");');
+
+            const mockProfile = { 
+                account: 'test-account', 
+                profile: 'test-solutions2', 
+                extensions: [], 
+                tags: [
+                    { id: 210, tagId: 'tag-210', title: 'Adobe Analytics', type: 'tag', status: 'active' },
+                    { id: 233, tagId: 'tag-233', title: 'Google Analytics', type: 'tag', status: 'active' },
+                    { id: 155, tagId: 'tag-155', title: 'Facebook Pixel', type: 'tag', status: 'active' }
+                ]
+            };
+
+            mockTealiumAPI(
+                simulateConnectSuccess(),
+                simulateGetProfileSuccess(mockProfile)
+            );
+
+            const testDeployment = { profile: 'test',
+                extensions: [{
+                    name: 'Multi Tag Extension',
+                    id: 524,
+                    file: './extensions/test/multi_tag.js',
+                    scope: '210,233,155',
+                    occurrence: Occurrence.RunAlways,
+                    status: Status.Active,
+                    useMinify: false
+                }]
+            };
+
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
+            await pipeline.connect();
+            await pipeline.fetchProfile();
+            await pipeline.readLocalExtensions(testDeployment);
+
+            expect(() => {
+                pipeline.validateTagScopedExtensions();
+            }).not.toThrow();
+        });
+
+        it('throws error when tag ID does not exist in profile', async() => {
+            const mockedFileReadSync = fs.readFileSync as jest.MockedFunction<typeof fs.readFileSync>;
+            mockedFileReadSync.mockReturnValue('console.log("invalid");');
+
+            const mockProfile = { 
+                account: 'test-account', 
+                profile: 'test-solutions2', 
+                extensions: [], 
+                tags: [
+                    { id: 210, tagId: 'tag-210', title: 'Adobe Analytics', type: 'tag', status: 'active' }
+                ]
+            };
+
+            mockTealiumAPI(
+                simulateConnectSuccess(),
+                simulateGetProfileSuccess(mockProfile)
+            );
+
+            const testDeployment = { profile: 'test',
+                extensions: [{
+                    name: 'Invalid Tag Extension',
+                    id: 525,
+                    file: './extensions/test/invalid.js',
+                    scope: '999',  // Invalid tag ID
+                    occurrence: Occurrence.RunAlways,
+                    status: Status.Active,
+                    useMinify: false
+                }]
+            };
+
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
+            await pipeline.connect();
+            await pipeline.fetchProfile();
+            await pipeline.readLocalExtensions(testDeployment);
+
+            expect(() => {
+                pipeline.validateTagScopedExtensions();
+            }).toThrow("Extension 'Invalid Tag Extension' (ID: 525) references invalid tag IDs: [999]");
+            
+            expect(() => {
+                pipeline.validateTagScopedExtensions();
+            }).toThrow("Available tags in profile 'test-solutions2': 210 (Adobe Analytics)");
+        });
+
+        it('throws error with multiple invalid tag IDs', async() => {
+            const mockedFileReadSync = fs.readFileSync as jest.MockedFunction<typeof fs.readFileSync>;
+            mockedFileReadSync.mockReturnValue('console.log("invalid");');
+
+            const mockProfile = { 
+                account: 'test-account', 
+                profile: 'test-solutions2', 
+                extensions: [], 
+                tags: [
+                    { id: 210, tagId: 'tag-210', title: 'Adobe Analytics', type: 'tag', status: 'active' }
+                ]
+            };
+
+            mockTealiumAPI(
+                simulateConnectSuccess(),
+                simulateGetProfileSuccess(mockProfile)
+            );
+
+            const testDeployment = { profile: 'test',
+                extensions: [{
+                    name: 'Multiple Invalid Tags',
+                    id: 526,
+                    file: './extensions/test/invalid_multi.js',
+                    scope: '210,999,888',  // 999 and 888 are invalid
+                    occurrence: Occurrence.RunAlways,
+                    status: Status.Active,
+                    useMinify: false
+                }]
+            };
+
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
+            await pipeline.connect();
+            await pipeline.fetchProfile();
+            await pipeline.readLocalExtensions(testDeployment);
+
+            expect(() => {
+                pipeline.validateTagScopedExtensions();
+            }).toThrow("Extension 'Multiple Invalid Tags' (ID: 526) references invalid tag IDs: [999, 888]");
+        });
+
+        it('handles profile with no tags gracefully', async() => {
+            const mockedFileReadSync = fs.readFileSync as jest.MockedFunction<typeof fs.readFileSync>;
+            mockedFileReadSync.mockReturnValue('console.log("test");');
+
+            const mockProfile = { 
+                account: 'test-account', 
+                profile: 'test-solutions2', 
+                extensions: [], 
+                tags: null  // No tags in profile
+            };
+
+            mockTealiumAPI(
+                simulateConnectSuccess(),
+                simulateGetProfileSuccess(mockProfile)
+            );
+
+            const testDeployment = { profile: 'test',
+                extensions: [{
+                    name: 'Tag Extension',
+                    id: 527,
+                    file: './extensions/test/tag.js',
+                    scope: '210',
+                    occurrence: Occurrence.RunAlways,
+                    status: Status.Active,
+                    useMinify: false
+                }]
+            };
+
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
+            await pipeline.connect();
+            await pipeline.fetchProfile();
+            await pipeline.readLocalExtensions(testDeployment);
+
+            expect(() => {
+                pipeline.validateTagScopedExtensions();
+            }).toThrow("Extension 'Tag Extension' (ID: 527) references invalid tag IDs: [210]");
+            
+            expect(() => {
+                pipeline.validateTagScopedExtensions();
+            }).toThrow("Available tags in profile 'test-solutions2':");
+        });
+
+        it('accepts tag-scoped extensions from remote profile', async() => {
+            const extensions = [{
+                id: 523,
+                name: 'remote-tag-extension',
+                notes: 'test',
+                extensionType: 'Javascript Code',
+                occurrence: 'Run Always',
+                scope: '210',  // Tag-scoped from remote
+                status: 'active',
+                configuration: { code: 'console.log("remote");' }
+            }];
+
+            const mockProfile = { 
+                account: 'test-account', 
+                profile: 'test-solutions2', 
+                extensions: extensions,
+                tags: [
+                    { id: 210, tagId: 'tag-210', title: 'Adobe Analytics', type: 'tag', status: 'active' }
+                ]
+            };
+
+            mockTealiumAPI(
+                simulateConnectSuccess(),
+                simulateGetProfileSuccess(mockProfile)
+            );
+
+            const pipeline = new TealiumDeploymentPipeline({ profile: 'test-solutions2' }, logger);
+            await pipeline.connect();
+            await pipeline.fetchProfile();
+
+            const result = pipeline.getRemoteExtensions();
+
+            expect(result).toHaveLength(1);
+            expect(result[0]!.getScope()).toBe('210');
+        });
     });
 });

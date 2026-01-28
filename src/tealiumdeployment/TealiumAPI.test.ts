@@ -582,5 +582,135 @@ describe('TealiumAPI', () => {
 
             expect(operation.value.conditions).toBeUndefined();
         });
+
+        it('handles tag-scoped extensions with single tag ID', () => {
+            const tealium = new TealiumAPI(fakeUser, fakeApiKey, logger);
+
+            const operation = tealium.buildOperationPayload(123, {
+                name: 'Tag Scoped Extension',
+                code: 'console.log("tag-scoped");',
+                deploymentNotes: 'just a test',
+                scope: '210',  // Single tag ID
+                occurrence: Occurrence.RunAlways,
+                status: Status.Active
+            });
+
+            expect(operation.value.scope).toBe('210');
+        });
+
+        it('handles tag-scoped extensions with multiple tag IDs', () => {
+            const tealium = new TealiumAPI(fakeUser, fakeApiKey, logger);
+
+            const operation = tealium.buildOperationPayload(123, {
+                name: 'Tag Scoped Extension',
+                code: 'console.log("tag-scoped");',
+                deploymentNotes: 'just a test',
+                scope: '210,233,155',  // Multiple tag IDs
+                occurrence: Occurrence.RunAlways,
+                status: Status.Active
+            });
+
+            expect(operation.value.scope).toBe('210,233,155');
+        });
+    });
+
+    describe('Scope namespace helpers', () => {
+        describe('isTagScoped', () => {
+            it('identifies single tag ID as tag-scoped', () => {
+                expect(Scope.isTagScoped('210')).toBe(true);
+            });
+
+            it('identifies multiple tag IDs as tag-scoped', () => {
+                expect(Scope.isTagScoped('210,233')).toBe(true);
+                expect(Scope.isTagScoped('210,233,155')).toBe(true);
+            });
+
+            it('rejects standard scope strings', () => {
+                expect(Scope.isTagScoped('After Load Rules')).toBe(false);
+                expect(Scope.isTagScoped('Pre Loader')).toBe(false);
+                expect(Scope.isTagScoped('Before Load Rules')).toBe(false);
+                expect(Scope.isTagScoped('DOM Ready')).toBe(false);
+            });
+
+            it('rejects invalid formats', () => {
+                expect(Scope.isTagScoped('abc')).toBe(false);
+                expect(Scope.isTagScoped('210,abc')).toBe(false);
+                expect(Scope.isTagScoped('210,')).toBe(false);
+                expect(Scope.isTagScoped(',210')).toBe(false);
+                expect(Scope.isTagScoped('')).toBe(false);
+            });
+        });
+
+        describe('extractTagIds', () => {
+            it('extracts single tag ID', () => {
+                expect(Scope.extractTagIds('210')).toEqual([210]);
+            });
+
+            it('extracts multiple tag IDs', () => {
+                expect(Scope.extractTagIds('210,233')).toEqual([210, 233]);
+                expect(Scope.extractTagIds('210,233,155')).toEqual([210, 233, 155]);
+            });
+
+            it('returns empty array for non-tag-scoped values', () => {
+                expect(Scope.extractTagIds('After Load Rules')).toEqual([]);
+                expect(Scope.extractTagIds('Pre Loader')).toEqual([]);
+                expect(Scope.extractTagIds('invalid')).toEqual([]);
+            });
+
+            it('handles various numeric formats', () => {
+                expect(Scope.extractTagIds('1')).toEqual([1]);
+                expect(Scope.extractTagIds('999')).toEqual([999]);
+                expect(Scope.extractTagIds('100,200,300')).toEqual([100, 200, 300]);
+            });
+        });
+
+        describe('fromString', () => {
+            it('accepts standard scope enum values', () => {
+                expect(Scope.fromString('After Load Rules')).toBe(Scope.AfterLoadRules);
+                expect(Scope.fromString('Pre Loader')).toBe(Scope.PreLoader);
+                expect(Scope.fromString('Before Load Rules')).toBe(Scope.BeforeLoadRules);
+                expect(Scope.fromString('DOM Ready')).toBe(Scope.DOMReady);
+            });
+
+            it('accepts single tag ID', () => {
+                expect(Scope.fromString('210')).toBe('210');
+            });
+
+            it('accepts multiple tag IDs', () => {
+                expect(Scope.fromString('210,233')).toBe('210,233');
+                expect(Scope.fromString('210,233,155')).toBe('210,233,155');
+            });
+
+            it('throws error for invalid scope strings', () => {
+                expect(() => Scope.fromString('Invalid Scope')).toThrow(
+                    "'Invalid Scope' is not a valid Scope. Use predefined scopes or numeric tag IDs (e.g., \"210\" or \"233,155\")"
+                );
+            });
+
+            it('throws error for malformed tag IDs', () => {
+                expect(() => Scope.fromString('210,abc')).toThrow();
+                expect(() => Scope.fromString('abc,210')).toThrow();
+                expect(() => Scope.fromString('210,')).toThrow();
+            });
+        });
+
+        describe('includes', () => {
+            it('returns true for valid enum values', () => {
+                expect(Scope.includes('After Load Rules')).toBe(true);
+                expect(Scope.includes('Pre Loader')).toBe(true);
+                expect(Scope.includes('Before Load Rules')).toBe(true);
+                expect(Scope.includes('DOM Ready')).toBe(true);
+            });
+
+            it('returns false for tag IDs', () => {
+                expect(Scope.includes('210')).toBe(false);
+                expect(Scope.includes('210,233')).toBe(false);
+            });
+
+            it('returns false for invalid strings', () => {
+                expect(Scope.includes('Invalid')).toBe(false);
+                expect(Scope.includes('')).toBe(false);
+            });
+        });
     });
 });
