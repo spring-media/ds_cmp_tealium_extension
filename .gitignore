@@ -16,3 +16,7 @@ mutation-report.json
 .editorconfig
 
 local/
+
+.env
+.env.local
+.env.*.local
