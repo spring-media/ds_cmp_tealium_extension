@@ -52,7 +52,7 @@ export const WeltDeploymentConfig: DeploymentConfiguration = {
         {
             name: 'Tracking-ready Event (kr3m, sportdaten.welt.de)',
             id: 433,
-            file: './extensions/welt/peter_id_localstorage.js',
+            file: './extensions/welt/tracking_ready_sportdaten.js',
             scope: Scope.BeforeLoadRules,
             occurrence: Occurrence.RunAlways,
             status: Status.Active,
