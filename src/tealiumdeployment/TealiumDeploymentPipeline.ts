@@ -17,11 +17,11 @@ export type DeploymentConfiguration = {
         name: string,
         id: number,
         file: string,
-        scope: Scope,
+        scope: Scope | string,  // Can be enum or numeric tag IDs like "210" or "233,155"
         occurrence: Occurrence,
         status: Status,
         notes?: string,
-        useMinify?: boolean
+        useMinify?: boolean,
      }[]
 }
 
@@ -88,7 +88,7 @@ export class TealiumDeploymentPipeline {
                 return null;
             }
 
-            if (!Scope.includes(extension.scope)) {
+            if (!Scope.includes(extension.scope) && !Scope.isTagScoped(extension.scope)) {
                 this.logger.info(`Remote: Scope ${extension.scope} not supported. ignored.`);
                 return null;
             }
@@ -129,12 +129,16 @@ export class TealiumDeploymentPipeline {
             try {
                 const code = await this.readCode(extensionConfig.file, extensionConfig.useMinify);
                 const extension = Extension.fromLocal(extensionConfig.id, extensionConfig.name, code);
-                extension.setScope(Scope.fromString(extensionConfig.scope));
+                
+                const scopeValue = Scope.fromString(extensionConfig.scope);
+                extension.setScope(scopeValue);
+                
                 extension.setOccurrence(Occurrence.fromString(extensionConfig.occurrence));
                 extension.setStatus(Status.fromString(extensionConfig.status));
 
                 extension.setFilePath(extensionConfig.file);
                 extension.setNotes(extensionConfig.notes ?? '');
+                
                 this.localExtensions.push(extension);
             } catch (error: any) {
                 this.logger.error(error);
@@ -146,6 +150,41 @@ export class TealiumDeploymentPipeline {
             throw new Error('Not all extensions found');
         }
         return [...this.localExtensions];
+    }
+
+    validateTagScopedExtensions(): void {
+        if (!this.currentProfile) {
+            throw new Error('Profile not loaded. Run fetchProfile first.');
+        }
+
+        const availableTags = this.currentProfile.tags || [];
+        const availableTagIds = new Set(availableTags.map(tag => tag.id));
+        
+        const tagIdToTitle = new Map(availableTags.map(tag => [tag.id, tag.title]));
+        
+        for (const extension of this.localExtensions) {
+            const scope = extension.getScope();
+            
+            // Check if this is a tag-scoped extension (numeric tag IDs)
+            if (typeof scope === 'string' && Scope.isTagScoped(scope)) {
+                const tagIds = Scope.extractTagIds(scope);
+                const invalidTagIds = tagIds.filter(tagId => !availableTagIds.has(tagId));
+                
+                if (invalidTagIds.length > 0) {
+                    const availableTagList = availableTags
+                        .map(tag => `${tag.id} (${tag.title})`)
+                        .join(', ');
+                    
+                    throw new Error(
+                        `Extension '${extension.name}' (ID: ${extension.id}) references invalid tag IDs: [${invalidTagIds.join(', ')}].\n` +
+                        `Available tags in profile '${this.profile}': ${availableTagList}`
+                    );
+                }
+                
+                const tagTitles = tagIds.map(id => tagIdToTitle.get(id) || id).join(', ');
+                this.logger.info(`✓ Extension '${extension.name}' (ID: ${extension.id}) tag scope validated: [${scope}] (${tagTitles})`);
+            }
+        }
     }
 
     reconcile(): Extension[] {
@@ -169,6 +208,8 @@ export class TealiumDeploymentPipeline {
             }
             throw new Error('Not all extensions found in Tealium.');
         }
+
+        this.validateTagScopedExtensions();
 
         return extensionsForUpdate;
     }

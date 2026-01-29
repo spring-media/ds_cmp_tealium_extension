@@ -31,9 +31,21 @@ export namespace Scope {
         return Object.values(Scope).includes(value as Scope);
     }
 
-    export function fromString(value: string): Scope {
+    export function fromString(value: string): Scope | string {
         if (includes(value)) return value;
-        throw new Error(`'${value}' is not part of Scope`);
+        
+        if (isTagScoped(value)) return value;
+        
+        throw new Error(`'${value}' is not a valid Scope. Use predefined scopes or numeric tag IDs (e.g., "210" or "233,155")`);
+    }
+    
+    export function isTagScoped(value: string): boolean {
+        return /^\d+(,\d+)*$/.test(value);
+    }
+    
+    export function extractTagIds(scope: string): number[] {
+        if (!isTagScoped(scope)) return [];
+        return scope.split(',').map(id => parseInt(id, 10));
     }
 }
 
@@ -47,7 +59,11 @@ export namespace Occurrence {
         return Object.values(Occurrence).includes(value as Occurrence);
     }
 
-    export function fromString(value: string): Occurrence {
+    export function fromString(value: string | null | undefined): Occurrence {
+        // Handle null/undefined by returning a default value
+        if (value === null || value === undefined || value === '') {
+            return Occurrence.RunAlways;
+        }
         if (includes(value)) return value;
         throw new Error(`'${value}' is not part of Occurrence`);
     }
@@ -167,6 +183,9 @@ export class TealiumAPI {
             });
             return response.status === 200;
         } catch (error: any) {
+            // Log detailed error information from Tealium API
+            const errorDetails = error.response?.data ? JSON.stringify(error.response.data, null, 2) : error.message;
+            this.logger.error(`Tealium API Error Details: ${errorDetails}`);
             throw new Error(`Deploy failed. ${error.message}`);
         }
     }
@@ -242,7 +261,8 @@ export class TealiumAPI {
             }
         };
 
-        if (params.scope === Scope.PreLoader) {
+        // Remove occurrence and conditions for PreLoader and tag-scoped extensions
+        if (params.scope === Scope.PreLoader || (typeof params.scope === 'string' && Scope.isTagScoped(params.scope))) {
             delete (operation.value as any).occurrence;
             delete (operation.value as any).conditions;
         }
@@ -258,7 +278,7 @@ export interface ExtensionCreateParams {
     extensionNotes?: string;
     deploymentNotes: string;
     versionTitle?: string;
-    scope?: Scope;
+    scope?: Scope | string; 
     targets?: {
         dev?: boolean;
         qa?: boolean;
@@ -272,7 +292,7 @@ export interface ExtensionUpdateParams {
     extensionNotes?: string;
     deploymentNotes: string;
     versionTitle?: string;
-    scope?: Scope;
+    scope?: Scope | string; 
     occurrence: Occurrence;
     status: Status;
     targets?: {
@@ -296,10 +316,19 @@ export interface TealiumExtension {
     };
 }
 
+export interface TealiumTag {
+    id: number;
+    tagId: string;
+    title: string;
+    type: string;
+    status: string;
+}
+
 export interface TealiumProfilePayload {
     account: string;
     profile: string;
-    extensions: TealiumExtension[] | null
+    extensions: TealiumExtension[] | null;
+    tags: TealiumTag[] | null;
 }
 
 export interface TealiumOperationPayload {
