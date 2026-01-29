@@ -183,6 +183,9 @@ export class TealiumAPI {
             });
             return response.status === 200;
         } catch (error: any) {
+            // Log detailed error information from Tealium API
+            const errorDetails = error.response?.data ? JSON.stringify(error.response.data, null, 2) : error.message;
+            this.logger.error(`Tealium API Error Details: ${errorDetails}`);
             throw new Error(`Deploy failed. ${error.message}`);
         }
     }
@@ -258,7 +261,8 @@ export class TealiumAPI {
             }
         };
 
-        if (params.scope === Scope.PreLoader) {
+        // Remove occurrence and conditions for PreLoader and tag-scoped extensions
+        if (params.scope === Scope.PreLoader || (typeof params.scope === 'string' && Scope.isTagScoped(params.scope))) {
             delete (operation.value as any).occurrence;
             delete (operation.value as any).conditions;
         }
