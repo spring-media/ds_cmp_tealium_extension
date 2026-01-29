@@ -59,7 +59,11 @@ export namespace Occurrence {
         return Object.values(Occurrence).includes(value as Occurrence);
     }
 
-    export function fromString(value: string): Occurrence {
+    export function fromString(value: string | null | undefined): Occurrence {
+        // Handle null/undefined by returning a default value
+        if (value === null || value === undefined || value === '') {
+            return Occurrence.RunAlways;
+        }
         if (includes(value)) return value;
         throw new Error(`'${value}' is not part of Occurrence`);
     }
