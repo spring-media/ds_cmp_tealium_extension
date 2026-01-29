@@ -160,7 +160,6 @@ export class TealiumDeploymentPipeline {
         const availableTags = this.currentProfile.tags || [];
         const availableTagIds = new Set(availableTags.map(tag => tag.id));
         
-        // Create a map of tag IDs to tag titles for better error messages
         const tagIdToTitle = new Map(availableTags.map(tag => [tag.id, tag.title]));
         
         for (const extension of this.localExtensions) {
