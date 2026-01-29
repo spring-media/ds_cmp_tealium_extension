@@ -1,6 +1,6 @@
 import winston from 'winston';
-import { deployment } from './deployment';
-import { WeltDeploymentConfig } from './deploymentConfigurations';
+import { deployment } from '../deployment';
+import { WeltDeploymentConfig } from '../deploymentConfigurations';
 
 (async() => {
 
