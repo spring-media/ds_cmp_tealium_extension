@@ -22,7 +22,7 @@ export class Extension {
 
     private filepath: string;
     private notes: string;
-    private scope: Scope;
+    private scope: Scope | string;  // Can be enum or numeric tag IDs
     private occurrence: Occurrence;
     private status: Status;
 
@@ -39,11 +39,11 @@ export class Extension {
         this.status = Status.Active;
     }
 
-    setScope(scope: Scope) {
+    setScope(scope: Scope | string) {
         this.scope = scope;
     }
 
-    getScope(): Scope {
+    getScope(): Scope | string {
         return this.scope;
     }
 
