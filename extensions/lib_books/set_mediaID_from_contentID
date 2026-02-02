@@ -1,5 +1,6 @@
 //Runs only on Tealium link events for video interactions.
 // Ensures contentID is present before extracting media_id.
+
 (function (a, b) {
 
   // Only run on link events where event_name === "video"
@@ -8,13 +9,22 @@
   }
 
   // Get contentID from data layer
-  var cid = utag.data.contentID;
+  var cid = b.contentID || utag.data.contentID;
 
   // Validate contentID
   if (!cid || typeof cid !== "string") return;
 
   // Clean stray quotes/spaces
   cid = cid.trim().replace(/^\"+|\"+$/g, "");
+  
+  // Always set media_type for video events (keeps legacy behavior for non-live)
+  if (cid.indexOf("personalstream") > -1) {
+    b.media_type = "video : 24/7 live";
+    } else {
+      b.media_type = "video"; // keep existing value so reports don’t change
+    }
+    utag.data.media_type = b.media_type;
+
   
   var mediaID;
 
