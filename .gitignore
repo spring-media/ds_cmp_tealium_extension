@@ -18,5 +18,6 @@ mutation-report.json
 local/
 
 .env
+.env.*
 .env.local
 .env.*.local
