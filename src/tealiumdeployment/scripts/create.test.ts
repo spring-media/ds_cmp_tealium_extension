@@ -215,7 +215,7 @@ describe('create Javascript Code from JSON', () => {
             + '(function(a, b) {\n'
             + '    try {\n'
             + '        if (1) {\n'
-            + "             b['testVar'] = 'Hello World!';\n"
+            + "            b['testVar'] = 'Hello World!';\n"
             + '        }\n'
             + '    } catch (e) {\n'
             + '        window.utag.DB(e);\n'
