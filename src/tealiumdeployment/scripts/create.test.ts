@@ -1,4 +1,4 @@
-import { createCondition, SetDataValuesConverter } from './Converter';
+import { createCondition, ExtensionData, SetDataValuesConverter } from './Converter';
 
 describe('create Javascript Code from JSON', () => {
 
@@ -164,7 +164,7 @@ describe('create Javascript Code from JSON', () => {
     describe('SetDataValueConverter', ()=>{
         it('creates empty javascript code', () => {
 
-            const exampeExtension = {
+            const exampeExtension: ExtensionData = {
                 name: 'just a test',
                 id: 1234,
                 conditions: [],
@@ -191,7 +191,7 @@ describe('create Javascript Code from JSON', () => {
 
         it('creates javascript code with text config', () => {
 
-            const exampeExtension = {
+            const exampeExtension: ExtensionData = {
                 name: 'just a test',
                 id: 1234,
                 conditions: [],
@@ -200,7 +200,8 @@ describe('create Javascript Code from JSON', () => {
                         {
                             setoption: 'text',
                             set: 'testVar',
-                            settotext: 'Hello World!'
+                            settotext: 'Hello World!',
+                            settovar: ''
                         }
                     ]
                 }
@@ -225,7 +226,7 @@ describe('create Javascript Code from JSON', () => {
 
         it('creates javascript code with code config', () => {
 
-            const exampeExtension = {
+            const exampeExtension: ExtensionData = {
                 name: 'just a test',
                 id: 1234,
                 conditions: [],
@@ -234,7 +235,8 @@ describe('create Javascript Code from JSON', () => {
                         {
                             setoption: 'code',
                             set: 'js.testVar',
-                            settotext: 'a == b'
+                            settotext: 'a == b',
+                            settovar: ''
                         }
                     ]
                 }
@@ -261,7 +263,7 @@ describe('create Javascript Code from JSON', () => {
     });
 
     it('creates javascript code with var config', () => {
-        const exampeExtension = {
+        const exampeExtension: ExtensionData = {
             name: 'just a test',
             id: 1234,
             conditions: [],
@@ -270,7 +272,8 @@ describe('create Javascript Code from JSON', () => {
                     {
                         setoption: 'var',
                         set: 'js.testVar',
-                        settovar: 'udo.srcVar'
+                        settovar: 'udo.srcVar',
+                        settotext: ''
                     }
                 ]
             }
@@ -294,7 +297,7 @@ describe('create Javascript Code from JSON', () => {
     });
 
     it('creates javascript code with condition config', () => {
-        const exampeExtension = {
+        const exampeExtension: ExtensionData = {
             name: 'just a test',
             id: 1234,
             conditions: [[{ variable: 'udo.test', operator: 'equals', value: 'hello world'}]],
@@ -303,7 +306,8 @@ describe('create Javascript Code from JSON', () => {
                     {
                         setoption: 'var',
                         set: 'js.testVar',
-                        settovar: 'udo.srcVar'
+                        settovar: 'udo.srcVar',
+                        settotext: ''
                     }
                 ]
             }

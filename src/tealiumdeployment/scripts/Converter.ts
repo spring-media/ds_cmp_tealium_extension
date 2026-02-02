@@ -1,4 +1,10 @@
-const getCondition = (condition: any) => {
+type Condition = {
+    variable: string,
+    operator: string,
+    value: string,
+}
+
+const getCondition = (condition: Condition) => {
     let conditionCode = '';
 
     const leftVar = condition.variable
@@ -64,7 +70,7 @@ const getCondition = (condition: any) => {
     return `${conditionCode}`;
 };
 
-const createConditionAnd = (data: any[]) => {
+const createConditionAnd = (data: Condition[]) => {
     const blocks = data.map(d => getCondition(d));
     if (blocks.length < 2) {
         return blocks.join(' && ');
@@ -73,7 +79,7 @@ const createConditionAnd = (data: any[]) => {
     }
 };
 
-export const createCondition = (data: any[]) => {
+export const createCondition = (data: Condition[][]) => {
     if (data.length === 0) {
         return '1';
     }
@@ -86,8 +92,22 @@ export const createCondition = (data: any[]) => {
     }
 };
 
+export type ExtensionData = {
+    name: string,
+    id: number,
+    conditions: Condition[][],
+    configuration: {
+        configs: {
+            setoption: string,
+            set: string,
+            settotext: string,
+            settovar: string
+        }[]
+    }
+}
+
 export class SetDataValuesConverter {
-    public convert(extension: any): string | false {
+    public convert(extension: ExtensionData): string | false {
 
         const conditionCode = createCondition(extension.conditions);
         const logic = this.createLogic(extension);
@@ -112,7 +132,7 @@ export class SetDataValuesConverter {
         return code;
     }
 
-    private createLogic(extension: any): string | false{
+    private createLogic(extension: ExtensionData): string | false{
         let logic = '';
         for (const config of extension.configuration.configs) {
             const setoption = config.setoption;
