@@ -45,6 +45,73 @@ describe('set_mediaID_from_contentID - Video Media ID Extraction', () => {
         jest.clearAllMocks();
     });
 
+    describe('Media type classification (live vs default)', () => {
+  it('should set media_type to live when contentID contains "personalstream"', () => {
+    // Arrange
+    global.a = 'link';
+    global.b = { event_name: 'video' };
+    global.utag.data.contentID = 'https://petbook.personalstream.tv/v1/master.m3u8';
+
+    // Act
+    jest.isolateModules(() => {
+      require('../../extensions/lib_books/set_mediaID_from_contentID');
+    });
+
+    // Assert
+    expect(global.b.media_type).toBe('video : 24/7 live');
+    expect(global.utag.data.media_type).toBe('video : 24/7 live');
+  });
+
+  it('should set media_type to default "video" when contentID does not contain "personalstream"', () => {
+    // Arrange
+    global.a = 'link';
+    global.b = { event_name: 'video' };
+    global.utag.data.contentID = '/category/subcategory/article789/extra';
+
+    // Act
+    jest.isolateModules(() => {
+      require('../../extensions/lib_books/set_mediaID_from_contentID');
+    });
+
+    // Assert
+    expect(global.b.media_type).toBe('video');
+    expect(global.utag.data.media_type).toBe('video');
+  });
+
+  it('should not set media_type if event type is not link', () => {
+    // Arrange
+    global.a = 'view';
+    global.b = { event_name: 'video' };
+    global.utag.data.contentID = 'https://petbook.personalstream.tv/v1/master.m3u8';
+
+    // Act
+    jest.isolateModules(() => {
+      require('../../extensions/lib_books/set_mediaID_from_contentID');
+    });
+
+    // Assert
+    expect(global.b.media_type).toBeUndefined();
+    expect(global.utag.data.media_type).toBeUndefined();
+  });
+
+  it('should not set media_type if event_name is not video', () => {
+    // Arrange
+    global.a = 'link';
+    global.b = { event_name: 'click' };
+    global.utag.data.contentID = 'https://petbook.personalstream.tv/v1/master.m3u8';
+
+    // Act
+    jest.isolateModules(() => {
+      require('../../extensions/lib_books/set_mediaID_from_contentID');
+    });
+
+    // Assert
+    expect(global.b.media_type).toBeUndefined();
+    expect(global.utag.data.media_type).toBeUndefined();
+  });
+});
+
+
     describe('When video link event with content-discovery pattern', () => {
         it('should extract media_id from position [4] for content-discovery URLs', () => {
             // Arrange
