@@ -145,4 +145,14 @@ is provided by the Adobe Analytics tag.
 
 In addition to the global doPlugins extension there are three app extensions (doPlugins_bild_apps, doPlugins_welt_apps_android, doPlugins_welt_apps_ios) which are the generalized and refactored version for different Bild and Welt apps. The app extensions specifically cater for tracking on the mobile platforms.
 
+# Deployment-Workflow
+![Deployment workflow shows how a feature is developed on staging and deployed to production.](./docs/img/deployment-workflow-2024-08-29-1456.svg)
+
+This is a first version of our workflow for deployment on Tealium.
+
+There will be two profiles for each brand, one production profile, one staging profile. The production profile is managed by CI/CD pipeline on Github. It is only used for publishing. The staging profile can be used for development, testing without any debugging limitation.
+
+To bring a change to production a user has to add its changes to Github. After the review happened and the change is merged to the main branch, the pipeline will update the Tealium production profile. Then a user has to login to tealium
+and publish the latest version.
+
 Good luck!
