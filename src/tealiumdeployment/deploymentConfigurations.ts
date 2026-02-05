@@ -261,6 +261,52 @@ export const WeltDeploymentConfig: DeploymentConfiguration = {
             occurrence: Occurrence.RunAlways,
             status: Status.Active,
             useMinify: false,
+        },
+        {
+            name: 'Braze: checkout',
+            id: 617,
+            file: './extensions/welt/braze_checkout_tracking.js',
+            scope: Scope.AfterLoadRules,
+            occurrence: Occurrence.RunAlways,
+            status: Status.Active,
+            useMinify: false,
+            notes: 'Braze Library is loaded via REDO Problem was that when a page loads library twice, braze start a new sessions. There was no way in braze to stop that or check it before'
+        },
+        {
+            name: 'RASP: helpers',
+            id: 621,
+            file: './extensions/welt/rasp/rasp_helpers.js',
+            scope: Scope.AfterLoadRules,
+            occurrence: Occurrence.RunAlways,
+            status: Status.Active,
+            useMinify: false,
+        },
+        {
+            name: 'RASP: page view',
+            id: 622,
+            file: './extensions/welt/rasp/rasp.js',
+            scope: Scope.AfterTagExtensions,
+            occurrence: Occurrence.RunOnce,
+            status: Status.Active,
+            useMinify: false,
+        },
+        {
+            name: 'ADOBE: doPlugins global',
+            id: 436,
+            file: './extensions/doPlugins/doPlugins_global.js',
+            scope: '218, 210, 206, 155',
+            occurrence: Occurrence.RunAlways,
+            status: Status.Active,
+            useMinify: false,
+        },
+        {
+            name: 'ADOBE: doPlugins',
+            id: 297,
+            file: './extensions/welt/doPlugins_welt_liveticker.js',
+            scope: '218, 210, 206, 155',
+            occurrence: Occurrence.RunAlways,
+            status: Status.Active,
+            useMinify: false,
         }
     ]
 };
