@@ -182,7 +182,7 @@ describe('CW time format: CW {week} {year} {first DOW} - {last DOW}', () => {
             
             expect(weekMid).toMatch(/^\d{2}$/);
             expect(weekEnd).toMatch(/^\d{2}$/);
-            expect(parseInt(weekEnd)).toBeGreaterThan(parseInt(weekMid));
+            expect(Number.parseInt(weekEnd, 10)).toBeGreaterThan(Number.parseInt(weekMid, 10));
         });
 
         it('getMonthDay should handle different months', () => {
@@ -194,8 +194,6 @@ describe('CW time format: CW {week} {year} {first DOW} - {last DOW}', () => {
         });
 
         it('getCW should handle year boundary (week spans two years)', () => {
-            const mockDate = new Date(2022, 0, 1); // Saturday, Jan 1, 2022
-            
             const result = cw.getCW();
             
             expect(result).toMatch(/^CW \d{2} \d{4}\.\d{2}\.\d{2} - \d{2}\.\d{2}\.$/);

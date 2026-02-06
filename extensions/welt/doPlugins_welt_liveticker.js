@@ -1,4 +1,4 @@
-/* global window, utag */
+/* global window */
 /* eslint-disable @typescript-eslint/no-shadow */
 
 /**
