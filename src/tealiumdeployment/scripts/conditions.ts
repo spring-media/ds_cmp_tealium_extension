@@ -1,8 +1,5 @@
-export type Condition = {
-    variable: string,
-    operator: string,
-    value: string,
-}
+import { Condition } from './converters/types';
+
 
 const getCondition = (condition: Condition) => {
     let conditionCode = '';
@@ -61,6 +58,10 @@ const getCondition = (condition: Condition) => {
         }
         case 'notpopulated': {
             conditionCode += `b['${leftVar}'] == ''`;
+            break;
+        }
+        case 'populated': {
+            conditionCode += `typeof b['${leftVar}'] != 'undefined' && b['qp.activate_tag'] != ''`;
             break;
         }
         default: {
