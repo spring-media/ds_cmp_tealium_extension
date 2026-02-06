@@ -1,7 +1,7 @@
 import winston from 'winston';
 import fs from 'fs/promises';
 import path from 'path';
-import { SetDataValuesConverter } from './Converter';
+import { SetDataValuesConverter } from './converters/SetDataValuesConverter';
 
 (async () => {
     const loggerFormat = winston.format.printf(({ level, message, timestamp }) => {
