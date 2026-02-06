@@ -4,7 +4,7 @@ import { ExtensionData } from './types';
 describe('SetDataValuesConverter', ()=>{
     it('creates empty javascript code', () => {
 
-        const exampeExtension: ExtensionData = {
+        const exampleExtension: ExtensionData = {
             name: 'just a test',
             id: 1234,
             scope: '',
@@ -27,12 +27,12 @@ describe('SetDataValuesConverter', ()=>{
         + '        window.utag.DB(e);\n'
         + '    }\n'
         + '})();\n';
-        expect(converter.convert(exampeExtension)).toBe(resultingCode);
+        expect(converter.convert(exampleExtension)).toBe(resultingCode);
     });
 
     it('creates javascript code with text config', () => {
 
-        const exampeExtension: ExtensionData = {
+        const exampleExtension: ExtensionData = {
             name: 'just a test',
             id: 1234,
             scope: '',
@@ -63,12 +63,12 @@ describe('SetDataValuesConverter', ()=>{
         + '        window.utag.DB(e);\n'
         + '    }\n'
         + '})();\n';
-        expect(converter.convert(exampeExtension)).toBe(resultingCode);
+        expect(converter.convert(exampleExtension)).toBe(resultingCode);
     });
 
     it('creates javascript code with code config', () => {
 
-        const exampeExtension: ExtensionData = {
+        const exampleExtension: ExtensionData = {
             name: 'just a test',
             id: 1234,
             scope: '',
@@ -101,11 +101,11 @@ describe('SetDataValuesConverter', ()=>{
         + '        window.utag.DB(e);\n'
         + '    }\n'
         + '})();\n';
-        expect(converter.convert(exampeExtension)).toBe(resultingCode);
+        expect(converter.convert(exampleExtension)).toBe(resultingCode);
     });
 
     it('creates javascript code with var config', () => {
-        const exampeExtension: ExtensionData = {
+        const exampleExtension: ExtensionData = {
             name: 'just a test',
             id: 1234,
             scope: '',
@@ -136,11 +136,11 @@ describe('SetDataValuesConverter', ()=>{
         + '        window.utag.DB(e);\n'
         + '    }\n'
         + '})();\n';
-        expect(converter.convert(exampeExtension)).toBe(resultingCode);
+        expect(converter.convert(exampleExtension)).toBe(resultingCode);
     });
 
     it('creates javascript code with condition config', () => {
-        const exampeExtension: ExtensionData = {
+        const exampleExtension: ExtensionData = {
             name: 'just a test',
             id: 1234,
             scope: '',
@@ -171,6 +171,6 @@ describe('SetDataValuesConverter', ()=>{
         + '        window.utag.DB(e);\n'
         + '    }\n'
         + '})();\n';
-        expect(converter.convert(exampeExtension)).toBe(resultingCode);
+        expect(converter.convert(exampleExtension)).toBe(resultingCode);
     });
 });
