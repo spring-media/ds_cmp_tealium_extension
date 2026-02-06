@@ -89,7 +89,7 @@ const exportedFunctions = {
     handleWhoami
 };
 
-// Export für Tests
+// Export for tests
 // Evaluate runtime environment (Browser or Node.js)
 if (typeof exports === 'object') {
     // Expose reference to members for unit testing.
