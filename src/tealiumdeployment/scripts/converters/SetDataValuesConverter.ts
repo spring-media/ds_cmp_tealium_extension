@@ -1,20 +1,7 @@
-import { createCondition, Condition } from '../conditions';
+import { createCondition } from '../Converter';
+import { ConfigurationGroup, Converter, ExtensionData } from '../converters/types';
 
-export type ExtensionData = {
-    name: string,
-    id: number,
-    conditions: Condition[][],
-    configuration: {
-        configs: {
-            setoption: string,
-            set: string,
-            settotext: string,
-            settovar: string
-        }[]
-    }
-}
-
-export class SetDataValuesConverter {
+export class SetDataValuesConverter implements Converter {
     public convert(extension: ExtensionData): string | false {
 
         const conditionCode = createCondition(extension.conditions);
@@ -42,7 +29,8 @@ export class SetDataValuesConverter {
 
     private createLogic(extension: ExtensionData): string | false{
         let logic = '';
-        for (const config of extension.configuration.configs) {
+        const configGroup = extension.configuration as ConfigurationGroup;
+        for (const config of configGroup.configs) {
             const setoption = config.setoption;
             const column = config.set.replace('js.', '');
             const value = config.settotext;

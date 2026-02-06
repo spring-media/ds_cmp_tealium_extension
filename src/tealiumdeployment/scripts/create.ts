@@ -2,8 +2,11 @@ import winston from 'winston';
 import fs from 'fs/promises';
 import path from 'path';
 import { SetDataValuesConverter } from './converters/SetDataValuesConverter';
+import { Converter } from './converters/types';
+import { PersistDataValueConverter } from './converters/PersistDataValueConverter';
 
-(async () => {
+
+(async() => {
     const loggerFormat = winston.format.printf(({ level, message, timestamp }) => {
         return `${timestamp} [${level}]: ${message}`;
     });
@@ -59,7 +62,22 @@ import { SetDataValuesConverter } from './converters/SetDataValuesConverter';
     const outputDirExtensions = path.join(__dirname, `../../../src/profiles/${profile}/extensions`);
 
     for (const extension of tealiumProfile.extensions) {
-        if (extension.extensionType != 'Set Data Values') {
+        let converter: Converter | null = null;
+        switch(extension.extensionType) {
+            case 'Set Data Values': {
+                // converter = new SetDataValuesConverter();
+                break;
+            }
+            case 'Persist Data Value': {
+                converter = new PersistDataValueConverter();
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+
+        if (converter == null) {
             continue;
         }
 
@@ -67,7 +85,6 @@ import { SetDataValuesConverter } from './converters/SetDataValuesConverter';
         const outputFilePath = path.join(outputDirExtensions, fileName);
         console.log(outputFilePath);
 
-        const converter = new SetDataValuesConverter();
         const code = converter.convert(extension);
         if(!code) {
             continue;
