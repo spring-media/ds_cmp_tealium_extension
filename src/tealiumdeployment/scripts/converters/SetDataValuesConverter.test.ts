@@ -1,4 +1,5 @@
-import { ExtensionData, SetDataValuesConverter } from './SetDataValuesConverter';
+import { SetDataValuesConverter } from './SetDataValuesConverter';
+import { ExtensionData } from './types';
 
 describe('SetDataValuesConverter', ()=>{
     it('creates empty javascript code', () => {
@@ -6,6 +7,7 @@ describe('SetDataValuesConverter', ()=>{
         const exampeExtension: ExtensionData = {
             name: 'just a test',
             id: 1234,
+            scope: '',
             conditions: [],
             configuration: {
                 configs: []
@@ -33,6 +35,7 @@ describe('SetDataValuesConverter', ()=>{
         const exampeExtension: ExtensionData = {
             name: 'just a test',
             id: 1234,
+            scope: '',
             conditions: [],
             configuration: {
                 configs: [
@@ -68,6 +71,7 @@ describe('SetDataValuesConverter', ()=>{
         const exampeExtension: ExtensionData = {
             name: 'just a test',
             id: 1234,
+            scope: '',
             conditions: [],
             configuration: {
                 configs: [
@@ -104,6 +108,7 @@ describe('SetDataValuesConverter', ()=>{
         const exampeExtension: ExtensionData = {
             name: 'just a test',
             id: 1234,
+            scope: '',
             conditions: [],
             configuration: {
                 configs: [
@@ -114,7 +119,7 @@ describe('SetDataValuesConverter', ()=>{
                         settotext: ''
                     }
                 ]
-            }
+            },
         }
 
         const converter = new SetDataValuesConverter();
@@ -138,6 +143,7 @@ describe('SetDataValuesConverter', ()=>{
         const exampeExtension: ExtensionData = {
             name: 'just a test',
             id: 1234,
+            scope: '',
             conditions: [[{ variable: 'udo.test', operator: 'equals', value: 'hello world'}]],
             configuration: {
                 configs: [
