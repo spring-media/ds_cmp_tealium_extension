@@ -29,20 +29,11 @@ export class PersistDataValueConverter implements Converter {
     }
 
     private createLogic(extension: ExtensionData): string | false{
-        let logic = '';
+        const lines = [];
         const config = extension.configuration as PersistDataValueConfiguration;
         const setoption = config.setoption;
         // const column = config.set.replace('js.', '');
         const value = config.settotext;
-
-        // if (setoption == 'text') {
-        //     logic +=
-        //     `            b['${column}'] = '${value}';\n`;
-        // } else if (setoption == 'code') {
-        //     logic +=
-        //     '            try {\n' +
-        //     `                b['${column}'] = ${value}${value.endsWith(';') ? '' : ';'}\n` +
-        //     '            } catch (e) {}\n';
         if (setoption == 'var') {
             const variable = config.var;
             const sourceVar = config.settovar
@@ -51,17 +42,29 @@ export class PersistDataValueConverter implements Converter {
             const sessionVariable = sourceVar.replace('qp.', '')
             if (variable.startsWith('cp.utag_main_')) {
                 const key = variable.replace('cp.utag_main_', '');
-                logic += `            utag.loader.SC('utag_main', {\n`
-                logic += `                '${key}': b['${sourceVar}'] + ';exp-session'\n`
-                logic += `            });\n`
+                lines.push(`            utag.loader.SC('utag_main', {\n`);
+                lines.push(`                '${key}': b['${sourceVar}']${config.persistence == 'visitor' ?'':" + ';exp-session'"}\n`);
+                lines.push(`            });\n`);
             } else {
-                logic += `            document.cookie = "${sessionVariable}=" + b['${sourceVar}'] + ";path=/;domain=" + utag.cfg.domain + ";expires=";\n`;
+                lines.push(`            document.cookie = "${sessionVariable}=" + b['${sourceVar}'] + ";path=/;domain=" + utag.cfg.domain + ";expires=";\n`);
             }
-            logic += `            b['${variable}'] = b['${sourceVar}'];\n`;
-        } else {
-            return false;
-        }
+            lines.push(`            b['${variable}'] = b['${sourceVar}'];\n`);
 
-        return logic;
+            if(config.allowupdate == 'once') {
+                const condition = ''
+                + `            if (typeof b['${variable}'] == 'undefined') {\n`
+                + lines.map(line => `    ${line}`).join('')
+                + `            }\n`;
+
+                return condition;
+            } else if(config.allowupdate == 'multiple') {
+                return lines.join('');
+            } else {
+                throw new Error(`AllowUpdate: ${config.allowupdate} not supported`);
+            }
+
+        } else {
+            throw new Error(`SetOption: ${setoption} not supported`);
+        }
     }
 }

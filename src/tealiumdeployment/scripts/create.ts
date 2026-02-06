@@ -65,7 +65,7 @@ import { PersistDataValueConverter } from './converters/PersistDataValueConverte
         let converter: Converter | null = null;
         switch(extension.extensionType) {
             case 'Set Data Values': {
-                // converter = new SetDataValuesConverter();
+                converter = new SetDataValuesConverter();
                 break;
             }
             case 'Persist Data Value': {

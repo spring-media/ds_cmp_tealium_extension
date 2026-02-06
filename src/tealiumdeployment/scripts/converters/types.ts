@@ -16,7 +16,9 @@ export type Configuration = {
 }
 
 export type PersistDataValueConfiguration = Configuration & {
-    var: string
+    var: string,
+    allowupdate: string,
+    persistence: string
 }
 
 export type ExtensionData = {
