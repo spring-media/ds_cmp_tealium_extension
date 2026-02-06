@@ -187,16 +187,6 @@ export const WeltDeploymentConfig: DeploymentConfiguration = {
             useMinify: false,
         },
         {
-            name: 'CMP Interaction Tracking',
-            id: 366,
-            file: './extensions/welt/media_tracking.js',
-            scope: Scope.BeforeLoadRules,
-            occurrence: Occurrence.RunOnce,
-            status: Status.Active,
-            useMinify: false,
-            notes: 'Tracking of CMP Interactions, fire page view and events'
-        },
-        {
             name: 'Media Tracking',
             id: 616,
             file: './extensions/welt/media_tracking.js',
