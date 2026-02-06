@@ -1,4 +1,4 @@
-import { createCondition } from '../Converter';
+import { createCondition } from '../conditions';
 import { ConfigurationGroup, Converter, ExtensionData } from '../converters/types';
 
 export class SetDataValuesConverter implements Converter {
