@@ -32,8 +32,7 @@ export class PersistDataValueConverter implements Converter {
         const lines = [];
         const config = extension.configuration as PersistDataValueConfiguration;
         const setoption = config.setoption;
-        // const column = config.set.replace('js.', '');
-        const value = config.settotext;
+
         if (setoption == 'var') {
             const variable = config.var;
             const sourceVar = config.settovar
