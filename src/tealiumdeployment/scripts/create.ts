@@ -4,6 +4,7 @@ import path from 'path';
 import { SetDataValuesConverter } from './converters/SetDataValuesConverter';
 import { Converter } from './converters/types';
 import { PersistDataValueConverter } from './converters/PersistDataValueConverter';
+import { JoinDataValuesConverter } from './converters/JoinDataValuesConverter';
 
 
 (async() => {
@@ -70,6 +71,11 @@ import { PersistDataValueConverter } from './converters/PersistDataValueConverte
             }
             case 'Persist Data Value': {
                 converter = new PersistDataValueConverter();
+                break;
+            }
+            case 'Join Data Values': {
+                console.log('test')
+                converter = new JoinDataValuesConverter();
                 break;
             }
             default: {

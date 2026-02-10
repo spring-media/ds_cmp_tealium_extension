@@ -8,6 +8,9 @@ describe('SetDataValuesConverter', ()=>{
             name: 'just a test',
             id: 1234,
             scope: '',
+            extensionType: '',
+            occurrence: null,
+            loadRule: null,
             conditions: [],
             configuration: {
                 configs: []
@@ -37,6 +40,9 @@ describe('SetDataValuesConverter', ()=>{
             id: 1234,
             scope: '',
             conditions: [],
+            extensionType: '',
+            occurrence: null,
+            loadRule: null,
             configuration: {
                 configs: [
                     {
@@ -73,6 +79,9 @@ describe('SetDataValuesConverter', ()=>{
             id: 1234,
             scope: '',
             conditions: [],
+            extensionType: '',
+            occurrence: null,
+            loadRule: null,
             configuration: {
                 configs: [
                     {
@@ -109,6 +118,9 @@ describe('SetDataValuesConverter', ()=>{
             name: 'just a test',
             id: 1234,
             scope: '',
+            extensionType: '',
+            occurrence: null,
+            loadRule: null,
             conditions: [],
             configuration: {
                 configs: [
@@ -119,7 +131,7 @@ describe('SetDataValuesConverter', ()=>{
                         settotext: ''
                     }
                 ]
-            },
+            }
         }
 
         const converter = new SetDataValuesConverter();
@@ -144,7 +156,10 @@ describe('SetDataValuesConverter', ()=>{
             name: 'just a test',
             id: 1234,
             scope: '',
-            conditions: [[{ variable: 'udo.test', operator: 'equals', value: 'hello world'}]],
+            extensionType: '',
+            occurrence: null,
+            loadRule: null,
+            conditions: [[{ variable: 'udo.test', operator: 'equals', value: 'hello world' }]],
             configuration: {
                 configs: [
                     {

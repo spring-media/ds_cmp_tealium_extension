@@ -41,7 +41,7 @@ export type ExtensionData = {
     occurrence: string | null,
     loadRule: string | null
     conditions: Condition[][],
-    configuration: JoinDataValuesConfiguration | ConfigurationGroup
+    configuration: JoinDataValuesConfiguration | PersistDataValueConfiguration | ConfigurationGroup
 }
 
 export interface Converter {
