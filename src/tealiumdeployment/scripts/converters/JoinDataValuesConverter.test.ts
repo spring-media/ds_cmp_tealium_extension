@@ -143,7 +143,7 @@ describe('Join Data Value Converter', () => {
         expect(converter.convert(extension)).toBe(code);
     });
 
-    it('creates a join data values extension, without default value, multiple sets', () => {
+    it('creates a join data values extension, test fallback if _set_text is undefined', () => {
         const converter = new JoinDataValuesConverter();
 
         const extension: ExtensionData = {

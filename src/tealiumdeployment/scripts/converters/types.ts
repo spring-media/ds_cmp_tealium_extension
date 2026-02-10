@@ -1,7 +1,7 @@
 export type Condition = {
     variable: string,
     operator: string,
-    value: string,
+    value: string
 }
 
 export type ConfigurationGroup = {
@@ -26,7 +26,7 @@ export type JoinDataValuesConfiguration = Configuration & {
     leadingdelimiter: boolean
     var: string,
     delimiter: string,
-    defaultvalue: string
+    defaultvalue: string,
     configs: {
         set?: 'textvalue' | string
         text?: string
@@ -39,7 +39,7 @@ export type ExtensionData = {
     scope: string,
     extensionType: string,
     occurrence: string | null,
-    loadRule: string | null
+    loadRule: string | null,
     conditions: Condition[][],
     configuration: JoinDataValuesConfiguration | PersistDataValueConfiguration | ConfigurationGroup
 }
