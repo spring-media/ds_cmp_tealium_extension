@@ -34,7 +34,7 @@ describe('Join Data Value Converter', () => {
 
         const code = ''
         + `/* Based on JOIN DATA VALUES Set CB sections 43 */\n`
-        + `/* global utag, a, b */\n`
+        + `/* global utag, a, b, c, d */\n`
         + `(function(a, b, c, d) {\n`
         + `    try {\n`
         + `        if (1) {\n`
@@ -79,7 +79,7 @@ describe('Join Data Value Converter', () => {
 
         const code = ''
         + `/* Based on JOIN DATA VALUES Set IVW cp 35 */\n`
-        + `/* global utag, a, b */\n`
+        + `/* global utag, a, b, c, d */\n`
         + `(function(a, b, c, d) {\n`
         + `    try {\n`
         + `        if (1) {\n`
@@ -128,7 +128,7 @@ describe('Join Data Value Converter', () => {
 
         const code = ''
         + `/* Based on JOIN DATA VALUES Set IVW cp 35 */\n`
-        + `/* global utag, a, b */\n`
+        + `/* global utag, a, b, c, d */\n`
         + `(function(a, b, c, d) {\n`
         + `    try {\n`
         + `        if (1) {\n`
@@ -174,10 +174,65 @@ describe('Join Data Value Converter', () => {
 
         const code = ''
         + `/* Based on JOIN DATA VALUES Set IVW cp 35 */\n`
-        + `/* global utag, a, b */\n`
+        + `/* global utag, a, b, c, d */\n`
         + `(function(a, b, c, d) {\n`
         + `    try {\n`
         + `        if (1) {\n`
+        + `            c = ['this should be used', b['page_channel1'], b['page_type']];\n`
+        + `            b['ivw_cp'] = c.join('_')\n`
+        + `        }\n`
+        + `    } catch (e) {\n`
+        + `        window.utag.DB(e);\n`
+        + `    }\n`
+        + `})(a, b, c, d);\n`;
+
+        expect(converter.convert(extension)).toBe(code);
+    });
+
+    it('supports conditions', () => {
+        const converter = new JoinDataValuesConverter();
+
+        const extension: ExtensionData = {
+          name: 'Set IVW cp',
+          id: 35,
+          scope: '233,155',
+          conditions: [[{
+            variable: 'qp.utm_source',
+            operator: 'defined',
+            value: ''
+          },
+          {
+            variable: 'qp.utm_medium',
+            operator: 'defined',
+            value: ''
+          }]],
+          configuration: {
+            '146788819930700022_set_text': undefined,
+            setoption: '',
+            set: '',
+            settotext: '',
+            settovar: '',
+            leadingdelimiter: false,
+            var: 'js.ivw_cp',
+            delimiter: '_',
+            defaultvalue: '',
+            configs: [
+              { set: 'textvalue'},
+              { text: 'this should be used'},
+              { set: 'js.page_channel1'},
+              { set: 'js.page_type'}]
+          },
+          extensionType: 'Join Data Values',
+          occurrence: null,
+          loadRule: null
+        }
+
+        const code = ''
+        + `/* Based on JOIN DATA VALUES Set IVW cp 35 */\n`
+        + `/* global utag, a, b, c, d */\n`
+        + `(function(a, b, c, d) {\n`
+        + `    try {\n`
+        + `        if ((typeof b['qp.utm_source'] != 'undefined' && typeof b['qp.utm_medium'] != 'undefined')) {\n`
         + `            c = ['this should be used', b['page_channel1'], b['page_type']];\n`
         + `            b['ivw_cp'] = c.join('_')\n`
         + `        }\n`

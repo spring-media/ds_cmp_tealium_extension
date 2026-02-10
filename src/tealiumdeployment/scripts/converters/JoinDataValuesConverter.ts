@@ -1,4 +1,5 @@
 import { Scope } from '../../TealiumAPI';
+import { createCondition } from '../conditions';
 import { Converter, ExtensionData, JoinDataValuesConfiguration } from './types';
 
 export class JoinDataValuesConverter implements Converter {
@@ -26,13 +27,13 @@ export class JoinDataValuesConverter implements Converter {
             throw new Error('leadingdelimiter: true not supported');            
         }
 
-        const condition = '1';
+        const condition = createCondition(extension.conditions);;
         const setStatement = this.createSetStatement(config);
         const defaultStatement = this.createDefaultStatement(config);
         const dstVariable = config.var.replace('js.', '');
 
         const code = `/* Based on JOIN DATA VALUES ${extension.name} ${extension.id} */\n`
-        + '/* global utag, a, b */\n'
+        + '/* global utag, a, b, c, d */\n'
         + `(function(a, b, c, d) {\n`
         + `    try {\n`
         + `        if (${condition}) {\n`
@@ -69,7 +70,6 @@ export class JoinDataValuesConverter implements Converter {
         }
 
         return `c = [${items.join(', ')}];\n`;
-        // return `            c = [b['page_channel1'], 'platform: beta'];\n`;
     }
 
     private createDefaultStatement(config: JoinDataValuesConfiguration) {

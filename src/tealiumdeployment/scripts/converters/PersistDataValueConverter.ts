@@ -10,7 +10,6 @@ export class PersistDataValueConverter implements Converter {
             throw Error(`Scope ${extension.scope} not supported`);
         }
 
-
         const conditionCode = createCondition(extension.conditions);
         const logic = this.createLogic(extension);
 
