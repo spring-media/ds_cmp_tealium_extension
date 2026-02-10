@@ -35,13 +35,13 @@ describe('escapeJsStringLiteral', () => {
     });
 
     it('prevents injection with crafted input', () => {
-        const malicious = "'; alert('xss'); '";
+        const malicious = "'; alert('XSS'); '";
         const escaped = escapeJsStringLiteral(malicious);
-        expect(escaped).toBe("\\'; alert(\\'xss\\'); \\'");
+        expect(escaped).toBe("\\'; alert(\\'XSS\\'); \\'");
         
         // Verify it's safe when used in a string literal
         const code = `var x = '${escaped}';`;
-        expect(code).toBe("var x = '\\'; alert(\\'xss\\'); \\'';");
+        expect(code).toBe("var x = '\\'; alert(\\'XSS\\'); \\'';");
     });
 });
 
@@ -70,8 +70,8 @@ describe('escapeJsComment', () => {
     });
 
     it('prevents comment injection', () => {
-        const malicious = "attack */ alert('xss'); /*";
+        const malicious = "attack */ alert('XSS'); /*";
         const escaped = escapeJsComment(malicious);
-        expect(escaped).toBe("attack *\\/ alert('xss'); /*");
+        expect(escaped).toBe("attack *\\/ alert('XSS'); /*");
     });
 });

@@ -194,7 +194,7 @@ describe('Join Data Value Converter', () => {
             const converter = new JoinDataValuesConverter();
 
             const extension: ExtensionData = {
-                name: "Test */ alert('xss') /*",
+                name: "Test */ alert('XSS') /*",
                 id: 99,
                 scope: 'After Load Rules',
                 conditions: [],
@@ -217,7 +217,7 @@ describe('Join Data Value Converter', () => {
             const code = converter.convert(extension) as string;
             
             // Comment should be properly escaped
-            expect(code).toContain("Test *\\/ alert('xss') /*");
+            expect(code).toContain("Test *\\/ alert('XSS') /*");
         });
 
         it('escapes single quotes in text values', () => {
