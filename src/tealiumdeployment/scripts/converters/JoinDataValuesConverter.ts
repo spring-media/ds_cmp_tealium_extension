@@ -54,9 +54,9 @@ export class JoinDataValuesConverter implements Converter {
             if(c.set === 'textvalue') {
                 // is there somthing with _set_text?
                 let value = '';
-                const key: string | undefined = Object.keys(config).find(key => key.endsWith('_set_text'));
-                if(key) {
-                   value = (config as any)[key];
+                const textKey: string | undefined = Object.keys(config).find(key => key.endsWith('_set_text'));
+                if(textKey) {
+                   value = (config as any)[textKey];
                 }
                 if(value === '') {
                     value = this.findNextTextItem(config, i)

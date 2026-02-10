@@ -1,5 +1,5 @@
 import { PersistDataValueConverter } from './PersistDataValueConverter';
-import { Configuration, ExtensionData, PersistDataValueConfiguration } from './types';
+import { ExtensionData, PersistDataValueConfiguration } from './types';
 
 describe('PersistDataValueConverter', ()=> {
     it('creates empty javascript code', ()=> {

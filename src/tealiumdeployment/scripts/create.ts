@@ -74,7 +74,6 @@ import { JoinDataValuesConverter } from './converters/JoinDataValuesConverter';
                 break;
             }
             case 'Join Data Values': {
-                console.log('test')
                 converter = new JoinDataValuesConverter();
                 break;
             }
