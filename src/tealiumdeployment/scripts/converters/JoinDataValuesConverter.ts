@@ -42,7 +42,7 @@ export class JoinDataValuesConverter implements Converter {
         + `    } catch (e) {\n`
         + `        window.utag.DB(e);\n`
         + `    }\n`
-        + `})();\n`;
+        + `})(a, b, c, d);\n`;
         return code;
     }
 

@@ -29,7 +29,7 @@ describe('SetDataValuesConverter', ()=>{
         + '    } catch (e) {\n'
         + '        window.utag.DB(e);\n'
         + '    }\n'
-        + '})();\n';
+        + '})(a, b);\n';
         expect(converter.convert(exampleExtension)).toBe(resultingCode);
     });
 
@@ -68,7 +68,7 @@ describe('SetDataValuesConverter', ()=>{
         + '    } catch (e) {\n'
         + '        window.utag.DB(e);\n'
         + '    }\n'
-        + '})();\n';
+        + '})(a, b);\n';
         expect(converter.convert(exampleExtension)).toBe(resultingCode);
     });
 
@@ -109,7 +109,7 @@ describe('SetDataValuesConverter', ()=>{
         + '    } catch (e) {\n'
         + '        window.utag.DB(e);\n'
         + '    }\n'
-        + '})();\n';
+        + '})(a, b);\n';
         expect(converter.convert(exampleExtension)).toBe(resultingCode);
     });
 
@@ -147,7 +147,7 @@ describe('SetDataValuesConverter', ()=>{
         + '    } catch (e) {\n'
         + '        window.utag.DB(e);\n'
         + '    }\n'
-        + '})();\n';
+        + '})(a, b);\n';
         expect(converter.convert(exampleExtension)).toBe(resultingCode);
     });
 
@@ -185,7 +185,7 @@ describe('SetDataValuesConverter', ()=>{
         + '    } catch (e) {\n'
         + '        window.utag.DB(e);\n'
         + '    }\n'
-        + '})();\n';
+        + '})(a, b);\n';
         expect(converter.convert(exampleExtension)).toBe(resultingCode);
     });
 });

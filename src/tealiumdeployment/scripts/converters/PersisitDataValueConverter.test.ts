@@ -1,5 +1,5 @@
 import { PersistDataValueConverter } from './PersistDataValueConverter';
-import { ExtensionData, PersistDataValueConfiguration } from './types';
+import { ExtensionData, PersistDataValueConfiguration } from './types';[]
 
 describe('PersistDataValueConverter', ()=> {
     it('creates empty javascript code', ()=> {
@@ -46,7 +46,7 @@ describe('PersistDataValueConverter', ()=> {
         + `    } catch (e) {\n`
         + `        window.utag.DB(e);\n`
         + `    }\n`
-        + `})();\n`;
+        + `})(a, b);\n`;
         expect(converter.convert(extension)).toBe(code);
 
     })
@@ -97,7 +97,7 @@ describe('PersistDataValueConverter', ()=> {
         + `    } catch (e) {\n`
         + `        window.utag.DB(e);\n`
         + `    }\n`
-        + `})();\n`;
+        + `})(a, b);\n`;
         expect(converter.convert(extension)).toBe(code);
     })
 
@@ -148,12 +148,12 @@ describe('PersistDataValueConverter', ()=> {
         + `    } catch (e) {\n`
         + `        window.utag.DB(e);\n`
         + `    }\n`
-        + `})();\n`;
+        + `})(a, b);\n`;
 
         expect(converter.convert(extension)).toBe(code);
     })
 
-    it('tests with allowupdate once', ()=> {
+    it('tests with allowupdate once', () => {
         const converter = new PersistDataValueConverter();
 
         const extension: ExtensionData = {
@@ -201,7 +201,7 @@ describe('PersistDataValueConverter', ()=> {
         + `    } catch (e) {\n`
         + `        window.utag.DB(e);\n`
         + `    }\n`
-        + `})();\n`;
+        + `})(a, b);\n`;
 
         expect(converter.convert(extension)).toBe(code);
     })

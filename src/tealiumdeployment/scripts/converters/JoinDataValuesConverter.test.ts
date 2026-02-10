@@ -44,7 +44,7 @@ describe('Join Data Value Converter', () => {
         + `    } catch (e) {\n`
         + `        window.utag.DB(e);\n`
         + `    }\n`
-        + `})();\n`
+        + `})(a, b, c, d);\n`
 
         expect(converter.convert(extension)).toBe(code);
     });
@@ -93,80 +93,53 @@ describe('Join Data Value Converter', () => {
         + `    } catch (e) {\n`
         + `        window.utag.DB(e);\n`
         + `    }\n`
-        + `})();\n`;
+        + `})(a, b, c, d);\n`;
+
+        expect(converter.convert(extension)).toBe(code);
+    });
+
+    it('creates a join data values extension, without default value, multiple sets', () => {
+        const converter = new JoinDataValuesConverter();
+
+        const extension: ExtensionData = {
+          name: 'Set IVW cp',
+          id: 35,
+          scope: '233,155',
+          conditions: [],
+          configuration: {
+            '146788819930700022_set_text': 'a',
+            setoption: '',
+            set: '',
+            settotext: '',
+            settovar: '',
+            leadingdelimiter: false,
+            var: 'js.ivw_cp',
+            delimiter: '_',
+            defaultvalue: '',
+            configs: [
+              { set: 'textvalue'}, 
+              { set: 'js.page_channel1'},
+              { set: 'js.page_type'}]
+          },
+          extensionType: 'Join Data Values',
+          occurrence: null,
+          loadRule: null
+        }
+
+        const code = ''
+        + `/* Based on JOIN DATA VALUES Set IVW cp 35 */\n`
+        + `/* global utag, a, b */\n`
+        + `(function(a, b, c, d) {\n`
+        + `    try {\n`
+        + `        if (1) {\n`
+        + `            c = ['a', b['page_channel1'], b['page_type']];\n`
+        + `            b['ivw_cp'] = c.join('_')\n`
+        + `        }\n`
+        + `    } catch (e) {\n`
+        + `        window.utag.DB(e);\n`
+        + `    }\n`
+        + `})(a, b, c, d);\n`;
 
         expect(converter.convert(extension)).toBe(code);
     });
 });
-
-// {
-
-
-
-    //   "configuration": {
-    //     "146788819930700022_set_text": "a",
-    //     "configs": [
-    //       {
-    //         "set": "textvalue"
-    //       },
-    //       {
-    //         "set": "js.page_channel1"
-    //       },
-    //       {
-    //         "set": "js.page_type"
-    //       },
-    //       {
-    //         "text": ""
-    //       }
-    //     ],
-    //     "146788848943200024_set_text": "",
-    //     "leadingdelimiter": false,
-    //     "var": "js.ivw_cp",
-    //     "delimiter": "_",
-    //     "defaultvalue": "a_sonstige"
-    //   }
-    // }
-
-
-
-    // {
-    //   "id": 43,
-    //   "extensionId": 100002,
-    //   "name": "Set CB sections",
-    //   "status": "active",
-    //   "extensionType": "Join Data Values",
-    //   "scope": "After Load Rules",
-    //   "occurrence": "Run Always",
-    //   "notes": null,
-    //   "loadRule": null,
-    //   "library": null,
-    //   "selectedTargets": {
-    //     "dev": true,
-    //     "qa": true,
-    //     "prod": true
-    //   },
-    //   "environmentVersions": {
-    //     "qa": "202601291554",
-    //     "prod": "202601291554",
-    //     "dev": "202601291554"
-    //   },
-    //   "conditions": [],
-    //   "configuration": {
-    //     "147090402697400018_set_text": "",
-    //     "configs": [
-    //       {
-    //         "set": "js.page_channel1"
-    //       },
-    //       {
-    //         "set": "textvalue"
-    //       },
-    //       {
-    //         "text": "platform: beta"
-    //       }
-    //     ],
-    //     "leadingdelimiter": false,
-    //     "var": "js.cb_sections",
-    //     "delimiter": ",",
-    //     "defaultvalue": ""
-    //   }
-    // },
