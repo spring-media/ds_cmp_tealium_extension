@@ -2,6 +2,9 @@
 node_modules
 coverage
 
+# Lock files (using yarn.lock)
+package-lock.json
+
 # Mutation testing reports
 .stryker-tmp
 reports/mutation

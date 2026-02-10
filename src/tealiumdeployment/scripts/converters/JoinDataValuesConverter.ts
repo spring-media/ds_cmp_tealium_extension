@@ -1,5 +1,6 @@
 import { Scope } from '../../TealiumAPI';
 import { Converter, ExtensionData, JoinDataValuesConfiguration } from './types';
+import { escapeJsStringLiteral, escapeJsComment } from './escapeUtils';
 
 export class JoinDataValuesConverter implements Converter {
     convert(extension: ExtensionData): string | false {
@@ -31,13 +32,13 @@ export class JoinDataValuesConverter implements Converter {
         const defaultStatement = this.createDefaultStatement(config);
         const dstVariable = config.var.replace('js.', '');
 
-        const code = `/* Based on JOIN DATA VALUES ${extension.name} ${extension.id} */\n`
+        const code = `/* Based on JOIN DATA VALUES ${escapeJsComment(extension.name)} ${extension.id} */\n`
         + '/* global utag, a, b */\n'
         + `(function(a, b, c, d) {\n`
         + `    try {\n`
         + `        if (${condition}) {\n`
         + `            ${setStatement}${defaultStatement}`
-        + `            b['${dstVariable}'] = c.join('${config.delimiter}')\n`
+        + `            b['${escapeJsStringLiteral(dstVariable)}'] = c.join('${escapeJsStringLiteral(config.delimiter)}')\n`
         + `        }\n`
         + `    } catch (e) {\n`
         + `        window.utag.DB(e);\n`
@@ -62,9 +63,10 @@ export class JoinDataValuesConverter implements Converter {
                     value = this.findNextTextItem(config, i)
                 }
 
-                items.push(`'${value}'`);
+                items.push(`'${escapeJsStringLiteral(value)}'`);
             } else if(c.set !== undefined) {
-                items.push(`b['${c.set?.replace('js.', '')}']`);
+                const varName = c.set?.replace('js.', '') ?? '';
+                items.push(`b['${escapeJsStringLiteral(varName)}']`);
             }
         }
 
@@ -79,7 +81,7 @@ export class JoinDataValuesConverter implements Converter {
         const code = ''
         + `            for (d = 0; d < c.length; d++) {\n`
         + `                if (typeof c[d] == 'undefined' || c[d] == '')\n`
-        + `                    c[d] = '${config.defaultvalue}'\n`
+        + `                    c[d] = '${escapeJsStringLiteral(config.defaultvalue)}'\n`
         + `            }\n`;
         return code;
     }
