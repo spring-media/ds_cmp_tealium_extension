@@ -150,7 +150,7 @@ export const WeltDeploymentConfig: DeploymentConfiguration = {
         },
         {
             name: 'Static.up.welt.de – Force Tealium Page View',
-            id: 370,
+            id: 626,
             file: './extensions/welt/tealium-static-up-welt-view.js',
             scope: Scope.PreLoader,
             occurrence: Occurrence.RunOnce,
@@ -160,7 +160,7 @@ export const WeltDeploymentConfig: DeploymentConfiguration = {
         },
         {
             name: 'WHOAMI no lib and github',
-            id: 563,
+            id: 627,
             file: './extensions/whoami.js',
             scope: Scope.BeforeLoadRules,
             occurrence: Occurrence.RunAlways,
@@ -170,7 +170,7 @@ export const WeltDeploymentConfig: DeploymentConfiguration = {
         },
         {
             name: 'CMP_CustomVendorMapping',
-            id: 365,
+            id: 628,
             file: './extensions/cmp/cmp_custom_vendor_mapping.js',
             scope: Scope.BeforeLoadRules,
             occurrence: Occurrence.RunAlways,
@@ -179,7 +179,7 @@ export const WeltDeploymentConfig: DeploymentConfiguration = {
         },
         {
             name: 'CMP Interaction Tracking',
-            id: 366,
+            id: 629,
             file: './extensions/cmp/cmp_interaction_tracking.js',
             scope: Scope.BeforeLoadRules,
             occurrence: Occurrence.RunOnce,
@@ -188,7 +188,7 @@ export const WeltDeploymentConfig: DeploymentConfiguration = {
         },
         {
             name: 'Media Tracking',
-            id: 616,
+            id: 630,
             file: './extensions/welt/media_tracking.js',
             scope: Scope.BeforeLoadRules,
             occurrence: Occurrence.RunAlways,
@@ -197,7 +197,7 @@ export const WeltDeploymentConfig: DeploymentConfiguration = {
         },
         {
             name: 'TEALIUM ENVIRONMENT SWITCHER - ast.welt.de',
-            id: 426,
+            id: 631,
             file: './extensions/welt/tealium_environment_switcher_welt.js',
             scope: Scope.AfterLoadRules,
             occurrence: Occurrence.RunAlways,
@@ -207,7 +207,7 @@ export const WeltDeploymentConfig: DeploymentConfiguration = {
         },
         {
             name: 'Adobe: CW berechnen',
-            id: 318,
+            id: 632,
             file: './extensions/my_CW.js',
             scope: Scope.AfterLoadRules,
             occurrence: Occurrence.RunAlways,
@@ -217,7 +217,7 @@ export const WeltDeploymentConfig: DeploymentConfiguration = {
         },
         {
             name: 'Adobe: Inline Element zu Home Teaser',
-            id: 380,
+            id: 633,
             file: './extensions/welt/adobe_inline_element_home_teaser.js',
             scope: Scope.AfterLoadRules,
             occurrence: Occurrence.RunAlways,
@@ -226,7 +226,7 @@ export const WeltDeploymentConfig: DeploymentConfiguration = {
         },
         {
             name: 'Article Scrolldepth Brandstory',
-            id: 560,
+            id: 634,
             file: './extensions/welt/brandstory/brandstory_scrolldepth.js',
             scope: Scope.AfterLoadRules,
             occurrence: Occurrence.RunOnce,
@@ -235,7 +235,7 @@ export const WeltDeploymentConfig: DeploymentConfiguration = {
         },
         {
             name: 'Article Milestones Brandstory',
-            id: 561,
+            id: 635,
             file: './extensions/welt/brandstory/brandstory_milestones.js',
             scope: Scope.AfterLoadRules,
             occurrence: Occurrence.RunAlways,
@@ -245,7 +245,7 @@ export const WeltDeploymentConfig: DeploymentConfiguration = {
         },
         {
             name: 'webview : global nmtAppInfo setup',
-            id: 590,
+            id: 636,
             file: './extensions/nmt_app_info.js',
             scope: Scope.AfterLoadRules,
             occurrence: Occurrence.RunAlways,
@@ -254,7 +254,7 @@ export const WeltDeploymentConfig: DeploymentConfiguration = {
         },
         {
             name: 'Braze: checkout',
-            id: 617,
+            id: 637,
             file: './extensions/welt/braze_checkout_tracking.js',
             scope: Scope.AfterLoadRules,
             occurrence: Occurrence.RunAlways,
@@ -264,7 +264,7 @@ export const WeltDeploymentConfig: DeploymentConfiguration = {
         },
         {
             name: 'RASP: helpers',
-            id: 621,
+            id: 638,
             file: './extensions/welt/rasp/rasp_helpers.js',
             scope: Scope.AfterLoadRules,
             occurrence: Occurrence.RunAlways,
@@ -273,7 +273,7 @@ export const WeltDeploymentConfig: DeploymentConfiguration = {
         },
         {
             name: 'RASP: page view',
-            id: 622,
+            id: 639,
             file: './extensions/welt/rasp/rasp.js',
             scope: Scope.AfterTagExtensions,
             occurrence: Occurrence.RunOnce,
@@ -281,19 +281,28 @@ export const WeltDeploymentConfig: DeploymentConfiguration = {
             useMinify: false,
         },
         {
+            name: 'Piano - segments short and candidates',
+            id: 640,
+            file: './extensions/piano_segments.js',
+            scope: Scope.AfterTagExtensions,
+            occurrence: Occurrence.RunOnce,
+            status: Status.Active,
+            useMinify: false,
+        },
+        {
             name: 'ADOBE: doPlugins global',
-            id: 436,
+            id: 641,
             file: './extensions/doPlugins/doPlugins_global.js',
-            scope: '218, 210, 206, 155',
+            scope: '218,210,206,155',
             occurrence: Occurrence.RunAlways,
             status: Status.Active,
             useMinify: false,
         },
         {
             name: 'ADOBE: doPlugins',
-            id: 297,
+            id: 642,
             file: './extensions/welt/doPlugins_welt_liveticker.js',
-            scope: '218, 210, 206, 155',
+            scope: '218,210,206,155',
             occurrence: Occurrence.RunAlways,
             status: Status.Active,
             useMinify: false,
