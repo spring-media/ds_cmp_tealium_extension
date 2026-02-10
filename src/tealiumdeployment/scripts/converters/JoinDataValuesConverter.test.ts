@@ -66,7 +66,7 @@ describe('Join Data Value Converter', () => {
             leadingdelimiter: false,
             var: 'js.ivw_cp',
             delimiter: '_',
-            defaultvalue: 'a_sonstige',
+            defaultvalue: 'a_sonstige_test',
             configs: [
               { set: 'textvalue'}, 
               { set: 'js.page_channel1'},
@@ -86,7 +86,7 @@ describe('Join Data Value Converter', () => {
         + `            c = ['a', b['page_channel1'], b['page_type']];\n`
         + `            for (d = 0; d < c.length; d++) {\n`
         + `                if (typeof c[d] == 'undefined' || c[d] == '')\n`
-        + `                    c[d] = 'a_sonstige'\n`
+        + `                    c[d] = 'a_sonstige_test'\n`
         + `            }\n`
         + `            b['ivw_cp'] = c.join('_')\n`
         + `        }\n`
@@ -133,6 +133,52 @@ describe('Join Data Value Converter', () => {
         + `    try {\n`
         + `        if (1) {\n`
         + `            c = ['a', b['page_channel1'], b['page_type']];\n`
+        + `            b['ivw_cp'] = c.join('_')\n`
+        + `        }\n`
+        + `    } catch (e) {\n`
+        + `        window.utag.DB(e);\n`
+        + `    }\n`
+        + `})(a, b, c, d);\n`;
+
+        expect(converter.convert(extension)).toBe(code);
+    });
+
+    it('creates a join data values extension, without default value, multiple sets', () => {
+        const converter = new JoinDataValuesConverter();
+
+        const extension: ExtensionData = {
+          name: 'Set IVW cp',
+          id: 35,
+          scope: '233,155',
+          conditions: [],
+          configuration: {
+            '146788819930700022_set_text': undefined,
+            setoption: '',
+            set: '',
+            settotext: '',
+            settovar: '',
+            leadingdelimiter: false,
+            var: 'js.ivw_cp',
+            delimiter: '_',
+            defaultvalue: '',
+            configs: [
+              { set: 'textvalue'},
+              { text: 'this should be used'},
+              { set: 'js.page_channel1'},
+              { set: 'js.page_type'}]
+          },
+          extensionType: 'Join Data Values',
+          occurrence: null,
+          loadRule: null
+        }
+
+        const code = ''
+        + `/* Based on JOIN DATA VALUES Set IVW cp 35 */\n`
+        + `/* global utag, a, b */\n`
+        + `(function(a, b, c, d) {\n`
+        + `    try {\n`
+        + `        if (1) {\n`
+        + `            c = ['this should be used', b['page_channel1'], b['page_type']];\n`
         + `            b['ivw_cp'] = c.join('_')\n`
         + `        }\n`
         + `    } catch (e) {\n`

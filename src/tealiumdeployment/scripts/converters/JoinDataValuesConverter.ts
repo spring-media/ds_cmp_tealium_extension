@@ -15,7 +15,7 @@ export class JoinDataValuesConverter implements Converter {
         }
 
         if(extension.occurrence && !['Run Always'].includes(extension.occurrence)) {
-            throw new Error(`Wrong occurrence. Scope ${extension.occurrence} not supported.`);
+            throw new Error(`Wrong occurrence. Occurrence ${extension.occurrence} not supported.`);
         }
 
         if(extension.loadRule != null) {
@@ -52,11 +52,11 @@ export class JoinDataValuesConverter implements Converter {
         for(let i = 0; i < config.configs.length; i++) {
             const c = config.configs[i] ?? {};
             if(c.set === 'textvalue') {
-                // is there somthing with _set_text?
+                // is there something with _set_text?
                 let value = '';
                 const textKey: string | undefined = Object.keys(config).find(key => key.endsWith('_set_text'));
                 if(textKey) {
-                   value = (config as any)[textKey];
+                   value = (config as any)[textKey] ?? '';
                 }
                 if(value === '') {
                     value = this.findNextTextItem(config, i)
@@ -79,7 +79,7 @@ export class JoinDataValuesConverter implements Converter {
         const code = ''
         + `            for (d = 0; d < c.length; d++) {\n`
         + `                if (typeof c[d] == 'undefined' || c[d] == '')\n`
-        + `                    c[d] = 'a_sonstige'\n`
+        + `                    c[d] = '${config.defaultvalue}'\n`
         + `            }\n`;
         return code;
     }
