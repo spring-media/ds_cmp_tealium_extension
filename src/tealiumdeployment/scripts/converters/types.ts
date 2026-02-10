@@ -21,12 +21,27 @@ export type PersistDataValueConfiguration = Configuration & {
     persistence: string
 }
 
+export type JoinDataValuesConfiguration = Configuration & {
+    [key: `${number}_set_text`]: string | undefined
+    leadingdelimiter: boolean
+    var: string,
+    delimiter: string,
+    defaultvalue: string
+    configs: {
+        set?: 'textvalue' | string
+        text?: string
+    }[]
+}
+
 export type ExtensionData = {
     name: string,
     id: number,
     scope: string,
+    extensionType: string,
+    occurrence: string | null,
+    loadRule: string | null
     conditions: Condition[][],
-    configuration: Configuration | ConfigurationGroup
+    configuration: JoinDataValuesConfiguration | ConfigurationGroup
 }
 
 export interface Converter {
