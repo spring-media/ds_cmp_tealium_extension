@@ -11,11 +11,11 @@ export class JoinDataValuesConverter implements Converter {
         }
 
         if(!Scope.isTagScoped(extension.scope) && !['After Load Rules'].includes(extension.scope)) {
-            throw new Error(`Wrong scope. Scope ${extension.scope} not suported.`);
+            throw new Error(`Wrong scope. Scope ${extension.scope} not supported.`);
         }
 
         if(extension.occurrence && !['Run Always'].includes(extension.occurrence)) {
-            throw new Error(`Wrong occurrence. Scope ${extension.occurrence} not suported.`);
+            throw new Error(`Wrong occurrence. Scope ${extension.occurrence} not supported.`);
         }
 
         if(extension.loadRule != null) {
