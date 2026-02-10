@@ -20,6 +20,3 @@ local/
 .env
 .env.local
 .env.*.local
-
-# TRACKTOR test artifacts
-tracktor-artifacts/
