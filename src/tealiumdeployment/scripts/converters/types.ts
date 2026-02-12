@@ -33,6 +33,8 @@ export type JoinDataValuesConfiguration = Configuration & {
     }[]
 }
 
+export type PathnameTokenizerConfig = {}
+
 export type ExtensionData = {
     name: string,
     id: number,
@@ -41,7 +43,7 @@ export type ExtensionData = {
     occurrence: string | null,
     loadRule: string | null,
     conditions: Condition[][],
-    configuration: JoinDataValuesConfiguration | PersistDataValueConfiguration | ConfigurationGroup
+    configuration: JoinDataValuesConfiguration | PersistDataValueConfiguration | ConfigurationGroup | PathnameTokenizerConfig
 }
 
 export interface Converter {
