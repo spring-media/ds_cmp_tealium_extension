@@ -10,7 +10,6 @@ export class PersistDataValueConverter implements Converter {
             throw Error(`Scope ${extension.scope} not supported`);
         }
 
-
         const conditionCode = createCondition(extension.conditions);
         const logic = this.createLogic(extension);
 
@@ -24,7 +23,7 @@ export class PersistDataValueConverter implements Converter {
         + `    } catch (e) {\n`
         + `        window.utag.DB(e);\n`
         + `    }\n`
-        + `})();\n`
+        + `})(a, b);\n`
         return code;
     }
 
