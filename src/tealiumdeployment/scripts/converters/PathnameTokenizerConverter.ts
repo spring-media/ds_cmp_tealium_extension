@@ -1,6 +1,6 @@
 import { Converter, ExtensionData } from './types';
 
-export class PathnameTokenizer implements Converter {
+export class PathnameTokenizerConverter implements Converter {
     convert(extension: ExtensionData): string | false {
         const code = '/* eslint-disable */\n'
         + `/* Based on PATHNAME TOKENIZER ${extension.name} ${extension.id} */\n`        

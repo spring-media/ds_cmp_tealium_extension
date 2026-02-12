@@ -1,9 +1,9 @@
-import { PathnameTokenizer } from './PathnameTokenizer';
+import { PathnameTokenizerConverter } from './PathnameTokenizerConverter';
 import { ExtensionData } from './types';
 
 describe('PathnameTokenizer', ()=> {
     it('create extension', ()=>{
-        const converter = new PathnameTokenizer();
+        const converter = new PathnameTokenizerConverter();
         const extension: ExtensionData = {
             name: 'test name',
             id: 123,
