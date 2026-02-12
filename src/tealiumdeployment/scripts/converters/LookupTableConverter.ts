@@ -1,30 +1,19 @@
-import { createCondition, Condition } from '../conditions';
+import { createCondition } from '../conditions';
+import { Converter, ExtensionData, LookupTableConfiguration } from './types';
 
-export type LookupTableExtensionData = {
-    name: string;
-    id: number;
-    conditions: Condition[][];
-    configuration: {
-        configs: Array<{
-            name?: string;
-            comment?: string;
-            value?: string;
-            logic?: string;
-        }>;
-        vartype: string;
-        settotext?: string;
-        var: string;
-        constructor?: string;
-        filtertype: string;
-        initialize?: string;
-        varlookup: string;
-    };
-};
+export class LookupTableConverter implements Converter {
+    public convert(extension: ExtensionData): string | false {
+        // Simple casting - following the same pattern as other converters
+        const config = extension.configuration as LookupTableConfiguration;
 
-export class LookupTableConverter {
-    public convert(extension: LookupTableExtensionData): string | false {
+        // Validate required properties
+        if (!config.configs || !config.varlookup || !config.var || !config.filtertype) {
+            return false;
+        }
+
+        // Generate code directly - no intermediate object needed
         const conditionCode = createCondition(extension.conditions);
-        const logic = this.createLogic(extension);
+        const logic = this.createLogic(config);
 
         if (logic === false) {
             console.log('skipped');
@@ -48,8 +37,7 @@ export class LookupTableConverter {
         return code;
     }
 
-    private createLogic(extension: LookupTableExtensionData): string | false {
-        const config = extension.configuration;
+    private createLogic(config: LookupTableConfiguration): string | false {
         const lookupVar = config.varlookup.replace('js.', '').replace('udo.', '').replace('cp.', '');
         const targetVar = config.var.replace('js.', '');
         const filterType = config.filtertype;

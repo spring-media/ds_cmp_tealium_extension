@@ -5,20 +5,17 @@ import { SetDataValuesConverter } from './converters/SetDataValuesConverter';
 import { Converter } from './converters/types';
 import { PersistDataValueConverter } from './converters/PersistDataValueConverter';
 import { JoinDataValuesConverter } from './converters/JoinDataValuesConverter';
+import { LookupTableConverter } from './converters/LookupTableConverter';
 
-
-(async() => {
+(async () => {
     const loggerFormat = winston.format.printf(({ level, message, timestamp }) => {
         return `${timestamp} [${level}]: ${message}`;
     });
 
     const logger = winston.createLogger({
         level: 'info',
-        format: winston.format.combine(
-            winston.format.timestamp(),
-            loggerFormat
-        ),
-        defaultMeta: { },
+        format: winston.format.combine(winston.format.timestamp(), loggerFormat),
+        defaultMeta: {},
         transports: [new winston.transports.Console()]
     });
 
@@ -34,7 +31,9 @@ import { JoinDataValuesConverter } from './converters/JoinDataValuesConverter';
 
     // Finde die neueste Profil-Datei
     const files = await fs.readdir(outputDir);
-    const profileFiles = files.filter(f => f.startsWith(`tealium_profile_${profile}_`) && f.endsWith('.json'));
+    const profileFiles = files.filter(
+        (f) => f.startsWith(`tealium_profile_${profile}_`) && f.endsWith('.json')
+    );
 
     if (profileFiles.length === 0) {
         logger.error(`No profile file found for ${profile} in ${outputDir}`);
@@ -64,7 +63,7 @@ import { JoinDataValuesConverter } from './converters/JoinDataValuesConverter';
 
     for (const extension of tealiumProfile.extensions) {
         let converter: Converter | null = null;
-        switch(extension.extensionType) {
+        switch (extension.extensionType) {
             case 'Set Data Values': {
                 converter = new SetDataValuesConverter();
                 break;
@@ -75,6 +74,10 @@ import { JoinDataValuesConverter } from './converters/JoinDataValuesConverter';
             }
             case 'Join Data Values': {
                 converter = new JoinDataValuesConverter();
+                break;
+            }
+            case 'Lookup Table': {
+                converter = new LookupTableConverter();
                 break;
             }
             default: {
@@ -91,11 +94,10 @@ import { JoinDataValuesConverter } from './converters/JoinDataValuesConverter';
         console.log(outputFilePath);
 
         const code = converter.convert(extension);
-        if(!code) {
+        if (!code) {
             continue;
         }
 
         await fs.writeFile(outputFilePath, code, 'utf-8');
     }
-
 })();

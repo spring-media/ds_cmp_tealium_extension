@@ -1,277 +1,435 @@
-import { LookupTableConverter, LookupTableExtensionData } from './LookupTableConverter';
+import { LookupTableConverter } from './LookupTableConverter';
+import { ExtensionData, LookupTableConfiguration } from './types';
 
 describe('LookupTableConverter', () => {
-    let converter: LookupTableConverter;
+    it('creates lookup table with equals filter and logic=false', () => {
+        const converter = new LookupTableConverter();
 
-    beforeEach(() => {
-        converter = new LookupTableConverter();
+        const extension: ExtensionData = {
+            name: 'Set Facebook vc.content_type',
+            id: 132,
+            scope: 'After Load Rules',
+            extensionType: 'Lookup Table',
+            occurrence: null,
+            loadRule: null,
+            conditions: [],
+            configuration: {
+                configs: [
+                    { name: 'article', value: 'product' },
+                    { name: 'live', value: 'product' },
+                    { name: 'video', value: 'product' },
+                    { logic: 'false' }
+                ],
+                vartype: 'string',
+                settotext: 'product',
+                var: 'js.fb_vc_content_type',
+                constructor: '',
+                filtertype: 'equals',
+                initialize: '',
+                varlookup: 'js.page_type'
+            } as LookupTableConfiguration
+        };
+
+        const expectedCode =
+            '/* eslint-disable */\n' +
+            '/* Based on LOOKUP TABLE Set Facebook vc.content_type 132 */\n' +
+            '/* global utag, a, b */\n' +
+            '(function(a, b) {\n' +
+            '    try {\n' +
+            '        if (1) {\n' +
+            "            if (b['page_type'] == 'article') {\n" +
+            "                b['fb_vc_content_type'] = 'product';\n" +
+            "            } else if (b['page_type'] == 'live') {\n" +
+            "                b['fb_vc_content_type'] = 'product';\n" +
+            "            } else if (b['page_type'] == 'video') {\n" +
+            "                b['fb_vc_content_type'] = 'product';\n" +
+            '            } else {\n' +
+            "                b['fb_vc_content_type'] = 'product';\n" +
+            '            }\n' +
+            '        }\n' +
+            '    } catch (e) {\n' +
+            '        window.utag.DB(e);\n' +
+            '    }\n' +
+            '})();\n';
+
+        expect(converter.convert(extension)).toBe(expectedCode);
     });
 
-    describe('convert', () => {
-        it('should convert a simple equals lookup table', () => {
-            const extension: LookupTableExtensionData = {
-                name: 'Set Facebook vc.content_type',
-                id: 132,
-                conditions: [],
-                configuration: {
-                    configs: [
-                        { name: 'article', value: 'product' },
-                        { name: 'live', value: 'product' },
-                        { name: 'video', value: 'product' },
-                        { logic: 'false' },
-                    ],
-                    vartype: 'string',
-                    settotext: 'product',
-                    var: 'js.fb_vc_content_type',
-                    constructor: '',
-                    filtertype: 'equals',
-                    initialize: '',
-                    varlookup: 'js.page_type',
-                },
-            };
+    it('creates lookup table with equals filter and logic=true (no default)', () => {
+        const converter = new LookupTableConverter();
 
-            const result = converter.convert(extension);
+        const extension: ExtensionData = {
+            name: 'ADOBE : set suite by environment',
+            id: 164,
+            scope: 'After Load Rules',
+            extensionType: 'Lookup Table',
+            occurrence: null,
+            loadRule: null,
+            conditions: [],
+            configuration: {
+                configs: [
+                    { name: 'dev', value: 'axelspringerweltdev' },
+                    { name: 'qa', value: 'axelspringerweltdev' },
+                    { name: 'prod', value: 'axelspringerwelt' },
+                    { logic: 'true' }
+                ],
+                vartype: 'string',
+                var: 'js.ad_suite',
+                settotext: '',
+                constructor: '',
+                filtertype: 'equals',
+                initialize: '',
+                varlookup: 'js.ut.env'
+            } as LookupTableConfiguration
+        };
 
-            expect(result).toContain('/* Based on LOOKUP TABLE Set Facebook vc.content_type 132 */');
-            expect(result).toContain("if (b['page_type'] == 'article')");
-            expect(result).toContain("b['fb_vc_content_type'] = 'product'");
-            expect(result).toContain("} else if (b['page_type'] == 'live')");
-            expect(result).toContain("} else if (b['page_type'] == 'video')");
-            expect(result).toContain("} else {");
-            expect(result).toContain("b['fb_vc_content_type'] = 'product'");
-        });
+        const expectedCode =
+            '/* eslint-disable */\n' +
+            '/* Based on LOOKUP TABLE ADOBE : set suite by environment 164 */\n' +
+            '/* global utag, a, b */\n' +
+            '(function(a, b) {\n' +
+            '    try {\n' +
+            '        if (1) {\n' +
+            "            if (b['ut.env'] == 'dev') {\n" +
+            "                b['ad_suite'] = 'axelspringerweltdev';\n" +
+            "            } else if (b['ut.env'] == 'qa') {\n" +
+            "                b['ad_suite'] = 'axelspringerweltdev';\n" +
+            "            } else if (b['ut.env'] == 'prod') {\n" +
+            "                b['ad_suite'] = 'axelspringerwelt';\n" +
+            '            }\n' +
+            '        }\n' +
+            '    } catch (e) {\n' +
+            '        window.utag.DB(e);\n' +
+            '    }\n' +
+            '})();\n';
 
-        it('should convert a lookup table with logic=true (use default on no match)', () => {
-            const extension: LookupTableExtensionData = {
-                name: 'ADOBE : set suite by environment',
-                id: 164,
-                conditions: [],
-                configuration: {
-                    configs: [
-                        { name: 'dev', value: 'axelspringerweltdev' },
-                        { name: 'qa', value: 'axelspringerweltdev' },
-                        { name: 'prod', value: 'axelspringerwelt' },
-                        { logic: 'true' },
-                    ],
-                    vartype: 'string',
-                    var: 'js.ad_suite',
-                    settotext: '',
-                    constructor: '',
-                    filtertype: 'equals',
-                    initialize: '',
-                    varlookup: 'js.ut.env',
-                },
-            };
+        expect(converter.convert(extension)).toBe(expectedCode);
+    });
 
-            const result = converter.convert(extension);
+    it('creates lookup table with contains filter', () => {
+        const converter = new LookupTableConverter();
 
-            expect(result).toContain("if (b['ut.env'] == 'dev')");
-            expect(result).toContain("b['ad_suite'] = 'axelspringerweltdev'");
-            expect(result).toContain("} else if (b['ut.env'] == 'qa')");
-            expect(result).toContain("} else if (b['ut.env'] == 'prod')");
-            expect(result).toContain("b['ad_suite'] = 'axelspringerwelt'");
-            // With logic=true and empty settotext, should not have else clause with default
-            expect(result).not.toContain("} else {");
-        });
+        const extension: ExtensionData = {
+            name: 'Adobe : Page Editor Team (taxonomie)',
+            id: 308,
+            scope: 'After Load Rules',
+            extensionType: 'Lookup Table',
+            occurrence: null,
+            loadRule: null,
+            conditions: [],
+            configuration: {
+                configs: [
+                    { name: 'Investiga', value: 'Investigation & Reportage' },
+                    { name: 'Newsteam', value: 'Nachrichten & Unterhaltung' },
+                    { name: '2news', value: 'Bot Article' },
+                    { logic: 'true' }
+                ],
+                vartype: 'string',
+                filtertype: 'contains',
+                varlookup: 'js.page_keywords_string',
+                var: 'js.page_editor_team',
+                settotext: '',
+                constructor: '',
+                initialize: ''
+            } as LookupTableConfiguration
+        };
 
-        it('should convert a contains filter type lookup table', () => {
-            const extension: LookupTableExtensionData = {
-                name: 'Adobe : Page Editor Team (taxonomie)',
-                id: 308,
-                conditions: [],
-                configuration: {
-                    configs: [
-                        { name: 'Investiga', value: 'Investigation & Reportage' },
-                        { name: 'Newsteam', value: 'Nachrichten & Unterhaltung' },
-                        { name: '2news', value: 'Bot Article' },
-                        { logic: 'true' },
-                    ],
-                    vartype: 'string',
-                    filtertype: 'contains',
-                    varlookup: 'js.page_keywords_string',
-                    var: 'js.page_editor_team',
-                    settotext: '',
-                    constructor: '',
-                    initialize: '',
-                },
-            };
+        const expectedCode =
+            '/* eslint-disable */\n' +
+            '/* Based on LOOKUP TABLE Adobe : Page Editor Team (taxonomie) 308 */\n' +
+            '/* global utag, a, b */\n' +
+            '(function(a, b) {\n' +
+            '    try {\n' +
+            '        if (1) {\n' +
+            "            if (b['page_keywords_string'] && b['page_keywords_string'].indexOf('Investiga') !== -1) {\n" +
+            "                b['page_editor_team'] = 'Investigation & Reportage';\n" +
+            "            } else if (b['page_keywords_string'] && b['page_keywords_string'].indexOf('Newsteam') !== -1) {\n" +
+            "                b['page_editor_team'] = 'Nachrichten & Unterhaltung';\n" +
+            "            } else if (b['page_keywords_string'] && b['page_keywords_string'].indexOf('2news') !== -1) {\n" +
+            "                b['page_editor_team'] = 'Bot Article';\n" +
+            '            }\n' +
+            '        }\n' +
+            '    } catch (e) {\n' +
+            '        window.utag.DB(e);\n' +
+            '    }\n' +
+            '})();\n';
 
-            const result = converter.convert(extension);
+        expect(converter.convert(extension)).toBe(expectedCode);
+    });
 
-            expect(result).toContain("if (b['page_keywords_string'] && b['page_keywords_string'].indexOf('Investiga') !== -1)");
-            expect(result).toContain("b['page_editor_team'] = 'Investigation & Reportage'");
-            expect(result).toContain("} else if (b['page_keywords_string'] && b['page_keywords_string'].indexOf('Newsteam') !== -1)");
-            expect(result).toContain("b['page_editor_team'] = 'Nachrichten & Unterhaltung'");
-        });
+    it('handles cookie prefix (cp.) in varlookup', () => {
+        const converter = new LookupTableConverter();
 
-        it('should handle cookie prefix (cp.) in varlookup', () => {
-            const extension: LookupTableExtensionData = {
-                name: 'Google Prop Lookup State',
-                id: 336,
-                conditions: [],
-                configuration: {
-                    configs: [
-                        { name: 'true', value: 'subscriber' },
-                        { name: 'false', value: 'non_subscriber' },
-                        { logic: 'false' },
-                    ],
-                    vartype: 'string',
-                    settotext: 'unkown',
-                    var: 'js.gps_state',
-                    constructor: '',
-                    filtertype: 'equals',
-                    initialize: '',
-                    varlookup: 'cp.utag_main_va',
-                },
-            };
+        const extension: ExtensionData = {
+            name: 'Google Prop Lookup State',
+            id: 336,
+            scope: 'After Load Rules',
+            extensionType: 'Lookup Table',
+            occurrence: null,
+            loadRule: null,
+            conditions: [],
+            configuration: {
+                configs: [
+                    { name: 'true', value: 'subscriber' },
+                    { name: 'false', value: 'non_subscriber' },
+                    { logic: 'false' }
+                ],
+                vartype: 'string',
+                settotext: 'unkown',
+                var: 'js.gps_state',
+                constructor: '',
+                filtertype: 'equals',
+                initialize: '',
+                varlookup: 'cp.utag_main_va'
+            } as LookupTableConfiguration
+        };
 
-            const result = converter.convert(extension);
+        const expectedCode =
+            '/* eslint-disable */\n' +
+            '/* Based on LOOKUP TABLE Google Prop Lookup State 336 */\n' +
+            '/* global utag, a, b */\n' +
+            '(function(a, b) {\n' +
+            '    try {\n' +
+            '        if (1) {\n' +
+            "            if (b['utag_main_va'] == 'true') {\n" +
+            "                b['gps_state'] = 'subscriber';\n" +
+            "            } else if (b['utag_main_va'] == 'false') {\n" +
+            "                b['gps_state'] = 'non_subscriber';\n" +
+            '            } else {\n' +
+            "                b['gps_state'] = 'unkown';\n" +
+            '            }\n' +
+            '        }\n' +
+            '    } catch (e) {\n' +
+            '        window.utag.DB(e);\n' +
+            '    }\n' +
+            '})();\n';
 
-            expect(result).toContain("if (b['utag_main_va'] == 'true')");
-            expect(result).toContain("b['gps_state'] = 'subscriber'");
-            expect(result).toContain("} else if (b['utag_main_va'] == 'false')");
-            expect(result).toContain("b['gps_state'] = 'non_subscriber'");
-            expect(result).toContain("} else {");
-            expect(result).toContain("b['gps_state'] = 'unkown'");
-        });
+        expect(converter.convert(extension)).toBe(expectedCode);
+    });
 
-        it('should handle conditions', () => {
-            const extension: LookupTableExtensionData = {
-                name: 'Conditional Lookup',
-                id: 999,
-                conditions: [[{ variable: 'js.page_type', operator: 'equals', value: 'article' }]],
-                configuration: {
-                    configs: [
-                        { name: 'desktop', value: 'welt' },
-                        { name: 'mobile', value: 'mobwelt' },
-                        { logic: 'false' },
-                    ],
-                    vartype: 'string',
-                    var: 'js.ivw_platform',
-                    settotext: 'mobwelt',
-                    constructor: '',
-                    filtertype: 'equals',
-                    initialize: '',
-                    varlookup: 'js.page_platform',
-                },
-            };
+    it('handles conditions correctly', () => {
+        const converter = new LookupTableConverter();
 
-            const result = converter.convert(extension);
+        const extension: ExtensionData = {
+            name: 'Conditional Lookup',
+            id: 999,
+            scope: 'After Load Rules',
+            extensionType: 'Lookup Table',
+            occurrence: null,
+            loadRule: null,
+            conditions: [[{ variable: 'js.page_type', operator: 'equals', value: 'article' }]],
+            configuration: {
+                configs: [
+                    { name: 'desktop', value: 'welt' },
+                    { name: 'mobile', value: 'mobwelt' },
+                    { logic: 'false' }
+                ],
+                vartype: 'string',
+                var: 'js.ivw_platform',
+                settotext: 'mobwelt',
+                constructor: '',
+                filtertype: 'equals',
+                initialize: '',
+                varlookup: 'js.page_platform'
+            } as LookupTableConfiguration
+        };
 
-            expect(result).toContain("if (b['js.page_type'] == 'article')");
-            expect(result).toContain("if (b['page_platform'] == 'desktop')");
-        });
+        const expectedCode =
+            '/* eslint-disable */\n' +
+            '/* Based on LOOKUP TABLE Conditional Lookup 999 */\n' +
+            '/* global utag, a, b */\n' +
+            '(function(a, b) {\n' +
+            '    try {\n' +
+            "        if (b['js.page_type'] == 'article') {\n" +
+            "            if (b['page_platform'] == 'desktop') {\n" +
+            "                b['ivw_platform'] = 'welt';\n" +
+            "            } else if (b['page_platform'] == 'mobile') {\n" +
+            "                b['ivw_platform'] = 'mobwelt';\n" +
+            '            } else {\n' +
+            "                b['ivw_platform'] = 'mobwelt';\n" +
+            '            }\n' +
+            '        }\n' +
+            '    } catch (e) {\n' +
+            '        window.utag.DB(e);\n' +
+            '    }\n' +
+            '})();\n';
 
-        it('should return false for empty configs', () => {
-            const extension: LookupTableExtensionData = {
-                name: 'Empty Lookup',
-                id: 999,
-                conditions: [],
-                configuration: {
-                    configs: [{ logic: 'false' }],
-                    vartype: 'string',
-                    var: 'js.test',
-                    settotext: '',
-                    constructor: '',
-                    filtertype: 'equals',
-                    initialize: '',
-                    varlookup: 'js.source',
-                },
-            };
+        expect(converter.convert(extension)).toBe(expectedCode);
+    });
 
-            const result = converter.convert(extension);
+    it('returns false for empty configs', () => {
+        const converter = new LookupTableConverter();
 
-            expect(result).toBe(false);
-        });
+        const extension: ExtensionData = {
+            name: 'Empty Lookup',
+            id: 999,
+            scope: 'After Load Rules',
+            extensionType: 'Lookup Table',
+            occurrence: null,
+            loadRule: null,
+            conditions: [],
+            configuration: {
+                configs: [{ logic: 'false' }],
+                vartype: 'string',
+                var: 'js.test',
+                settotext: '',
+                constructor: '',
+                filtertype: 'equals',
+                initialize: '',
+                varlookup: 'js.source'
+            } as LookupTableConfiguration
+        };
 
-        it('should handle logic=false with default value', () => {
-            const extension: LookupTableExtensionData = {
-                name: 'IVW Platform for IVW Mediatracking',
-                id: 311,
-                conditions: [],
-                configuration: {
-                    configs: [
-                        { name: 'desktop', value: 'welt' },
-                        { name: 'mobile', value: 'mobwelt' },
-                        { name: 'amp', value: 'mobwelt' },
-                        { logic: 'false' },
-                    ],
-                    vartype: 'string',
-                    var: 'js.ivw_platform',
-                    settotext: 'mobwelt',
-                    constructor: '',
-                    filtertype: 'equals',
-                    initialize: '',
-                    varlookup: 'js.page_platform',
-                },
-            };
+        expect(converter.convert(extension)).toBe(false);
+    });
 
-            const result = converter.convert(extension);
+    it('creates lookup table with logic=false and default value', () => {
+        const converter = new LookupTableConverter();
 
-            expect(result).toContain("if (b['page_platform'] == 'desktop')");
-            expect(result).toContain("b['ivw_platform'] = 'welt'");
-            expect(result).toContain("} else if (b['page_platform'] == 'mobile')");
-            expect(result).toContain("} else if (b['page_platform'] == 'amp')");
-            expect(result).toContain("b['ivw_platform'] = 'mobwelt'");
-            expect(result).toContain("} else {");
-            expect(result).toContain("b['ivw_platform'] = 'mobwelt'");
-        });
+        const extension: ExtensionData = {
+            name: 'IVW Platform for IVW Mediatracking',
+            id: 311,
+            scope: 'After Load Rules',
+            extensionType: 'Lookup Table',
+            occurrence: null,
+            loadRule: null,
+            conditions: [],
+            configuration: {
+                configs: [
+                    { name: 'desktop', value: 'welt' },
+                    { name: 'mobile', value: 'mobwelt' },
+                    { name: 'amp', value: 'mobwelt' },
+                    { logic: 'false' }
+                ],
+                vartype: 'string',
+                var: 'js.ivw_platform',
+                settotext: 'mobwelt',
+                constructor: '',
+                filtertype: 'equals',
+                initialize: '',
+                varlookup: 'js.page_platform'
+            } as LookupTableConfiguration
+        };
 
-        it('should handle logic=true with default value', () => {
-            const extension: LookupTableExtensionData = {
-                name: 'Test with default',
-                id: 999,
-                conditions: [],
-                configuration: {
-                    configs: [
-                        { name: 'option1', value: 'value1' },
-                        { name: 'option2', value: 'value2' },
-                        { logic: 'true' },
-                    ],
-                    vartype: 'string',
-                    var: 'js.target',
-                    settotext: 'default_value',
-                    constructor: '',
-                    filtertype: 'equals',
-                    initialize: '',
-                    varlookup: 'js.source',
-                },
-            };
+        const expectedCode =
+            '/* eslint-disable */\n' +
+            '/* Based on LOOKUP TABLE IVW Platform for IVW Mediatracking 311 */\n' +
+            '/* global utag, a, b */\n' +
+            '(function(a, b) {\n' +
+            '    try {\n' +
+            '        if (1) {\n' +
+            "            if (b['page_platform'] == 'desktop') {\n" +
+            "                b['ivw_platform'] = 'welt';\n" +
+            "            } else if (b['page_platform'] == 'mobile') {\n" +
+            "                b['ivw_platform'] = 'mobwelt';\n" +
+            "            } else if (b['page_platform'] == 'amp') {\n" +
+            "                b['ivw_platform'] = 'mobwelt';\n" +
+            '            } else {\n' +
+            "                b['ivw_platform'] = 'mobwelt';\n" +
+            '            }\n' +
+            '        }\n' +
+            '    } catch (e) {\n' +
+            '        window.utag.DB(e);\n' +
+            '    }\n' +
+            '})();\n';
 
-            const result = converter.convert(extension);
+        expect(converter.convert(extension)).toBe(expectedCode);
+    });
 
-            expect(result).toContain("if (b['source'] == 'option1')");
-            expect(result).toContain("b['target'] = 'value1'");
-            expect(result).toContain("} else if (b['source'] == 'option2')");
-            expect(result).toContain("b['target'] = 'value2'");
-            expect(result).toContain("} else {");
-            expect(result).toContain("b['target'] = 'default_value'");
-        });
+    it('creates lookup table with logic=true and default value', () => {
+        const converter = new LookupTableConverter();
 
-        it('should handle udo. prefix in varlookup', () => {
-            const extension: LookupTableExtensionData = {
-                name: 'UDO Lookup',
-                id: 999,
-                conditions: [],
-                configuration: {
-                    configs: [
-                        { name: 'test', value: 'result' },
-                        { logic: 'false' },
-                    ],
-                    vartype: 'string',
-                    var: 'js.output',
-                    settotext: '',
-                    constructor: '',
-                    filtertype: 'equals',
-                    initialize: '',
-                    varlookup: 'udo.input_var',
-                },
-            };
+        const extension: ExtensionData = {
+            name: 'Test with default',
+            id: 999,
+            scope: 'After Load Rules',
+            extensionType: 'Lookup Table',
+            occurrence: null,
+            loadRule: null,
+            conditions: [],
+            configuration: {
+                configs: [
+                    { name: 'option1', value: 'value1' },
+                    { name: 'option2', value: 'value2' },
+                    { logic: 'true' }
+                ],
+                vartype: 'string',
+                var: 'js.target',
+                settotext: 'default_value',
+                constructor: '',
+                filtertype: 'equals',
+                initialize: '',
+                varlookup: 'js.source'
+            } as LookupTableConfiguration
+        };
 
-            const result = converter.convert(extension);
+        const expectedCode =
+            '/* eslint-disable */\n' +
+            '/* Based on LOOKUP TABLE Test with default 999 */\n' +
+            '/* global utag, a, b */\n' +
+            '(function(a, b) {\n' +
+            '    try {\n' +
+            '        if (1) {\n' +
+            "            if (b['source'] == 'option1') {\n" +
+            "                b['target'] = 'value1';\n" +
+            "            } else if (b['source'] == 'option2') {\n" +
+            "                b['target'] = 'value2';\n" +
+            '            } else {\n' +
+            "                b['target'] = 'default_value';\n" +
+            '            }\n' +
+            '        }\n' +
+            '    } catch (e) {\n' +
+            '        window.utag.DB(e);\n' +
+            '    }\n' +
+            '})();\n';
 
-            expect(result).toContain("if (b['input_var'] == 'test')");
-            expect(result).toContain("b['output'] = 'result'");
-        });
+        expect(converter.convert(extension)).toBe(expectedCode);
+    });
+
+    it('handles udo. prefix in varlookup', () => {
+        const converter = new LookupTableConverter();
+
+        const extension: ExtensionData = {
+            name: 'UDO Lookup',
+            id: 999,
+            scope: 'After Load Rules',
+            extensionType: 'Lookup Table',
+            occurrence: null,
+            loadRule: null,
+            conditions: [],
+            configuration: {
+                configs: [
+                    { name: 'test', value: 'result' },
+                    { logic: 'false' }
+                ],
+                vartype: 'string',
+                var: 'js.output',
+                settotext: '',
+                constructor: '',
+                filtertype: 'equals',
+                initialize: '',
+                varlookup: 'udo.input_var'
+            } as LookupTableConfiguration
+        };
+
+        const expectedCode =
+            '/* eslint-disable */\n' +
+            '/* Based on LOOKUP TABLE UDO Lookup 999 */\n' +
+            '/* global utag, a, b */\n' +
+            '(function(a, b) {\n' +
+            '    try {\n' +
+            '        if (1) {\n' +
+            "            if (b['input_var'] == 'test') {\n" +
+            "                b['output'] = 'result';\n" +
+            '            } else {\n' +
+            "                b['output'] = undefined;\n" +
+            '            }\n' +
+            '        }\n' +
+            '    } catch (e) {\n' +
+            '        window.utag.DB(e);\n' +
+            '    }\n' +
+            '})();\n';
+
+        expect(converter.convert(extension)).toBe(expectedCode);
     });
 });
