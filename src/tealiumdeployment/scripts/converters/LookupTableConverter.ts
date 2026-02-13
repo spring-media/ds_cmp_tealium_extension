@@ -14,7 +14,6 @@ export class LookupTableConverter implements Converter {
         const logic = this.createLogic(config);
 
         if (logic === false) {
-            console.log('skipped');
             return false;
         }
 
