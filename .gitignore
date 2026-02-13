@@ -17,6 +17,9 @@ mutation-report.json
 
 local/
 
+# Tealium profile output files
+src/output/
+
 .env
 .env.*
 .env.local
