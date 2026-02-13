@@ -37,20 +37,20 @@ describe('LookupTableConverter', () => {
             '(function(a, b) {\n' +
             '    try {\n' +
             '        if (1) {\n' +
-            "            if (b['page_type'] == 'article') {\n" +
-            "                b['fb_vc_content_type'] = 'product';\n" +
-            "            } else if (b['page_type'] == 'live') {\n" +
-            "                b['fb_vc_content_type'] = 'product';\n" +
-            "            } else if (b['page_type'] == 'video') {\n" +
-            "                b['fb_vc_content_type'] = 'product';\n" +
+            '            if (b[\'page_type\'] == "article") {\n' +
+            '                b[\'fb_vc_content_type\'] = "product";\n' +
+            '            } else if (b[\'page_type\'] == "live") {\n' +
+            '                b[\'fb_vc_content_type\'] = "product";\n' +
+            '            } else if (b[\'page_type\'] == "video") {\n' +
+            '                b[\'fb_vc_content_type\'] = "product";\n' +
             '            } else {\n' +
-            "                b['fb_vc_content_type'] = 'product';\n" +
+            '                b[\'fb_vc_content_type\'] = "product";\n' +
             '            }\n' +
             '        }\n' +
             '    } catch (e) {\n' +
             '        window.utag.DB(e);\n' +
             '    }\n' +
-            '})();\n';
+            '})(a, b);\n';
 
         expect(converter.convert(extension)).toBe(expectedCode);
     });
@@ -90,18 +90,18 @@ describe('LookupTableConverter', () => {
             '(function(a, b) {\n' +
             '    try {\n' +
             '        if (1) {\n' +
-            "            if (b['ut.env'] == 'dev') {\n" +
-            "                b['ad_suite'] = 'axelspringerweltdev';\n" +
-            "            } else if (b['ut.env'] == 'qa') {\n" +
-            "                b['ad_suite'] = 'axelspringerweltdev';\n" +
-            "            } else if (b['ut.env'] == 'prod') {\n" +
-            "                b['ad_suite'] = 'axelspringerwelt';\n" +
+            '            if (b[\'ut.env\'] == "dev") {\n' +
+            '                b[\'ad_suite\'] = "axelspringerweltdev";\n' +
+            '            } else if (b[\'ut.env\'] == "qa") {\n' +
+            '                b[\'ad_suite\'] = "axelspringerweltdev";\n' +
+            '            } else if (b[\'ut.env\'] == "prod") {\n' +
+            '                b[\'ad_suite\'] = "axelspringerwelt";\n' +
             '            }\n' +
             '        }\n' +
             '    } catch (e) {\n' +
             '        window.utag.DB(e);\n' +
             '    }\n' +
-            '})();\n';
+            '})(a, b);\n';
 
         expect(converter.convert(extension)).toBe(expectedCode);
     });
@@ -141,18 +141,18 @@ describe('LookupTableConverter', () => {
             '(function(a, b) {\n' +
             '    try {\n' +
             '        if (1) {\n' +
-            "            if (b['page_keywords_string'] && b['page_keywords_string'].indexOf('Investiga') !== -1) {\n" +
-            "                b['page_editor_team'] = 'Investigation & Reportage';\n" +
-            "            } else if (b['page_keywords_string'] && b['page_keywords_string'].indexOf('Newsteam') !== -1) {\n" +
-            "                b['page_editor_team'] = 'Nachrichten & Unterhaltung';\n" +
-            "            } else if (b['page_keywords_string'] && b['page_keywords_string'].indexOf('2news') !== -1) {\n" +
-            "                b['page_editor_team'] = 'Bot Article';\n" +
+            '            if (b[\'page_keywords_string\'] && b[\'page_keywords_string\'].indexOf("Investiga") !== -1) {\n' +
+            '                b[\'page_editor_team\'] = "Investigation & Reportage";\n' +
+            '            } else if (b[\'page_keywords_string\'] && b[\'page_keywords_string\'].indexOf("Newsteam") !== -1) {\n' +
+            '                b[\'page_editor_team\'] = "Nachrichten & Unterhaltung";\n' +
+            '            } else if (b[\'page_keywords_string\'] && b[\'page_keywords_string\'].indexOf("2news") !== -1) {\n' +
+            '                b[\'page_editor_team\'] = "Bot Article";\n' +
             '            }\n' +
             '        }\n' +
             '    } catch (e) {\n' +
             '        window.utag.DB(e);\n' +
             '    }\n' +
-            '})();\n';
+            '})(a, b);\n';
 
         expect(converter.convert(extension)).toBe(expectedCode);
     });
@@ -191,18 +191,18 @@ describe('LookupTableConverter', () => {
             '(function(a, b) {\n' +
             '    try {\n' +
             '        if (1) {\n' +
-            "            if (b['utag_main_va'] == 'true') {\n" +
-            "                b['gps_state'] = 'subscriber';\n" +
-            "            } else if (b['utag_main_va'] == 'false') {\n" +
-            "                b['gps_state'] = 'non_subscriber';\n" +
+            '            if (b[\'utag_main_va\'] == "true") {\n' +
+            '                b[\'gps_state\'] = "subscriber";\n' +
+            '            } else if (b[\'utag_main_va\'] == "false") {\n' +
+            '                b[\'gps_state\'] = "non_subscriber";\n' +
             '            } else {\n' +
-            "                b['gps_state'] = 'unkown';\n" +
+            '                b[\'gps_state\'] = "unkown";\n' +
             '            }\n' +
             '        }\n' +
             '    } catch (e) {\n' +
             '        window.utag.DB(e);\n' +
             '    }\n' +
-            '})();\n';
+            '})(a, b);\n';
 
         expect(converter.convert(extension)).toBe(expectedCode);
     });
@@ -240,19 +240,19 @@ describe('LookupTableConverter', () => {
             '/* global utag, a, b */\n' +
             '(function(a, b) {\n' +
             '    try {\n' +
-            "        if (b['js.page_type'] == 'article') {\n" +
-            "            if (b['page_platform'] == 'desktop') {\n" +
-            "                b['ivw_platform'] = 'welt';\n" +
-            "            } else if (b['page_platform'] == 'mobile') {\n" +
-            "                b['ivw_platform'] = 'mobwelt';\n" +
+            '        if (b[\'js.page_type\'] == \'article\') {\n' +
+            '            if (b[\'page_platform\'] == "desktop") {\n' +
+            '                b[\'ivw_platform\'] = "welt";\n' +
+            '            } else if (b[\'page_platform\'] == "mobile") {\n' +
+            '                b[\'ivw_platform\'] = "mobwelt";\n' +
             '            } else {\n' +
-            "                b['ivw_platform'] = 'mobwelt';\n" +
+            '                b[\'ivw_platform\'] = "mobwelt";\n' +
             '            }\n' +
             '        }\n' +
             '    } catch (e) {\n' +
             '        window.utag.DB(e);\n' +
             '    }\n' +
-            '})();\n';
+            '})(a, b);\n';
 
         expect(converter.convert(extension)).toBe(expectedCode);
     });
@@ -318,20 +318,20 @@ describe('LookupTableConverter', () => {
             '(function(a, b) {\n' +
             '    try {\n' +
             '        if (1) {\n' +
-            "            if (b['page_platform'] == 'desktop') {\n" +
-            "                b['ivw_platform'] = 'welt';\n" +
-            "            } else if (b['page_platform'] == 'mobile') {\n" +
-            "                b['ivw_platform'] = 'mobwelt';\n" +
-            "            } else if (b['page_platform'] == 'amp') {\n" +
-            "                b['ivw_platform'] = 'mobwelt';\n" +
+            '            if (b[\'page_platform\'] == "desktop") {\n' +
+            '                b[\'ivw_platform\'] = "welt";\n' +
+            '            } else if (b[\'page_platform\'] == "mobile") {\n' +
+            '                b[\'ivw_platform\'] = "mobwelt";\n' +
+            '            } else if (b[\'page_platform\'] == "amp") {\n' +
+            '                b[\'ivw_platform\'] = "mobwelt";\n' +
             '            } else {\n' +
-            "                b['ivw_platform'] = 'mobwelt';\n" +
+            '                b[\'ivw_platform\'] = "mobwelt";\n' +
             '            }\n' +
             '        }\n' +
             '    } catch (e) {\n' +
             '        window.utag.DB(e);\n' +
             '    }\n' +
-            '})();\n';
+            '})(a, b);\n';
 
         expect(converter.convert(extension)).toBe(expectedCode);
     });
@@ -370,18 +370,18 @@ describe('LookupTableConverter', () => {
             '(function(a, b) {\n' +
             '    try {\n' +
             '        if (1) {\n' +
-            "            if (b['source'] == 'option1') {\n" +
-            "                b['target'] = 'value1';\n" +
-            "            } else if (b['source'] == 'option2') {\n" +
-            "                b['target'] = 'value2';\n" +
+            '            if (b[\'source\'] == "option1") {\n' +
+            '                b[\'target\'] = "value1";\n' +
+            '            } else if (b[\'source\'] == "option2") {\n' +
+            '                b[\'target\'] = "value2";\n' +
             '            } else {\n' +
-            "                b['target'] = 'default_value';\n" +
+            '                b[\'target\'] = "default_value";\n' +
             '            }\n' +
             '        }\n' +
             '    } catch (e) {\n' +
             '        window.utag.DB(e);\n' +
             '    }\n' +
-            '})();\n';
+            '})(a, b);\n';
 
         expect(converter.convert(extension)).toBe(expectedCode);
     });
@@ -419,16 +419,16 @@ describe('LookupTableConverter', () => {
             '(function(a, b) {\n' +
             '    try {\n' +
             '        if (1) {\n' +
-            "            if (b['input_var'] == 'test') {\n" +
-            "                b['output'] = 'result';\n" +
+            '            if (b[\'input_var\'] == "test") {\n' +
+            '                b[\'output\'] = "result";\n' +
             '            } else {\n' +
-            "                b['output'] = undefined;\n" +
+            '                b[\'output\'] = undefined;\n' +
             '            }\n' +
             '        }\n' +
             '    } catch (e) {\n' +
             '        window.utag.DB(e);\n' +
             '    }\n' +
-            '})();\n';
+            '})(a, b);\n';
 
         expect(converter.convert(extension)).toBe(expectedCode);
     });

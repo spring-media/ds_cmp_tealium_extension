@@ -44,7 +44,7 @@ export type LookupTableConfiguration = {
     settotext?: string;
     var: string;
     constructor?: string;
-    filtertype: string;
+    filtertype: 'equals' | 'contains';
     initialize?: string;
     varlookup: string;
 }
