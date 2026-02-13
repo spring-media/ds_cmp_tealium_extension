@@ -3,7 +3,7 @@
  * User engagement tracking for WELT article pages
  */
 
-/* global utag, document, window */
+/* global utag, window */
 
 const {
     isArticlePage,
