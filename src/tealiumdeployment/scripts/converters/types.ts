@@ -33,6 +33,9 @@ export type JoinDataValuesConfiguration = Configuration & {
     }[]
 }
 
+
+export type PathnameTokenizerConfig = {}
+
 export type LookupTableConfiguration = {
     configs: Array<{
         name?: string;
@@ -57,7 +60,7 @@ export type ExtensionData = {
     occurrence: string | null,
     loadRule: string | null,
     conditions: Condition[][],
-    configuration: JoinDataValuesConfiguration | PersistDataValueConfiguration | ConfigurationGroup | LookupTableConfiguration
+    configuration: JoinDataValuesConfiguration | PersistDataValueConfiguration | ConfigurationGroup | LookupTableConfiguration | PathnameTokenizerConfig
 }
 
 export interface Converter {

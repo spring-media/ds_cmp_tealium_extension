@@ -5,6 +5,7 @@ import { SetDataValuesConverter } from './converters/SetDataValuesConverter';
 import { Converter } from './converters/types';
 import { PersistDataValueConverter } from './converters/PersistDataValueConverter';
 import { JoinDataValuesConverter } from './converters/JoinDataValuesConverter';
+import { PathnameTokenizerConverter } from './converters/PathnameTokenizerConverter';
 import { LookupTableConverter } from './converters/LookupTableConverter';
 
 (async () => {
@@ -74,6 +75,10 @@ import { LookupTableConverter } from './converters/LookupTableConverter';
             }
             case 'Join Data Values': {
                 converter = new JoinDataValuesConverter();
+                break;
+            }
+            case 'Pathname Tokenizer': {
+                converter = new PathnameTokenizerConverter();
                 break;
             }
             case 'Lookup Table': {

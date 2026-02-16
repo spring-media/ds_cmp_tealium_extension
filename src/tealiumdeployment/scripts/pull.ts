@@ -4,7 +4,7 @@ import { config } from '../../config';
 import fs from 'fs/promises';
 import path from 'path';
 
-(async () => {
+(async() => {
     const loggerFormat = winston.format.printf(({ level, message, timestamp }) => {
         return `${timestamp} [${level}]: ${message}`;
     });
