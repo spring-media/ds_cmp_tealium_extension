@@ -9,7 +9,7 @@ import { PathnameTokenizerConverter } from './converters/PathnameTokenizerConver
 import { LookupTableConverter } from './converters/LookupTableConverter';
 import { CryptoConverter } from './converters/CryptoConverter';
 
-(async () => {
+(async() => {
     const loggerFormat = winston.format.printf(({ level, message, timestamp }) => {
         return `${timestamp} [${level}]: ${message}`;
     });
