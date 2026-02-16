@@ -7,6 +7,7 @@ import { PersistDataValueConverter } from './converters/PersistDataValueConverte
 import { JoinDataValuesConverter } from './converters/JoinDataValuesConverter';
 import { PathnameTokenizerConverter } from './converters/PathnameTokenizerConverter';
 import { LookupTableConverter } from './converters/LookupTableConverter';
+import { CryptoConverter } from './converters/CryptoConverter';
 
 (async () => {
     const loggerFormat = winston.format.printf(({ level, message, timestamp }) => {
@@ -85,6 +86,10 @@ import { LookupTableConverter } from './converters/LookupTableConverter';
                 converter = new LookupTableConverter();
                 break;
             }
+            case 'Crypto Extension': {
+                converter = new CryptoConverter();
+                break;
+            }
             default: {
                 break;
             }
@@ -98,11 +103,17 @@ import { LookupTableConverter } from './converters/LookupTableConverter';
         const outputFilePath = path.join(outputDirExtensions, fileName);
         console.log(outputFilePath);
 
-        const code = converter.convert(extension);
-        if (!code) {
+        try {
+            const code = converter.convert(extension);
+            if (!code) {
+                continue;
+            }
+
+            await fs.writeFile(outputFilePath, code, 'utf-8');
+        } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            logger.error(`Failed to convert extension ${extension.name} (${extension.id}): ${errorMessage}`);
             continue;
         }
-
-        await fs.writeFile(outputFilePath, code, 'utf-8');
     }
 })();

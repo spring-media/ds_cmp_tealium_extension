@@ -8,6 +8,11 @@ const getCondition = (condition: Condition) => {
         .replace('udo.', '');
 
     switch (condition.operator) {
+        case null: {
+            // null operator means "variable is defined"
+            conditionCode += `typeof b['${leftVar}'] != 'undefined'`;
+            break;
+        }
         case 'equals': {
             conditionCode += `b['${leftVar}'] == '${condition.value}'`;
             break;
