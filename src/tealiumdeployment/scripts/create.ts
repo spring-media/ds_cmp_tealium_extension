@@ -6,20 +6,17 @@ import { Converter } from './converters/types';
 import { PersistDataValueConverter } from './converters/PersistDataValueConverter';
 import { JoinDataValuesConverter } from './converters/JoinDataValuesConverter';
 import { PathnameTokenizerConverter } from './converters/PathnameTokenizerConverter';
+import { LookupTableConverter } from './converters/LookupTableConverter';
 
-
-(async() => {
+(async () => {
     const loggerFormat = winston.format.printf(({ level, message, timestamp }) => {
         return `${timestamp} [${level}]: ${message}`;
     });
 
     const logger = winston.createLogger({
         level: 'info',
-        format: winston.format.combine(
-            winston.format.timestamp(),
-            loggerFormat
-        ),
-        defaultMeta: { },
+        format: winston.format.combine(winston.format.timestamp(), loggerFormat),
+        defaultMeta: {},
         transports: [new winston.transports.Console()]
     });
 
@@ -35,7 +32,9 @@ import { PathnameTokenizerConverter } from './converters/PathnameTokenizerConver
 
     // Finde die neueste Profil-Datei
     const files = await fs.readdir(outputDir);
-    const profileFiles = files.filter(f => f.startsWith(`tealium_profile_${profile}_`) && f.endsWith('.json'));
+    const profileFiles = files.filter(
+        (f) => f.startsWith(`tealium_profile_${profile}_`) && f.endsWith('.json')
+    );
 
     if (profileFiles.length === 0) {
         logger.error(`No profile file found for ${profile} in ${outputDir}`);
@@ -65,7 +64,7 @@ import { PathnameTokenizerConverter } from './converters/PathnameTokenizerConver
 
     for (const extension of tealiumProfile.extensions) {
         let converter: Converter | null = null;
-        switch(extension.extensionType) {
+        switch (extension.extensionType) {
             case 'Set Data Values': {
                 converter = new SetDataValuesConverter();
                 break;
@@ -80,6 +79,9 @@ import { PathnameTokenizerConverter } from './converters/PathnameTokenizerConver
             }
             case 'Pathname Tokenizer': {
                 converter = new PathnameTokenizerConverter();
+                break;
+            case 'Lookup Table': {
+                converter = new LookupTableConverter();
                 break;
             }
             default: {
@@ -96,11 +98,10 @@ import { PathnameTokenizerConverter } from './converters/PathnameTokenizerConver
         console.log(outputFilePath);
 
         const code = converter.convert(extension);
-        if(!code) {
+        if (!code) {
             continue;
         }
 
         await fs.writeFile(outputFilePath, code, 'utf-8');
     }
-
 })();
