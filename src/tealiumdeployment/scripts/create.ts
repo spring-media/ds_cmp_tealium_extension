@@ -80,6 +80,7 @@ import { LookupTableConverter } from './converters/LookupTableConverter';
             case 'Pathname Tokenizer': {
                 converter = new PathnameTokenizerConverter();
                 break;
+            }
             case 'Lookup Table': {
                 converter = new LookupTableConverter();
                 break;
