@@ -100,6 +100,31 @@ describe('ConditionConverter', () => {
             expect(condition).toBe("typeof b['page_authorNames'] == 'undefined'");
         });
 
+        it('returns defined condition when operator is null', () => {
+            const condition = createCondition([[{
+                variable: 'udo.customer_id',
+                operator: null,
+                value: null
+            }]]);
+            expect(condition).toBe("typeof b['customer_id'] != 'undefined'");
+        });
+
+        it('returns defined condition with multiple null operators combined with OR', () => {
+            const condition = createCondition([
+                [{
+                    variable: 'udo.customer_id',
+                    operator: null,
+                    value: null
+                }],
+                [{
+                    variable: 'udo.email',
+                    operator: null,
+                    value: null
+                }]
+            ]);
+            expect(condition).toBe("(typeof b['customer_id'] != 'undefined' || typeof b['email'] != 'undefined')");
+        });
+
         it('returns contains value condition', () => {
             const condition = createCondition([[{
                 variable: 'page_authorNames',
