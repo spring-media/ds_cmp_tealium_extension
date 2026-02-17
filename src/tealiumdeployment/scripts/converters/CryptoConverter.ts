@@ -7,7 +7,6 @@ export class CryptoConverter implements Converter {
 
         // Validate hash type
         if (!config.hash || !['1', '2', '3'].includes(config.hash)) {
-            console.log(`Unsupported hash type: ${config.hash}`);
             return false;
         }
 
@@ -15,7 +14,6 @@ export class CryptoConverter implements Converter {
         const variablesToHash = this.extractVariablesFromConditions(extension.conditions);
 
         if (variablesToHash.length === 0) {
-            console.log('No variables to hash found in conditions');
             return false;
         }
 
