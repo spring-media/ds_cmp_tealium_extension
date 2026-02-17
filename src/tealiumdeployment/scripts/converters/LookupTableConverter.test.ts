@@ -240,7 +240,7 @@ describe('LookupTableConverter', () => {
             '/* global utag, a, b */\n' +
             '(function(a, b) {\n' +
             '    try {\n' +
-            '        if (b[\'js.page_type\'] == \'article\') {\n' +
+            '        if (b[\'page_type\'] == \'article\') {\n' +
             '            if (b[\'page_platform\'] == "desktop") {\n' +
             '                b[\'ivw_platform\'] = "welt";\n' +
             '            } else if (b[\'page_platform\'] == "mobile") {\n' +

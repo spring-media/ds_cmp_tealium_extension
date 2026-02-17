@@ -305,4 +305,74 @@ describe('CryptoConverter', () => {
             expect(matches?.length).toBe(1);
         }
     });
+
+    it('ensures condition check and hashing use the same variable name for js. prefix', () => {
+        const exampleExtension: ExtensionData = {
+            name: 'Hash JS Variable',
+            id: 444,
+            scope: 'After Load Rules',
+            extensionType: 'Crypto Extension',
+            occurrence: 'Run Always',
+            loadRule: null,
+            conditions: [
+                [
+                    {
+                        variable: 'js.customer_id',
+                        operator: null,
+                        value: null
+                    }
+                ]
+            ],
+            configuration: {
+                hash: '3'
+            } as CryptoConfiguration
+        };
+
+        const converter = new CryptoConverter();
+        const result = converter.convert(exampleExtension);
+        
+        expect(result).not.toBe(false);
+        if (result) {
+            // Both condition and hashing should use 'customer_id' (stripped)
+            expect(result).toContain("if (typeof b['customer_id'] != 'undefined')");
+            expect(result).toContain("b['customer_id'] = utag.ut.sha256(b['customer_id'])");
+            // Should NOT contain the prefixed version
+            expect(result).not.toContain("b['js.customer_id']");
+        }
+    });
+
+    it('ensures condition check and hashing use the same variable name for cp. prefix', () => {
+        const exampleExtension: ExtensionData = {
+            name: 'Hash CP Variable',
+            id: 333,
+            scope: 'After Load Rules',
+            extensionType: 'Crypto Extension',
+            occurrence: 'Run Always',
+            loadRule: null,
+            conditions: [
+                [
+                    {
+                        variable: 'cp.email',
+                        operator: null,
+                        value: null
+                    }
+                ]
+            ],
+            configuration: {
+                hash: '3'
+            } as CryptoConfiguration
+        };
+
+        const converter = new CryptoConverter();
+        const result = converter.convert(exampleExtension);
+        
+        expect(result).not.toBe(false);
+        if (result) {
+            // Both condition and hashing should use 'email' (stripped)
+            expect(result).toContain("if (typeof b['email'] != 'undefined')");
+            expect(result).toContain("b['email'] = utag.ut.sha256(b['email'])");
+            // Should NOT contain the prefixed version
+            expect(result).not.toContain("b['cp.email']");
+        }
+    });
 });

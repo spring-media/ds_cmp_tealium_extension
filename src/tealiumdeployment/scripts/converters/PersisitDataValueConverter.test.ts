@@ -190,7 +190,7 @@ describe('PersistDataValueConverter', ()=> {
         + `/* global utag, a, b */\n`
         + `(function(a, b) {\n`
         + `    try {\n`
-        + `        if (b['cp.utag_main__ss'].toString().indexOf('1') > -1) {\n`
+        + `        if (b['utag_main__ss'].toString().indexOf('1') > -1) {\n`
         + `            if (typeof b['cp.utag_main_ref_first'] == 'undefined') {\n`
         + `                utag.loader.SC('utag_main', {\n`
         + `                    'ref_first': b['ad_referrer_first'] + ';exp-session'\n`

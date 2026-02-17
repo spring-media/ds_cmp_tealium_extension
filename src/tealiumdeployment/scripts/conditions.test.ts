@@ -33,7 +33,7 @@ describe('ConditionConverter', () => {
                 operator: 'equals_ignore_case',
                 value: 'false'
             }]]);
-            expect(condition).toBe("b['cp.utag_main_va'].toString().toLowerCase() == 'false'.toLowerCase()");
+            expect(condition).toBe("b['utag_main_va'].toString().toLowerCase() == 'false'.toLowerCase()");
         });
 
         it('returns contains_ignore_case value condition', () => {
@@ -123,6 +123,45 @@ describe('ConditionConverter', () => {
                 }]
             ]);
             expect(condition).toBe("(typeof b['customer_id'] != 'undefined' || typeof b['email'] != 'undefined')");
+        });
+
+        it('strips js. prefix from variable names', () => {
+            const condition = createCondition([[{
+                variable: 'js.customer_id',
+                operator: 'equals',
+                value: 'test123'
+            }]]);
+            expect(condition).toBe("b['customer_id'] == 'test123'");
+        });
+
+        it('strips cp. prefix from variable names', () => {
+            const condition = createCondition([[{
+                variable: 'cp.cookie_value',
+                operator: 'defined',
+                value: ''
+            }]]);
+            expect(condition).toBe("typeof b['cookie_value'] != 'undefined'");
+        });
+
+        it('strips all prefixes (udo., js., cp.) consistently', () => {
+            const condition = createCondition([
+                [{
+                    variable: 'udo.page_name',
+                    operator: 'equals',
+                    value: 'home'
+                }],
+                [{
+                    variable: 'js.user_id',
+                    operator: 'defined',
+                    value: ''
+                }],
+                [{
+                    variable: 'cp.consent',
+                    operator: 'equals',
+                    value: 'true'
+                }]
+            ]);
+            expect(condition).toBe("(b['page_name'] == 'home' || typeof b['user_id'] != 'undefined' || b['consent'] == 'true')");
         });
 
         it('returns contains value condition', () => {

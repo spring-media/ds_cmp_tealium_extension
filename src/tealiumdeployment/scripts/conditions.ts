@@ -5,7 +5,10 @@ const getCondition = (condition: Condition) => {
     let conditionCode = '';
 
     const leftVar = condition.variable
-        .replace('udo.', '');
+        .replace('udo.', '')
+        .replace('js.', '')
+        .replace('cp.', '');
+
 
     switch (condition.operator) {
         case null: {
