@@ -7,7 +7,6 @@ export class SetDataValuesConverter implements Converter {
         const conditionCode = createCondition(extension.conditions);
         const logic = this.createLogic(extension);
         if (logic === false) {
-            console.log('skipped');
             return false;
         }
 

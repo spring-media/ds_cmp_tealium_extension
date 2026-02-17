@@ -1,7 +1,7 @@
 export type Condition = {
     variable: string,
-    operator: string,
-    value: string
+    operator: string | null,
+    value: string | null
 }
 
 export type ConfigurationGroup = {
@@ -52,6 +52,12 @@ export type LookupTableConfiguration = {
     varlookup: string;
 }
 
+export type CryptoConfiguration = {
+    constructor?: string;
+    initialize?: string;
+    hash: string; // "1" = MD5, "2" = SHA-1, "3" = SHA-256
+}
+
 export type ExtensionData = {
     name: string,
     id: number,
@@ -60,7 +66,7 @@ export type ExtensionData = {
     occurrence: string | null,
     loadRule: string | null,
     conditions: Condition[][],
-    configuration: JoinDataValuesConfiguration | PersistDataValueConfiguration | ConfigurationGroup | LookupTableConfiguration | PathnameTokenizerConfig
+    configuration: JoinDataValuesConfiguration | PersistDataValueConfiguration | ConfigurationGroup | LookupTableConfiguration | PathnameTokenizerConfig | CryptoConfiguration
 }
 
 export interface Converter {
