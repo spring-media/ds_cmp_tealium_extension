@@ -2,6 +2,22 @@ import crypto from 'node:crypto';
 
 export class Variable {
 
+    public static fromRemote(obj: unknown): Variable | undefined {
+
+        if(typeof obj === 'object' && obj !== null &&
+            'id' in obj && typeof obj.id === 'number' &&
+            'name' in obj && typeof obj.name === 'string' &&
+            'type' in obj && typeof obj.type === 'string' &&
+                (obj.type === 'udo' || obj.type === 'cp' || obj.type === 'qp' || obj.type === 'meta' ) &&
+            'alias' in obj && ( typeof obj.alias === 'string' || obj.alias === null ) &&
+            'notes' in obj && ( typeof obj.notes === 'string' || obj.notes === null )
+        ) {
+            return new Variable(obj.id, obj.name, obj.type)
+                .setAlias(obj.alias)
+                .setNotes(obj.notes);
+        }
+    }
+
     public readonly uniqueIdentifier: string;
     private notes: string | null;
     private alias: string | null;

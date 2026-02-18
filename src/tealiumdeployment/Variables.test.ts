@@ -152,5 +152,71 @@ describe('Variables', () => {
             const variableB = new Variable(1, 'test', 'udo').setNotes('test2');
             expect(variableA.equals(variableB)).toBe(false);
         });
+    });
+
+    describe('fromRemote', ()=>{
+        it('creates object from JSON from remote source sample 1', ()=> {
+            const source = {
+                "id": 1,
+                "name": "page_datePublication_short",
+                "alias": 'test alias',
+                "type": "udo",
+                "notes": 'a note just as a test',
+                "context": null,
+                "library": null,
+                "uniqueIdentifier": "udo.page_datePublication_short",
+                "imported": null,
+                "usedIn": {
+                    "tags": [
+                    294,
+                    233,
+                    155
+                    ],
+                    "events": [],
+                    "extensions": [],
+                    "consent": [],
+                    "loadRules": []
+                }
+            }
+
+            const variableA = Variable.fromRemote(source);
+            const variableB = new Variable(1, 'page_datePublication_short', 'udo')
+            .setAlias('test alias')
+            .setNotes('a note just as a test');
+            expect(variableA).toBeDefined();
+            if(variableA) {
+                expect(variableA.equals(variableB)).toBe(true);
+            }
+        });
+
+        it('creates object from JSON from remote source sample 1', ()=> {
+            const source = {
+                "id": 2,
+                "name": "page_datePublication_short",
+                "alias": null,
+                "type": "cp",
+                "notes": null,
+                "context": null,
+                "library": null,
+                "uniqueIdentifier": "udo.page_datePublication_short",
+                "imported": null,
+                "usedIn": {
+                    "tags": [294, 233, 155 ],
+                    "events": [],
+                    "extensions": [],
+                    "consent": [],
+                    "loadRules": []
+                }
+            }
+
+            const variableA = Variable.fromRemote(source);
+            const variableB = new Variable(2, 'page_datePublication_short', 'cp')
+            .setAlias(null)
+            .setNotes(null);
+            expect(variableA).toBeDefined();
+            if(variableA) {
+                expect(variableA.equals(variableB)).toBe(true);
+            }
+        });
     })
 });
