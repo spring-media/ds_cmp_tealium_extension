@@ -113,5 +113,110 @@ describe('Variables', () => {
                 .setNotes('Just a test');
             expect(variable.getHash()).toBe('03125e56800229c3e0ffc8063f9f358d4e2e1b23e7882c21912f48d90cad107d');
         });
+    });
+
+    describe('equals', ()=> {
+        it('returns true if variables have same setup', () => {
+            const variableA = new Variable(1, 'test', 'udo');
+            const variableB = new Variable(1, 'test', 'udo');
+            expect(variableA.equals(variableA)).toBe(true);
+            expect(variableA.equals(variableB)).toBe(true);
+        });
+
+        it('returns false if variables have different id', () => {
+            const variableA = new Variable(1, 'test', 'udo');
+            const variableB = new Variable(2, 'test', 'udo');
+            expect(variableA.equals(variableB)).toBe(false);
+        });
+
+        it('returns false if variables have different names', () => {
+            const variableA = new Variable(1, 'test', 'udo');
+            const variableB = new Variable(1, 'test-abc', 'udo');
+            expect(variableA.equals(variableB)).toBe(false);
+        });
+
+        it('returns false if variables have different types', () => {
+            const variableA = new Variable(1, 'test', 'udo');
+            const variableB = new Variable(1, 'test', 'cp');
+            expect(variableA.equals(variableB)).toBe(false);
+        });
+
+        it('returns false if variables have different aliases', () => {
+            const variableA = new Variable(1, 'test', 'udo').setAlias('test1');
+            const variableB = new Variable(1, 'test', 'udo').setAlias('test2');
+            expect(variableA.equals(variableB)).toBe(false);
+        });
+
+        it('returns false if variables have different notes', () => {
+            const variableA = new Variable(1, 'test', 'udo').setNotes('test1');
+            const variableB = new Variable(1, 'test', 'udo').setNotes('test2');
+            expect(variableA.equals(variableB)).toBe(false);
+        });
+    });
+
+    describe('fromRemote', ()=>{
+        it('creates object from JSON from remote source sample 1', ()=> {
+            const source = {
+                "id": 1,
+                "name": "page_datePublication_short",
+                "alias": 'test alias',
+                "type": "udo",
+                "notes": 'a note just as a test',
+                "context": null,
+                "library": null,
+                "uniqueIdentifier": "udo.page_datePublication_short",
+                "imported": null,
+                "usedIn": {
+                    "tags": [
+                    294,
+                    233,
+                    155
+                    ],
+                    "events": [],
+                    "extensions": [],
+                    "consent": [],
+                    "loadRules": []
+                }
+            }
+
+            const variableA = Variable.fromRemote(source);
+            const variableB = new Variable(1, 'page_datePublication_short', 'udo')
+            .setAlias('test alias')
+            .setNotes('a note just as a test');
+            expect(variableA).toBeDefined();
+            if(variableA) {
+                expect(variableA.equals(variableB)).toBe(true);
+            }
+        });
+
+        it('creates object from JSON from remote source sample 1', ()=> {
+            const source = {
+                "id": 2,
+                "name": "page_datePublication_short",
+                "alias": null,
+                "type": "cp",
+                "notes": null,
+                "context": null,
+                "library": null,
+                "uniqueIdentifier": "udo.page_datePublication_short",
+                "imported": null,
+                "usedIn": {
+                    "tags": [294, 233, 155 ],
+                    "events": [],
+                    "extensions": [],
+                    "consent": [],
+                    "loadRules": []
+                }
+            }
+
+            const variableA = Variable.fromRemote(source);
+            const variableB = new Variable(2, 'page_datePublication_short', 'cp')
+            .setAlias(null)
+            .setNotes(null);
+            expect(variableA).toBeDefined();
+            if(variableA) {
+                expect(variableA.equals(variableB)).toBe(true);
+            }
+        });
     })
 });
