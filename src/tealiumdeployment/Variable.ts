@@ -47,4 +47,19 @@ export class Variable {
             };
             return crypto.createHash('sha256').update(JSON.stringify(content)).digest('hex');
     }
+
+    equals(variable: Variable) {
+        if (variable === this) {
+            return true;
+        }
+        if (this.id !== variable.id ||
+            this.name !== variable.name ||
+            this.type !== variable.type ||
+            this.getAlias() !== variable.getAlias() ||
+            this.getNotes() !== variable.getNotes()
+        ) {
+            return false;
+        }
+        return true;
+    }
 }

@@ -113,5 +113,44 @@ describe('Variables', () => {
                 .setNotes('Just a test');
             expect(variable.getHash()).toBe('03125e56800229c3e0ffc8063f9f358d4e2e1b23e7882c21912f48d90cad107d');
         });
+    });
+
+    describe('equals', ()=> {
+        it('returns true if variables have same setup', () => {
+            const variableA = new Variable(1, 'test', 'udo');
+            const variableB = new Variable(1, 'test', 'udo');
+            expect(variableA.equals(variableA)).toBe(true);
+            expect(variableA.equals(variableB)).toBe(true);
+        });
+
+        it('returns false if variables have different id', () => {
+            const variableA = new Variable(1, 'test', 'udo');
+            const variableB = new Variable(2, 'test', 'udo');
+            expect(variableA.equals(variableB)).toBe(false);
+        });
+
+        it('returns false if variables have different names', () => {
+            const variableA = new Variable(1, 'test', 'udo');
+            const variableB = new Variable(1, 'test-abc', 'udo');
+            expect(variableA.equals(variableB)).toBe(false);
+        });
+
+        it('returns false if variables have different types', () => {
+            const variableA = new Variable(1, 'test', 'udo');
+            const variableB = new Variable(1, 'test', 'cp');
+            expect(variableA.equals(variableB)).toBe(false);
+        });
+
+        it('returns false if variables have different aliases', () => {
+            const variableA = new Variable(1, 'test', 'udo').setAlias('test1');
+            const variableB = new Variable(1, 'test', 'udo').setAlias('test2');
+            expect(variableA.equals(variableB)).toBe(false);
+        });
+
+        it('returns false if variables have different notes', () => {
+            const variableA = new Variable(1, 'test', 'udo').setNotes('test1');
+            const variableB = new Variable(1, 'test', 'udo').setNotes('test2');
+            expect(variableA.equals(variableB)).toBe(false);
+        });
     })
 });
