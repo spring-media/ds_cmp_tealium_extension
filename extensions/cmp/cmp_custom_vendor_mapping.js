@@ -90,11 +90,19 @@
         },
         kilkaya: {
             welt: [298]
-        }
+        },
+        awin: {
+            springpremium_bild: [105],
+            springpremium_welt: [118]
+        },
     };
 
     function getDomainTagValue(domain, vendor) {
-        if (domain.includes('welt.de')) {
+        if (domain.includes('checkout-v2.prod.ps.welt.de')) {
+            return domainTagValues[vendor].springpremium_welt;
+        } else if (domain.includes('checkout-v2.prod.ps.bild.de')) {
+            return domainTagValues[vendor].springpremium_bild;
+        } else if (domain.includes('welt.de')) {
             return domainTagValues[vendor].welt;
         } else if (domain.includes('bild.de')) {
             return domainTagValues[vendor].bild;
@@ -280,6 +288,20 @@
                     window.utag.data,
                     null,
                     getDomainTagValue(window.location.hostname, 'kilkaya')
+                );
+            }
+
+            // awin
+            if (
+                ((existingCookie && existingCookie[0].indexOf('awin') >= 0) ||
+                    (existingFallbackCookie &&
+                        existingFallbackCookie[0].indexOf('awin') >= 0)) &&
+                !!getDomainTagValue(window.location.hostname, 'awin')
+            ) {
+                window.utag.view(
+                    window.utag.data,
+                    null,
+                    getDomainTagValue(window.location.hostname, 'awin')
                 );
             }
         }
