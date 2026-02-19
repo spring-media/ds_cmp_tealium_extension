@@ -111,6 +111,14 @@ describe('CMP Custom Vendor Mapping', () => {
         test('returns correct value for welt.de with kilkaya vendor', () => {
             expect(cmpCustomVendorMapping.getDomainTagValue('welt.de', 'kilkaya')).toEqual([298]);
         });
+
+        test('returns correct value for welt.de with awin vendor', () => {
+            expect(cmpCustomVendorMapping.getDomainTagValue('checkout-v2.prod.ps.welt.de', 'awin')).toEqual([118]);
+        });
+
+        test('returns correct value for bild.de with awin vendor', () => {
+            expect(cmpCustomVendorMapping.getDomainTagValue('checkout-v2.prod.ps.bild.de', 'awin')).toEqual([105]);
+        });
     });
 
     describe('getCookie', () => {
@@ -359,6 +367,20 @@ describe('CMP Custom Vendor Mapping', () => {
             cmpCustomVendorMapping.processUtag();
             expect(window.k5aMeta.consent).toBe(1);
             expect(window.utag.view).toHaveBeenCalledWith(window.utag.data, null, [298]);
+        });
+
+        test('calls utag.view for awin vendor on welt.de', () => {
+            window.location.hostname = 'checkout-v2.prod.ps.welt.de';
+            document.cookie = 'cmp_cv_list=awin;secure';
+            cmpCustomVendorMapping.processUtag();
+            expect(window.utag.view).toHaveBeenCalledWith(window.utag.data, null, [118]);
+        });
+
+        test('calls utag.view for awin vendor on bild.de', () => {
+            window.location.hostname = 'checkout-v2.prod.ps.bild.de';
+            document.cookie = 'cmp_cv_list=awin;secure';
+            cmpCustomVendorMapping.processUtag();
+            expect(window.utag.view).toHaveBeenCalledWith(window.utag.data, null, [105]);
         });
 
         test('calls utag.view with fallback cookie (__utag_cmp_vendor_list)', () => {
