@@ -316,13 +316,18 @@ export interface TealiumExtension {
         code: string
     };
 }
+export interface TagDataMapping {
+    variable: string;
+    type: string;
+    mappings: string[]; 
+}
 
 export interface TealiumTag {
     id: number;
-    tagId: string;
-    title: string;
-    type: string;
-    status: string;
+    name: string;
+    notes: string | null;
+    status: string | null;
+    dataMapping: any[] | null;
 }
 
 export interface TealiumProfilePayload {
@@ -330,6 +335,7 @@ export interface TealiumProfilePayload {
     profile: string;
     extensions: TealiumExtension[] | null;
     tags: TealiumTag[] | null;
+    variables: any[] | null;
 }
 
 export interface TealiumOperationPayload {
