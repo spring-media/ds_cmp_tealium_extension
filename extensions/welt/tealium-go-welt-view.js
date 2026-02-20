@@ -8,28 +8,28 @@
  * Note: This extension runs unconditionally in the Pre Loader scope
  */
 
-const configureGoWeltView = function() {
-    if (!location.hostname.includes('go.welt.de')) {
-        return;
+(function() {
+    const configureGoWeltView = function() {
+        if (!location.hostname.includes('go.welt.de')) {
+            return;
+        }
+
+        try {
+            window.utag_cfg_ovrd = window.utag_cfg_ovrd || {};
+            window.utag_cfg_ovrd = {
+                noview: true
+            };
+        } catch (e) {
+            // Silent error handling - should not break page functionality
+            console.error('[TEALIUM GO WELT] Error:', e);
+        }
+    };
+
+    // Export for tests
+    if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+        module.exports = { configureGoWeltView };
+    } else if (typeof window !== 'undefined' && typeof location !== 'undefined') {
+        // Execute in browser context
+        configureGoWeltView();
     }
-
-    try {
-        window.utag_cfg_ovrd = window.utag_cfg_ovrd || {};
-        window.utag_cfg_ovrd = {
-            noview: true
-        };
-    } catch (e) {
-        // Silent error handling - should not break page functionality
-        console.error('[TEALIUM GO WELT] Error:', e);
-    }
-};
-
-// Execute in browser context
-if (typeof window !== 'undefined' && typeof location !== 'undefined') {
-    configureGoWeltView();
-}
-
-// Export for tests
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = { configureGoWeltView };
-}
+})();
