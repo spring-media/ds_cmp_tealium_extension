@@ -23,7 +23,8 @@ export enum Scope {
     PreLoader = 'Pre Loader',
     AfterLoadRules = 'After Load Rules',
     BeforeLoadRules = 'Before Load Rules',
-    DOMReady = 'DOM Ready'
+    DOMReady = 'DOM Ready',
+    AfterTagExtensions =   'After Tag Extensions'
 }
 
 export namespace Scope {

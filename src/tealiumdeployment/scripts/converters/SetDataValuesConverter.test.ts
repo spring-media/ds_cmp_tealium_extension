@@ -8,6 +8,9 @@ describe('SetDataValuesConverter', ()=>{
             name: 'just a test',
             id: 1234,
             scope: '',
+            extensionType: '',
+            occurrence: null,
+            loadRule: null,
             conditions: [],
             configuration: {
                 configs: []
@@ -26,7 +29,7 @@ describe('SetDataValuesConverter', ()=>{
         + '    } catch (e) {\n'
         + '        window.utag.DB(e);\n'
         + '    }\n'
-        + '})();\n';
+        + '})(a, b);\n';
         expect(converter.convert(exampleExtension)).toBe(resultingCode);
     });
 
@@ -37,6 +40,9 @@ describe('SetDataValuesConverter', ()=>{
             id: 1234,
             scope: '',
             conditions: [],
+            extensionType: '',
+            occurrence: null,
+            loadRule: null,
             configuration: {
                 configs: [
                     {
@@ -62,7 +68,7 @@ describe('SetDataValuesConverter', ()=>{
         + '    } catch (e) {\n'
         + '        window.utag.DB(e);\n'
         + '    }\n'
-        + '})();\n';
+        + '})(a, b);\n';
         expect(converter.convert(exampleExtension)).toBe(resultingCode);
     });
 
@@ -73,6 +79,9 @@ describe('SetDataValuesConverter', ()=>{
             id: 1234,
             scope: '',
             conditions: [],
+            extensionType: '',
+            occurrence: null,
+            loadRule: null,
             configuration: {
                 configs: [
                     {
@@ -100,7 +109,7 @@ describe('SetDataValuesConverter', ()=>{
         + '    } catch (e) {\n'
         + '        window.utag.DB(e);\n'
         + '    }\n'
-        + '})();\n';
+        + '})(a, b);\n';
         expect(converter.convert(exampleExtension)).toBe(resultingCode);
     });
 
@@ -109,6 +118,9 @@ describe('SetDataValuesConverter', ()=>{
             name: 'just a test',
             id: 1234,
             scope: '',
+            extensionType: '',
+            occurrence: null,
+            loadRule: null,
             conditions: [],
             configuration: {
                 configs: [
@@ -119,7 +131,7 @@ describe('SetDataValuesConverter', ()=>{
                         settotext: ''
                     }
                 ]
-            },
+            }
         }
 
         const converter = new SetDataValuesConverter();
@@ -135,7 +147,7 @@ describe('SetDataValuesConverter', ()=>{
         + '    } catch (e) {\n'
         + '        window.utag.DB(e);\n'
         + '    }\n'
-        + '})();\n';
+        + '})(a, b);\n';
         expect(converter.convert(exampleExtension)).toBe(resultingCode);
     });
 
@@ -144,7 +156,10 @@ describe('SetDataValuesConverter', ()=>{
             name: 'just a test',
             id: 1234,
             scope: '',
-            conditions: [[{ variable: 'udo.test', operator: 'equals', value: 'hello world'}]],
+            extensionType: '',
+            occurrence: null,
+            loadRule: null,
+            conditions: [[{ variable: 'udo.test', operator: 'equals', value: 'hello world' }]],
             configuration: {
                 configs: [
                     {
@@ -170,7 +185,7 @@ describe('SetDataValuesConverter', ()=>{
         + '    } catch (e) {\n'
         + '        window.utag.DB(e);\n'
         + '    }\n'
-        + '})();\n';
+        + '})(a, b);\n';
         expect(converter.convert(exampleExtension)).toBe(resultingCode);
     });
 });

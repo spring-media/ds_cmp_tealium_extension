@@ -4,7 +4,10 @@ import path from 'path';
 import { SetDataValuesConverter } from './converters/SetDataValuesConverter';
 import { Converter } from './converters/types';
 import { PersistDataValueConverter } from './converters/PersistDataValueConverter';
-
+import { JoinDataValuesConverter } from './converters/JoinDataValuesConverter';
+import { PathnameTokenizerConverter } from './converters/PathnameTokenizerConverter';
+import { LookupTableConverter } from './converters/LookupTableConverter';
+import { CryptoConverter } from './converters/CryptoConverter';
 
 (async() => {
     const loggerFormat = winston.format.printf(({ level, message, timestamp }) => {
@@ -13,11 +16,8 @@ import { PersistDataValueConverter } from './converters/PersistDataValueConverte
 
     const logger = winston.createLogger({
         level: 'info',
-        format: winston.format.combine(
-            winston.format.timestamp(),
-            loggerFormat
-        ),
-        defaultMeta: { },
+        format: winston.format.combine(winston.format.timestamp(), loggerFormat),
+        defaultMeta: {},
         transports: [new winston.transports.Console()]
     });
 
@@ -33,7 +33,9 @@ import { PersistDataValueConverter } from './converters/PersistDataValueConverte
 
     // Finde die neueste Profil-Datei
     const files = await fs.readdir(outputDir);
-    const profileFiles = files.filter(f => f.startsWith(`tealium_profile_${profile}_`) && f.endsWith('.json'));
+    const profileFiles = files.filter(
+        (f) => f.startsWith(`tealium_profile_${profile}_`) && f.endsWith('.json')
+    );
 
     if (profileFiles.length === 0) {
         logger.error(`No profile file found for ${profile} in ${outputDir}`);
@@ -63,13 +65,29 @@ import { PersistDataValueConverter } from './converters/PersistDataValueConverte
 
     for (const extension of tealiumProfile.extensions) {
         let converter: Converter | null = null;
-        switch(extension.extensionType) {
+        switch (extension.extensionType) {
             case 'Set Data Values': {
                 converter = new SetDataValuesConverter();
                 break;
             }
             case 'Persist Data Value': {
                 converter = new PersistDataValueConverter();
+                break;
+            }
+            case 'Join Data Values': {
+                converter = new JoinDataValuesConverter();
+                break;
+            }
+            case 'Pathname Tokenizer': {
+                converter = new PathnameTokenizerConverter();
+                break;
+            }
+            case 'Lookup Table': {
+                converter = new LookupTableConverter();
+                break;
+            }
+            case 'Crypto Extension': {
+                converter = new CryptoConverter();
                 break;
             }
             default: {
@@ -85,12 +103,17 @@ import { PersistDataValueConverter } from './converters/PersistDataValueConverte
         const outputFilePath = path.join(outputDirExtensions, fileName);
         console.log(outputFilePath);
 
-        const code = converter.convert(extension);
-        if(!code) {
+        try {
+            const code = converter.convert(extension);
+            if (!code) {
+                continue;
+            }
+
+            await fs.writeFile(outputFilePath, code, 'utf-8');
+        } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            logger.error(`Failed to convert extension ${extension.name} (${extension.id}): ${errorMessage}`);
             continue;
         }
-
-        await fs.writeFile(outputFilePath, code, 'utf-8');
     }
-
 })();

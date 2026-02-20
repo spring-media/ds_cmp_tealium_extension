@@ -1,14 +1,17 @@
 import { PersistDataValueConverter } from './PersistDataValueConverter';
-import { Configuration } from './types';
+import { ExtensionData, PersistDataValueConfiguration } from './types';
 
 describe('PersistDataValueConverter', ()=> {
     it('creates empty javascript code', ()=> {
         const converter = new PersistDataValueConverter();
 
-        const extension = {
+        const extension: ExtensionData = {
             name: '',
             id: 165,
             scope: 'After Load Rules',
+            extensionType: '',
+            occurrence: null,
+            loadRule: null,
             conditions: [
                 [{
                     variable: "qp.activate_tag",
@@ -27,7 +30,8 @@ describe('PersistDataValueConverter', ()=> {
                 constructor: "",
                 persistence: "session",
                 initialize: "",
-            } as Configuration
+                configs: []
+            } as PersistDataValueConfiguration
         }
 
         const code = ''
@@ -42,7 +46,7 @@ describe('PersistDataValueConverter', ()=> {
         + `    } catch (e) {\n`
         + `        window.utag.DB(e);\n`
         + `    }\n`
-        + `})();\n`;
+        + `})(a, b);\n`;
         expect(converter.convert(extension)).toBe(code);
 
     })
@@ -51,10 +55,13 @@ describe('PersistDataValueConverter', ()=> {
         const converter = new PersistDataValueConverter();
 
 
-        const extension = {
+        const extension: ExtensionData = {
             name: 'Adobe : Autocuration eVar241 for each page view',
             id: 474,
             scope: '233,206,155',
+            extensionType: '',
+            occurrence: null,
+            loadRule: null,
             conditions: [
                 [{
                     variable: 'udo.event_name',
@@ -73,7 +80,7 @@ describe('PersistDataValueConverter', ()=> {
                 constructor: '',
                 persistence: 'session',
                 initialize: '',
-            } as Configuration
+            } as PersistDataValueConfiguration
         }
 
         const code = ''
@@ -90,17 +97,20 @@ describe('PersistDataValueConverter', ()=> {
         + `    } catch (e) {\n`
         + `        window.utag.DB(e);\n`
         + `    }\n`
-        + `})();\n`;
+        + `})(a, b);\n`;
         expect(converter.convert(extension)).toBe(code);
     })
 
     it('tests with allowupdate once and persistence visitor', ()=> {
         const converter = new PersistDataValueConverter();
 
-        const extension = {
+        const extension: ExtensionData = {
             name: 'SSO Id in utag_main speichern',
             id: 339,
             scope: 'After Load Rules',
+            extensionType: '',
+            occurrence: null,
+            loadRule: null,
             conditions: [
                 [{
                     variable: 'udo.user_ssoId',
@@ -119,7 +129,7 @@ describe('PersistDataValueConverter', ()=> {
                 constructor: '',
                 persistence: 'visitor',
                 initialize: '',
-            } as Configuration
+            } as PersistDataValueConfiguration
         }
 
         const code = ''
@@ -138,18 +148,21 @@ describe('PersistDataValueConverter', ()=> {
         + `    } catch (e) {\n`
         + `        window.utag.DB(e);\n`
         + `    }\n`
-        + `})();\n`;
+        + `})(a, b);\n`;
 
         expect(converter.convert(extension)).toBe(code);
     })
 
-    it('tests with allowupdate once', ()=> {
+    it('tests with allowupdate once', () => {
         const converter = new PersistDataValueConverter();
 
-        const extension = {
+        const extension: ExtensionData = {
             name: 'ADOBE : persist first referrer',
             id: 173,
             scope: '155',
+            extensionType: '',
+            occurrence: null,
+            loadRule: null,
             conditions: [
                 [{
                     "variable": "cp.utag_main__ss",
@@ -167,8 +180,9 @@ describe('PersistDataValueConverter', ()=> {
                 allowupdate: 'once',
                 constructor: '',
                 persistence: 'session',
-                initialize: ''
-            } as Configuration
+                initialize: '',
+                configs: []
+            } as PersistDataValueConfiguration
         }
 
         const code = ''
@@ -176,7 +190,7 @@ describe('PersistDataValueConverter', ()=> {
         + `/* global utag, a, b */\n`
         + `(function(a, b) {\n`
         + `    try {\n`
-        + `        if (b['cp.utag_main__ss'].toString().indexOf('1') > -1) {\n`
+        + `        if (b['utag_main__ss'].toString().indexOf('1') > -1) {\n`
         + `            if (typeof b['cp.utag_main_ref_first'] == 'undefined') {\n`
         + `                utag.loader.SC('utag_main', {\n`
         + `                    'ref_first': b['ad_referrer_first'] + ';exp-session'\n`
@@ -187,7 +201,7 @@ describe('PersistDataValueConverter', ()=> {
         + `    } catch (e) {\n`
         + `        window.utag.DB(e);\n`
         + `    }\n`
-        + `})();\n`;
+        + `})(a, b);\n`;
 
         expect(converter.convert(extension)).toBe(code);
     })
