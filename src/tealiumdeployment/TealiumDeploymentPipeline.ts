@@ -160,7 +160,7 @@ export class TealiumDeploymentPipeline {
         const availableTags = this.currentProfile.tags || [];
         const availableTagIds = new Set(availableTags.map(tag => tag.id));
         
-        const tagIdToTitle = new Map(availableTags.map(tag => [tag.id, tag.title]));
+        const tagIdToTitle = new Map(availableTags.map(tag => [tag.id, tag.name]));
         
         for (const extension of this.localExtensions) {
             const scope = extension.getScope();
@@ -172,7 +172,7 @@ export class TealiumDeploymentPipeline {
                 
                 if (invalidTagIds.length > 0) {
                     const availableTagList = availableTags
-                        .map(tag => `${tag.id} (${tag.title})`)
+                        .map(tag => `${tag.id} (${tag.name})`)
                         .join(', ');
                     
                     throw new Error(

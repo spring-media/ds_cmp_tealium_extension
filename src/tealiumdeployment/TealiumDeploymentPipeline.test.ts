@@ -424,7 +424,7 @@ describe('TealiumDeploymentPipeline', () => {
                 profile: 'test-solutions2', 
                 extensions: [], 
                 tags: [
-                    { id: 210, tagId: 'tag-210', title: 'Adobe Analytics', type: 'tag', status: 'active' }
+                    { id: 210, tagId: 'tag-210', name: 'Adobe Analytics', type: 'tag', status: 'active' }
                 ]
             };
 
@@ -464,8 +464,8 @@ describe('TealiumDeploymentPipeline', () => {
                 profile: 'test-solutions2', 
                 extensions: [], 
                 tags: [
-                    { id: 210, tagId: 'tag-210', title: 'Adobe Analytics', type: 'tag', status: 'active' },
-                    { id: 233, tagId: 'tag-233', title: 'Google Analytics', type: 'tag', status: 'active' }
+                    { id: 210, tagId: 'tag-210', name: 'Adobe Analytics', type: 'tag', status: 'active' },
+                    { id: 233, tagId: 'tag-233', name: 'Google Analytics', type: 'tag', status: 'active' }
                 ]
             };
 
@@ -505,9 +505,9 @@ describe('TealiumDeploymentPipeline', () => {
                 profile: 'test-solutions2', 
                 extensions: [], 
                 tags: [
-                    { id: 210, tagId: 'tag-210', title: 'Adobe Analytics', type: 'tag', status: 'active' },
-                    { id: 233, tagId: 'tag-233', title: 'Google Analytics', type: 'tag', status: 'active' },
-                    { id: 155, tagId: 'tag-155', title: 'Facebook Pixel', type: 'tag', status: 'active' }
+                    { id: 210, tagId: 'tag-210', name: 'Adobe Analytics', type: 'tag', status: 'active' },
+                    { id: 233, tagId: 'tag-233', name: 'Google Analytics', type: 'tag', status: 'active' },
+                    { id: 155, tagId: 'tag-155', name: 'Facebook Pixel', type: 'tag', status: 'active' }
                 ]
             };
 
@@ -547,7 +547,7 @@ describe('TealiumDeploymentPipeline', () => {
                 profile: 'test-solutions2', 
                 extensions: [], 
                 tags: [
-                    { id: 210, tagId: 'tag-210', title: 'Adobe Analytics', type: 'tag', status: 'active' }
+                    { id: 210, tagId: 'tag-210', name: 'Adobe Analytics', type: 'tag', status: 'active' }
                 ]
             };
 
@@ -591,7 +591,7 @@ describe('TealiumDeploymentPipeline', () => {
                 profile: 'test-solutions2', 
                 extensions: [], 
                 tags: [
-                    { id: 210, tagId: 'tag-210', title: 'Adobe Analytics', type: 'tag', status: 'active' }
+                    { id: 210, tagId: 'tag-210', name: 'Adobe Analytics', type: 'tag', status: 'active' }
                 ]
             };
 
@@ -681,7 +681,7 @@ describe('TealiumDeploymentPipeline', () => {
                 profile: 'test-solutions2', 
                 extensions: extensions,
                 tags: [
-                    { id: 210, tagId: 'tag-210', title: 'Adobe Analytics', type: 'tag', status: 'active' }
+                    { id: 210, tagId: 'tag-210', name: 'Adobe Analytics', type: 'tag', status: 'active' }
                 ]
             };
 
