@@ -5,7 +5,7 @@
 
 /* global utag */
 
-const { initMartechId, STORAGE_KEY, DEFAULT_MARTECH_ID } = require('../extensions/martech_id_localstorage');
+const { initMartechId, STORAGE_KEY, DEFAULT_MARTECH_ID } = require('../extensions/martech_id_localstorage.js');
 
 describe('Martech ID LocalStorage', () => {
     beforeEach(() => {
